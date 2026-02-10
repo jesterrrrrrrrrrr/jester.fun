@@ -652,8 +652,10 @@ local Util = {}
 function Util.Create(class, props, children)
 	local obj = Instance.new(class)
 
-	local success, rt = pcall(function() return obj.RichText end)
-		if success and rt ~= nil then
+	local success, rt = pcall(function()
+		return obj.RichText
+	end)
+	if success and rt ~= nil then
 		obj.RichText = true
 	end
 
@@ -664,13 +666,11 @@ function Util.Create(class, props, children)
 	end
 	for _, child in ipairs(children or {}) do
 		child.Parent = obj
-	
 	end
 	if props and props.Parent then
 		obj.Parent = props.Parent
 	end
 
-	
 	return obj
 end
 
@@ -2656,7 +2656,7 @@ function Components.Section(parent, title, theme, layoutOrder)
 		Position = UDim2.new(0, 0, 0, 4),
 		Size = UDim2.new(1, 0, 0, 20),
 		Font = Enum.Font.GothamBold,
-		Text = "<b>"..title:upper().."</b>",
+		Text = "<b>" .. title:upper() .. "</b>",
 		TextColor3 = Xan.CurrentTheme.Accent,
 		TextSize = 11,
 		TextXAlignment = Enum.TextXAlignment.Left,
@@ -5307,7 +5307,7 @@ function Xan:CreateWindow(config)
 				Position = UDim2.new(0, 58, 0, 26),
 				Size = UDim2.new(1, -68, 0, 18),
 				Font = Enum.Font.Roboto,
-				Text = "<b>"..userName.."</b>",
+				Text = "<b>" .. userName .. "</b>",
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = 13,
 				TextXAlignment = Enum.TextXAlignment.Left,
@@ -5348,7 +5348,7 @@ function Xan:CreateWindow(config)
 							Size = UDim2.new(0, 0, 1, 0),
 							AutomaticSize = Enum.AutomaticSize.X,
 							Font = Enum.Font.Roboto,
-				            Text = "<b>"..userName.."</b>",
+							Text = "<b>" .. userName .. "</b>",
 							TextColor3 = Xan.CurrentTheme.Text,
 							TextSize = 12,
 							ZIndex = 501,
@@ -9923,7 +9923,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 28 or 26),
 				Font = Enum.Font.GothamBold,
-				Text = "<b>"..text:upper().."</b>",
+				Text = "<b>" .. text:upper() .. "</b>",
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = IsMobile and 11 or 12,
 				TextXAlignment = Enum.TextXAlignment.Left,
@@ -15398,7 +15398,7 @@ function Xan:CreateWindow(config)
 				Position = UDim2.new(0.6, 0, 0, IsMobile and 8 or 6),
 				Size = UDim2.new(0.4, -14, 0, 20),
 				Font = Enum.Font.Roboto,
-				Text = "<b>"..Util.Round(value, 2) .. suffix.."</b>",
+				Text = "<b>" .. Util.Round(value, 2) .. suffix .. "</b>",
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = IsMobile and 14 or 13,
 				TextXAlignment = Enum.TextXAlignment.Right,
@@ -15982,26 +15982,28 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateKeybind(config)
 			config = config or {}
-			local name = config.Name or "Keybind"
-			local default = config.Default or Enum.KeyCode.Unknown
-			local flag = config.Flag
-			local callback = config.Callback or function() end
+			local name           = config.Name or "Keybind"
+			local default        = config.Default or Enum.KeyCode.Unknown
+			local flag           = config.Flag
+			local callback       = config.Callback or function() end
 			local changedCallback = config.ChangedCallback or function() end
-			local layoutOrder = config.LayoutOrder or 0
-			local bindType = config.Type or "Toggle"
-
+			local layoutOrder    = config.LayoutOrder or 0
+			local bindType       = config.Type or "Toggle"
+		
 			if bindType ~= "Toggle" and bindType ~= "Hold" then
 				bindType = "Toggle"
 			end
-
-			local currentKey = default
-			local listening = false
-			local isActive = false
-
+		
+			local currentKey     = default
+			local listening      = false
+			local isActive       = false
+			local justBound      = false          
+			local lastBindTime   = 0             
+		
 			if flag then
 				Xan:SetFlag(flag, currentKey)
 			end
-
+		
 			local keybindFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
@@ -16017,7 +16019,7 @@ function Xan:CreateWindow(config)
 					Transparency = 0,
 				}),
 			})
-
+		
 			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
@@ -16030,40 +16032,34 @@ function Xan:CreateWindow(config)
 				TextXAlignment = Enum.TextXAlignment.Left,
 				Parent = keybindFrame,
 			})
-
+		
 			local function getKeyName(key)
 				if key == Enum.KeyCode.Unknown then
 					return "None"
 				end
-
+		
 				if key.EnumType == Enum.UserInputType then
-					if key == Enum.UserInputType.MouseButton1 then
-						return "LMB"
-					end
-					if key == Enum.UserInputType.MouseButton2 then
-						return "RMB"
-					end
-					if key == Enum.UserInputType.MouseButton3 then
-						return "MMB"
-					end
+					if key == Enum.UserInputType.MouseButton1 then return "LMB" end
+					if key == Enum.UserInputType.MouseButton2 then return "RMB" end
+					if key == Enum.UserInputType.MouseButton3 then return "MMB" end
 					return tostring(key):gsub("Enum.UserInputType.", "")
 				end
-
+		
 				if key.EnumType == Enum.KeyCode then
 					local name = tostring(key):gsub("Enum.KeyCode.", "")
 					return name
 				end
-
+		
 				return "???"
 			end
-
+		
 			local keyBtn = Util.Create("TextButton", {
 				Name = "KeyButton",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 				Position = UDim2.new(1, -100, 0.5, -14),
 				Size = UDim2.new(0, 86, 0, 28),
 				Font = Enum.Font.RobotoMono,
-				Text = "<b>"..getKeyName(currentKey).."</b>",
+				Text = "<b>" .. getKeyName(currentKey) .. "</b>",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 12 or 11,
 				AutoButtonColor = false,
@@ -16071,7 +16067,7 @@ function Xan:CreateWindow(config)
 			}, {
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 			})
-
+		
 			local function startListening()
 				listening = true
 				keyBtn.Text = "..."
@@ -16080,23 +16076,27 @@ function Xan:CreateWindow(config)
 					TextColor3 = Util.GetContrastText(Xan.CurrentTheme.Accent),
 				})
 			end
-
+		
 			local function stopListening(key)
 				listening = false
 				currentKey = key or currentKey
 				keyBtn.Text = getKeyName(currentKey)
 				Util.Tween(keyBtn, 0.2, { BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary })
 				Util.Tween(keyBtn, 0.2, { TextColor3 = Xan.CurrentTheme.Text })
-
+		
 				if flag then
 					Xan:SetFlag(flag, currentKey)
 				end
-
+		
 				if key then
 					changedCallback(currentKey)
+					if bindType == "Hold" then
+						justBound = true
+						lastBindTime = tick()
+					end
 				end
 			end
-
+		
 			keyBtn.MouseButton1Click:Connect(function()
 				if listening then
 					stopListening(Enum.KeyCode.Unknown)
@@ -16104,9 +16104,8 @@ function Xan:CreateWindow(config)
 					startListening()
 				end
 			end)
-
-			local keybindConn
-			keybindConn = UserInputService.InputBegan:Connect(function(input, gameProcessed)
+		
+			local keybindConn = UserInputService.InputBegan:Connect(function(input, gameProcessed)
 				if listening then
 					if input.UserInputType == Enum.UserInputType.Keyboard then
 						if input.KeyCode == Enum.KeyCode.Escape then
@@ -16117,27 +16116,23 @@ function Xan:CreateWindow(config)
 							stopListening(input.KeyCode)
 						end
 					elseif
-						input.UserInputType == Enum.UserInputType.MouseButton1
-						or input.UserInputType == Enum.UserInputType.MouseButton2
-						or input.UserInputType == Enum.UserInputType.MouseButton3
+						input.UserInputType == Enum.UserInputType.MouseButton1 or
+						input.UserInputType == Enum.UserInputType.MouseButton2 or
+						input.UserInputType == Enum.UserInputType.MouseButton3
 					then
 						stopListening(input.UserInputType)
 					end
 				else
-					if gameProcessed then
-						return
-					end
-					if currentKey == Enum.KeyCode.Unknown then
-						return
-					end
-
+					if gameProcessed then return end
+					if currentKey == Enum.KeyCode.Unknown then return end
+		
 					local triggered = false
 					if currentKey.EnumType == Enum.KeyCode and input.KeyCode == currentKey then
 						triggered = true
 					elseif currentKey.EnumType == Enum.UserInputType and input.UserInputType == currentKey then
 						triggered = true
 					end
-
+		
 					if triggered then
 						if bindType == "Toggle" then
 							isActive = not isActive
@@ -16156,52 +16151,54 @@ function Xan:CreateWindow(config)
 					end
 				end
 			end)
-
 			table.insert(Xan.Connections, keybindConn)
-
+		
 			if bindType == "Hold" then
 				local releaseConn = UserInputService.InputEnded:Connect(function(input)
-					if currentKey == Enum.KeyCode.Unknown then
-						return
-					end
-
+					if currentKey == Enum.KeyCode.Unknown then return end
+		
 					local released = false
 					if currentKey.EnumType == Enum.KeyCode and input.KeyCode == currentKey then
 						released = true
 					elseif currentKey.EnumType == Enum.UserInputType and input.UserInputType == currentKey then
 						released = true
 					end
-
+		
 					if released then
+						if justBound and (tick() - lastBindTime < 0.3) then
+							justBound = false
+							return
+						end
+		
 						Xan:RemoveFromBindList(name)
 						Util.SafeCall(callback, false)
 					end
 				end)
 				table.insert(Xan.Connections, releaseConn)
 			end
-
+		
 			keyBtn.MouseEnter:Connect(function()
 				if not listening then
 					Util.Tween(keyBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.CardHover })
 				end
 			end)
-
+		
 			keyBtn.MouseLeave:Connect(function()
 				if not listening then
 					Util.Tween(keyBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary })
 				end
 			end)
-
+		
 			keybindFrame.MouseEnter:Connect(function()
 				Util.Tween(keybindFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.CardHover })
 			end)
-
+		
 			keybindFrame.MouseLeave:Connect(function()
 				Util.Tween(keybindFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 			end)
-
+		
 			registerSearchElement(name, tabName, tabData, "Keybind", tabIcon, keybindFrame)
-
+		
 			return {
 				Frame = keybindFrame,
 				Value = function()
