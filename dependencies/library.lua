@@ -2429,7 +2429,7 @@ function UI.ImageButton(props, children)
 end
 
 function UI.Corner(radius)
-	radius = radius or 8
+	radius = radius or 0
 	return Util.Create("UICorner", { CornerRadius = UDim.new(0, radius) })
 end
 
