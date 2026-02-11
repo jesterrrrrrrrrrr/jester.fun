@@ -1,17 +1,3 @@
---[[
-    QUICK START (3 lines to a full hub):
-    
-    local UI = loadstring(game:HttpGet("URL"))()
-    local win, tab = UI.Quick("My Hub", "Combat", "crosshair")
-    
-    tab:AddToggle("Aimbot", "aim_on", function(v) Aimbot.Enabled = v end)
-    tab:AddSlider("FOV", "aim_fov", {10, 150, Default = 60}, function(v) end)
-    tab:AddDropdown("Hitbox", "aim_hit", {"Head", "Torso"}, function(v) end)
-    
-    -- Demo window: UI.Demo()
-    -- Schema builder: UI.Build({ Title = "Hub", Tabs = {...} })
-]]
-
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
@@ -2364,7 +2350,7 @@ function UI.Text(props, children)
 	props = props or {}
 	local defaults = {
 		BackgroundTransparency = 1,
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		TextColor3 = Xan.CurrentTheme and Xan.CurrentTheme.Text or Color3.fromRGB(245, 245, 250),
 		TextSize = IsMobile and 15 or 14,
 		TextXAlignment = Enum.TextXAlignment.Left,
@@ -2382,7 +2368,7 @@ function UI.Button(props, children)
 	local defaults = {
 		BackgroundColor3 = Xan.CurrentTheme and Xan.CurrentTheme.BackgroundTertiary or Color3.fromRGB(28, 28, 35),
 		BorderSizePixel = 0,
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		TextColor3 = Xan.CurrentTheme and Xan.CurrentTheme.Text or Color3.fromRGB(245, 245, 250),
 		TextSize = IsMobile and 15 or 14,
 		AutoButtonColor = false,
@@ -2679,7 +2665,7 @@ function Components.Label(parent, text, theme, layoutOrder)
 		Name = "Text",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = text,
 		TextColor3 = Xan.CurrentTheme.TextSecondary,
 		TextSize = IsMobile and 14 or 13,
@@ -2694,7 +2680,7 @@ function Components.Label(parent, text, theme, layoutOrder)
 end
 
 function Components.Paragraph(parent, title, content, theme, layoutOrder)
-	local textHeight = Util.GetTextSize(content, 13, Font.fromEnum(Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal)), Vector2.new(300, math.huge))
+	local textHeight = Util.GetTextSize(content, 13, Font.fromEnum(Enum.Font.Roboto), Vector2.new(300, math.huge))
 	local height = 24 + textHeight.Y + 8
 
 	local paragraph = Util.Create("Frame", {
@@ -2710,7 +2696,7 @@ function Components.Paragraph(parent, title, content, theme, layoutOrder)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 0),
 		Size = UDim2.new(1, 0, 0, 22),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = title,
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 14,
@@ -2723,7 +2709,7 @@ function Components.Paragraph(parent, title, content, theme, layoutOrder)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 24),
 		Size = UDim2.new(1, 0, 0, textHeight.Y + 4),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = content,
 		TextColor3 = Xan.CurrentTheme.TextSecondary,
 		TextSize = 13,
@@ -2743,7 +2729,7 @@ function Components.Paragraph(parent, title, content, theme, layoutOrder)
 		if newContent then
 			contentLabel.Text = newContent
 			local newHeight =
-				Util.GetTextSize(newContent, 13, Font.fromEnum(Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal)), Vector2.new(300, math.huge))
+				Util.GetTextSize(newContent, 13, Font.fromEnum(Enum.Font.Roboto), Vector2.new(300, math.huge))
 			contentLabel.Size = UDim2.new(1, 0, 0, newHeight.Y + 4)
 			paragraph.Size = UDim2.new(1, 0, 0, 24 + newHeight.Y + 8)
 		end
@@ -2831,7 +2817,7 @@ function Components.Dropdown(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12, 0, 0),
 		Size = UDim2.new(1, -36, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = tostring(selected),
 		TextColor3 = theme.Text or Color3.fromRGB(255, 255, 255),
 		TextSize = compact and 12 or (IsMobile and 14 or 13),
@@ -2984,7 +2970,7 @@ function Components.Dropdown(config)
 				Name = option,
 				BackgroundColor3 = isSelected and (t.Accent or Color3.fromRGB(220, 60, 85)) or dropColor,
 				Size = UDim2.new(1, 0, 0, optionHeight),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = option,
 				TextColor3 = isSelected and Color3.new(1, 1, 1) or (t.Text or Color3.fromRGB(255, 255, 255)),
 				TextSize = compact and 11 or (IsMobile and 13 or 12),
@@ -3611,7 +3597,7 @@ function WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, 
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, titleX, 0, 14),
 			Size = UDim2.new(1, titleWidth, 0, 20),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = title,
 			TextColor3 = theme.Accent,
 			TextSize = 16,
@@ -3625,7 +3611,7 @@ function WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, 
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, titleX, 0, 32),
 			Size = UDim2.new(1, titleWidth, 0, 14),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = subtitle,
 			TextColor3 = theme.TextDim,
 			TextSize = 11,
@@ -3753,7 +3739,7 @@ function WindowBuilders.CreateTabContainer(sidebar, topOffset, theme)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 8),
 		Size = UDim2.new(1, 0, 0, 20),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Scroll",
 		TextColor3 = theme.TextDim,
 		TextSize = 10,
@@ -3767,7 +3753,7 @@ function WindowBuilders.CreateTabContainer(sidebar, topOffset, theme)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.5, -6, 0, 18),
 		Size = UDim2.new(0, 12, 0, 10),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "▼",
 		TextColor3 = theme.Accent,
 		TextSize = 8,
@@ -3864,7 +3850,7 @@ function WindowBuilders.CreateTraditionalTopbar(mainFrame, title, topbarHeight, 
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 16, 0, 0),
 		Size = UDim2.new(0, 250, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = title,
 		TextColor3 = theme.Text,
 		TextSize = 17,
@@ -4202,7 +4188,7 @@ function WindowBuilders.CreateContentTopbar(contentFrame, theme, hasSidebar)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 20, 0, 0),
 		Size = UDim2.new(0.5, 0, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "",
 		TextColor3 = theme.Text,
 		TextSize = 18,
@@ -4622,7 +4608,7 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12, 0, 0),
 		Size = UDim2.new(0.6, 0, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = title,
 		TextColor3 = theme.Accent,
 		TextSize = 14,
@@ -4760,7 +4746,7 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		Text = "‹",
 		TextColor3 = theme.TextSecondary,
 		TextSize = 20,
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		AutoButtonColor = false,
 		ZIndex = ZIndex.Tabs + 2,
 		Visible = false,
@@ -4776,7 +4762,7 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		Text = "›",
 		TextColor3 = theme.TextSecondary,
 		TextSize = 20,
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		AutoButtonColor = false,
 		ZIndex = ZIndex.Tabs + 2,
 		Visible = false,
@@ -5292,7 +5278,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 58, 0, 10),
 				Size = UDim2.new(1, -68, 0, 18),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Welcome back,",
 				TextColor3 = Xan.CurrentTheme.TextSecondary,
 				TextSize = 11,
@@ -5306,7 +5292,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 58, 0, 26),
 				Size = UDim2.new(1, -68, 0, 18),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "<b>" .. userName .. "</b>",
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = 13,
@@ -5347,7 +5333,7 @@ function Xan:CreateWindow(config)
 							BackgroundTransparency = 1,
 							Size = UDim2.new(0, 0, 1, 0),
 							AutomaticSize = Enum.AutomaticSize.X,
-							Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+							Font = Enum.Font.Roboto,
 							Text = "<b>" .. userName .. "</b>",
 							TextColor3 = Xan.CurrentTheme.Text,
 							TextSize = 12,
@@ -5468,7 +5454,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 46, 0, 16),
 					Size = UDim2.new(1, -56, 0, 24),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = title,
 					TextColor3 = Xan.CurrentTheme.Accent,
 					TextSize = 16,
@@ -5483,7 +5469,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 16, 0, 40),
 					Size = UDim2.new(1, -32, 0, 14),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "UI Library",
 					TextColor3 = Xan.CurrentTheme.TextDim,
 					TextSize = 10,
@@ -5510,7 +5496,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 10),
 					Size = UDim2.new(1, 0, 0, 14),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "logged in as",
 					TextColor3 = Xan.CurrentTheme.TextSecondary,
 					TextSize = 11,
@@ -5524,7 +5510,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 24),
 					Size = UDim2.new(1, 0, 0, 16),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = userName,
 					TextColor3 = Xan.CurrentTheme.Accent,
 					TextSize = 13,
@@ -5590,7 +5576,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 14, 0, 0),
 					Size = UDim2.new(1, -40, 1, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "▶ " .. currentProduct,
 					TextColor3 = Xan.CurrentTheme.Text,
 					TextSize = IsMobile and 14 or 12,
@@ -5605,7 +5591,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 14, 0, 126 + productBtnHeight + 16),
 					Size = UDim2.new(1, -20, 0, 18),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "GAMES",
 					TextColor3 = Xan.CurrentTheme.TextDim,
 					TextSize = 10,
@@ -5675,7 +5661,7 @@ function Xan:CreateWindow(config)
 						BackgroundTransparency = 1,
 						Position = UDim2.new(0, 44, 0, 0),
 						Size = UDim2.new(1, -52, 1, 0),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = gameName,
 						TextColor3 = isSelected and Xan.CurrentTheme.Text or Xan.CurrentTheme.TextSecondary,
 						TextSize = IsMobile and 14 or 13,
@@ -5696,7 +5682,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 10, 1, -24),
 					Size = UDim2.new(1, -20, 0, 14),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "",
 					TextColor3 = Xan.CurrentTheme.TextDim,
 					TextSize = 9,
@@ -5762,7 +5748,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(1, -(closeBtnSize + 16), 0, 16),
 					Size = UDim2.new(0, closeBtnSize, 0, closeBtnSize),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "X",
 					TextColor3 = Color3.new(1, 1, 1),
 					TextSize = IsMobile and 16 or 14,
@@ -5787,7 +5773,7 @@ function Xan:CreateWindow(config)
 					Name = "ProductTitle",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, -110, 0, 26),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = profilePage.ProductName or title,
 					TextColor3 = Xan.CurrentTheme.Text,
 					TextSize = 20,
@@ -5802,7 +5788,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 26),
 					Size = UDim2.new(1, -110, 0, 16),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "for " .. currentGame,
 					TextColor3 = Xan.CurrentTheme.Accent,
 					TextSize = 12,
@@ -5832,7 +5818,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 52),
 					Size = UDim2.new(0.5, 0, 0, 16),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = profilePage.Price or "",
 					TextColor3 = Xan.CurrentTheme.TextSecondary,
 					TextSize = 12,
@@ -5868,7 +5854,7 @@ function Xan:CreateWindow(config)
 						BackgroundTransparency = 1,
 						Position = UDim2.new(1, -100, 0, 78),
 						Size = UDim2.new(0, 100, 0, 28),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = "Load",
 						TextColor3 = Color3.new(1, 1, 1),
 						TextSize = 13,
@@ -5933,7 +5919,7 @@ function Xan:CreateWindow(config)
 						BackgroundTransparency = 1,
 						Position = UDim2.new(1, -100, 0, 110),
 						Size = UDim2.new(0, 100, 0, IsMobile and 24 or 16),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = "Join Game →",
 						TextColor3 = Xan.CurrentTheme.Accent,
 						TextSize = IsMobile and 13 or 11,
@@ -5970,7 +5956,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 180),
 					Size = UDim2.new(1, 0, 0, 18),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "Subscription expires at",
 					TextColor3 = Xan.CurrentTheme.Text,
 					TextSize = 14,
@@ -5985,7 +5971,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 200),
 					Size = UDim2.new(1, 0, 0, 16),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "N/A",
 					TextColor3 = Xan.CurrentTheme.TextSecondary,
 					TextSize = 12,
@@ -6000,7 +5986,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 235),
 					Size = UDim2.new(1, 0, 0, 18),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "Status",
 					TextColor3 = Xan.CurrentTheme.Text,
 					TextSize = 14,
@@ -6027,7 +6013,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 14, 0, 255),
 					Size = UDim2.new(1, -14, 0, 16),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "active",
 					TextColor3 = Xan.CurrentTheme.Success,
 					TextSize = 12,
@@ -6076,7 +6062,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 290),
 					Size = UDim2.new(1, 0, 0, 18),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "Features",
 					TextColor3 = Xan.CurrentTheme.Text,
 					TextSize = 14,
@@ -6091,7 +6077,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 310),
 					Size = UDim2.new(1, 0, 0, 60),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "",
 					TextColor3 = Xan.CurrentTheme.TextSecondary,
 					TextSize = 12,
@@ -6242,7 +6228,7 @@ function Xan:CreateWindow(config)
 								BackgroundTransparency = 1,
 								Size = UDim2.new(1, -8, 0, itemHeight - 4),
 								Position = UDim2.new(0, 4, 0, 0),
-								Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+								Font = Enum.Font.Roboto,
 								Text = prodName,
 								TextColor3 = Xan.CurrentTheme.Text,
 								TextSize = IsMobile and 14 or 12,
@@ -6296,7 +6282,7 @@ function Xan:CreateWindow(config)
 						BackgroundTransparency = 1,
 						Position = UDim2.new(1, -160, 1, -60),
 						Size = UDim2.new(0, 140, 0, 44),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = "",
 						AutoButtonColor = false,
 						ZIndex = 115,
@@ -6324,7 +6310,7 @@ function Xan:CreateWindow(config)
 						BackgroundTransparency = 1,
 						Position = UDim2.new(0, 44, 0, 0),
 						Size = UDim2.new(1, -60, 1, 0),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = currentGame,
 						TextColor3 = Xan.CurrentTheme.Text,
 						TextSize = 13,
@@ -6340,7 +6326,7 @@ function Xan:CreateWindow(config)
 						BackgroundTransparency = 1,
 						Position = UDim2.new(1, -24, 0, 0),
 						Size = UDim2.new(0, 16, 1, 0),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = "▲",
 						TextColor3 = Xan.CurrentTheme.TextDim,
 						TextSize = 10,
@@ -6442,7 +6428,7 @@ function Xan:CreateWindow(config)
 									BackgroundTransparency = 1,
 									Position = UDim2.new(0, 34, 0, 0),
 									Size = UDim2.new(1, -42, 1, 0),
-									Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+									Font = Enum.Font.Roboto,
 									Text = gameName,
 									TextColor3 = isSelected and Color3.new(1, 1, 1) or Xan.CurrentTheme.Text,
 									TextSize = 12,
@@ -6851,7 +6837,7 @@ function Xan:CreateWindow(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 16, 0, 0),
 		Size = UDim2.new(1, -48, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		PlaceholderText = "Search...",
 		PlaceholderColor3 = Xan.CurrentTheme.TextDim,
 		Text = "",
@@ -7215,7 +7201,7 @@ function Xan:CreateWindow(config)
 		Position = UDim2.new(0.5, 0, 0, 60),
 		AnchorPoint = Vector2.new(0.5, 0),
 		Size = UDim2.new(1, 0, 0, 28),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "No results found",
 		TextColor3 = Xan.CurrentTheme.TextDim,
 		TextSize = 18,
@@ -7229,7 +7215,7 @@ function Xan:CreateWindow(config)
 		Position = UDim2.new(0.5, 0, 0, 92),
 		AnchorPoint = Vector2.new(0.5, 0),
 		Size = UDim2.new(1, 0, 0, 20),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Try searching for toggles, sliders, or games",
 		TextColor3 = Xan.CurrentTheme.TextDim,
 		TextTransparency = 0.3,
@@ -7402,7 +7388,7 @@ function Xan:CreateWindow(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 54, 0, IsMobile and 10 or 8),
 			Size = UDim2.new(1, -140, 0, 18),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = elementData.Name or "Unknown",
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = IsMobile and 14 or 13,
@@ -7417,7 +7403,7 @@ function Xan:CreateWindow(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 54, 0, IsMobile and 28 or 26),
 			Size = UDim2.new(1, -140, 0, 14),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = elementData.TabName or "Tab",
 			TextColor3 = Xan.CurrentTheme.TextDim,
 			TextSize = 11,
@@ -7446,7 +7432,7 @@ function Xan:CreateWindow(config)
 			Name = "Text",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
-			Font = isButtonType and Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal) or Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = isButtonType and Enum.Font.Roboto or Enum.Font.Roboto,
 			Text = getTypeBadgeText(elementData.Type),
 			TextColor3 = isButtonType and Xan.CurrentTheme.TextDim or getTypeBadgeColor(elementData.Type),
 			TextTransparency = isButtonType and 0.4 or 0,
@@ -7509,7 +7495,7 @@ function Xan:CreateWindow(config)
 				Position = UDim2.new(1, 0, 0.5, 0),
 				AnchorPoint = Vector2.new(1, 0.5),
 				Size = UDim2.new(0, 70, 0, 28),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Load",
 				TextColor3 = Util.GetContrastText(Xan.CurrentTheme.Accent),
 				TextSize = 12,
@@ -8120,7 +8106,7 @@ function Xan:CreateWindow(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 20, 0, 0),
 		Size = UDim2.new(1, -80, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Settings",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 18,
@@ -8207,7 +8193,7 @@ function Xan:CreateWindow(config)
 			Name = "SectionLabel",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = name:upper(),
 			TextColor3 = Xan.CurrentTheme.Accent,
 			TextSize = 10,
@@ -8389,7 +8375,7 @@ function Xan:CreateWindow(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 0, 1, -16),
 			Size = UDim2.new(1, 0, 0, 14),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = styleName,
 			TextColor3 = isSelected and Xan.CurrentTheme.Accent or Xan.CurrentTheme.Text,
 			TextSize = 11,
@@ -8491,7 +8477,7 @@ function Xan:CreateWindow(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 6, 0, 0),
 		Size = UDim2.new(0, 16, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "✓",
 		TextColor3 = Color3.new(1, 1, 1),
 		TextSize = 12,
@@ -8505,7 +8491,7 @@ function Xan:CreateWindow(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 20, 0, 0),
 		Size = UDim2.new(1, -26, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Applied",
 		TextColor3 = Color3.new(1, 1, 1),
 		TextSize = 11,
@@ -8600,7 +8586,7 @@ function Xan:CreateWindow(config)
 			Name = "Check",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = "✓",
 			TextColor3 = Util.GetContrastText(t.Accent),
 			TextSize = 10,
@@ -8787,7 +8773,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 8, 0, 0),
 				Size = UDim2.new(1, -16, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = themeName,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 11,
@@ -8803,7 +8789,7 @@ function Xan:CreateWindow(config)
 					AnchorPoint = Vector2.new(1, 0.5),
 					Position = UDim2.new(1, -6, 0.5, 0),
 					Size = UDim2.new(0, 40, 0, 18),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "Edit",
 					TextColor3 = Util.GetContrastText(t.Accent),
 					TextSize = 10,
@@ -9127,7 +9113,7 @@ function Xan:CreateWindow(config)
 		Name = "Plus",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "+",
 		TextColor3 = Xan.CurrentTheme.TextDim,
 		TextSize = 24,
@@ -9234,7 +9220,7 @@ function Xan:CreateWindow(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 16, 0, 0),
 			Size = UDim2.new(0, IsMobile and 100 or 110, 1, 0),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = isEditing and "Edit Theme" or "Create Theme",
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = IsMobile and 14 or 15,
@@ -9274,7 +9260,7 @@ function Xan:CreateWindow(config)
 				AnchorPoint = Vector2.new(1, 0.5),
 				Position = UDim2.new(1, -rightOffset, 0.5, 0),
 				Size = UDim2.new(0, 50, 0, 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Delete",
 				TextColor3 = Xan.CurrentTheme.Error,
 				TextSize = IsMobile and 13 or 12,
@@ -9334,7 +9320,7 @@ function Xan:CreateWindow(config)
 			AnchorPoint = Vector2.new(0, 0.5),
 			Position = UDim2.new(0, titleOffset + importInputWidth + 6, 0.5, 0),
 			Size = UDim2.new(0, importBtnWidth, 0, IsMobile and 30 or 28),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = "Load",
 			TextColor3 = accentTextColor,
 			TextSize = IsMobile and 11 or 12,
@@ -9509,7 +9495,7 @@ function Xan:CreateWindow(config)
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(0.5, -8, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = label,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = labelSize,
@@ -9834,7 +9820,7 @@ function Xan:CreateWindow(config)
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(0.45, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = label,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = labelSize,
@@ -9948,7 +9934,7 @@ function Xan:CreateWindow(config)
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(0.3, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = label,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = labelSize,
@@ -10079,7 +10065,7 @@ function Xan:CreateWindow(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 0, 0, 0),
 			Size = UDim2.new(0, labelTextWidth, 0, 14),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = "THEME NAME",
 			TextColor3 = Xan.CurrentTheme.TextDim,
 			TextSize = IsMobile and 10 or 9,
@@ -10128,7 +10114,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 10, 0, 8),
 				Size = UDim2.new(1, -20, 1, -16),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Enter a unique name for your custom theme. This will appear in the theme selector.",
 				TextColor3 = Xan.CurrentTheme.TextSecondary,
 				TextSize = IsMobile and 12 or 11,
@@ -10180,7 +10166,7 @@ function Xan:CreateWindow(config)
 			BackgroundColor3 = Xan.CurrentTheme.Input,
 			Position = UDim2.new(0, 0, 1, -inputHeight),
 			Size = UDim2.new(1, 0, 0, inputHeight),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = customTheme.Name,
 			PlaceholderText = "Enter theme name...",
 			TextColor3 = Xan.CurrentTheme.Text,
@@ -10275,7 +10261,7 @@ function Xan:CreateWindow(config)
 			AnchorPoint = Vector2.new(1, 0.5),
 			Position = UDim2.new(1, -16, 0.5, 0),
 			Size = UDim2.new(0, shareWidth, 0, inputHeight + 6),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = "Share",
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = IsMobile and 11 or 10,
@@ -10322,7 +10308,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 10),
 				Size = UDim2.new(1, -50, 0, 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Theme Code",
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = IsMobile and 13 or 12,
@@ -10372,7 +10358,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = Xan.CurrentTheme.Accent,
 				Position = UDim2.new(0, 12, 1, -42),
 				Size = UDim2.new(1, -24, 0, 30),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Copy to Clipboard",
 				TextColor3 = Util.GetContrastText(Xan.CurrentTheme.Accent),
 				TextSize = IsMobile and 12 or 11,
@@ -10436,7 +10422,7 @@ function Xan:CreateWindow(config)
 			AnchorPoint = Vector2.new(1, 0.5),
 			Position = UDim2.new(1, -(shareWidth + 24), 0.5, 0),
 			Size = UDim2.new(0, applyBtnWidth, 0, inputHeight + 4),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = "Apply Theme",
 			TextColor3 = applyTextColor,
 			TextSize = IsMobile and 13 or 12,
@@ -10641,7 +10627,7 @@ function Xan:CreateWindow(config)
 					Name = "Check",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 1, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "✓",
 					TextColor3 = Util.GetContrastText(t.Accent),
 					TextSize = 10,
@@ -10749,7 +10735,7 @@ function Xan:CreateWindow(config)
 						BackgroundTransparency = 1,
 						Position = UDim2.new(0, 8, 0, 0),
 						Size = UDim2.new(0, textWidth - 8, 1, 0),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = newThemeName,
 						TextColor3 = Xan.CurrentTheme.Text,
 						TextSize = 11,
@@ -10776,7 +10762,7 @@ function Xan:CreateWindow(config)
 						Name = "Icon",
 						BackgroundTransparency = 1,
 						Size = UDim2.new(1, 0, 1, 0),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = "✎",
 						TextColor3 = newT.Accent,
 						TextSize = 12,
@@ -10972,7 +10958,7 @@ function Xan:CreateWindow(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12, 0, 0),
 		Size = UDim2.new(0.65, -12, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Show Active Features",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 12,
@@ -11063,7 +11049,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, yPos),
 				Size = UDim2.new(0.55, -12, 0, 40),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 12,
@@ -11077,7 +11063,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 				Position = UDim2.new(1, -90, 0, yPos + 6),
 				Size = UDim2.new(0, 78, 0, 28),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = tostring(currentKey):gsub("Enum.KeyCode.", ""),
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 10,
@@ -11164,7 +11150,7 @@ function Xan:CreateWindow(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 40, 0, 0),
 		Size = UDim2.new(1, -50, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Unload Script",
 		TextColor3 = Xan.CurrentTheme.Error,
 		TextSize = IsMobile and 14 or 13,
@@ -11580,7 +11566,7 @@ function Xan:CreateWindow(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12 + minLogoSize + 8, 0, 0),
 		Size = UDim2.new(1, -120, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = title,
 		TextColor3 = Xan.CurrentTheme.Accent,
 		TextSize = IsMobile and 14 or 16,
@@ -12870,7 +12856,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 48, 0, 0),
 					Size = UDim2.new(1, -56, 1, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = tabName,
 					TextColor3 = Xan.CurrentTheme.TextDim,
 					TextSize = 13,
@@ -12911,7 +12897,7 @@ function Xan:CreateWindow(config)
 					AnchorPoint = Vector2.new(0, 0.5),
 					Position = UDim2.new(0, 0, 0.5, 0),
 					Size = UDim2.new(0, 18, 0, 18),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = tabIcon,
 					TextColor3 = Xan.CurrentTheme.TextDim,
 					TextSize = 16,
@@ -12942,7 +12928,7 @@ function Xan:CreateWindow(config)
 				Position = UDim2.new(0, 26, 0.5, 0),
 				Size = UDim2.new(0, 0, 0, 14),
 				AutomaticSize = Enum.AutomaticSize.X,
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = tabName,
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextTransparency = 0,
@@ -13122,7 +13108,7 @@ function Xan:CreateWindow(config)
 				Name = "Button",
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -13143,7 +13129,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -13215,7 +13201,7 @@ function Xan:CreateWindow(config)
 				Name = "Button",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -13302,7 +13288,7 @@ function Xan:CreateWindow(config)
 				Name = "Button",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = accentTextColor,
 				TextSize = IsMobile and 15 or 14,
@@ -13402,7 +13388,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, IsMobile and 38 or 34, 0, 0),
 				Size = UDim2.new(1, -(IsMobile and 38 or 34), 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = dangerRed,
 				TextSize = IsMobile and 14 or 13,
@@ -13474,7 +13460,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				BackgroundTransparency = 0,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -13536,7 +13522,7 @@ function Xan:CreateWindow(config)
 				Name = "Button",
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				AutoButtonColor = false,
 				Parent = btnFrame,
@@ -13565,7 +13551,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 40, 0, 0),
 				Size = UDim2.new(1, -90, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -13579,7 +13565,7 @@ function Xan:CreateWindow(config)
 				Position = UDim2.new(1, -14, 0, 0),
 				Size = UDim2.new(0, 40, 1, 0),
 				AnchorPoint = Vector2.new(1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "button",
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextTransparency = 0.4,
@@ -13645,7 +13631,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = glassColor,
 				BackgroundTransparency = glassTransparency,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = frosted and Color3.fromRGB(40, 40, 50) or Color3.new(1, 1, 1),
 				TextSize = IsMobile and 15 or 14,
@@ -13744,7 +13730,7 @@ function Xan:CreateWindow(config)
 				Name = "Button",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				AutoButtonColor = false,
 				Parent = btnFrame,
@@ -13755,7 +13741,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
 				Size = UDim2.new(1, -28, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -13850,7 +13836,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, IsMobile and 44 or 42, 0, 0),
 				Size = UDim2.new(1, IsMobile and -58 or -56, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -13925,7 +13911,7 @@ function Xan:CreateWindow(config)
 				Name = "Button",
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				AutoButtonColor = false,
 				Parent = btnFrame,
@@ -13945,7 +13931,7 @@ function Xan:CreateWindow(config)
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = gradientTextColor,
 				TextSize = IsMobile and 15 or 14,
@@ -14118,7 +14104,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = color,
 				BackgroundTransparency = 0,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = pillTextColor,
 				TextSize = IsMobile and 14 or 13,
@@ -14183,7 +14169,7 @@ function Xan:CreateWindow(config)
 				Name = "Button",
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 14 or 13,
@@ -14241,7 +14227,7 @@ function Xan:CreateWindow(config)
 				Name = "Button",
 				BackgroundColor3 = Color3.fromRGB(255, 182, 193),
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				AutoButtonColor = false,
 				ClipsDescendants = true,
@@ -14260,7 +14246,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
 				Size = UDim2.new(1, -50, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Color3.fromRGB(100, 50, 70),
 				TextSize = IsMobile and 15 or 14,
@@ -14396,7 +14382,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Color3.new(1, 1, 1),
 				TextSize = IsMobile and 15 or 14,
@@ -14513,7 +14499,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, IsMobile and 44 or 40, 0, 0),
 				Size = UDim2.new(1, -(IsMobile and 44 or 40), 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Error,
 				TextSize = IsMobile and 14 or 13,
@@ -14573,7 +14559,7 @@ function Xan:CreateWindow(config)
 				Name = "Button",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.TextSecondary,
 				TextSize = IsMobile and 14 or 13,
@@ -14644,7 +14630,7 @@ function Xan:CreateWindow(config)
 				Name = "Button",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.TextSecondary,
 				TextSize = IsMobile and 12 or 11,
@@ -14714,7 +14700,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Position = UDim2.new(0, 0, 0, 0),
 				Size = UDim2.new(1, -3, 1, -3),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 14 or 13,
@@ -14772,7 +14758,7 @@ function Xan:CreateWindow(config)
 				Name = "Link",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = color,
 				TextSize = IsMobile and 14 or 13,
@@ -14843,7 +14829,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 22, 0, 0),
 				Size = UDim2.new(1, -22, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 14 or 13,
@@ -14896,7 +14882,7 @@ function Xan:CreateWindow(config)
 				Name = "Link",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = color,
 				TextSize = IsMobile and 14 or 13,
@@ -14993,7 +14979,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 32, 0, 0),
 				Size = UDim2.new(1, -42, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = color,
 				TextSize = IsMobile and 14 or 13,
@@ -15055,7 +15041,7 @@ function Xan:CreateWindow(config)
 				Name = "Link",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = IsMobile and 14 or 13,
@@ -15124,7 +15110,7 @@ function Xan:CreateWindow(config)
 				Name = "Button",
 				BackgroundColor3 = Color3.fromRGB(30, 30, 38),
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				AutoButtonColor = false,
 				Parent = btnFrame,
@@ -15142,7 +15128,7 @@ function Xan:CreateWindow(config)
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Color3.fromRGB(255, 100, 100),
 				TextSize = IsMobile and 15 or 14,
@@ -15230,7 +15216,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
 				Size = UDim2.new(1, -70, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -15384,7 +15370,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 8 or 6),
 				Size = UDim2.new(0.6, 0, 0, 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -15397,7 +15383,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.6, 0, 0, IsMobile and 8 or 6),
 				Size = UDim2.new(0.4, -14, 0, 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "<b>" .. Util.Round(value, 2) .. suffix .. "</b>",
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = IsMobile and 14 or 13,
@@ -15582,7 +15568,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 8 or 6),
 				Size = UDim2.new(1, -28, 0, 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -15595,7 +15581,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				Position = UDim2.new(0, 14, 1, IsMobile and -32 or -30),
 				Size = UDim2.new(1, -28, 0, IsMobile and 26 or 24),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = default,
 				PlaceholderText = placeholder,
 				PlaceholderColor3 = Xan.CurrentTheme.TextMuted,
@@ -15677,20 +15663,20 @@ function Xan:CreateWindow(config)
 			local flag = config.Flag
 			local callback = config.Callback or function() end
 			local layoutOrder = config.LayoutOrder or 0
-		
+
 			local selected = multi and {} or (default or (options[1] or ""))
 			local expanded = false
-		
+
 			if multi and default and type(default) == "table" then
 				for _, v in ipairs(default) do
 					selected[v] = true
 				end
 			end
-		
+
 			if flag then
 				Xan:SetFlag(flag, selected)
 			end
-		
+
 			local dropdownFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
@@ -15700,49 +15686,58 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			}, {
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
-				Util.Create("UIStroke", { Name = "Stroke", Color = Xan.CurrentTheme.CardBorder, Thickness = 1, Transparency = 0 }),
+				Util.Create(
+					"UIStroke",
+					{ Name = "Stroke", Color = Xan.CurrentTheme.CardBorder, Thickness = 1, Transparency = 0 }
+				),
 			})
-		
+
 			local header = Util.Create("Frame", {
 				Name = "Header",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
 				Parent = dropdownFrame,
 			})
-		
+
 			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
 				Size = UDim2.new(0.5, -14, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				Parent = header,
 			})
-		
+
 			local function getDisplayText()
 				if multi then
 					local items = {}
 					for k, v in pairs(selected) do
-						if v then table.insert(items, k) end
+						if v then
+							table.insert(items, k)
+						end
 					end
-					if #items == 0 then return "None" end
-					if #items > 2 then return #items .. " selected" end
+					if #items == 0 then
+						return "None"
+					end
+					if #items > 2 then
+						return #items .. " selected"
+					end
 					return table.concat(items, ", ")
 				else
 					return tostring(selected)
 				end
 			end
-		
+
 			local valueLabel = Util.Create("TextLabel", {
 				Name = "Value",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.4, 0, 0, 0),
 				Size = UDim2.new(0.6, -40, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = getDisplayText(),
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = IsMobile and 14 or 13,
@@ -15750,23 +15745,23 @@ function Xan:CreateWindow(config)
 				TextTruncate = Enum.TextTruncate.AtEnd,
 				Parent = header,
 			})
-		
+
 			local arrow = Util.Create("TextLabel", {
 				Name = "Arrow",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -30, 0, 0),
 				Size = UDim2.new(0, 20, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "▼",
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = 10,
 				Rotation = 0,
 				Parent = header,
 			})
-		
+
 			local spacing = 4
 			local optionHeight = IsMobile and 36 or 32
-		
+
 			local optionsList = Util.Create("Frame", {
 				Name = "Options",
 				BackgroundTransparency = 1,
@@ -15780,28 +15775,30 @@ function Xan:CreateWindow(config)
 					SortOrder = Enum.SortOrder.LayoutOrder,
 				}),
 			})
-		
+
 			local optionButtons = {}
-		
+
 			local function updateOptions()
 				for _, btn in pairs(optionButtons) do
 					btn:Destroy()
 				end
 				optionButtons = {}
-		
+
 				local totalHeight = #options * optionHeight + math.max(0, #options - 1) * spacing
 				optionsList.Size = UDim2.new(1, -16, 0, totalHeight)
-		
+
 				for i, option in ipairs(options) do
 					local isSelected = multi and selected[option] or selected == option
 					local selectedTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
-					local dropdownColor = Xan.CurrentTheme.Dropdown or Xan.CurrentTheme.Input or Color3.fromRGB(25, 25, 32)
-		
+					local dropdownColor = Xan.CurrentTheme.Dropdown
+						or Xan.CurrentTheme.Input
+						or Color3.fromRGB(25, 25, 32)
+
 					local optionBtn = Util.Create("TextButton", {
 						Name = option,
 						BackgroundColor3 = isSelected and Xan.CurrentTheme.Accent or dropdownColor,
 						Size = UDim2.new(1, 0, 0, optionHeight),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = option,
 						TextColor3 = isSelected and selectedTextColor or Xan.CurrentTheme.Text,
 						TextSize = IsMobile and 15 or 14,
@@ -15811,24 +15808,34 @@ function Xan:CreateWindow(config)
 					}, {
 						Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 					})
-		
+
 					optionBtn.MouseEnter:Connect(function()
 						if not isSelected then
-							local hoverColor = Xan.CurrentTheme.DropdownHover or Xan.CurrentTheme.CardHover or Color3.fromRGB(35, 35, 45)
+							local hoverColor = Xan.CurrentTheme.DropdownHover
+								or Xan.CurrentTheme.CardHover
+								or Color3.fromRGB(35, 35, 45)
 							Util.Tween(optionBtn, 0.15, { BackgroundColor3 = hoverColor })
 						end
 					end)
-		
+
 					optionBtn.MouseLeave:Connect(function()
 						local isCurrentlySelected = multi and selected[option] or selected == option
-						local dropdownColor = Xan.CurrentTheme.Dropdown or Xan.CurrentTheme.Input or Color3.fromRGB(25, 25, 32)
-						Util.Tween(optionBtn, 0.15, { BackgroundColor3 = isCurrentlySelected and Xan.CurrentTheme.Accent or dropdownColor })
+						local dropdownColor = Xan.CurrentTheme.Dropdown
+							or Xan.CurrentTheme.Input
+							or Color3.fromRGB(25, 25, 32)
+						Util.Tween(
+							optionBtn,
+							0.15,
+							{ BackgroundColor3 = isCurrentlySelected and Xan.CurrentTheme.Accent or dropdownColor }
+						)
 					end)
-		
+
 					optionBtn.MouseButton1Click:Connect(function()
 						local contrastText = Util.GetContrastText(Xan.CurrentTheme.Accent)
-						local dropdownColor = Xan.CurrentTheme.Dropdown or Xan.CurrentTheme.Input or Color3.fromRGB(25, 25, 32)
-		
+						local dropdownColor = Xan.CurrentTheme.Dropdown
+							or Xan.CurrentTheme.Input
+							or Color3.fromRGB(25, 25, 32)
+
 						if multi then
 							selected[option] = not selected[option]
 							local isNowSelected = selected[option]
@@ -15838,40 +15845,57 @@ function Xan:CreateWindow(config)
 							})
 						else
 							for _, btn in pairs(optionButtons) do
-								Util.Tween(btn, 0.2, { BackgroundColor3 = dropdownColor, TextColor3 = Xan.CurrentTheme.Text })
+								Util.Tween(
+									btn,
+									0.2,
+									{ BackgroundColor3 = dropdownColor, TextColor3 = Xan.CurrentTheme.Text }
+								)
 							end
 							selected = option
-							Util.Tween(optionBtn, 0.2, { BackgroundColor3 = Xan.CurrentTheme.Accent, TextColor3 = contrastText })
+							Util.Tween(
+								optionBtn,
+								0.2,
+								{ BackgroundColor3 = Xan.CurrentTheme.Accent, TextColor3 = contrastText }
+							)
 						end
-		
+
 						valueLabel.Text = getDisplayText()
-						if flag then Xan:SetFlag(flag, selected) end
+						if flag then
+							Xan:SetFlag(flag, selected)
+						end
 						callback(selected)
 					end)
-		
+
 					table.insert(optionButtons, optionBtn)
 				end
 			end
-		
+
 			updateOptions()
-		
+
 			local function toggleExpand()
 				expanded = not expanded
-				if expanded then updateOptions() end
-		
+				if expanded then
+					updateOptions()
+				end
+
 				local totalHeight = #options * optionHeight + math.max(0, #options - 1) * spacing + 12
 				local baseHeight = IsMobile and 52 or 44
-		
+
 				Util.Tween(arrow, 0.25, { Rotation = expanded and 180 or 0 })
-				Util.Tween(dropdownFrame, 0.3, { Size = UDim2.new(1, 0, 0, expanded and (baseHeight + totalHeight) or baseHeight) }, Enum.EasingStyle.Quint)
-		
+				Util.Tween(
+					dropdownFrame,
+					0.3,
+					{ Size = UDim2.new(1, 0, 0, expanded and (baseHeight + totalHeight) or baseHeight) },
+					Enum.EasingStyle.Quint
+				)
+
 				if expanded then
 					Util.Tween(dropdownFrame.Stroke, 0.2, { Color = Xan.CurrentTheme.Accent, Transparency = 0 })
 				else
 					Util.Tween(dropdownFrame.Stroke, 0.2, { Color = Xan.CurrentTheme.CardBorder, Transparency = 0 })
 				end
 			end
-		
+
 			local headerBtn = Util.Create("TextButton", {
 				Name = "Hitbox",
 				BackgroundTransparency = 1,
@@ -15879,79 +15903,96 @@ function Xan:CreateWindow(config)
 				Text = "",
 				Parent = header,
 			})
-		
+
 			headerBtn.MouseButton1Click:Connect(toggleExpand)
-		
+
 			header.MouseEnter:Connect(function()
 				Util.Tween(dropdownFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.CardHover })
 			end)
-		
+
 			header.MouseLeave:Connect(function()
 				Util.Tween(dropdownFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 			end)
-		
+
 			local function applyDropdownTheme()
 				dropdownFrame.BackgroundColor3 = Xan.CurrentTheme.Card
 				local stroke = dropdownFrame:FindFirstChildOfClass("UIStroke")
-				if stroke then stroke.Color = Xan.CurrentTheme.CardBorder end
+				if stroke then
+					stroke.Color = Xan.CurrentTheme.CardBorder
+				end
 				label.TextColor3 = Xan.CurrentTheme.Text
 				valueLabel.TextColor3 = Xan.CurrentTheme.Accent
 				arrow.TextColor3 = Xan.CurrentTheme.TextDim
 			end
 			Xan:OnThemeChanged(applyDropdownTheme)
-		
+
 			registerSearchElement(name, tabName, tabData, "Dropdown", tabIcon, dropdownFrame)
-		
+
 			return {
 				Frame = dropdownFrame,
-				Value = function() return selected end,
+				Value = function()
+					return selected
+				end,
 				Set = function(_, val, skipCallback)
 					if multi and type(val) == "table" then
 						selected = {}
-						for _, v in ipairs(val) do selected[v] = true end
+						for _, v in ipairs(val) do
+							selected[v] = true
+						end
 					else
 						selected = val
 					end
 					valueLabel.Text = getDisplayText()
 					updateOptions()
-					if flag then Xan:SetFlag(flag, selected) end
-					if not skipCallback then callback(selected) end
+					if flag then
+						Xan:SetFlag(flag, selected)
+					end
+					if not skipCallback then
+						callback(selected)
+					end
 				end,
 				UpdateTheme = applyDropdownTheme,
 				SetOptions = function(_, newOptions)
 					options = newOptions
 					updateOptions()
 				end,
-				Expand = function(_) if not expanded then toggleExpand() end end,
-				Collapse = function(_) if expanded then toggleExpand() end end,
+				Expand = function(_)
+					if not expanded then
+						toggleExpand()
+					end
+				end,
+				Collapse = function(_)
+					if expanded then
+						toggleExpand()
+					end
+				end,
 			}
 		end
-		
 
 		function tab:CreateKeybind(config)
 			config = config or {}
-			local name           = config.Name or "Keybind"
-			local default        = config.Default or Enum.KeyCode.Unknown
-			local flag           = config.Flag
-			local callback       = config.Callback or function() end
+			local name = config.Name or "Keybind"
+			local default = config.Default or Enum.KeyCode.Unknown
+			local flag = config.Flag
+			local callback = config.Callback or function() end
 			local changedCallback = config.ChangedCallback or function() end
-			local layoutOrder    = config.LayoutOrder or 0
-			local bindType       = config.Type or "Toggle"
-		
+			local layoutOrder = config.LayoutOrder or 0
+			local bindType = config.Type or "Toggle"
+
 			if bindType ~= "Toggle" and bindType ~= "Hold" then
 				bindType = "Toggle"
 			end
-		
-			local currentKey     = default
-			local listening      = false
-			local isActive       = false
-			local justBound      = false          
-			local lastBindTime   = 0             
-		
+
+			local currentKey = default
+			local listening = false
+			local isActive = false
+			local justBound = false
+			local lastBindTime = 0
+
 			if flag then
 				Xan:SetFlag(flag, currentKey)
 			end
-		
+
 			local keybindFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
@@ -15967,46 +16008,52 @@ function Xan:CreateWindow(config)
 					Transparency = 0,
 				}),
 			})
-		
+
 			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
 				Size = UDim2.new(1, -110, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				Parent = keybindFrame,
 			})
-		
+
 			local function getKeyName(key)
 				if key == Enum.KeyCode.Unknown then
 					return "None"
 				end
-		
+
 				if key.EnumType == Enum.UserInputType then
-					if key == Enum.UserInputType.MouseButton1 then return "LMB" end
-					if key == Enum.UserInputType.MouseButton2 then return "RMB" end
-					if key == Enum.UserInputType.MouseButton3 then return "MMB" end
+					if key == Enum.UserInputType.MouseButton1 then
+						return "LMB"
+					end
+					if key == Enum.UserInputType.MouseButton2 then
+						return "RMB"
+					end
+					if key == Enum.UserInputType.MouseButton3 then
+						return "MMB"
+					end
 					return tostring(key):gsub("Enum.UserInputType.", "")
 				end
-		
+
 				if key.EnumType == Enum.KeyCode then
 					local name = tostring(key):gsub("Enum.KeyCode.", "")
 					return name
 				end
-		
+
 				return "???"
 			end
-		
+
 			local keyBtn = Util.Create("TextButton", {
 				Name = "KeyButton",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 				Position = UDim2.new(1, -100, 0.5, -14),
 				Size = UDim2.new(0, 86, 0, 28),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.RobotoMono,
 				Text = "<b>" .. getKeyName(currentKey) .. "</b>",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 12 or 11,
@@ -16015,7 +16062,7 @@ function Xan:CreateWindow(config)
 			}, {
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 			})
-		
+
 			local function startListening()
 				listening = true
 				keyBtn.Text = "..."
@@ -16024,18 +16071,18 @@ function Xan:CreateWindow(config)
 					TextColor3 = Util.GetContrastText(Xan.CurrentTheme.Accent),
 				})
 			end
-		
+
 			local function stopListening(key)
 				listening = false
 				currentKey = key or currentKey
 				keyBtn.Text = getKeyName(currentKey)
 				Util.Tween(keyBtn, 0.2, { BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary })
 				Util.Tween(keyBtn, 0.2, { TextColor3 = Xan.CurrentTheme.Text })
-		
+
 				if flag then
 					Xan:SetFlag(flag, currentKey)
 				end
-		
+
 				if key then
 					changedCallback(currentKey)
 					if bindType == "Hold" then
@@ -16044,7 +16091,7 @@ function Xan:CreateWindow(config)
 					end
 				end
 			end
-		
+
 			keyBtn.MouseButton1Click:Connect(function()
 				if listening then
 					stopListening(Enum.KeyCode.Unknown)
@@ -16052,7 +16099,7 @@ function Xan:CreateWindow(config)
 					startListening()
 				end
 			end)
-		
+
 			local keybindConn = UserInputService.InputBegan:Connect(function(input, gameProcessed)
 				if listening then
 					if input.UserInputType == Enum.UserInputType.Keyboard then
@@ -16064,23 +16111,27 @@ function Xan:CreateWindow(config)
 							stopListening(input.KeyCode)
 						end
 					elseif
-						input.UserInputType == Enum.UserInputType.MouseButton1 or
-						input.UserInputType == Enum.UserInputType.MouseButton2 or
-						input.UserInputType == Enum.UserInputType.MouseButton3
+						input.UserInputType == Enum.UserInputType.MouseButton1
+						or input.UserInputType == Enum.UserInputType.MouseButton2
+						or input.UserInputType == Enum.UserInputType.MouseButton3
 					then
 						stopListening(input.UserInputType)
 					end
 				else
-					if gameProcessed then return end
-					if currentKey == Enum.KeyCode.Unknown then return end
-		
+					if gameProcessed then
+						return
+					end
+					if currentKey == Enum.KeyCode.Unknown then
+						return
+					end
+
 					local triggered = false
 					if currentKey.EnumType == Enum.KeyCode and input.KeyCode == currentKey then
 						triggered = true
 					elseif currentKey.EnumType == Enum.UserInputType and input.UserInputType == currentKey then
 						triggered = true
 					end
-		
+
 					if triggered then
 						if bindType == "Toggle" then
 							isActive = not isActive
@@ -16100,53 +16151,55 @@ function Xan:CreateWindow(config)
 				end
 			end)
 			table.insert(Xan.Connections, keybindConn)
-		
+
 			if bindType == "Hold" then
 				local releaseConn = UserInputService.InputEnded:Connect(function(input)
-					if currentKey == Enum.KeyCode.Unknown then return end
-		
+					if currentKey == Enum.KeyCode.Unknown then
+						return
+					end
+
 					local released = false
 					if currentKey.EnumType == Enum.KeyCode and input.KeyCode == currentKey then
 						released = true
 					elseif currentKey.EnumType == Enum.UserInputType and input.UserInputType == currentKey then
 						released = true
 					end
-		
+
 					if released then
 						if justBound and (tick() - lastBindTime < 0.3) then
 							justBound = false
 							return
 						end
-		
+
 						Xan:RemoveFromBindList(name)
 						Util.SafeCall(callback, false)
 					end
 				end)
 				table.insert(Xan.Connections, releaseConn)
 			end
-		
+
 			keyBtn.MouseEnter:Connect(function()
 				if not listening then
 					Util.Tween(keyBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.CardHover })
 				end
 			end)
-		
+
 			keyBtn.MouseLeave:Connect(function()
 				if not listening then
 					Util.Tween(keyBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary })
 				end
 			end)
-		
+
 			keybindFrame.MouseEnter:Connect(function()
 				Util.Tween(keybindFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.CardHover })
 			end)
-		
+
 			keybindFrame.MouseLeave:Connect(function()
 				Util.Tween(keybindFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 			end)
-		
+
 			registerSearchElement(name, tabName, tabData, "Keybind", tabIcon, keybindFrame)
-		
+
 			return {
 				Frame = keybindFrame,
 				Value = function()
@@ -16219,7 +16272,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
 				Size = UDim2.new(1, -80, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -16336,7 +16389,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				Position = UDim2.new(0, 0, 0, 108),
 				Size = UDim2.new(1, -40, 0, 28),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.RobotoMono,
 				Text = "#" .. currentColor:ToHex():upper(),
 				PlaceholderText = "#FFFFFF",
 				TextColor3 = Xan.CurrentTheme.Text,
@@ -16584,7 +16637,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 10 or 8),
 				Size = UDim2.new(0.5, 0, 0, 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -16597,7 +16650,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.5, 0, 0, IsMobile and 10 or 8),
 				Size = UDim2.new(0.5, -14, 0, 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = Util.Round(value, 2),
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = IsMobile and 14 or 13,
@@ -16888,7 +16941,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
 				Size = UDim2.new(0.5, -14, 0, headerHeight),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 14 or 13,
@@ -16901,7 +16954,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.5, 0, 0, 0),
 				Size = UDim2.new(0.5, -14, 0, headerHeight),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = string.format("P1(%.2f,%.2f) P2(%.2f,%.2f)", p1.x, p1.y, p2.x, p2.y),
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = IsMobile and 11 or 10,
@@ -17201,7 +17254,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 10 or (isCompact and 6 or 8)),
 				Size = UDim2.new(1, -28, 0, 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = (IsMobile and 15) or (isCompact and 13) or 14,
@@ -17295,7 +17348,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = isCompact and UDim2.new(0, 14, 0, 0) or UDim2.new(0, 18, 0, 0),
 					Size = isCompact and UDim2.new(1, -14, 1, 0) or UDim2.new(1, -18, 1, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = seg,
 					TextColor3 = Xan.CurrentTheme.TextSecondary,
 					TextSize = (IsMobile and 12) or (isCompact and 9 or 11),
@@ -17418,7 +17471,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 10 or (isCompact and 8 or 10)),
 				Size = UDim2.new(1, -28, 0, 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or (isCompact and 12 or 14),
@@ -17686,7 +17739,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 1, -18),
 					Size = UDim2.new(1, 0, 0, 16),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = style,
 					TextColor3 = isSelected and Xan.CurrentTheme.Accent or Xan.CurrentTheme.TextDim,
 					TextSize = IsMobile and 11 or (isCompact and 10 or 11),
@@ -17775,7 +17828,7 @@ function Xan:CreateWindow(config)
 					Name = "Label",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, -50, 1, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "Rainbow Mode",
 					TextColor3 = Xan.CurrentTheme.TextDim,
 					TextSize = IsMobile and 12 or 12,
@@ -17979,7 +18032,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
 				Size = isCompact and UDim2.new(0.6, -14, 1, 0) or UDim2.new(0.6, -14, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = (IsMobile and 15) or (isCompact and 13) or 14,
@@ -17992,7 +18045,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.6, 0, 0, 0),
 				Size = isCompact and UDim2.new(0.4, -26, 1, 0) or UDim2.new(0.4, -40, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "0/" .. #parts,
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = (IsMobile and 13) or (isCompact and 11) or 12,
@@ -18005,7 +18058,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -30, 0, 0),
 				Size = UDim2.new(0, 20, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "▼",
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = 10,
@@ -18062,7 +18115,7 @@ function Xan:CreateWindow(config)
 					Name = "Mark",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 1, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = values[partName] and "✓" or "",
 					TextColor3 = Color3.new(1, 1, 1),
 					TextSize = 12,
@@ -18074,7 +18127,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 32, 0, 0),
 					Size = UDim2.new(1, -40, 1, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = partName,
 					TextColor3 = values[partName] and Xan.CurrentTheme.Text or Xan.CurrentTheme.TextSecondary,
 					TextSize = IsMobile and 13 or 12,
@@ -18229,7 +18282,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 8),
 				Size = UDim2.new(0.5, 0, 0, 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -18242,7 +18295,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.5, 0, 0, 8),
 				Size = UDim2.new(0.5, -14, 0, 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = tostring(math.floor(default)),
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = IsMobile and 18 or 16,
@@ -18294,7 +18347,7 @@ function Xan:CreateWindow(config)
 					Position = UDim2.new(i / 4, 0, 0, 0),
 					Size = UDim2.new(0.25, 0, 1, 0),
 					AnchorPoint = Vector2.new(0.5, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = tostring(math.floor(tickVal)),
 					TextColor3 = Xan.CurrentTheme.TextDim,
 					TextSize = 11,
@@ -18422,7 +18475,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
 				Size = UDim2.new(0.5, -14, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -18446,7 +18499,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -130, 0, 0),
 				Size = UDim2.new(0, 50, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = selected,
 				TextColor3 = selectedThemeData.Accent,
 				TextSize = IsMobile and 13 or 12,
@@ -18459,7 +18512,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -30, 0, 0),
 				Size = UDim2.new(0, 20, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "▼",
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = 10,
@@ -18554,7 +18607,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 1, 2),
 					Size = UDim2.new(1, 0, 0, 12),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = themeName,
 					TextColor3 = Xan.CurrentTheme.TextDim,
 					TextSize = 9,
@@ -18703,7 +18756,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
 				Size = UDim2.new(0.5, -14, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -18761,7 +18814,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -145, 0, 0),
 				Size = UDim2.new(0, 50, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = selected,
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = IsMobile and 13 or 12,
@@ -18774,7 +18827,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -30, 0, 0),
 				Size = UDim2.new(0, 20, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "▼",
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = 10,
@@ -18864,7 +18917,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 1, -20),
 					Size = UDim2.new(1, 0, 0, 18),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = styleName,
 					TextColor3 = isSelected and Xan.CurrentTheme.Accent or Xan.CurrentTheme.TextDim,
 					TextSize = IsMobile and 12 or 11,
@@ -19081,7 +19134,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
 				Size = UDim2.new(0.5, -14, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 15 or 14,
@@ -19204,7 +19257,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -30, 0, 0),
 				Size = UDim2.new(0, 20, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "▼",
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = 10,
@@ -19366,7 +19419,7 @@ function Xan:CreateWindow(config)
 				Name = "SettingLabel",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(0.4, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Style",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 12,
@@ -19379,7 +19432,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				Position = UDim2.new(0.4, 0, 0, 0),
 				Size = UDim2.new(0.6, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = settings.Style,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 12,
@@ -19411,7 +19464,7 @@ function Xan:CreateWindow(config)
 				Name = "SettingLabel",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(0.4, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Texture ID",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 12,
@@ -19424,7 +19477,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				Position = UDim2.new(0.4, 0, 0, 0),
 				Size = UDim2.new(0.6, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = settings.ImageAsset or "",
 				PlaceholderText = "e.g. 123456789",
 				TextColor3 = Xan.CurrentTheme.Text,
@@ -19456,7 +19509,7 @@ function Xan:CreateWindow(config)
 				Name = "SettingLabel",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(0.4, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Color",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 12,
@@ -19534,7 +19587,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = Color3.fromRGB(45, 45, 55),
 				Size = UDim2.new(0, 22, 0, 22),
 				Text = "+",
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				TextColor3 = Color3.fromRGB(140, 140, 150),
 				TextSize = 14,
 				AutoButtonColor = false,
@@ -19618,7 +19671,7 @@ function Xan:CreateWindow(config)
 							BackgroundColor3 = Xan.CurrentTheme.Accent,
 							Position = UDim2.new(1, -60, 0, 40),
 							Size = UDim2.new(0, 50, 0, 30),
-							Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+							Font = Enum.Font.Roboto,
 							Text = "Apply",
 							TextColor3 = Util.GetContrastText(Xan.CurrentTheme.Accent),
 							TextSize = 11,
@@ -19708,7 +19761,7 @@ function Xan:CreateWindow(config)
 				Name = "SettingLabel",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(0.35, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Size",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 12,
@@ -19721,7 +19774,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.35, 0, 0, 0),
 				Size = UDim2.new(0.15, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = tostring(settings.Size),
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = 12,
@@ -19797,7 +19850,7 @@ function Xan:CreateWindow(config)
 				Name = "SettingLabel",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(0.35, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Thickness",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 12,
@@ -19810,7 +19863,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.35, 0, 0, 0),
 				Size = UDim2.new(0.15, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = tostring(settings.Thickness),
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = 12,
@@ -20022,7 +20075,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, padding, 0, 0),
 				Size = UDim2.new(1, -padding * 2, 0, headerHeight),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = (IsMobile and 14) or (isCompact and 12) or 13,
@@ -20176,7 +20229,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, isCompact and 16 or 24, 0, 0),
 					Size = UDim2.new(1, isCompact and -20 or -30, 1, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = partName,
 					TextColor3 = isEnabled and Xan.CurrentTheme.Text or Xan.CurrentTheme.TextDim,
 					TextSize = (IsMobile and 12) or (isCompact and 9 or 11),
@@ -20300,7 +20353,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, padding, 0, 0),
 				Size = UDim2.new(1, -padding * 2, 0, headerHeight),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = name,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 14 or 13,
@@ -20442,7 +20495,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 16, 0, 0),
 					Size = UDim2.new(1, -16, 1, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = partName:gsub("Left", "L."):gsub("Right", "R."),
 					TextColor3 = isEnabled and Xan.CurrentTheme.Text or Xan.CurrentTheme.TextDim,
 					TextSize = (IsMobile and 11) or (isCompact and 9 or 10),
@@ -20544,8 +20597,8 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
 				Size = UDim2.new(0, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
-				Text = "<b>"..gameName.."</b>",
+				Font = Enum.Font.Roboto,
+				Text = "<b>" .. gameName .. "</b>",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = (IsMobile and 17) or (isCompact and 15) or 16,
 				TextXAlignment = Enum.TextXAlignment.Left,
@@ -20572,7 +20625,7 @@ function Xan:CreateWindow(config)
 					Name = "Label",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 1, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = text,
 					TextColor3 = Color3.new(1, 1, 1),
 					TextSize = isCompact and 9 or 10,
@@ -20613,7 +20666,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, contentX, 0, isCompact and 30 or 36),
 				Size = UDim2.new(1, -contentX - 95, 0, 45),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = gameDescription,
 				TextColor3 = Xan.CurrentTheme.TextSecondary,
 				TextSize = (IsMobile and 13) or (isCompact and 11) or 12,
@@ -20639,7 +20692,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = loadBtnBg,
 				Position = UDim2.new(1, -82, 0.5, -16),
 				Size = UDim2.new(0, 70, 0, 32),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = isMaintenance and "<b>Offline</b>" or "<b>Load</b>",
 				TextColor3 = Color3.new(1, 1, 1),
 				TextSize = IsMobile and 13 or 12,
@@ -20695,7 +20748,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(1, -82, 0.5, 20),
 					Size = UDim2.new(0, 70, 0, 18),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = "Join",
 					TextColor3 = Xan.CurrentTheme.Accent,
 					TextSize = IsMobile and 13 or 12,
@@ -20784,7 +20837,7 @@ function Xan:CreateWindow(config)
 				Name = "Title",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, 24),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = headerText,
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 18,
@@ -20797,7 +20850,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 24),
 				Size = UDim2.new(1, 0, 0, 16),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = subText,
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = 12,
@@ -20850,7 +20903,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 0.2,
 				Position = UDim2.new(0, 0, 0, 0),
 				Size = UDim2.new(0, 28, 0, iconSize),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "‹",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 22,
@@ -20867,7 +20920,7 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 0.2,
 				Position = UDim2.new(1, -28, 0, 0),
 				Size = UDim2.new(0, 28, 0, iconSize),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "›",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 22,
@@ -20996,7 +21049,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 76, 0, 10),
 					Size = UDim2.new(1, -180, 0, 18),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = game.Name or "",
 					TextColor3 = Xan.CurrentTheme.Text,
 					TextSize = 14,
@@ -21010,7 +21063,7 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 76, 0, 30),
 					Size = UDim2.new(1, -180, 0, 26),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = game.Description or "",
 					TextColor3 = Xan.CurrentTheme.TextSecondary,
 					TextSize = 12,
@@ -21027,7 +21080,7 @@ function Xan:CreateWindow(config)
 						BackgroundTransparency = 1,
 						Position = UDim2.new(1, -180, 0, 26),
 						Size = UDim2.new(0, 70, 0, 16),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = "Join Game",
 						TextColor3 = Xan.CurrentTheme.TextDim,
 						TextSize = 11,
@@ -21054,7 +21107,7 @@ function Xan:CreateWindow(config)
 					BackgroundColor3 = game.Maintenance and Xan.CurrentTheme.TextDim or Xan.CurrentTheme.Accent,
 					Position = UDim2.new(1, -100, 0, 18),
 					Size = UDim2.new(0, 86, 0, 32),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = game.Maintenance and "Offline" or "Load",
 					TextColor3 = Color3.new(1, 1, 1),
 					TextSize = 12,
@@ -21145,7 +21198,7 @@ function Xan:CreateWindow(config)
 						Util.Create("TextLabel", {
 							BackgroundTransparency = 1,
 							Size = UDim2.new(1, 0, 1, 0),
-							Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+							Font = Enum.Font.Roboto,
 							Text = badgeText,
 							TextColor3 = Color3.new(1, 1, 1),
 							TextSize = 8,
@@ -21159,7 +21212,7 @@ function Xan:CreateWindow(config)
 					Position = UDim2.new(0.5, 0, 0, iconSize + 4),
 					Size = UDim2.new(1, 0, 0, 14),
 					AnchorPoint = Vector2.new(0.5, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = game.Name or "",
 					TextColor3 = Xan.CurrentTheme.Text,
 					TextSize = 10,
@@ -21174,7 +21227,7 @@ function Xan:CreateWindow(config)
 						Position = UDim2.new(0.5, 0, 0, iconSize + 18),
 						Size = UDim2.new(1, 0, 0, 12),
 						AnchorPoint = Vector2.new(0.5, 0),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = "Offline",
 						TextColor3 = Color3.fromRGB(180, 80, 80),
 						TextSize = 9,
@@ -21294,7 +21347,7 @@ function Xan:CreateWindow(config)
 						Name = "HoverText",
 						BackgroundTransparency = 1,
 						Size = UDim2.new(1, 0, 1, 0),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = hoverText,
 						TextColor3 = Color3.new(1, 1, 1),
 						TextSize = 14,
@@ -21319,7 +21372,7 @@ function Xan:CreateWindow(config)
 							Name = "OfflineText",
 							BackgroundTransparency = 1,
 							Size = UDim2.new(1, 0, 1, 0),
-							Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+							Font = Enum.Font.Roboto,
 							Text = "OFFLINE",
 							TextColor3 = Color3.fromRGB(180, 60, 60),
 							TextSize = 12,
@@ -21347,7 +21400,7 @@ function Xan:CreateWindow(config)
 						Util.Create("TextLabel", {
 							BackgroundTransparency = 1,
 							Size = UDim2.new(1, 0, 1, 0),
-							Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+							Font = Enum.Font.Roboto,
 							Text = badgeText,
 							TextColor3 = Color3.new(1, 1, 1),
 							TextSize = 7,
@@ -21361,7 +21414,7 @@ function Xan:CreateWindow(config)
 					Position = UDim2.new(0.5, 0, 0, cardSize + 2),
 					Size = UDim2.new(1, 0, 0, 12),
 					AnchorPoint = Vector2.new(0.5, 0),
-					Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					Font = Enum.Font.Roboto,
 					Text = gameData.Name or "",
 					TextColor3 = gameData.Maintenance and Xan.CurrentTheme.TextDim
 						or (inThisGameCheck and Xan.CurrentTheme.Accent or Xan.CurrentTheme.Text),
@@ -21377,7 +21430,7 @@ function Xan:CreateWindow(config)
 						Position = UDim2.new(0.5, 0, 0, cardSize + 14),
 						Size = UDim2.new(1, 0, 0, 10),
 						AnchorPoint = Vector2.new(0.5, 0),
-						Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+						Font = Enum.Font.Roboto,
 						Text = "In Game",
 						TextColor3 = Xan.CurrentTheme.Accent,
 						TextSize = 8,
@@ -22023,7 +22076,7 @@ function Xan:Notify(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, iconOffset, 0, content ~= "" and (IsMobile and 10 or 8) or 0),
 			Size = UDim2.new(1, -iconOffset, 0, content ~= "" and (IsMobile and 18 or 16) or notifHeight),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = title,
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = IsMobile and 13 or 12,
@@ -22037,7 +22090,7 @@ function Xan:Notify(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, iconOffset, 0, IsMobile and 28 or 24),
 				Size = UDim2.new(1, -iconOffset, 0, IsMobile and 22 or 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = content,
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = IsMobile and 12 or 11,
@@ -22103,7 +22156,7 @@ function Xan:Notify(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 14, 0, content ~= "" and (IsMobile and 8 or 6) or 0),
 			Size = UDim2.new(1, -28, 0, content ~= "" and (IsMobile and 18 or 16) or notifHeight),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = title,
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = IsMobile and 13 or 12,
@@ -22117,7 +22170,7 @@ function Xan:Notify(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 26 or 22),
 				Size = UDim2.new(1, -28, 0, IsMobile and 22 or 20),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = content,
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = IsMobile and 11 or 10,
@@ -22184,7 +22237,7 @@ function Xan:Notify(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, (IsMobile and 14 or 12) + iconOffset, 0, 0),
 			Size = UDim2.new(1, -((IsMobile and 28 or 24) + iconOffset), 1, 0),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = textContent,
 			TextColor3 = Color3.new(1, 1, 1),
 			TextSize = IsMobile and 12 or 11,
@@ -22230,7 +22283,7 @@ function Xan:Notify(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 10, 0, 0),
 			Size = UDim2.new(1, -20, 1, 0),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = textContent,
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = IsMobile and 12 or 11,
@@ -22292,7 +22345,7 @@ function Xan:Notify(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, (IsMobile and 14 or 12) + iconOffset, 0, 0),
 			Size = UDim2.new(1, -((IsMobile and 28 or 24) + iconOffset), 1, 0),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = content ~= "" and (title .. " - " .. content) or title,
 			TextColor3 = Color3.new(1, 1, 1),
 			TextSize = IsMobile and 13 or 12,
@@ -22338,7 +22391,7 @@ function Xan:Notify(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 12, 0, 0),
 			Size = UDim2.new(1, -24, 1, 0),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = textContent,
 			TextColor3 = Color3.new(1, 1, 1),
 			TextSize = textSize,
@@ -22404,7 +22457,7 @@ function Xan:Notify(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 22, 0, content ~= "" and (IsMobile and 8 or 6) or 0),
 			Size = UDim2.new(1, -34, 0, content ~= "" and (IsMobile and 16 or 14) or notifHeight),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = title,
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = IsMobile and 12 or 11,
@@ -22418,7 +22471,7 @@ function Xan:Notify(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 22, 0, IsMobile and 24 or 20),
 				Size = UDim2.new(1, -34, 0, IsMobile and 20 or 18),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = content,
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = IsMobile and 11 or 10,
@@ -22498,7 +22551,7 @@ function Xan:Notify(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, iconOffset, 0, content ~= "" and (IsMobile and 14 or 12) or 0),
 			Size = UDim2.new(1, -(iconOffset + 20), 0, content ~= "" and (IsMobile and 22 or 20) or notifHeight),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = title,
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = IsMobile and 16 or 15,
@@ -22514,7 +22567,7 @@ function Xan:Notify(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, iconOffset, 0, IsMobile and 38 or 34),
 				Size = UDim2.new(1, -(iconOffset + 20), 0, IsMobile and 26 or 24),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = content,
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = IsMobile and 13 or 12,
@@ -22662,7 +22715,7 @@ function Xan:Notify(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, contentStartX, 0, content ~= "" and (IsMobile and 12 or 10) or 0),
 			Size = UDim2.new(1, -(contentStartX + 16), 0, content ~= "" and (IsMobile and 22 or 20) or notifHeight),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = title,
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = IsMobile and 15 or 14,
@@ -22678,7 +22731,7 @@ function Xan:Notify(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, contentStartX, 0, IsMobile and 36 or 32),
 				Size = UDim2.new(1, -(contentStartX + 16), 0, IsMobile and 28 or 26),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = content,
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = IsMobile and 13 or 12,
@@ -22866,7 +22919,7 @@ function Xan:CreateLoadingScreen(config)
 			Position = UDim2.new(0.5, 0, 0, 75),
 			Size = UDim2.new(1, 0, 0, 24),
 			AnchorPoint = Vector2.new(0.5, 0),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = title,
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = 18,
@@ -22879,7 +22932,7 @@ function Xan:CreateLoadingScreen(config)
 			Position = UDim2.new(0.5, 0, 0, 100),
 			Size = UDim2.new(1, 0, 0, 16),
 			AnchorPoint = Vector2.new(0.5, 0),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = subtitle,
 			TextColor3 = Xan.CurrentTheme.TextDim,
 			TextSize = 12,
@@ -22981,7 +23034,7 @@ function Xan:CreateLoadingScreen(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 54, 0, 10),
 			Size = UDim2.new(1, -70, 0, 18),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = title,
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = 14,
@@ -22994,7 +23047,7 @@ function Xan:CreateLoadingScreen(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 54, 0, 30),
 			Size = UDim2.new(1, -70, 0, 14),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = subtitle,
 			TextColor3 = Xan.CurrentTheme.TextDim,
 			TextSize = 12,
@@ -23106,7 +23159,7 @@ function Xan:CreateBottomNotification(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 54, 0, 10),
 		Size = UDim2.new(1, -70, 0, 18),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = title,
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 14,
@@ -23119,7 +23172,7 @@ function Xan:CreateBottomNotification(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 54, 0, 30),
 		Size = UDim2.new(1, -70, 0, 14),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = subtitle,
 		TextColor3 = Xan.CurrentTheme.TextDim,
 		TextSize = 12,
@@ -23251,7 +23304,7 @@ function Xan:CreateSplashScreen(config)
 		Position = UDim2.new(0.5, 0, 0, 120),
 		Size = UDim2.new(1, -40, 0, 28),
 		AnchorPoint = Vector2.new(0.5, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = title,
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 22,
@@ -23266,7 +23319,7 @@ function Xan:CreateSplashScreen(config)
 		Position = UDim2.new(0.5, 0, 0, 150),
 		Size = UDim2.new(1, -40, 0, 18),
 		AnchorPoint = Vector2.new(0.5, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = subtitle,
 		TextColor3 = Xan.CurrentTheme.TextDim,
 		TextSize = 13,
@@ -23729,7 +23782,7 @@ function Xan:CreateLoginScreen(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(1, -40, 0, 12),
 		Size = UDim2.new(0, 28, 0, 28),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "×",
 		TextColor3 = Xan.CurrentTheme.TextDim,
 		TextSize = 24,
@@ -23756,7 +23809,7 @@ function Xan:CreateLoginScreen(config)
 		Name = "Title",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, 32),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = title,
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 24,
@@ -23769,7 +23822,7 @@ function Xan:CreateLoginScreen(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 32),
 		Size = UDim2.new(1, 0, 0, 20),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = subtitle,
 		TextColor3 = Xan.CurrentTheme.TextDim,
 		TextSize = 13,
@@ -23782,7 +23835,7 @@ function Xan:CreateLoginScreen(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 65),
 		Size = UDim2.new(1, 0, 0, 18),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Username",
 		TextColor3 = Xan.CurrentTheme.TextSecondary,
 		TextSize = 13,
@@ -23810,7 +23863,7 @@ function Xan:CreateLoginScreen(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12, 0, 0),
 		Size = UDim2.new(1, -24, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "",
 		PlaceholderText = "Enter username...",
 		PlaceholderColor3 = Color3.fromRGB(100, 100, 110),
@@ -23826,7 +23879,7 @@ function Xan:CreateLoginScreen(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 132),
 		Size = UDim2.new(1, 0, 0, 18),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Password",
 		TextColor3 = Xan.CurrentTheme.TextSecondary,
 		TextSize = 13,
@@ -23854,7 +23907,7 @@ function Xan:CreateLoginScreen(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12, 0, 0),
 		Size = UDim2.new(1, -50, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "",
 		PlaceholderText = "",
 		TextColor3 = Color3.fromRGB(0, 0, 0),
@@ -23881,7 +23934,7 @@ function Xan:CreateLoginScreen(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 0),
 		Size = UDim2.new(1, 0, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 14,
@@ -24002,7 +24055,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 12),
 				Size = UDim2.new(0, 60, 0, 24),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "← Back",
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = 12,
@@ -24026,7 +24079,7 @@ function Xan:CreateLoginScreen(config)
 				Name = "Title",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, 28),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Reset Password",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 20,
@@ -24041,7 +24094,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 28),
 				Size = UDim2.new(1, 0, 0, 18),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Enter your email to receive a reset link",
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = 12,
@@ -24056,7 +24109,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 60),
 				Size = UDim2.new(1, 0, 0, 18),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Email",
 				TextColor3 = Xan.CurrentTheme.TextSecondary,
 				TextSize = 13,
@@ -24089,7 +24142,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 0),
 				Size = UDim2.new(1, -24, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				PlaceholderText = "Enter your email...",
 				PlaceholderColor3 = Color3.fromRGB(100, 100, 110),
@@ -24108,7 +24161,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 130),
 				Size = UDim2.new(1, 0, 0, 40),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Request Reset Link",
 				TextColor3 = Color3.new(1, 1, 1),
 				TextSize = 14,
@@ -24290,7 +24343,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 12),
 				Size = UDim2.new(0, 60, 0, 24),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "← Back",
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = 12,
@@ -24314,7 +24367,7 @@ function Xan:CreateLoginScreen(config)
 				Name = "Title",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, 28),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Create Account",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 20,
@@ -24329,7 +24382,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 28),
 				Size = UDim2.new(1, 0, 0, 18),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Fill in your details to get started",
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = 12,
@@ -24344,7 +24397,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 55),
 				Size = UDim2.new(1, 0, 0, 18),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Username",
 				TextColor3 = Xan.CurrentTheme.TextSecondary,
 				TextSize = 13,
@@ -24377,7 +24430,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 0),
 				Size = UDim2.new(1, -24, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				PlaceholderText = "Choose a username...",
 				PlaceholderColor3 = Color3.fromRGB(100, 100, 110),
@@ -24395,7 +24448,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 115),
 				Size = UDim2.new(1, 0, 0, 18),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Email",
 				TextColor3 = Xan.CurrentTheme.TextSecondary,
 				TextSize = 13,
@@ -24428,7 +24481,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 0),
 				Size = UDim2.new(1, -24, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				PlaceholderText = "Enter your email...",
 				PlaceholderColor3 = Color3.fromRGB(100, 100, 110),
@@ -24446,7 +24499,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 175),
 				Size = UDim2.new(1, 0, 0, 18),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Password",
 				TextColor3 = Xan.CurrentTheme.TextSecondary,
 				TextSize = 13,
@@ -24479,7 +24532,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 0),
 				Size = UDim2.new(1, -24, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				PlaceholderText = "Create a password...",
 				PlaceholderColor3 = Color3.fromRGB(100, 100, 110),
@@ -24497,7 +24550,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 14,
@@ -24512,7 +24565,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 235),
 				Size = UDim2.new(1, 0, 0, 18),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Confirm Password",
 				TextColor3 = Xan.CurrentTheme.TextSecondary,
 				TextSize = 13,
@@ -24545,7 +24598,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 0),
 				Size = UDim2.new(1, -24, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				PlaceholderText = "Confirm your password...",
 				PlaceholderColor3 = Color3.fromRGB(100, 100, 110),
@@ -24563,7 +24616,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 14,
@@ -24606,7 +24659,7 @@ function Xan:CreateLoginScreen(config)
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 300),
 				Size = UDim2.new(1, 0, 0, 40),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Create Account",
 				TextColor3 = Color3.new(1, 1, 1),
 				TextSize = 14,
@@ -24810,7 +24863,7 @@ function Xan:CreateLoginScreen(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 0, 0, 195),
 			Size = UDim2.new(0, 150, 0, 18),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = "Forgot your password?",
 			TextColor3 = Xan.CurrentTheme.Accent,
 			TextSize = 12,
@@ -24833,7 +24886,7 @@ function Xan:CreateLoginScreen(config)
 		BackgroundColor3 = Xan.CurrentTheme.Accent,
 		Position = UDim2.new(0, 0, 0, 218),
 		Size = UDim2.new(1, 0, 0, 40),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Log in",
 		TextColor3 = Color3.new(1, 1, 1),
 		TextSize = 15,
@@ -24863,7 +24916,7 @@ function Xan:CreateLoginScreen(config)
 		Util.Create("TextLabel", {
 			BackgroundTransparency = 1,
 			Size = UDim2.new(0.6, 0, 1, 0),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = "Need an account?",
 			TextColor3 = Xan.CurrentTheme.TextDim,
 			TextSize = 12,
@@ -24876,7 +24929,7 @@ function Xan:CreateLoginScreen(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.6, 5, 0, 0),
 			Size = UDim2.new(0.4, -5, 1, 0),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = "Sign up",
 			TextColor3 = Xan.CurrentTheme.Accent,
 			TextSize = 12,
@@ -24966,7 +25019,7 @@ function Xan:CreateLoginScreen(config)
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, -16, 1, 0),
 		Position = UDim2.new(0, 8, 0, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "",
 		TextColor3 = Color3.new(1, 1, 1),
 		TextSize = 12,
@@ -27170,7 +27223,7 @@ function Xan:CreateBindListUI()
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, listPadding, 0, 0),
 		Size = UDim2.new(1, -listPadding * 2, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "ACTIVE",
 		TextColor3 = theme.TextDim,
 		TextSize = IsMobile and 12 or 10,
@@ -27301,7 +27354,7 @@ function Xan:RefreshBindList()
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, labelPadding, 0, 0),
 			Size = UDim2.new(1, -(closeBtnSize + labelPadding + rightGap), 1, 0),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = name,
 			TextColor3 = theme.Text,
 			TextSize = IsMobile and 13 or 11,
@@ -27318,7 +27371,7 @@ function Xan:RefreshBindList()
 				AnchorPoint = Vector2.new(1, 0.5),
 				Position = UDim2.new(1, -2, 0.5, 0),
 				Size = UDim2.new(0, closeBtnSize, 0, closeBtnSize),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "×",
 				TextColor3 = Color3.fromRGB(220, 75, 75),
 				TextSize = 18,
@@ -27363,7 +27416,7 @@ function Xan:RefreshBindList()
 				AnchorPoint = Vector2.new(1, 0.5),
 				Position = UDim2.new(1, -2, 0.5, 0),
 				Size = UDim2.new(0, 30, 0, 16),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = state or "[ON]",
 				TextColor3 = theme.Accent,
 				TextSize = 10,
@@ -27379,7 +27432,7 @@ function Xan:RefreshBindList()
 				AnchorPoint = Vector2.new(1, 0.5),
 				Position = UDim2.new(1, -2, 0.5, 0),
 				Size = UDim2.new(0, closeBtnSize, 0, closeBtnSize),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "×",
 				TextColor3 = Color3.fromRGB(180, 55, 55),
 				TextTransparency = 1,
@@ -27889,7 +27942,7 @@ function Xan:CreateWatermark(config)
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, 0, 0, 16),
 		AutomaticSize = Enum.AutomaticSize.X,
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.RobotoMono,
 		Text = text,
 		TextColor3 = Xan.CurrentTheme.Accent,
 		TextSize = 11,
@@ -27913,7 +27966,7 @@ function Xan:CreateWatermark(config)
 			BackgroundTransparency = 1,
 			Size = UDim2.new(0, 0, 0, 16),
 			AutomaticSize = Enum.AutomaticSize.X,
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.RobotoMono,
 			Text = "-- FPS",
 			TextColor3 = Color3.fromRGB(120, 120, 130),
 			TextSize = 10,
@@ -27936,7 +27989,7 @@ function Xan:CreateWatermark(config)
 			BackgroundTransparency = 1,
 			Size = UDim2.new(0, 0, 0, 16),
 			AutomaticSize = Enum.AutomaticSize.X,
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.RobotoMono,
 			Text = "-- ms",
 			TextColor3 = Color3.fromRGB(120, 120, 130),
 			TextSize = 10,
@@ -28199,7 +28252,7 @@ function Xan:CreateMobileButtons(config)
 			Position = UDim2.new(1, 0, 0, 0),
 			Size = UDim2.new(0, buttonSize, 0, buttonSize),
 			Text = hasText and btnConfig.Text or "",
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			TextColor3 = state and Color3.new(1, 1, 1) or Xan.CurrentTheme.TextSecondary,
 			TextSize = buttonSize * 0.32,
 			AutoButtonColor = false,
@@ -28235,7 +28288,7 @@ function Xan:CreateMobileButtons(config)
 				AnchorPoint = Vector2.new(1, 0.5),
 				Position = UDim2.new(0, buttonSize - 8, 0.5, 0),
 				Size = UDim2.new(0, 70, 0, 28),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = btnConfig.Name or "Action",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 11,
@@ -28485,7 +28538,7 @@ function Xan:CreateFloatingButton(config)
 			AnchorPoint = Vector2.new(1, 0.5),
 			Position = UDim2.new(0, -8, 0.5, 0),
 			Size = UDim2.new(0, 0, 0, 24),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = label,
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = 11,
@@ -29158,7 +29211,7 @@ function Xan:ShowRepositionOverlay(config)
 		Name = "Instruction",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, 50),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Move the button anywhere on screen",
 		TextColor3 = Color3.new(1, 1, 1),
 		TextSize = 16,
@@ -29173,7 +29226,7 @@ function Xan:ShowRepositionOverlay(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 45),
 		Size = UDim2.new(1, 0, 0, 20),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Press Save when done",
 		TextColor3 = Color3.fromRGB(180, 180, 180),
 		TextSize = 13,
@@ -29188,7 +29241,7 @@ function Xan:ShowRepositionOverlay(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, 80),
 		Size = UDim2.new(0, 120, 0, 36),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Save",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 14,
@@ -30260,7 +30313,7 @@ Xan.ShowLoading = function(text, config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 15),
 		Size = UDim2.new(1, 0, 0, 20),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = text,
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 14,
@@ -30273,7 +30326,7 @@ Xan.ShowLoading = function(text, config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 40),
 		Size = UDim2.new(1, 0, 0, 20),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "●  ●  ●",
 		TextColor3 = Xan.CurrentTheme.Accent,
 		TextSize = 12,
@@ -31709,7 +31762,7 @@ function Xan:CreateOnboarding(config)
 			AnchorPoint = Vector2.new(0.5, 0),
 			Position = UDim2.new(0.5, 0, 0, yPos),
 			Size = UDim2.new(btnWidth, 0, 0, btnHeight),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = text,
 			TextColor3 = isPrimary and Color3.new(1, 1, 1) or Xan.CurrentTheme.TextSecondary,
 			TextSize = IsMobile and 15 or 14,
@@ -32023,7 +32076,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, IsMobile and 140 or 160),
 		Size = UDim2.new(0.9, 0, 0, 36),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = config.WelcomeTitle or "Welcome to Xan UI",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = IsMobile and 24 or 28,
@@ -32038,7 +32091,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, IsMobile and 180 or 200),
 		Size = UDim2.new(0.85, 0, 0, 60),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = config.WelcomeSubtitle or "The most powerful UI library for Roblox scripts.\nLet's get you set up.",
 		TextColor3 = Xan.CurrentTheme.TextSecondary,
 		TextSize = IsMobile and 15 or 16,
@@ -32054,7 +32107,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, IsMobile and 270 or 290),
 		Size = UDim2.new(0, IsMobile and 200 or 180, 0, 38),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Continue",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 14,
@@ -32113,7 +32166,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(1, 0.5),
 		Position = UDim2.new(0.5, -4, 0.5, 0),
 		Size = UDim2.new(0.5, 0, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "More than a",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = IsMobile and 20 or 22,
@@ -32131,7 +32184,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0, 0.5),
 		Position = UDim2.new(0.5, 4, 0.5, 0),
 		Size = UDim2.new(0.5, 0, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = cycleWords[1],
 		TextColor3 = Xan.CurrentTheme.Accent,
 		TextSize = IsMobile and 20 or 22,
@@ -32160,7 +32213,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, IsMobile and 175 or 215),
 		Size = UDim2.new(0.85, 0, 0, IsMobile and 45 or 55),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = config.Description
 			or "A complete UI engine with easy APIs, full mobile support, and unlimited customization.\nCompletely free and open source forever. No paywalls, no limits.",
 		TextColor3 = Xan.CurrentTheme.TextSecondary,
@@ -32196,7 +32249,7 @@ function Xan:CreateOnboarding(config)
 		Util.Create("TextLabel", {
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 0, IsMobile and 14 or 15),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = "✓  " .. feature,
 			TextColor3 = Xan.CurrentTheme.Success,
 			TextSize = IsMobile and 10 or 13,
@@ -32211,7 +32264,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, IsMobile and 308 or 370),
 		Size = UDim2.new(0, IsMobile and 200 or 180, 0, 38),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Continue",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 14,
@@ -32242,7 +32295,7 @@ function Xan:CreateOnboarding(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 15, 0, 15),
 		Size = UDim2.new(0, 60, 0, 24),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "← Back",
 		TextColor3 = Color3.fromRGB(120, 120, 130),
 		TextSize = 13,
@@ -32268,7 +32321,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, 20),
 		Size = UDim2.new(0.9, 0, 0, 28),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Choose your demo style",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = IsMobile and 20 or 22,
@@ -32282,7 +32335,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, 48),
 		Size = UDim2.new(0.85, 0, 0, 20),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Select a layout for your demo. This can be changed anytime.",
 		TextColor3 = Xan.CurrentTheme.TextDim,
 		TextSize = IsMobile and 12 or 13,
@@ -32367,7 +32420,7 @@ function Xan:CreateOnboarding(config)
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "RECOMMENDED",
 				TextColor3 = Color3.new(1, 1, 1),
 				TextSize = IsMobile and 9 or 10,
@@ -32381,7 +32434,7 @@ function Xan:CreateOnboarding(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, IsMobile and 72 or 85, 0, 12),
 			Size = UDim2.new(0.6, 0, 0, 20),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = layoutData.Name,
 			TextColor3 = Xan.CurrentTheme.Text,
 			TextSize = IsMobile and 15 or 16,
@@ -32395,7 +32448,7 @@ function Xan:CreateOnboarding(config)
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, IsMobile and 72 or 85, 0, 32),
 			Size = UDim2.new(0.7, -10, 0, 30),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = layoutData.Description,
 			TextColor3 = Xan.CurrentTheme.TextDim,
 			TextSize = IsMobile and 10 or 11,
@@ -32412,7 +32465,7 @@ function Xan:CreateOnboarding(config)
 			AnchorPoint = Vector2.new(1, 0.5),
 			Position = UDim2.new(1, -15, 0.5, 0),
 			Size = UDim2.new(0, 24, 0, 24),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = isFirst and "✓" or "",
 			TextColor3 = Xan.CurrentTheme.Accent,
 			TextSize = 18,
@@ -32490,7 +32543,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, IsMobile and 315 or 390),
 		Size = UDim2.new(0, IsMobile and 200 or 180, 0, 38),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Continue",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 14,
@@ -32522,7 +32575,7 @@ function Xan:CreateOnboarding(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 15, 0, 15),
 		Size = UDim2.new(0, 60, 0, 24),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "← Back",
 		TextColor3 = Color3.fromRGB(120, 120, 130),
 		TextSize = 13,
@@ -32547,7 +32600,7 @@ function Xan:CreateOnboarding(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 25, 0, 55),
 		Size = UDim2.new(0.55, 0, 0, 26),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Music Player",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = IsMobile and 18 or 20,
@@ -32561,7 +32614,7 @@ function Xan:CreateOnboarding(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 25, 0, 85),
 		Size = UDim2.new(0.55, -10, 0, 95),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Play your local files or stream on the first-ever Automated Song API with album art, 2,000+ songs and counting, instant playback with caching, and unlimited streaming.\n\nLoad it with the demo?",
 		TextColor3 = Xan.CurrentTheme.TextSecondary,
 		TextSize = IsMobile and 12 or 13,
@@ -32577,7 +32630,7 @@ function Xan:CreateOnboarding(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 25, 0, 185),
 		Size = UDim2.new(0, 150, 0, 20),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "→ View API docs",
 		TextColor3 = Xan.CurrentTheme.Accent,
 		TextSize = IsMobile and 11 or 12,
@@ -32617,7 +32670,7 @@ function Xan:CreateOnboarding(config)
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "Copied to clipboard!",
 				TextColor3 = Color3.fromRGB(100, 255, 120),
 				TextSize = 11,
@@ -32657,7 +32710,7 @@ function Xan:CreateOnboarding(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 15, 0, 0),
 		Size = UDim2.new(0.65, 0, 1, 0),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Autoload Music Player",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = IsMobile and 11 or 13,
@@ -32742,7 +32795,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, IsMobile and 318 or 390),
 		Size = UDim2.new(0, IsMobile and 200 or 180, 0, 38),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Continue",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 14,
@@ -32773,7 +32826,7 @@ function Xan:CreateOnboarding(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 15, 0, 15),
 		Size = UDim2.new(0, 60, 0, 24),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "← Back",
 		TextColor3 = Color3.fromRGB(120, 120, 130),
 		TextSize = 13,
@@ -32811,7 +32864,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, IsMobile and 110 or 145),
 		Size = UDim2.new(0.9, 0, 0, 32),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "You're all set!",
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = IsMobile and 22 or 26,
@@ -32825,7 +32878,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, IsMobile and 145 or 185),
 		Size = UDim2.new(0.85, 0, 0, 50),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Ready to launch the demo with your preferences.",
 		TextColor3 = Xan.CurrentTheme.TextSecondary,
 		TextSize = IsMobile and 12 or 15,
@@ -32852,7 +32905,7 @@ function Xan:CreateOnboarding(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 15, 0, 12),
 		Size = UDim2.new(1, -30, 0, 20),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Layout: Default",
 		TextColor3 = Xan.CurrentTheme.TextSecondary,
 		TextSize = 13,
@@ -32866,7 +32919,7 @@ function Xan:CreateOnboarding(config)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 15, 0, 38),
 		Size = UDim2.new(1, -30, 0, 20),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = "Music Player: Enabled",
 		TextColor3 = Xan.CurrentTheme.TextSecondary,
 		TextSize = 13,
@@ -32890,7 +32943,7 @@ function Xan:CreateOnboarding(config)
 		AnchorPoint = Vector2.new(0.5, 0),
 		Position = UDim2.new(0.5, 0, 0, IsMobile and 310 or 390),
 		Size = UDim2.new(launchBtnWidth, 0, 0, launchBtnHeight),
-		Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+		Font = Enum.Font.Roboto,
 		Text = config.LaunchText or "Launch Demo",
 		TextColor3 = Color3.fromRGB(255, 255, 255),
 		TextSize = IsMobile and 15 or 14,
@@ -33021,7 +33074,7 @@ function Xan:CreateOnboarding(config)
 			Position = IsMobile and UDim2.new(0.5, 0, 0.5, 0) or UDim2.new(0, 10, 0.5, 0),
 			AnchorPoint = IsMobile and Vector2.new(0.5, 0.5) or Vector2.new(0, 0.5),
 			Size = UDim2.new(0, 16, 0, 16),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = IsMobile and "▲" or "◀",
 			TextColor3 = Color3.fromRGB(110, 110, 120),
 			TextSize = 12,
@@ -33037,7 +33090,7 @@ function Xan:CreateOnboarding(config)
 				Position = UDim2.new(0, 24, 0.5, 0),
 				AnchorPoint = Vector2.new(0, 0.5),
 				Size = UDim2.new(0, 55, 0, 16),
-				Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+				Font = Enum.Font.Roboto,
 				Text = "DEMOS",
 				TextColor3 = Color3.fromRGB(90, 90, 100),
 				TextSize = 10,
@@ -33072,7 +33125,7 @@ function Xan:CreateOnboarding(config)
 			AnchorPoint = Vector2.new(0.5, 1),
 			Position = UDim2.new(0.5, 0, 0, -5),
 			Size = UDim2.new(0, 65, 0, 20),
-			Font = Font.fromId(12187365364, Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			Font = Enum.Font.Roboto,
 			Text = "",
 			TextColor3 = Xan.CurrentTheme.TextDim,
 			TextSize = 9,
