@@ -11476,8 +11476,6 @@ function Xan:CreateWindow(config)
 			end
 			if tabData.Button:FindFirstChild("Label") then
 				Util.Tween(tabData.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.Accent, TextTransparency = 0 })
-				
-				
 			end
 			local iconEl = tabData.Button:FindFirstChild("Icon")
 			if iconEl then
@@ -13047,33 +13045,9 @@ function Xan:CreateWindow(config)
 		end)
 
 		if #tabs == 1 then
-			if hasSidebar then
-				tabBtn.BackgroundColor3 = Xan.CurrentTheme.Accent
-				tabBtn.BackgroundTransparency = 0.15
-			else
-				tabBtn.BackgroundColor3 = Xan.CurrentTheme.Accent
-				tabBtn.BackgroundTransparency = 0
-			end
-			local stroke = tabBtn:FindFirstChildOfClass("UIStroke")
-			if stroke then
-				stroke.Transparency = 1
-			end
-			if icon then
-				if icon:IsA("ImageLabel") then
-					icon.ImageColor3 = Xan.CurrentTheme.Text
-				else
-					icon.TextColor3 = Xan.CurrentTheme.Text
-				end
-			end
-			local lbl = tabBtn:FindFirstChild("Label")
-			if lbl then
-				lbl.TextColor3 = Xan.CurrentTheme.Text
-			end
-			tabContent.Visible = true
-			tabContent.GroupTransparency = 0
-			currentTab = tabData
+			selectTab(tabData)
 		end
-
+		
 		local tab = {}
 
 		function tab:CreateSection(title, layoutOrder)
@@ -15665,20 +15639,20 @@ function Xan:CreateWindow(config)
 			local flag = config.Flag
 			local callback = config.Callback or function() end
 			local layoutOrder = config.LayoutOrder or 0
-		
+
 			local selected = multi and {} or (default or (options[1] or ""))
 			local expanded = false
-		
+
 			if multi and default and type(default) == "table" then
 				for _, v in ipairs(default) do
 					selected[v] = true
 				end
 			end
-		
+
 			if flag then
 				Xan:SetFlag(flag, selected)
 			end
-		
+
 			local dropdownFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
@@ -15688,16 +15662,19 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			}, {
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
-				Util.Create("UIStroke", { Name = "Stroke", Color = Xan.CurrentTheme.CardBorder, Thickness = 1, Transparency = 0 }),
+				Util.Create(
+					"UIStroke",
+					{ Name = "Stroke", Color = Xan.CurrentTheme.CardBorder, Thickness = 1, Transparency = 0 }
+				),
 			})
-		
+
 			local header = Util.Create("Frame", {
 				Name = "Header",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
 				Parent = dropdownFrame,
 			})
-		
+
 			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
@@ -15710,21 +15687,27 @@ function Xan:CreateWindow(config)
 				TextXAlignment = Enum.TextXAlignment.Left,
 				Parent = header,
 			})
-		
+
 			local function getDisplayText()
 				if multi then
 					local items = {}
 					for k, v in pairs(selected) do
-						if v then table.insert(items, k) end
+						if v then
+							table.insert(items, k)
+						end
 					end
-					if #items == 0 then return "None" end
-					if #items > 2 then return #items .. " selected" end
+					if #items == 0 then
+						return "None"
+					end
+					if #items > 2 then
+						return #items .. " selected"
+					end
 					return table.concat(items, ", ")
 				else
 					return tostring(selected)
 				end
 			end
-		
+
 			local valueLabel = Util.Create("TextLabel", {
 				Name = "Value",
 				BackgroundTransparency = 1,
@@ -15738,7 +15721,7 @@ function Xan:CreateWindow(config)
 				TextTruncate = Enum.TextTruncate.AtEnd,
 				Parent = header,
 			})
-		
+
 			local arrow = Util.Create("TextLabel", {
 				Name = "Arrow",
 				BackgroundTransparency = 1,
@@ -15751,10 +15734,10 @@ function Xan:CreateWindow(config)
 				Rotation = 0,
 				Parent = header,
 			})
-		
+
 			local spacing = 4
 			local optionHeight = IsMobile and 36 or 32
-		
+
 			local optionsList = Util.Create("Frame", {
 				Name = "Options",
 				BackgroundTransparency = 1,
@@ -15768,23 +15751,25 @@ function Xan:CreateWindow(config)
 					SortOrder = Enum.SortOrder.LayoutOrder,
 				}),
 			})
-		
+
 			local optionButtons = {}
-		
+
 			local function updateOptions()
 				for _, btn in pairs(optionButtons) do
 					btn:Destroy()
 				end
 				optionButtons = {}
-		
+
 				local totalHeight = #options * optionHeight + math.max(0, #options - 1) * spacing
 				optionsList.Size = UDim2.new(1, -16, 0, totalHeight)
-		
+
 				for i, option in ipairs(options) do
 					local isSelected = multi and selected[option] or selected == option
 					local selectedTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
-					local dropdownColor = Xan.CurrentTheme.Dropdown or Xan.CurrentTheme.Input or Color3.fromRGB(25, 25, 32)
-		
+					local dropdownColor = Xan.CurrentTheme.Dropdown
+						or Xan.CurrentTheme.Input
+						or Color3.fromRGB(25, 25, 32)
+
 					local optionBtn = Util.Create("TextButton", {
 						Name = option,
 						BackgroundColor3 = isSelected and Xan.CurrentTheme.Accent or dropdownColor,
@@ -15799,24 +15784,34 @@ function Xan:CreateWindow(config)
 					}, {
 						Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 					})
-		
+
 					optionBtn.MouseEnter:Connect(function()
 						if not isSelected then
-							local hoverColor = Xan.CurrentTheme.DropdownHover or Xan.CurrentTheme.CardHover or Color3.fromRGB(35, 35, 45)
+							local hoverColor = Xan.CurrentTheme.DropdownHover
+								or Xan.CurrentTheme.CardHover
+								or Color3.fromRGB(35, 35, 45)
 							Util.Tween(optionBtn, 0.15, { BackgroundColor3 = hoverColor })
 						end
 					end)
-		
+
 					optionBtn.MouseLeave:Connect(function()
 						local isCurrentlySelected = multi and selected[option] or selected == option
-						local dropdownColor = Xan.CurrentTheme.Dropdown or Xan.CurrentTheme.Input or Color3.fromRGB(25, 25, 32)
-						Util.Tween(optionBtn, 0.15, { BackgroundColor3 = isCurrentlySelected and Xan.CurrentTheme.Accent or dropdownColor })
+						local dropdownColor = Xan.CurrentTheme.Dropdown
+							or Xan.CurrentTheme.Input
+							or Color3.fromRGB(25, 25, 32)
+						Util.Tween(
+							optionBtn,
+							0.15,
+							{ BackgroundColor3 = isCurrentlySelected and Xan.CurrentTheme.Accent or dropdownColor }
+						)
 					end)
-		
+
 					optionBtn.MouseButton1Click:Connect(function()
 						local contrastText = Util.GetContrastText(Xan.CurrentTheme.Accent)
-						local dropdownColor = Xan.CurrentTheme.Dropdown or Xan.CurrentTheme.Input or Color3.fromRGB(25, 25, 32)
-		
+						local dropdownColor = Xan.CurrentTheme.Dropdown
+							or Xan.CurrentTheme.Input
+							or Color3.fromRGB(25, 25, 32)
+
 						if multi then
 							selected[option] = not selected[option]
 							local isNowSelected = selected[option]
@@ -15826,40 +15821,57 @@ function Xan:CreateWindow(config)
 							})
 						else
 							for _, btn in pairs(optionButtons) do
-								Util.Tween(btn, 0.2, { BackgroundColor3 = dropdownColor, TextColor3 = Xan.CurrentTheme.Text })
+								Util.Tween(
+									btn,
+									0.2,
+									{ BackgroundColor3 = dropdownColor, TextColor3 = Xan.CurrentTheme.Text }
+								)
 							end
 							selected = option
-							Util.Tween(optionBtn, 0.2, { BackgroundColor3 = Xan.CurrentTheme.Accent, TextColor3 = contrastText })
+							Util.Tween(
+								optionBtn,
+								0.2,
+								{ BackgroundColor3 = Xan.CurrentTheme.Accent, TextColor3 = contrastText }
+							)
 						end
-		
+
 						valueLabel.Text = "<b>" .. getDisplayText() .. "</b>"
-						if flag then Xan:SetFlag(flag, selected) end
+						if flag then
+							Xan:SetFlag(flag, selected)
+						end
 						callback(selected)
 					end)
-		
+
 					table.insert(optionButtons, optionBtn)
 				end
 			end
-		
+
 			updateOptions()
-		
+
 			local function toggleExpand()
 				expanded = not expanded
-				if expanded then updateOptions() end
-		
+				if expanded then
+					updateOptions()
+				end
+
 				local totalHeight = #options * optionHeight + math.max(0, #options - 1) * spacing + 12
 				local baseHeight = IsMobile and 52 or 44
-		
+
 				Util.Tween(arrow, 0.25, { Rotation = expanded and 180 or 0 })
-				Util.Tween(dropdownFrame, 0.3, { Size = UDim2.new(1, 0, 0, expanded and (baseHeight + totalHeight) or baseHeight) }, Enum.EasingStyle.Quint)
-		
+				Util.Tween(
+					dropdownFrame,
+					0.3,
+					{ Size = UDim2.new(1, 0, 0, expanded and (baseHeight + totalHeight) or baseHeight) },
+					Enum.EasingStyle.Quint
+				)
+
 				if expanded then
 					Util.Tween(dropdownFrame.Stroke, 0.2, { Color = Xan.CurrentTheme.Accent, Transparency = 0 })
 				else
 					Util.Tween(dropdownFrame.Stroke, 0.2, { Color = Xan.CurrentTheme.CardBorder, Transparency = 0 })
 				end
 			end
-		
+
 			local headerBtn = Util.Create("TextButton", {
 				Name = "Hitbox",
 				BackgroundTransparency = 1,
@@ -15867,79 +15879,96 @@ function Xan:CreateWindow(config)
 				Text = "",
 				Parent = header,
 			})
-		
+
 			headerBtn.MouseButton1Click:Connect(toggleExpand)
-		
+
 			header.MouseEnter:Connect(function()
 				Util.Tween(dropdownFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.CardHover })
 			end)
-		
+
 			header.MouseLeave:Connect(function()
 				Util.Tween(dropdownFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 			end)
-		
+
 			local function applyDropdownTheme()
 				dropdownFrame.BackgroundColor3 = Xan.CurrentTheme.Card
 				local stroke = dropdownFrame:FindFirstChildOfClass("UIStroke")
-				if stroke then stroke.Color = Xan.CurrentTheme.CardBorder end
+				if stroke then
+					stroke.Color = Xan.CurrentTheme.CardBorder
+				end
 				label.TextColor3 = Xan.CurrentTheme.Text
 				valueLabel.TextColor3 = Xan.CurrentTheme.Accent
 				arrow.TextColor3 = Xan.CurrentTheme.TextDim
 			end
 			Xan:OnThemeChanged(applyDropdownTheme)
-		
+
 			registerSearchElement(name, tabName, tabData, "Dropdown", tabIcon, dropdownFrame)
-		
+
 			return {
 				Frame = dropdownFrame,
-				Value = function() return selected end,
+				Value = function()
+					return selected
+				end,
 				Set = function(_, val, skipCallback)
 					if multi and type(val) == "table" then
 						selected = {}
-						for _, v in ipairs(val) do selected[v] = true end
+						for _, v in ipairs(val) do
+							selected[v] = true
+						end
 					else
 						selected = val
 					end
 					valueLabel.Text = getDisplayText()
 					updateOptions()
-					if flag then Xan:SetFlag(flag, selected) end
-					if not skipCallback then callback(selected) end
+					if flag then
+						Xan:SetFlag(flag, selected)
+					end
+					if not skipCallback then
+						callback(selected)
+					end
 				end,
 				UpdateTheme = applyDropdownTheme,
 				SetOptions = function(_, newOptions)
 					options = newOptions
 					updateOptions()
 				end,
-				Expand = function(_) if not expanded then toggleExpand() end end,
-				Collapse = function(_) if expanded then toggleExpand() end end,
+				Expand = function(_)
+					if not expanded then
+						toggleExpand()
+					end
+				end,
+				Collapse = function(_)
+					if expanded then
+						toggleExpand()
+					end
+				end,
 			}
 		end
-		
 
 		function tab:CreateKeybind(config)
 			config = config or {}
-			local name           = config.Name or "Keybind"
-			local default        = config.Default or Enum.KeyCode.Unknown
-			local flag           = config.Flag
-			local callback       = config.Callback or function() end
+			local name = config.Name or "Keybind"
+			local default = config.Default or Enum.KeyCode.Unknown
+			local flag = config.Flag
+			local callback = config.Callback or function() end
 			local changedCallback = config.ChangedCallback or function() end
-			local layoutOrder    = config.LayoutOrder or 0
-			local bindType       = config.Type or "Toggle"
-		
+			local layoutOrder = config.LayoutOrder or 0
+			local bindType = config.Type or "Toggle"
+
 			if bindType ~= "Toggle" and bindType ~= "Hold" then
 				bindType = "Toggle"
 			end
-		
-			local currentKey     = default
-			local listening      = false
-			local isActive       = false
-			local justBound      = false          
-			local lastBindTime   = 0             
-		
+
+			local currentKey = default
+			local listening = false
+			local isActive = false
+			local justBound = false
+			local lastBindTime = 0
+
 			if flag then
 				Xan:SetFlag(flag, currentKey)
 			end
-		
+
 			local keybindFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
@@ -15955,7 +15984,7 @@ function Xan:CreateWindow(config)
 					Transparency = 0,
 				}),
 			})
-		
+
 			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
@@ -15968,27 +15997,33 @@ function Xan:CreateWindow(config)
 				TextXAlignment = Enum.TextXAlignment.Left,
 				Parent = keybindFrame,
 			})
-		
+
 			local function getKeyName(key)
 				if key == Enum.KeyCode.Unknown then
 					return "None"
 				end
-		
+
 				if key.EnumType == Enum.UserInputType then
-					if key == Enum.UserInputType.MouseButton1 then return "LMB" end
-					if key == Enum.UserInputType.MouseButton2 then return "RMB" end
-					if key == Enum.UserInputType.MouseButton3 then return "MMB" end
+					if key == Enum.UserInputType.MouseButton1 then
+						return "LMB"
+					end
+					if key == Enum.UserInputType.MouseButton2 then
+						return "RMB"
+					end
+					if key == Enum.UserInputType.MouseButton3 then
+						return "MMB"
+					end
 					return tostring(key):gsub("Enum.UserInputType.", "")
 				end
-		
+
 				if key.EnumType == Enum.KeyCode then
 					local name = tostring(key):gsub("Enum.KeyCode.", "")
 					return name
 				end
-		
+
 				return "???"
 			end
-		
+
 			local keyBtn = Util.Create("TextButton", {
 				Name = "KeyButton",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
@@ -16003,7 +16038,7 @@ function Xan:CreateWindow(config)
 			}, {
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 			})
-		
+
 			local function startListening()
 				listening = true
 				keyBtn.Text = "..."
@@ -16012,18 +16047,18 @@ function Xan:CreateWindow(config)
 					TextColor3 = Util.GetContrastText(Xan.CurrentTheme.Accent),
 				})
 			end
-		
+
 			local function stopListening(key)
 				listening = false
 				currentKey = key or currentKey
 				keyBtn.Text = getKeyName(currentKey)
 				Util.Tween(keyBtn, 0.2, { BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary })
 				Util.Tween(keyBtn, 0.2, { TextColor3 = Xan.CurrentTheme.Text })
-		
+
 				if flag then
 					Xan:SetFlag(flag, currentKey)
 				end
-		
+
 				if key then
 					changedCallback(currentKey)
 					if bindType == "Hold" then
@@ -16032,7 +16067,7 @@ function Xan:CreateWindow(config)
 					end
 				end
 			end
-		
+
 			keyBtn.MouseButton1Click:Connect(function()
 				if listening then
 					stopListening(Enum.KeyCode.Unknown)
@@ -16040,7 +16075,7 @@ function Xan:CreateWindow(config)
 					startListening()
 				end
 			end)
-		
+
 			local keybindConn = UserInputService.InputBegan:Connect(function(input, gameProcessed)
 				if listening then
 					if input.UserInputType == Enum.UserInputType.Keyboard then
@@ -16052,23 +16087,27 @@ function Xan:CreateWindow(config)
 							stopListening(input.KeyCode)
 						end
 					elseif
-						input.UserInputType == Enum.UserInputType.MouseButton1 or
-						input.UserInputType == Enum.UserInputType.MouseButton2 or
-						input.UserInputType == Enum.UserInputType.MouseButton3
+						input.UserInputType == Enum.UserInputType.MouseButton1
+						or input.UserInputType == Enum.UserInputType.MouseButton2
+						or input.UserInputType == Enum.UserInputType.MouseButton3
 					then
 						stopListening(input.UserInputType)
 					end
 				else
-					if gameProcessed then return end
-					if currentKey == Enum.KeyCode.Unknown then return end
-		
+					if gameProcessed then
+						return
+					end
+					if currentKey == Enum.KeyCode.Unknown then
+						return
+					end
+
 					local triggered = false
 					if currentKey.EnumType == Enum.KeyCode and input.KeyCode == currentKey then
 						triggered = true
 					elseif currentKey.EnumType == Enum.UserInputType and input.UserInputType == currentKey then
 						triggered = true
 					end
-		
+
 					if triggered then
 						if bindType == "Toggle" then
 							isActive = not isActive
@@ -16088,53 +16127,55 @@ function Xan:CreateWindow(config)
 				end
 			end)
 			table.insert(Xan.Connections, keybindConn)
-		
+
 			if bindType == "Hold" then
 				local releaseConn = UserInputService.InputEnded:Connect(function(input)
-					if currentKey == Enum.KeyCode.Unknown then return end
-		
+					if currentKey == Enum.KeyCode.Unknown then
+						return
+					end
+
 					local released = false
 					if currentKey.EnumType == Enum.KeyCode and input.KeyCode == currentKey then
 						released = true
 					elseif currentKey.EnumType == Enum.UserInputType and input.UserInputType == currentKey then
 						released = true
 					end
-		
+
 					if released then
 						if justBound and (tick() - lastBindTime < 0.3) then
 							justBound = false
 							return
 						end
-		
+
 						Xan:RemoveFromBindList(name)
 						Util.SafeCall(callback, false)
 					end
 				end)
 				table.insert(Xan.Connections, releaseConn)
 			end
-		
+
 			keyBtn.MouseEnter:Connect(function()
 				if not listening then
 					Util.Tween(keyBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.CardHover })
 				end
 			end)
-		
+
 			keyBtn.MouseLeave:Connect(function()
 				if not listening then
 					Util.Tween(keyBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary })
 				end
 			end)
-		
+
 			keybindFrame.MouseEnter:Connect(function()
 				Util.Tween(keybindFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.CardHover })
 			end)
-		
+
 			keybindFrame.MouseLeave:Connect(function()
 				Util.Tween(keybindFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 			end)
-		
+
 			registerSearchElement(name, tabName, tabData, "Keybind", tabIcon, keybindFrame)
-		
+
 			return {
 				Frame = keybindFrame,
 				Value = function()
@@ -20533,7 +20574,7 @@ function Xan:CreateWindow(config)
 				Position = UDim2.new(0, 0, 0, 0),
 				Size = UDim2.new(0, 0, 1, 0),
 				Font = Enum.Font.GothamMedium,
-				Text = "<b>"..gameName.."</b>",
+				Text = "<b>" .. gameName .. "</b>",
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = (IsMobile and 17) or (isCompact and 15) or 16,
 				TextXAlignment = Enum.TextXAlignment.Left,
