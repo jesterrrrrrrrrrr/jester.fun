@@ -8,14 +8,14 @@ local SoundService = game:GetService("SoundService")
 
 local defaultParams = {
 	-- VISUALS
-	box = true,
-	name = true,
-	distance = true,
-	tracer = true,
+	box = false,
+	name = false,
+	distance = false,
+	tracer = false,
 	healthBar = false,
 
 	-- OUTLINE
-	outline = true,
+	outline = false,
 
 	-- COLOR
 	color = Color3.new(1, 1, 1),
