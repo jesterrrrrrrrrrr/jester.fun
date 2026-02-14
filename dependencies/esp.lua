@@ -11,7 +11,7 @@ local defaultParams = {
 	box = true,
 	name = true,
 	distance = true,
-	tracer = false,
+	tracer = true,
 	healthBar = false,
 
 	-- OUTLINE
@@ -33,6 +33,7 @@ local function createDrawings()
 		distance = Drawing.new("Text"),
 		tracerOutline = Drawing.new("Line"),
 		tracer = Drawing.new("Line"),
+
 		healthBar = Drawing.new("Square"),
 		healthOutline = Drawing.new("Square"),
 	}
@@ -317,17 +318,19 @@ runService.RenderStepped:Connect(function()
 		if params.tracer then
 			local mouse = game:GetService("UserInputService"):GetMouseLocation()
 			local from = Vector2.new(mouse.X, mouse.Y)
-			d.tracer.Visible = true
-			d.tracer.From = from
-			d.tracer.To = topLeft + Vector2.new(boxSize.X / 2, boxSize.Y / 2)
 
 			if params.outline then
 				d.tracerOutline.Visible = true
 				d.tracerOutline.From = from
-				d.tracerOutline.To = topLeft + Vector2.new(boxSize.X / 2, boxSize.Y / 2)
+				d.tracerOutline.To = topLeft + Vector2.new(boxSize.X / 2, boxSize.Y)
 			else
 				d.tracerOutline.Visible = false
 			end
+
+			d.tracer.Visible = true
+			d.tracer.From = from
+			d.tracer.To = topLeft + Vector2.new(boxSize.X / 2, boxSize.Y)
+			d.tracer.Color = params.color
 		else
 			d.tracer.Visible = false
 		end
@@ -356,9 +359,5 @@ runService.RenderStepped:Connect(function()
 		end
 	end
 end)
-
-for _, player in players:GetChildren() do
-	esp:add(player)
-end
 
 return esp
