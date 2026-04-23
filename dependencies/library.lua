@@ -15361,7 +15361,7 @@ function Xan:CreateWindow(config)
 				Position = UDim2.new(0.6, 0, 0, IsMobile and 8 or 6),
 				Size = UDim2.new(0.4, -14, 0, 20),
 				Font = Enum.Font.Roboto,
-				Text = Util.Round(value, 2) .. suffix ..,
+				Text = Util.Round(value, 2) .. suffix,
 				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = IsMobile and 14 or 13,
 				TextXAlignment = Enum.TextXAlignment.Right,
