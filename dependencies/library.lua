@@ -11409,14 +11409,14 @@ function Xan:CreateWindow(config)
 					BackgroundTransparency = 1,
 				})
 				if t.Button:FindFirstChild("Label") then
-					Util.Tween(t.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.TextDim, TextTransparency = 0.2 })
+					Util.Tween(t.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.TextSecondary, TextTransparency = 0.2 })
 				end
 				local iconEl = t.Button:FindFirstChild("Icon")
 				if iconEl then
 					if iconEl:IsA("ImageLabel") or iconEl:IsA("ImageButton") then
-						Util.Tween(iconEl, 0.2, { ImageColor3 = Xan.CurrentTheme.TextDim, ImageTransparency = 0.2 })
+						Util.Tween(iconEl, 0.2, { ImageColor3 = Xan.CurrentTheme.TextSecondary, ImageTransparency = 0.2 })
 					elseif iconEl:IsA("TextLabel") then
-						Util.Tween(iconEl, 0.2, { TextColor3 = Xan.CurrentTheme.TextDim, TextTransparency = 0.2 })
+						Util.Tween(iconEl, 0.2, { TextColor3 = Xan.CurrentTheme.TextSecondary, TextTransparency = 0.2 })
 					end
 				end
 			else
@@ -11429,14 +11429,14 @@ function Xan:CreateWindow(config)
 					Util.Tween(stroke, 0.2, { Color = Xan.CurrentTheme.CardBorder, Transparency = 0.3 })
 				end
 				if t.Button:FindFirstChild("Label") then
-					Util.Tween(t.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.TextDim, TextTransparency = 0 })
+					Util.Tween(t.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.TextSecondary, TextTransparency = 0 })
 				end
 				local iconEl = t.Button:FindFirstChild("Icon")
 				if iconEl then
 					if iconEl:IsA("ImageLabel") then
-						Util.Tween(iconEl, 0.2, { ImageColor3 = Xan.CurrentTheme.TextDim, ImageTransparency = 0 })
+						Util.Tween(iconEl, 0.2, { ImageColor3 = Xan.CurrentTheme.TextSecondary, ImageTransparency = 0 })
 					else
-						Util.Tween(iconEl, 0.2, { TextColor3 = Xan.CurrentTheme.TextDim, TextTransparency = 0 })
+						Util.Tween(iconEl, 0.2, { TextColor3 = Xan.CurrentTheme.TextSecondary, TextTransparency = 0 })
 					end
 				end
 			end
@@ -11455,14 +11455,14 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 0,
 			})
 			if tabData.Button:FindFirstChild("Label") then
-				Util.Tween(tabData.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.Text, TextTransparency = 0 })
+				Util.Tween(tabData.Button.Label, 0.2, { TextColor3 = Color3.new(230,230,230), TextTransparency = 0 })
 			end
 			local iconEl = tabData.Button:FindFirstChild("Icon")
 			if iconEl then
 				if iconEl:IsA("ImageLabel") or iconEl:IsA("ImageButton") then
-					Util.Tween(iconEl, 0.2, { ImageColor3 = Xan.CurrentTheme.Text, ImageTransparency = 0 })
+					Util.Tween(iconEl, 0.2, { ImageColor3 = Color3.new(230,230,230), ImageTransparency = 0 })
 				elseif iconEl:IsA("TextLabel") then
-					Util.Tween(iconEl, 0.2, { TextColor3 = Xan.CurrentTheme.Text, TextTransparency = 0 })
+					Util.Tween(iconEl, 0.2, { TextColor3 = Color3.new(230,230,230), TextTransparency = 0 })
 				end
 			end
 		else
@@ -11480,9 +11480,9 @@ function Xan:CreateWindow(config)
 			local iconEl = tabData.Button:FindFirstChild("Icon")
 			if iconEl then
 				if iconEl:IsA("ImageLabel") then
-					Util.Tween(iconEl, 0.2, { ImageColor3 = Xan.CurrentTheme.Text, ImageTransparency = 0 })
+					Util.Tween(iconEl, 0.2, { ImageColor3 = Color3.new(230,230,230), ImageTransparency = 0 })
 				else
-					Util.Tween(iconEl, 0.2, { TextColor3 = Xan.CurrentTheme.Text, TextTransparency = 0 })
+					Util.Tween(iconEl, 0.2, { TextColor3 = Color3.new(230,230,230), TextTransparency = 0 })
 				end
 			end
 		end
@@ -15241,7 +15241,7 @@ function Xan:CreateWindow(config)
 				})
 
 				Util.Tween(knob, 0.4, {
-					Position = enabled and UDim2.new(1, -22, 0.5, -10) or UDim2.new(0, 2, 0.5, -10),
+					Position = enabled and UDim2.new(0.1, 0, 0.5, 0) or UDim2.new(0.7, 0, 0.5, 0),
 				}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 
 				if not skipCallback then
@@ -15363,7 +15363,7 @@ function Xan:CreateWindow(config)
 				Font = Enum.Font.Roboto,
 				Text = Util.Round(value, 2) .. suffix,
 				TextColor3 = Xan.CurrentTheme.TextDim,
-				TextSize = IsMobile and 14 or 13,
+				TextSize = IsMobile and 12 or 11,
 				TextXAlignment = Enum.TextXAlignment.Right,
 				Parent = sliderFrame,
 			})
@@ -15411,9 +15411,9 @@ function Xan:CreateWindow(config)
 				end
 
 				local percent = (value - min) / (max - min)
-				Util.Tween(knob, 0.15, { Position = UDim2.new(percent, -8, 0.5, -8) }, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
-				Util.Tween(fill, 0.15, { Size = UDim2.new(percent, 0, 1, 0) }, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
-				valueLabel.Text = "<b>" .. Util.Round(value, 2) .. suffix .. "</b>"
+				Util.Tween(knob, 0.15, { Position = UDim2.new(percent, -8, 0.5, -8) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+				Util.Tween(fill, 0.15, { Size = UDim2.new(percent, 0, 1, 0) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+				valueLabel.Text =  Util.Round(value, 2) .. suffix
 
 								
 
@@ -15714,9 +15714,9 @@ function Xan:CreateWindow(config)
 				Position = UDim2.new(0.4, 0, 0, 0),
 				Size = UDim2.new(0.6, -40, 1, 0),
 				Font = Enum.Font.Roboto,
-				Text = "<b>" .. getDisplayText() .. "</b>",
-				TextColor3 = Xan.CurrentTheme.Accent,
-				TextSize = IsMobile and 14 or 13,
+				Text =  getDisplayText(),
+				TextColor3 = Xan.CurrentTheme.TextSecondary,
+				TextSize = IsMobile and 13 or 12,
 				TextXAlignment = Enum.TextXAlignment.Right,
 				TextTruncate = Enum.TextTruncate.AtEnd,
 				Parent = header,
@@ -15802,7 +15802,7 @@ function Xan:CreateWindow(config)
 						Util.Tween(
 							optionBtn,
 							0.15,
-							{ BackgroundColor3 = isCurrentlySelected and Xan.CurrentTheme.Accent or dropdownColor }
+							{ BackgroundColor3 = isCurrentlySelected and Xan.CurrentTheme.DropdownHover or dropdownColor }
 						)
 					end)
 
@@ -26215,7 +26215,7 @@ function Xan:ApplyTheme(themeName)
 				if isSearchResultSubtitle then
 					Util.Tween(element, 0.3, { TextColor3 = newTheme.TextDim })
 				else
-					Util.Tween(element, 0.3, { TextColor3 = newTheme.Accent })
+					Util.Tween(element, 0.3, { TextColor3 = newTheme.TextSecondary })
 				end
 			elseif name == "premium" or name == "MinimizedTitle" then
 				Util.Tween(element, 0.3, { TextColor3 = newTheme.Accent })
