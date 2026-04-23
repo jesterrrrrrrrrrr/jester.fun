@@ -2491,7 +2491,7 @@ function UI.Card(props, children)
 		Name = props.Name or "Card",
 		BackgroundColor3 = props.BackgroundColor3 or theme.Card,
 		Position = props.Position,
-		Size = props.Size or UDim2.new(1, 0, 0, 44),
+		Size = props.Size or UDim2.new(1, 0, 0, 50),
 		LayoutOrder = props.LayoutOrder,
 		ClipsDescendants = props.ClipsDescendants,
 		Parent = props.Parent,
@@ -11455,14 +11455,14 @@ function Xan:CreateWindow(config)
 				BackgroundTransparency = 0,
 			})
 			if tabData.Button:FindFirstChild("Label") then
-				Util.Tween(tabData.Button.Label, 0.2, { TextColor3 = Color3.new(230,230,230), TextTransparency = 0 })
+				Util.Tween(tabData.Button.Label, 0.2, { TextColor3 = Color3.new(200, 200, 200), TextTransparency = 0 })
 			end
 			local iconEl = tabData.Button:FindFirstChild("Icon")
 			if iconEl then
 				if iconEl:IsA("ImageLabel") or iconEl:IsA("ImageButton") then
-					Util.Tween(iconEl, 0.2, { ImageColor3 = Color3.new(230,230,230), ImageTransparency = 0 })
+					Util.Tween(iconEl, 0.2, { ImageColor3 = Color3.new(200, 200 ,200), ImageTransparency = 0 })
 				elseif iconEl:IsA("TextLabel") then
-					Util.Tween(iconEl, 0.2, { TextColor3 = Color3.new(230,230,230), TextTransparency = 0 })
+					Util.Tween(iconEl, 0.2, { TextColor3 = Color3.new(200, 200, 200), TextTransparency = 0 })
 				end
 			end
 		else
@@ -11480,9 +11480,9 @@ function Xan:CreateWindow(config)
 			local iconEl = tabData.Button:FindFirstChild("Icon")
 			if iconEl then
 				if iconEl:IsA("ImageLabel") then
-					Util.Tween(iconEl, 0.2, { ImageColor3 = Color3.new(230,230,230), ImageTransparency = 0 })
+					Util.Tween(iconEl, 0.2, { ImageColor3 = Color3.new(200, 200, 200), ImageTransparency = 0 })
 				else
-					Util.Tween(iconEl, 0.2, { TextColor3 = Color3.new(230,230,230), TextTransparency = 0 })
+					Util.Tween(iconEl, 0.2, { TextColor3 = Color3.new(200, 200, 200), TextTransparency = 0 })
 				end
 			end
 		end
@@ -13572,7 +13572,7 @@ function Xan:CreateWindow(config)
 
 				callback()
 			end)
-			
+
 			return {
 				Frame = btnFrame,
 				Button = btn,
@@ -32716,7 +32716,7 @@ function Xan:CreateOnboarding(config)
 		BackgroundColor3 = Color3.new(1, 1, 1),
 		AnchorPoint = Vector2.new(0, 0.5),
 		Position = UDim2.new(0, 25, 0.5, 0),
-		Size = UDim2.new(0, 20, 0, 20),
+		Size = UDim2.new(0, 18, 0, 18),
 		ZIndex = 22,
 		Parent = toggleFrame,
 	}, {
