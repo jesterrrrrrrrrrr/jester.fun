@@ -15216,7 +15216,7 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = Xan.CurrentTheme.ToggleKnob,
 				Position = enabled and UDim2.new(0.1, 0, 0.5, 0) or UDim2.new(.7, 0, 0.5, 0),
 				Size = UDim2.new(0, 15, 0, 15),
-				AnchorPoint = Vector2.new(0.5, 0, 0.5, 0)
+				AnchorPoint = Vector2.new(0.5, 0.5),
 				Parent = toggleBg,
 			}, {
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
