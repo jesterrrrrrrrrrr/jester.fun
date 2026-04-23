@@ -2641,9 +2641,9 @@ function Components.Section(parent, title, theme, layoutOrder)
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 4),
 		Size = UDim2.new(1, 0, 0, 20),
-		Font = Enum.Font.GothamBold,
+		Font = Enum.Font.Roboto,
 		Text = "<b>" .. title:upper() .. "</b>",
-		TextColor3 = Xan.CurrentTheme.Accent,
+		TextColor3 = Xan.CurrentTheme.TextSecondary,
 		TextSize = 11,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		Parent = section,
@@ -9908,7 +9908,7 @@ function Xan:CreateWindow(config)
 				Name = "Section_" .. text,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 28 or 26),
-				Font = Enum.Font.GothamBold,
+				Font = Enum.Font.Roboto,
 				Text = "<b>" .. text:upper() .. "</b>",
 				TextColor3 = Xan.CurrentTheme.Accent,
 				TextSize = IsMobile and 11 or 12,
@@ -13124,11 +13124,11 @@ function Xan:CreateWindow(config)
 				local pos = UserInputService:GetMouseLocation()
 				local relX = pos.X - btn.AbsolutePosition.X
 				local relY = pos.Y - btn.AbsolutePosition.Y
-				Util.Ripple(btn, relX, relY, Xan.CurrentTheme.Accent, 0.4)
+				--Util.Ripple(btn, relX, relY, Xan.CurrentTheme.Accent, 0.4)
 
-				Util.Tween(btn, 0.1, { BackgroundColor3 = Xan.CurrentTheme.Accent })
+				Util.Tween(btn, 0.1, { BackgroundColor3 = Xan.CurrentTheme.Card})
 				task.delay(0.1, function()
-					Util.Tween(btn, 0.2, { BackgroundColor3 = Xan.CurrentTheme.Card })
+					Util.Tween(btn, 0.2, { BackgroundColor3 = Xan.CurrentTheme.CardHover})
 				end)
 
 				callback()
@@ -13199,12 +13199,13 @@ function Xan:CreateWindow(config)
 				local pos = UserInputService:GetMouseLocation()
 				local relX = pos.X - btn.AbsolutePosition.X
 				local relY = pos.Y - btn.AbsolutePosition.Y
-				Util.Ripple(btn, relX, relY, Xan.CurrentTheme.Accent, 0.4)
+				--Util.Ripple(btn, relX, relY, Xan.CurrentTheme.Accent, 0.4)
 
-				Util.Tween(btn, 0.1, { BackgroundColor3 = Xan.CurrentTheme.Accent })
+				Util.Tween(btn, 0.1, { BackgroundColor3 = Xan.CurrentTheme.Card})
 				task.delay(0.1, function()
-					Util.Tween(btn, 0.2, { BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary })
+					Util.Tween(btn, 0.2, { BackgroundColor3 = Xan.CurrentTheme.CardHover})
 				end)
+
 				callback()
 			end)
 
@@ -13518,7 +13519,7 @@ function Xan:CreateWindow(config)
 				Position = UDim2.new(0, 14, 0.5, -9),
 				Size = UDim2.new(0, 18, 0, 18),
 				Image = icon,
-				ImageColor3 = Xan.CurrentTheme.Accent,
+				ImageColor3 = Xan.CurrentTheme.TextDim,
 				Parent = btn,
 			})
 
@@ -13562,15 +13563,16 @@ function Xan:CreateWindow(config)
 				local pos = UserInputService:GetMouseLocation()
 				local relX = pos.X - btn.AbsolutePosition.X
 				local relY = pos.Y - btn.AbsolutePosition.Y
-				Util.Ripple(btn, relX, relY, Xan.CurrentTheme.Accent, 0.4)
+				--Util.Ripple(btn, relX, relY, Xan.CurrentTheme.Accent, 0.4)
 
-				Util.Tween(btn, 0.1, { BackgroundColor3 = Xan.CurrentTheme.Accent })
+				Util.Tween(btn, 0.1, { BackgroundColor3 = Xan.CurrentTheme.Card})
 				task.delay(0.1, function()
-					Util.Tween(btn, 0.2, { BackgroundColor3 = Xan.CurrentTheme.Card })
+					Util.Tween(btn, 0.2, { BackgroundColor3 = Xan.CurrentTheme.CardHover})
 				end)
+
 				callback()
 			end)
-
+			
 			return {
 				Frame = btnFrame,
 				Button = btn,
@@ -15214,7 +15216,7 @@ function Xan:CreateWindow(config)
 			local knob = Util.Create("Frame", {
 				Name = "Knob",
 				BackgroundColor3 = Xan.CurrentTheme.ToggleKnob,
-				Position = enabled and UDim2.new(0.1, 0, 0.5, 0) or UDim2.new(.7, 0, 0.5, 0),
+				Position = enabled and UDim2.new(0.7, 0, 0.5, 0) or UDim2.new(0.3, 0, 0.5, 0),
 				Size = UDim2.new(0, 15, 0, 15),
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				Parent = toggleBg,
@@ -15241,7 +15243,7 @@ function Xan:CreateWindow(config)
 				})
 
 				Util.Tween(knob, 0.4, {
-					Position = enabled and UDim2.new(0.1, 0, 0.5, 0) or UDim2.new(0.7, 0, 0.5, 0),
+					Position = enabled and UDim2.new(0.7, 0, 0.5, 0) or UDim2.new(0.3, 0, 0.5, 0),
 				}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 
 				if not skipCallback then
@@ -15715,7 +15717,7 @@ function Xan:CreateWindow(config)
 				Size = UDim2.new(0.6, -40, 1, 0),
 				Font = Enum.Font.Roboto,
 				Text =  getDisplayText(),
-				TextColor3 = Xan.CurrentTheme.TextSecondary,
+				TextColor3 = Xan.CurrentTheme.TextDim,
 				TextSize = IsMobile and 13 or 12,
 				TextXAlignment = Enum.TextXAlignment.Right,
 				TextTruncate = Enum.TextTruncate.AtEnd,
@@ -15835,7 +15837,7 @@ function Xan:CreateWindow(config)
 							)
 						end
 
-						valueLabel.Text = "<b>" .. getDisplayText() .. "</b>"
+						valueLabel.Text = getDisplayText()	
 						if flag then
 							Xan:SetFlag(flag, selected)
 						end
@@ -26234,7 +26236,7 @@ function Xan:ApplyTheme(themeName)
 			elseif name == "Username" then
 				Util.Tween(element, 0.3, { TextColor3 = newTheme.Accent })
 			elseif name == "Section" or name:find("Section") then
-				Util.Tween(element, 0.3, { TextColor3 = newTheme.Accent })
+				Util.Tween(element, 0.3, { TextColor3 = newTheme.TextSecondary })
 			elseif name == "Value" or name == "Selected" or name == "Count" then
 				Util.Tween(element, 0.3, { TextColor3 = newTheme.Accent })
 			elseif name == "Label" then
@@ -26804,7 +26806,7 @@ function Xan:ApplyTheme(themeName)
 				if dName == "Value" or dName == "Selected" or dName == "Count" then
 					desc.TextColor3 = newTheme.Accent
 				elseif dName == "Section" or dName:find("Section") then
-					desc.TextColor3 = newTheme.Accent
+					desc.TextColor3 = newTheme.TextSecondary
 				end
 			elseif desc:IsA("ViewportFrame") then
 				desc.BackgroundColor3 = newTheme.Background
@@ -26959,7 +26961,7 @@ function Xan:ApplyTheme(themeName)
 					if dName == "Value" or dName == "Selected" or dName == "Count" then
 						desc.TextColor3 = newTheme.Accent
 					elseif dName == "Section" or dName:find("Section") then
-						desc.TextColor3 = newTheme.Accent
+						desc.TextColor3 = newTheme.TextSecondary
 					end
 				end
 			end
