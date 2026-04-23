@@ -15215,7 +15215,7 @@ function Xan:CreateWindow(config)
 				Name = "Knob",
 				BackgroundColor3 = Xan.CurrentTheme.ToggleKnob,
 				Position = enabled and UDim2.new(1, -22, 0.5, -10) or UDim2.new(0, 2, 0.5, -10),
-				Size = UDim2.new(0, 20, 0, 20),
+				Size = UDim2.new(0, 15, 0, 15),
 				Parent = toggleBg,
 			}, {
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
@@ -15232,7 +15232,7 @@ function Xan:CreateWindow(config)
 						Xan:AddToBindList(name, "[ON]")
 					else
 						Xan:RemoveFromBindList(name)
-					end
+					end	
 				end
 
 				Util.Tween(toggleBg, 0.25, {
@@ -15241,7 +15241,7 @@ function Xan:CreateWindow(config)
 
 				Util.Tween(knob, 0.25, {
 					Position = enabled and UDim2.new(1, -22, 0.5, -10) or UDim2.new(0, 2, 0.5, -10),
-				}, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+				}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 
 				if not skipCallback then
 					Util.SafeCall(callback, name, enabled)
@@ -15395,10 +15395,6 @@ function Xan:CreateWindow(config)
 				Parent = trackFrame,
 			}, {
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
-				Util.Create("UIStroke", {
-					Color = Xan.CurrentTheme.SliderFill,
-					Thickness = 2,
-				}),
 			})
 
 			local dragging = false
@@ -15414,9 +15410,12 @@ function Xan:CreateWindow(config)
 				end
 
 				local percent = (value - min) / (max - min)
-				fill.Size = UDim2.new(percent, 0, 1, 0)
-				knob.Position = UDim2.new(percent, -8, 0.5, -8)
+				Util.Tween(knob, 0.25, { Position = UDim2.new(percent, -8, 0.5, -8) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+				Util.Tween(fill, 0.25, { Size = UDim2.new(percent, 0, 1, 0) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 				valueLabel.Text = "<b>" .. Util.Round(value, 2) .. suffix .. "</b>"
+
+								
+
 
 				if not skipCallback then
 					callback(value)
@@ -15857,19 +15856,13 @@ function Xan:CreateWindow(config)
 				local totalHeight = #options * optionHeight + math.max(0, #options - 1) * spacing + 12
 				local baseHeight = IsMobile and 52 or 44
 
-				Util.Tween(arrow, 0.25, { Rotation = expanded and 180 or 0 })
+				Util.Tween(arrow, 0.5, { Rotation = expanded and 180 or 0 })
 				Util.Tween(
 					dropdownFrame,
-					0.3,
+					0.5,
 					{ Size = UDim2.new(1, 0, 0, expanded and (baseHeight + totalHeight) or baseHeight) },
-					Enum.EasingStyle.Quint
+					Enum.EasingStyle.Sine
 				)
-
-				if expanded then
-					Util.Tween(dropdownFrame.Stroke, 0.2, { Color = Xan.CurrentTheme.Accent, Transparency = 0 })
-				else
-					Util.Tween(dropdownFrame.Stroke, 0.2, { Color = Xan.CurrentTheme.CardBorder, Transparency = 0 })
-				end
 			end
 
 			local headerBtn = Util.Create("TextButton", {
