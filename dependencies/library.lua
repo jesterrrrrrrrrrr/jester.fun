@@ -15217,7 +15217,7 @@ function Xan:CreateWindow(config)
 				Name = "Knob",
 				BackgroundColor3 = Xan.CurrentTheme.ToggleKnob,
 				Position = enabled and UDim2.new(0.7, 0, 0.5, 0) or UDim2.new(0.3, 0, 0.5, 0),
-				Size = UDim2.new(0, 15, 0, 15),
+				Size = UDim2.new(0, 18, 0, 18),
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				Parent = toggleBg,
 			}, {
@@ -15242,7 +15242,7 @@ function Xan:CreateWindow(config)
 					BackgroundColor3 = enabled and Xan.CurrentTheme.ToggleEnabled or Xan.CurrentTheme.Toggle,
 				})
 
-				Util.Tween(knob, 0.4, {
+				Util.Tween(knob, 0.3, {
 					Position = enabled and UDim2.new(0.7, 0, 0.5, 0) or UDim2.new(0.3, 0, 0.5, 0),
 				}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 
@@ -15996,7 +15996,7 @@ function Xan:CreateWindow(config)
 
 			local function getKeyName(key)
 				if key == Enum.KeyCode.Unknown then
-					return "None"
+					return "N/A"
 				end
 
 				if key.EnumType == Enum.UserInputType then
@@ -16026,7 +16026,7 @@ function Xan:CreateWindow(config)
 				Position = UDim2.new(1, -100, 0.5, -14),
 				Size = UDim2.new(0, 86, 0, 28),
 				Font = Enum.Font.Roboto,
-				Text = "<b>" .. getKeyName(currentKey) .. "</b>",
+				Text =  getKeyName(currentKey),
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = IsMobile and 12 or 11,
 				AutoButtonColor = false,
