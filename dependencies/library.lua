@@ -3595,7 +3595,7 @@ function WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, 
 		Util.Create("TextLabel", {
 			Name = "Title",
 			BackgroundTransparency = 1,
-			Position = UDim2.new(0, titleX, 0, 14),
+			Position = UDim2.new(0, titleX, 0, 8),
 			Size = UDim2.new(1, titleWidth, 0, 20),
 			Font = Enum.Font.Roboto,
 			Text = title,
@@ -3609,7 +3609,7 @@ function WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, 
 		Util.Create("TextLabel", {
 			Name = "Subtitle",
 			BackgroundTransparency = 1,
-			Position = UDim2.new(0, titleX, 0, 32),
+			Position = UDim2.new(0, titleX, 0, 24),
 			Size = UDim2.new(1, titleWidth, 0, 14),
 			Font = Enum.Font.Roboto,
 			Text = subtitle,
@@ -4183,21 +4183,9 @@ function WindowBuilders.CreateContentTopbar(contentFrame, theme, hasSidebar)
 		Parent = contentFrame,
 	})
 
-	local tabTitle = Util.Create("TextLabel", {
-		Name = "TabTitle",
-		BackgroundTransparency = 1,
-		Position = UDim2.new(0, 20, 0, 0),
-		Size = UDim2.new(0.5, 0, 1, 0),
-		Font = Enum.Font.Roboto,
-		Text = "",
-		TextColor3 = theme.Text,
-		TextSize = 18,
-		TextXAlignment = Enum.TextXAlignment.Left,
-		ZIndex = 10,
-		Parent = topbar,
-	})
 
-	return topbar, tabTitle
+
+	return topbar
 end
 
 function WindowBuilders.CreateControlButtons(topbar, theme, hasSidebar)
@@ -4276,7 +4264,7 @@ function WindowBuilders.CreateSearchButton(parent, iconBtnSize, theme)
 	})
 
 	searchBtn.MouseEnter:Connect(function()
-		Util.Tween(searchBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.Accent, ImageTransparency = 0 })
+		Util.Tween(searchBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.TextSecondary, ImageTransparency = 0 })
 	end)
 	searchBtn.MouseLeave:Connect(function()
 		Util.Tween(searchBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.TextDim, ImageTransparency = 0.3 })
@@ -4317,7 +4305,7 @@ function WindowBuilders.CreateMinimizeButton(parent, iconBtnSize, theme, windowB
 		})
 
 		minBtn.MouseEnter:Connect(function()
-			Util.Tween(minBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.Warning, ImageTransparency = 0 })
+			Util.Tween(minBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.TextSecondary, ImageTransparency = 0 })
 		end)
 		minBtn.MouseLeave:Connect(function()
 			Util.Tween(minBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.TextDim, ImageTransparency = 0.3 })
@@ -4359,7 +4347,7 @@ function WindowBuilders.CreateCloseButton(parent, iconBtnSize, theme, windowButt
 		})
 
 		closeBtn.MouseEnter:Connect(function()
-			Util.Tween(closeBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.Error, ImageTransparency = 0 })
+			Util.Tween(closeBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.TextSecondary, ImageTransparency = 0 })
 		end)
 		closeBtn.MouseLeave:Connect(function()
 			Util.Tween(closeBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.TextDim, ImageTransparency = 0.3 })
@@ -4426,25 +4414,12 @@ function Layouts.BuildSidebarLayout(config, theme, libraryRef)
 	local brandFrame =
 		WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, showLogo, theme, logoPosition)
 
-	local brandDivider = nil
-	if brandFrame then
-		brandDivider = Util.Create("Frame", {
-			Name = "BrandDivider",
-			BackgroundColor3 = theme.Divider,
-			Position = UDim2.new(0, 12, 1, 0),
-			Size = UDim2.new(1, -30, 0, 1),
-			BorderSizePixel = 0,
-			BackgroundTransparency = 0.5,
-			ZIndex = ZIndex.Sidebar + 1,
-			Parent = brandFrame,
-		})
-	end
 
 	local tabListY = showUserInfo and (IsMobile and 108 or 124) or (IsMobile and 60 or 60)
 	local tabList = WindowBuilders.CreateTabContainer(sidebar, tabListY, theme)
 
 	local contentFrame, contentCover = WindowBuilders.CreateContentArea(mainFrame, sidebarWidth, 0, theme)
-	local topbar, tabTitle = WindowBuilders.CreateContentTopbar(contentFrame, theme, true)
+	local topbar = WindowBuilders.CreateContentTopbar(contentFrame, theme, true)
 	local controlsFrame, iconBtnSize = WindowBuilders.CreateControlButtons(topbar, theme, true)
 	iconBtnSize = iconBtnSize or (IsMobile and 36 or 24)
 
@@ -4459,12 +4434,10 @@ function Layouts.BuildSidebarLayout(config, theme, libraryRef)
 		Sidebar = sidebar,
 		SidebarDepthBar = sidebarDepthBar,
 		BrandFrame = brandFrame,
-		BrandDivider = brandDivider,
 		TabList = tabList,
 		ContentFrame = contentFrame,
 		ContentCover = contentCover,
 		Topbar = topbar,
-		TabTitle = tabTitle,
 		ControlsFrame = controlsFrame,
 		ContentContainer = contentContainer,
 		IconBtnSize = iconBtnSize,
@@ -4526,7 +4499,6 @@ function Layouts.BuildTraditionalLayout(config, theme, libraryRef)
 		ContentFrame = contentFrame,
 		ContentCover = contentCover,
 		Topbar = nil,
-		TabTitle = nil,
 		ControlsFrame = nil,
 		ContentContainer = contentContainer,
 		TopbarHeight = topbarHeight,
@@ -5103,12 +5075,10 @@ function Xan:CreateWindow(config)
 	local tradCloseBtn = guiObjects.TradCloseBtn or guiObjects.CompactCloseBtn
 
 	local brandFrame = guiObjects.BrandFrame
-	local brandDivider = guiObjects.BrandDivider
 
 	local contentFrame = guiObjects.ContentFrame
 	local contentCover = guiObjects.ContentCover
 	local topbar = guiObjects.Topbar
-	local tabTitle = guiObjects.TabTitle
 	local controlsFrame = guiObjects.ControlsFrame
 	local contentContainer = guiObjects.ContentContainer
 	local iconBtnSize = guiObjects.IconBtnSize or (IsMobile and 36 or 24)
@@ -5130,18 +5100,7 @@ function Xan:CreateWindow(config)
 	local tabList = guiObjects.TabList
 		or (hasSidebar and sidebar and WindowBuilders.CreateTabContainer(sidebar, tabListY, theme) or topTabContainer)
 
-	if brandDivider == nil and brandFrame then
-		brandDivider = Util.Create("Frame", {
-			Name = "BrandDivider",
-			BackgroundColor3 = theme.Divider,
-			Position = UDim2.new(0, 12, 1, 0),
-			Size = UDim2.new(1, -30, 0, 1),
-			BorderSizePixel = 0,
-			BackgroundTransparency = 0.5,
-			ZIndex = 6,
-			Parent = brandFrame,
-		})
-	end
+	
 
 	local settingsBtnSize = IsMobile and 44 or 28
 	local slidersIcon = "rbxassetid://133630958135516"
@@ -11487,14 +11446,7 @@ function Xan:CreateWindow(config)
 			end
 		end
 
-		if hasSidebar then
-			Util.Tween(tabTitle, 0.12, { TextTransparency = 1 }, Enum.EasingStyle.Quint)
-
-			task.delay(0.1, function()
-				tabTitle.Text = tabData.Name
-				Util.Tween(tabTitle, 0.18, { TextTransparency = 0 }, Enum.EasingStyle.Quint)
-			end)
-		end
+		
 
 		task.delay(0.12, function()
 			tabData.Content.GroupTransparency = 1
@@ -11735,9 +11687,7 @@ function Xan:CreateWindow(config)
 			if contentContainer then
 				Util.Tween(contentContainer, 0.2, { GroupTransparency = 1 }, Enum.EasingStyle.Quint)
 			end
-			if tabTitle then
-				Util.Tween(tabTitle, 0.2, { TextTransparency = 1 }, Enum.EasingStyle.Quint)
-			end
+			
 			if searchBtn then
 				Util.Tween(searchBtn, 0.2, { ImageTransparency = 1 }, Enum.EasingStyle.Quint)
 			end
@@ -12040,9 +11990,7 @@ function Xan:CreateWindow(config)
 			if contentContainer then
 				contentContainer.GroupTransparency = 1
 			end
-			if tabTitle then
-				tabTitle.TextTransparency = 1
-			end
+			
 			if searchBtn then
 				searchBtn.ImageTransparency = 1
 			end
@@ -12131,9 +12079,7 @@ function Xan:CreateWindow(config)
 				if contentContainer then
 					Util.Tween(contentContainer, 0.25, { GroupTransparency = 0 }, Enum.EasingStyle.Quint)
 				end
-				if tabTitle then
-					Util.Tween(tabTitle, 0.25, { TextTransparency = 0 }, Enum.EasingStyle.Quint)
-				end
+				
 				if searchBtn then
 					Util.Tween(searchBtn, 0.25, { ImageTransparency = 0.3 }, Enum.EasingStyle.Quint)
 				end
@@ -23570,6 +23516,15 @@ function Xan:CreateLoginScreen(config)
 	})
 
 	Components.Shadow(mainFrame, theme, 16, 12)
+	
+	Util.Create("Frame", {
+		Name = "Divider",
+		BackgroundColor3 = Xan.CurrentTheme.Divider,
+		Size = UDim2.new(1, 0, 0, 1),
+		Position = UDim2.new(0, 0, 0.11, 0),
+		BackgroundTransparency = 0.5,
+		Parent = mainFrame
+	})
 
 	local leftPanelContainer = Util.Create("Frame", {
 		Name = "LeftPanelContainer",
@@ -26100,8 +26055,9 @@ function Xan:ApplyTheme(themeName)
 				Util.Tween(element, 0.3, { BackgroundColor3 = newTheme.BackgroundTertiary })
 			elseif name == "BannerGradient" then
 				Util.Tween(element, 0.3, { BackgroundColor3 = newTheme.Background })
-			elseif name == "Divider" or name == "SearchTopbarDivider" then
+			elseif name == "Divider" or name == "SearchTopbarDivider"  then
 				Util.Tween(element, 0.3, { BackgroundColor3 = newTheme.Divider })
+				
 			elseif name == "ContentArea" or name == "Content" then
 				Util.Tween(element, 0.3, { BackgroundColor3 = newTheme.Background })
 			elseif name == "Track" or name == "SliderTrack" then
@@ -26208,7 +26164,7 @@ function Xan:ApplyTheme(themeName)
 				return
 			end
 
-			if name == "Title" or name == "TabTitle" then
+			if name == "Title" then
 				Util.Tween(element, 0.3, { TextColor3 = newTheme.Text })
 			elseif name == "Subtitle" then
 				local parent = element.Parent
