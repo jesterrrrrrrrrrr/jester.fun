@@ -6728,6 +6728,8 @@ function Xan:CreateWindow(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(0, 12) }),
 	})
 
+	
+
 	local searchTopRightCover = Util.Create("Frame", {
 		Name = "TopRightCover",
 		BackgroundColor3 = Xan.CurrentTheme.Background,
@@ -11345,6 +11347,8 @@ function Xan:CreateWindow(config)
 		Size = UDim2.new(1, 0, 0, 1),
 		Position = UDim2.new(0, 0, 0.11, 0),
 		BackgroundTransparency = 0.5,
+		BorderSizePixel = 0,
+		ZIndex = 16,
 		Parent = mainFrame
 	})
 
