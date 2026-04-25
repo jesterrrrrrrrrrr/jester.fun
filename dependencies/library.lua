@@ -12837,12 +12837,12 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
 			})
 
-			local iconSize = IsMobile and 32 or 28
+			local iconSize = IsMobile and 32 or 26
 			icon = Util.Create("ImageLabel", {
 				Name = "Icon",
 				BackgroundTransparency = 1,
 				AnchorPoint = IsMobile and Vector2.new(0.5, 0.5) or Vector2.new(0, 0.5),
-				Position = IsMobile and UDim2.new(0.5, 0, 0.5, 0) or UDim2.new(0, 12, 0.5, 0),
+				Position = IsMobile and UDim2.new(0.5, 0, 0.5, 0) or UDim2.new(0, 15, 0.47, 0),
 				Size = UDim2.new(0, iconSize, 0, iconSize),
 				Image = tabIcon,
 				ImageColor3 = Xan.CurrentTheme.TextDim,
@@ -16153,6 +16153,20 @@ function Xan:CreateWindow(config)
         Xan:RemoveFromBindList(name)
         Util.SafeCall(callback, false)
     end)
+
+    function window:CreateDivider()
+		local layoutOrder = #tabs + 1
+		Util.Create("Frame", {
+		   Name = "Divider",
+		   BackgroundColor3 = Xan.CurrentTheme.Divider,
+		   BackgroundTransparency = 0.5,
+		   BorderSizePixel = 0,
+		   Size = UDim2.new(1, -24, 0, 1),
+		   LayoutOrder = layoutOrder or 0,
+		   Parent = parent,
+	   })
+	   
+	end
 
     table.insert(Xan.Connections, focusLostConn)
 			end
