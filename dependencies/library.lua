@@ -16156,7 +16156,7 @@ function Xan:CreateWindow(config)
 
     function window:CreateDivider()
 		local layoutOrder = #tabs + 1
-		Util.Create("Frame", {
+		return Util.Create("Frame", {
 		   Name = "Divider",
 		   BackgroundColor3 = Xan.CurrentTheme.Divider,
 		   BackgroundTransparency = 0.5,
@@ -16165,7 +16165,6 @@ function Xan:CreateWindow(config)
 		   LayoutOrder = layoutOrder or 0,
 		   Parent = parent,
 	   })
-	   
 	end
 
     table.insert(Xan.Connections, focusLostConn)
