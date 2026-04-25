@@ -11339,6 +11339,16 @@ function Xan:CreateWindow(config)
 		Parent = mainFrame,
 	})
 
+	Util.Create("Frame", {
+		Name = "Divider",
+		BackgroundColor3 = Xan.CurrentTheme.Divider,
+		Size = UDim2.new(1, 0, 0, 1),
+		Position = UDim2.new(0, 0, 0.11, 0),
+		BackgroundTransparency = 0.5,
+		Parent = mainFrame
+	})
+
+
 	local bottomRightDrag = Util.Create("Frame", {
 		Name = "BottomRightDrag",
 		BackgroundTransparency = 1,
@@ -23517,15 +23527,7 @@ function Xan:CreateLoginScreen(config)
 
 	Components.Shadow(mainFrame, theme, 16, 12)
 	
-	Util.Create("Frame", {
-		Name = "Divider",
-		BackgroundColor3 = Xan.CurrentTheme.Divider,
-		Size = UDim2.new(1, 0, 0, 1),
-		Position = UDim2.new(0, 0, 0.11, 0),
-		BackgroundTransparency = 0.5,
-		Parent = mainFrame
-	})
-
+	
 	local leftPanelContainer = Util.Create("Frame", {
 		Name = "LeftPanelContainer",
 		BackgroundTransparency = 1,
