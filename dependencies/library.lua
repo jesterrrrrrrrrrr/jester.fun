@@ -4997,35 +4997,30 @@ function Xan:CreateWindow(config)
 	else
 		theme = self.CurrentTheme
 	end
-	local minSize = config.MinSize or Vector2.new(400, 300)
-	local saveConfig = config.SaveConfig ~= false
-	local configName = config.ConfigName or title:gsub("%s+", "_"):lower()
-	local showUserInfo = config.ShowUserInfo ~= false
-	local userAvatar = config.UserAvatar
-	local userName = config.UserName or LocalPlayer.DisplayName
-	local userSubtitle = config.UserSubtitle or "@" .. LocalPlayer.Name
-	local logoImage = config.Logo or Logos.Default
-	local showLogo = config.ShowLogo ~= false
-	local showSplash = config.ShowSplash
-	if showSplash == nil then
-		showSplash = IsMobile
-	end
-	local splashDuration = config.SplashDuration or 2
-	local windowButtonStyle = config.WindowButtonStyle or config.ButtonStyle or "Default"
-	local showSettings = config.ShowSettings ~= false
-	local showSearch = config.ShowSearch ~= false
-	local showActiveList = config.ShowActiveList
-	if showActiveList == nil then
-		showActiveList = Xan.ActiveBindsVisible
-	end
-	local layout = layoutInfo.Name
-	local hasSidebar = layoutInfo.HasSidebar
+	local ui = {}
 
-	local profilePage = config.ProfilePage
-	local profileEnabled = profilePage ~= nil
-	local profileCloseSafeguardTime = 0
+ui.minSize = config.MinSize or Vector2.new(400, 300)
+ui.saveConfig = config.SaveConfig ~= false
+ui.configName = config.ConfigName or title:gsub("%s+", "_"):lower()
+ui.showUserInfo = config.ShowUserInfo ~= false
+ui.userAvatar = config.UserAvatar
+ui.userName = config.UserName or LocalPlayer.DisplayName
+ui.userSubtitle = config.UserSubtitle or "@" .. LocalPlayer.Name
+ui.logoImage = config.Logo or Logos.Default
+ui.showLogo = config.ShowLogo ~= false
+ui.showSplash = if config.ShowSplash == nil then IsMobile else config.ShowSplash
+ui.splashDuration = config.SplashDuration or 2
+ui.windowButtonStyle = config.WindowButtonStyle or config.ButtonStyle or "Default"
+ui.showSettings = config.ShowSettings ~= false
+ui.showSearch = config.ShowSearch ~= false
+ui.showActiveList = if config.ShowActiveList == nil then Xan.ActiveBindsVisible else config.ShowActiveList
+ui.layout = layoutInfo.Name
+ui.hasSidebar = layoutInfo.HasSidebar
+ui.profilePage = config.ProfilePage
+ui.profileEnabled = profilePage ~= nil
+ui.profileCloseSafeguardTime = 0
 
-	self.CurrentTheme = theme
+self.CurrentTheme = theme
 
 	if showSplash then
 		local splashDone = false
