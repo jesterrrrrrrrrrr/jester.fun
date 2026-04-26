@@ -2487,7 +2487,7 @@ end
 function UI.Card(props, children)
 	props = props or {}
 	local theme = Xan.CurrentTheme or Xan.Themes.Default
-	local frame = UI.Frame({
+	local frame = frame({
 		Name = props.Name or "Card",
 		BackgroundColor3 = props.BackgroundColor3 or theme.Card,
 		Position = props.Position,
@@ -3192,7 +3192,7 @@ end
 local LayoutRegistry = {
 	Default = {
 		Name = "Default",
-		Description = "Sidebar layout with tabs on the left",
+		Description = "Sidebar ui.layout with tabs on the left",
 		HasSidebar = true,
 		SupportsHub = true,
 		SupportsCheat = true,
@@ -3571,7 +3571,7 @@ function WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, 
 				Name = "Logo",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
-				Image = isTwoToneLogo and Logos.XanBarBody or logoImage,
+				Image = isTwoToneLogo and Logos.XanBarBody or ui.logoImage,
 				ImageColor3 = Color3.new(1, 1, 1),
 				ScaleType = Enum.ScaleType.Fit,
 				ZIndex = 8,
@@ -3620,7 +3620,7 @@ function WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, 
 			Parent = brandFrame,
 		})
 	else
-		if showLogo and logoImage then
+		if ui.showLogo and logoImage then
 			local isTwoToneLogo = logoImage == Logos.XanBar or logoImage == Logos.XanBarBody
 
 			local logoContainer = Util.Create("Frame", {
@@ -3638,7 +3638,7 @@ function WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, 
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
 				Size = UDim2.new(1, 0, 1, 0),
-				Image = isTwoToneLogo and Logos.XanBarBody or logoImage,
+				Image = isTwoToneLogo and Logos.XanBarBody or ui.logoImage,
 				ImageColor3 = Color3.new(1, 1, 1),
 				ScaleType = Enum.ScaleType.Fit,
 				ZIndex = 7,
@@ -4998,7 +4998,6 @@ function Xan:CreateWindow(config)
 		theme = self.CurrentTheme
 	end
 	local ui = {}
-
 ui.minSize = config.MinSize or Vector2.new(400, 300)
 ui.saveConfig = config.SaveConfig ~= false
 ui.configName = config.ConfigName or title:gsub("%s+", "_"):lower()
@@ -5022,14 +5021,16 @@ ui.profileCloseSafeguardTime = 0
 
 self.CurrentTheme = theme
 
-	if showSplash then
+self.CurrentTheme = theme
+
+	if ui.showSplash then
 		local splashDone = false
 		self:CreateSplashScreen({
 			Title = title,
 			Subtitle = subtitle,
-			Duration = splashDuration,
+			Duration = ui.splashDuration,
 			Theme = theme,
-			Logo = logoImage,
+			Logo = ui.logoImage,
 			OnComplete = function()
 				splashDone = true
 			end,
@@ -5082,7 +5083,7 @@ self.CurrentTheme = theme
 
 	local topbarHeight = guiObjects.TopbarHeight or 0
 	local tabListHeight = guiObjects.TabListHeight or 0
-	local tabListSpacing = hasSidebar and 0 or 8
+	local tabListSpacing = ui.hasSidebar and 0 or 8
 	local topBarHeight = topbarHeight + tabListSpacing + tabListHeight + (hasSidebar and 0 or 8)
 
 	local doClose
@@ -5091,7 +5092,7 @@ self.CurrentTheme = theme
 	local handleMinimizeClick
 	local openSettings
 
-	local tabListY = showUserInfo and (IsMobile and 108 or 124) or (IsMobile and 60 or 60)
+	local tabListY = ui.showUserInfo and (IsMobile and 108 or 124) or (IsMobile and 60 or 60)
 	local tabList = guiObjects.TabList
 		or (hasSidebar and sidebar and WindowBuilders.CreateTabContainer(sidebar, tabListY, theme) or topTabContainer)
 
@@ -5100,7 +5101,7 @@ self.CurrentTheme = theme
 	local settingsBtnSize = IsMobile and 44 or 28
 	local slidersIcon = "rbxassetid://133630958135516"
 	local settingsBtn
-	if hasSidebar and brandFrame then
+	if ui.hasSidebar and brandFrame then
 		settingsBtn = Util.Create("ImageButton", {
 			Name = "SettingsBtn",
 			BackgroundTransparency = 1,
@@ -5112,7 +5113,7 @@ self.CurrentTheme = theme
 			ImageTransparency = 0.3,
 			AutoButtonColor = false,
 			ZIndex = 8,
-			Visible = showSettings and not IsMobile,
+			Visible = ui.showSettings and not IsMobile,
 			Parent = brandFrame,
 		})
 
@@ -5131,7 +5132,7 @@ self.CurrentTheme = theme
 	end
 
 	local userFrame
-	if showUserInfo and hasSidebar and sidebar then
+	if ui.showUserInfo and hasSidebar and sidebar then
 		userFrame = Util.Create("Frame", {
 			Name = "UserInfo",
 			BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
@@ -5201,8 +5202,8 @@ self.CurrentTheme = theme
 
 		task.spawn(function()
 			local imageUrl
-			if userAvatar then
-				imageUrl = userAvatar
+			if ui.userAvatar then
+				imageUrl = ui.userAvatar
 			else
 				local success, result = pcall(function()
 					return Players:GetUserThumbnailAsync(
@@ -5247,7 +5248,7 @@ self.CurrentTheme = theme
 				Position = UDim2.new(0, 58, 0, 26),
 				Size = UDim2.new(1, -68, 0, 18),
 				Font = Enum.Font.Roboto,
-				Text = " <b>" .. userName .. "</b>",
+				Text = " <b>" .. ui.userName .. "</b>",
 				TextColor3 = Xan.CurrentTheme.TextSecondary,
 				TextSize = 13,
 				TextXAlignment = Enum.TextXAlignment.Left,
@@ -5258,7 +5259,7 @@ self.CurrentTheme = theme
 
 			local usernameTooltip = nil
 			local maxDisplayLength = 14
-			local isTruncated = #userName > maxDisplayLength
+			local isTruncated = #ui.userName > maxDisplayLength
 
 			if isTruncated then
 				usernameLabel.MouseEnter:Connect(function()
@@ -5288,7 +5289,7 @@ self.CurrentTheme = theme
 							Size = UDim2.new(0, 0, 1, 0),
 							AutomaticSize = Enum.AutomaticSize.X,
 							Font = Enum.Font.Roboto,
-							Text = "<b>" .. userName .. "</b>",
+							Text = "<b>" .. ui.userName .. "</b>",
 							TextColor3 = Xan.CurrentTheme.Text,
 							TextSize = 12,
 							ZIndex = 501,
@@ -5336,7 +5337,7 @@ self.CurrentTheme = theme
 			end
 		end
 
-		if profileEnabled then
+		if ui.profileEnabled then
 			local userButton = Util.Create("TextButton", {
 				Name = "UserButton",
 				BackgroundTransparency = 1,
@@ -5355,7 +5356,7 @@ self.CurrentTheme = theme
 
 			local profileOverlay = nil
 			local profileOpen = false
-			local selectedGame = profilePage.DefaultGame or "Frontlines"
+			local selectedGame = ui.profilePage.DefaultGame or "Frontlines"
 			local gameDropdownOpen = false
 
 			local function showProfilePage()
@@ -5397,7 +5398,7 @@ self.CurrentTheme = theme
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 16, 0, 16),
 					Size = UDim2.new(0, 24, 0, 24),
-					Image = logoImage,
+					Image = ui.logoImage,
 					ImageTransparency = 1,
 					ZIndex = 102,
 					Parent = hubSidebar,
@@ -5465,7 +5466,7 @@ self.CurrentTheme = theme
 					Position = UDim2.new(0, 0, 0, 24),
 					Size = UDim2.new(1, 0, 0, 16),
 					Font = Enum.Font.Roboto,
-					Text = userName,
+					Text = ui.userName,
 					TextColor3 = Xan.CurrentTheme.Accent,
 					TextSize = 13,
 					TextTransparency = 1,
@@ -5474,7 +5475,7 @@ self.CurrentTheme = theme
 				})
 
 				local gamesList = {}
-				if profilePage.Games then
+				if ui.profilePage.Games then
 					for gameName, _ in pairs(profilePage.Games) do
 						table.insert(gamesList, gameName)
 					end
@@ -5482,13 +5483,13 @@ self.CurrentTheme = theme
 				table.sort(gamesList)
 
 				local currentGame = selectedGame
-				if not profilePage.Games or not profilePage.Games[currentGame] then
+				if not ui.profilePage.Games or not profilePage.Games[currentGame] then
 					currentGame = gamesList[1] or ""
 				end
 
 				local function getGameIcon(gameName)
-					if profilePage.Games and profilePage.Games[gameName] then
-						local gameData = profilePage.Games[gameName]
+					if ui.profilePage.Games and profilePage.Games[gameName] then
+						local gameData = ui.profilePage.Games[gameName]
 						if gameData.Icon then
 							return gameData.Icon
 						end
@@ -5498,16 +5499,16 @@ self.CurrentTheme = theme
 
 				local function getGameBanner(gameName)
 					if
-						profilePage.Games
-						and profilePage.Games[gameName]
-						and profilePage.Games[gameName].BannerImage
+						ui.profilePage.Games
+						and ui.profilePage.Games[gameName]
+						and ui.profilePage.Games[gameName].BannerImage
 					then
-						return profilePage.Games[gameName].BannerImage
+						return ui.profilePage.Games[gameName].BannerImage
 					end
-					return profilePage.BannerImage or ""
+					return ui.profilePage.BannerImage or ""
 				end
 
-				local productsList = profilePage.Products or { { Name = profilePage.ProductName or title } }
+				local productsList = ui.profilePage.Products or { { Name = profilePage.ProductName or title } }
 				local currentProduct = productsList[1].Name
 
 				local productBtnHeight = IsMobile and 44 or 38
@@ -5728,7 +5729,7 @@ self.CurrentTheme = theme
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, -110, 0, 26),
 					Font = Enum.Font.Roboto,
-					Text = profilePage.ProductName or title,
+					Text = ui.profilePage.ProductName or title,
 					TextColor3 = Xan.CurrentTheme.Text,
 					TextSize = 20,
 					TextTransparency = 1,
@@ -5773,7 +5774,7 @@ self.CurrentTheme = theme
 					Position = UDim2.new(0, 0, 0, 52),
 					Size = UDim2.new(0.5, 0, 0, 16),
 					Font = Enum.Font.Roboto,
-					Text = profilePage.Price or "",
+					Text = ui.profilePage.Price or "",
 					TextColor3 = Xan.CurrentTheme.TextSecondary,
 					TextSize = 12,
 					TextTransparency = 1,
@@ -5784,7 +5785,7 @@ self.CurrentTheme = theme
 
 				local loadBtn
 				local loadBtnLoading = false
-				if profilePage.OnLoad then
+				if ui.profilePage.OnLoad then
 					local function getMutedAccent()
 						return Color3.fromRGB(
 							math.floor(Xan.CurrentTheme.Accent.R * 180),
@@ -5841,7 +5842,7 @@ self.CurrentTheme = theme
 
 						task.spawn(function()
 							pcall(function()
-								profilePage.OnLoad(currentGame)
+								ui.profilePage.OnLoad(currentGame)
 							end)
 
 							task.delay(0.5, function()
@@ -5860,10 +5861,10 @@ self.CurrentTheme = theme
 
 				local joinGameBtn = nil
 				local function getGameId(gameName)
-					if profilePage.Games and profilePage.Games[gameName] and profilePage.Games[gameName].GameId then
-						return profilePage.Games[gameName].GameId
+					if ui.profilePage.Games and profilePage.Games[gameName] and profilePage.Games[gameName].GameId then
+						return ui.profilePage.Games[gameName].GameId
 					end
-					return profilePage.GameId
+					return ui.profilePage.GameId
 				end
 
 				local currentGameId = getGameId(currentGame)
@@ -6047,7 +6048,7 @@ self.CurrentTheme = theme
 					currentGame = gameName
 					selectedGame = gameName
 
-					local gameData = profilePage.Games and profilePage.Games[gameName] or {}
+					local gameData = ui.profilePage.Games and profilePage.Games[gameName] or {}
 
 					productSub.Text = "for " .. gameName
 					productImg.Image = getGameIcon(gameName)
@@ -6066,9 +6067,9 @@ self.CurrentTheme = theme
 						end
 					end
 
-					subValue.Text = gameData.Expiry or profilePage.SubscriptionExpiry or "N/A"
+					subValue.Text = gameData.Expiry or ui.profilePage.SubscriptionExpiry or "N/A"
 
-					local status = gameData.Status or profilePage.Status or "active"
+					local status = gameData.Status or ui.profilePage.Status or "active"
 					statusValue.Text = status
 					if string.lower(status) == "expired" or string.lower(status) == "inactive" then
 						statusValue.TextColor3 = Xan.CurrentTheme.Error
@@ -6557,7 +6558,7 @@ self.CurrentTheme = theme
 		end
 	end
 
-	local sidebarControlsParent = hasSidebar and controlsFrame or nil
+	local sidebarControlsParent = ui.hasSidebar and controlsFrame or nil
 
 	local topbarSettingsBtn = Util.Create("ImageButton", {
 		Name = "TopbarSettings",
@@ -6569,7 +6570,7 @@ self.CurrentTheme = theme
 		AutoButtonColor = false,
 		ZIndex = 11,
 		LayoutOrder = 0,
-		Visible = showSettings and IsMobile and hasSidebar,
+		Visible = ui.showSettings and IsMobile and hasSidebar,
 		Parent = sidebarControlsParent,
 	})
 
@@ -6590,7 +6591,7 @@ self.CurrentTheme = theme
 		AutoButtonColor = false,
 		ZIndex = 11,
 		LayoutOrder = 1,
-		Visible = showSearch,
+		Visible = ui.showSearch,
 		Parent = sidebarControlsParent,
 	})
 
@@ -6615,7 +6616,7 @@ self.CurrentTheme = theme
 		AutoButtonColor = false,
 		ZIndex = 11,
 		LayoutOrder = 2,
-		Visible = isMacStyle and hasSidebar,
+		Visible = isMacStyle and ui.hasSidebar,
 		Parent = sidebarControlsParent,
 	}, {
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
@@ -6630,7 +6631,7 @@ self.CurrentTheme = theme
 		AutoButtonColor = false,
 		ZIndex = 11,
 		LayoutOrder = 3,
-		Visible = isMacStyle and hasSidebar,
+		Visible = isMacStyle and ui.hasSidebar,
 		Parent = sidebarControlsParent,
 	}, {
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
@@ -6646,7 +6647,7 @@ self.CurrentTheme = theme
 		AutoButtonColor = false,
 		ZIndex = 11,
 		LayoutOrder = 2,
-		Visible = not isMacStyle and hasSidebar,
+		Visible = not isMacStyle and ui.hasSidebar,
 		Parent = sidebarControlsParent,
 	})
 
@@ -6660,7 +6661,7 @@ self.CurrentTheme = theme
 		AutoButtonColor = false,
 		ZIndex = 11,
 		LayoutOrder = 3,
-		Visible = not isMacStyle and hasSidebar,
+		Visible = not isMacStyle and ui.hasSidebar,
 		Parent = sidebarControlsParent,
 	})
 
@@ -7830,7 +7831,7 @@ self.CurrentTheme = theme
 	end
 
 	local function openSearch()
-		if not showSearch then
+		if not ui.showSearch then
 			return
 		end
 		if searchOpen then
@@ -11153,7 +11154,7 @@ self.CurrentTheme = theme
 	end
 
 	openSettings = function()
-		if not showSettings then
+		if not ui.showSettings then
 			return
 		end
 		if settingsOpen then
@@ -11278,20 +11279,20 @@ self.CurrentTheme = theme
 
 	local originalSize = size
 
-	Xan.ActiveBindsVisible = showActiveList
+	Xan.ActiveBindsVisible = ui.showActiveList
 
 	window = {
 		Gui = screenGui,
 		Frame = mainFrame,
 		Theme = theme,
-		Layout = layout,
-		HasSidebar = hasSidebar,
+		Layout = Layout,
+		HasSidebar = HasSidebar,
 		Tabs = tabs,
 		Minimized = false,
 		Visible = true,
 		SearchOpen = false,
-		_showActiveListEnabled = showActiveList,
-		_activeListWasVisible = showActiveList,
+		_showActiveListEnabled = ui.showActiveList,
+		_activeListWasVisible = ui.showActiveList,
 		_savedMinPos = nil,
 	}
 
@@ -11371,7 +11372,7 @@ self.CurrentTheme = theme
 		local inactiveTextColor = Xan.CurrentTheme.TextDim
 
 		for _, t in pairs(tabs) do
-			if hasSidebar then
+			if ui.hasSidebar then
 				Util.Tween(t.Button, 0.2, {
 					BackgroundColor3 = Xan.CurrentTheme.Sidebar,
 					BackgroundTransparency = 1,
@@ -11417,7 +11418,7 @@ self.CurrentTheme = theme
 			end
 		end
 
-		if hasSidebar then
+		if ui.hasSidebar then
 			Util.Tween(tabData.Button, 0.2, {
 				BackgroundColor3 = Xan.CurrentTheme.SidebarActive,
 				BackgroundTransparency = 0,
@@ -11682,7 +11683,7 @@ self.CurrentTheme = theme
 			dragBarContainer.Visible = false
 		end
 
-		if hasSidebar then
+		if ui.hasSidebar then
 			if sidebar then
 				if sidebarDepthBar then
 					sidebarDepthBar.Visible = false
@@ -11965,7 +11966,7 @@ self.CurrentTheme = theme
 		minimized = false
 		window.Minimized = false
 
-		if hasSidebar then
+		if ui.hasSidebar then
 			window._savedMinPos = mainFrame.Position
 
 			if minimizedLogo then
@@ -12306,7 +12307,7 @@ self.CurrentTheme = theme
 	end
 
 	doClose = function()
-		if os.clock() - profileCloseSafeguardTime < 0.5 then
+		if os.clock() - ui.profileCloseSafeguardTime < 0.5 then
 			return
 		end
 
@@ -12400,7 +12401,7 @@ self.CurrentTheme = theme
 			end
 
 			if tradSettingsBtn then
-				tradSettingsBtn.Visible = showSettings
+				tradSettingsBtn.Visible = ui.showSettings
 				tradSettingsBtn.MouseButton1Click:Connect(function()
 					if settingsOpen then
 						closeSettings()
@@ -12492,7 +12493,7 @@ self.CurrentTheme = theme
 		end
 
 		if minimized then
-			if hasSidebar then
+			if ui.hasSidebar then
 				if sidebar then
 					sidebar.Visible = false
 				end
@@ -12612,7 +12613,7 @@ self.CurrentTheme = theme
 			Util.Tween(dragBarCosmetic, 0.2, { BackgroundTransparency = 1 }, Enum.EasingStyle.Quint)
 		end
 
-		if minimized and not hasSidebar then
+		if minimized and not ui.hasSidebar then
 			if traditionalTopbar then
 				Util.Tween(traditionalTopbar, 0.25, { BackgroundTransparency = 1 }, Enum.EasingStyle.Exponential)
 			end
@@ -12777,7 +12778,7 @@ self.CurrentTheme = theme
 			warn("[xan.bar] contentContainer is nil - tabs may not display correctly")
 		end
 
-		if hasSidebar then
+		if ui.hasSidebar then
 			tabBtn = Util.Create("TextButton", {
 				Name = tabName,
 				BackgroundColor3 = Xan.CurrentTheme.SidebarActive,
@@ -12943,7 +12944,7 @@ self.CurrentTheme = theme
 
 		tabBtn.MouseEnter:Connect(function()
 			if currentTab ~= tabData then
-				if hasSidebar then
+				if ui.hasSidebar then
 					Util.Tween(tabBtn, 0.15, { BackgroundTransparency = 0.7 })
 				else
 					Util.Tween(tabBtn, 0.15, {
@@ -12972,7 +12973,7 @@ self.CurrentTheme = theme
 
 		tabBtn.MouseLeave:Connect(function()
 			if currentTab ~= tabData then
-				if hasSidebar then
+				if ui.hasSidebar then
 					Util.Tween(tabBtn, 0.15, { BackgroundTransparency = 1 })
 				else
 					Util.Tween(tabBtn, 0.15, {
@@ -21818,7 +21819,7 @@ self.CurrentTheme = theme
 	task.delay(1.5, applyThemeIfNeeded)
 
 	task.delay(0.7, function()
-		if showActiveList and Xan.ActiveBindsVisible then
+		if ui.showActiveList and Xan.ActiveBindsVisible then
 			Xan:ShowBindList()
 		end
 	end)
@@ -21923,11 +21924,11 @@ local function getNotificationContainer(position)
 	container.Parent = screenGui
 
 	local layout = Instance.new("UIListLayout")
-	layout.Padding = UDim.new(0, 8)
-	layout.SortOrder = Enum.SortOrder.LayoutOrder
-	layout.HorizontalAlignment = cfg.HorizontalAlignment
-	layout.VerticalAlignment = cfg.VerticalAlignment
-	layout.Parent = container
+	ui.layout.Padding = UDim.new(0, 8)
+	ui.layout.SortOrder = Enum.SortOrder.LayoutOrder
+	ui.layout.HorizontalAlignment = cfg.HorizontalAlignment
+	ui.layout.VerticalAlignment = cfg.VerticalAlignment
+	ui.layout.Parent = container
 
 	NotificationContainers[position] = container
 	return container
@@ -22583,11 +22584,11 @@ function Xan:Notify(config)
 			cornerContainer.Parent = container.Parent
 
 			local layout = Instance.new("UIListLayout")
-			layout.Padding = UDim.new(0, 10)
-			layout.SortOrder = Enum.SortOrder.LayoutOrder
-			layout.HorizontalAlignment = Enum.HorizontalAlignment.Right
-			layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
-			layout.Parent = cornerContainer
+			ui.layout.Padding = UDim.new(0, 10)
+			ui.layout.SortOrder = Enum.SortOrder.LayoutOrder
+			ui.layout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+			ui.layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+			ui.layout.Parent = cornerContainer
 		end
 
 		notifWidth = IsMobile and 300 or 360
@@ -22830,7 +22831,7 @@ function Xan:CreateLoadingScreen(config)
 			Name = "Logo",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
-			Image = twoTone and Logos.XanBarBody or logoImage,
+			Image = twoTone and Logos.XanBarBody or ui.logoImage,
 			ImageColor3 = Color3.new(1, 1, 1),
 			ScaleType = Enum.ScaleType.Fit,
 			Parent = logoContainer,
@@ -22945,7 +22946,7 @@ function Xan:CreateLoadingScreen(config)
 			Name = "Logo",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
-			Image = twoTone and Logos.XanBarBody or logoImage,
+			Image = twoTone and Logos.XanBarBody or ui.logoImage,
 			ImageColor3 = Color3.new(1, 1, 1),
 			ScaleType = Enum.ScaleType.Fit,
 			Parent = logoContainer,
@@ -23802,7 +23803,7 @@ function Xan:CreateLoginScreen(config)
 		Size = UDim2.new(1, -24, 1, 0),
 		Font = Enum.Font.Roboto,
 		Text = "",
-		PlaceholderText = "Enter username...",
+		PlaceholderText = "Enter ui.username...",
 		PlaceholderColor3 = Color3.fromRGB(100, 100, 110),
 		TextColor3 = Xan.CurrentTheme.Text,
 		TextSize = 14,
@@ -24369,7 +24370,7 @@ function Xan:CreateLoginScreen(config)
 				Size = UDim2.new(1, -24, 1, 0),
 				Font = Enum.Font.Roboto,
 				Text = "",
-				PlaceholderText = "Choose a username...",
+				PlaceholderText = "Choose a ui.username...",
 				PlaceholderColor3 = Color3.fromRGB(100, 100, 110),
 				TextColor3 = Xan.CurrentTheme.Text,
 				TextSize = 14,
@@ -24777,7 +24778,7 @@ function Xan:CreateLoginScreen(config)
 					return
 				end
 
-				if username and #username > 0 and email and #email > 0 and password and #password > 0 then
+				if ui.username and #username > 0 and email and #email > 0 and password and #password > 0 then
 					local result = onSignup(username, email, password)
 					if result then
 						closeSignup()
@@ -25301,7 +25302,7 @@ function Xan:SaveConfiguration(configName)
 
 	if writefile then
 		local folderPath = ConfigurationManager.SaveFolder
-		local filePath = folderPath .. "/" .. configName .. ".json"
+		local filePath = folderPath .. "/" .. ui.configName .. ".json"
 
 		pcall(function()
 			if not isfolder(folderPath) then
@@ -25312,7 +25313,7 @@ function Xan:SaveConfiguration(configName)
 
 		self:Notify({
 			Title = "Configuration Saved",
-			Content = "Saved as '" .. configName .. "'",
+			Content = "Saved as '" .. ui.configName .. "'",
 			Type = "Success",
 			Duration = 3,
 		})
@@ -25343,7 +25344,7 @@ function Xan:LoadConfiguration(configName)
 	end
 
 	local folderPath = ConfigurationManager.SaveFolder
-	local filePath = folderPath .. "/" .. configName .. ".json"
+	local filePath = folderPath .. "/" .. ui.configName .. ".json"
 
 	local success, content = pcall(function()
 		return readfile(filePath)
@@ -25352,7 +25353,7 @@ function Xan:LoadConfiguration(configName)
 	if not success or not content then
 		self:Notify({
 			Title = "Load Failed",
-			Content = "Configuration '" .. configName .. "' not found.",
+			Content = "Configuration '" .. ui.configName .. "' not found.",
 			Type = "Error",
 			Duration = 4,
 		})
@@ -25391,7 +25392,7 @@ function Xan:LoadConfiguration(configName)
 
 	self:Notify({
 		Title = "Configuration Loaded",
-		Content = "Loaded '" .. configName .. "'",
+		Content = "Loaded '" .. ui.configName .. "'",
 		Type = "Success",
 		Duration = 3,
 	})
@@ -25430,7 +25431,7 @@ function Xan:DeleteConfiguration(configName)
 	end
 
 	local folderPath = ConfigurationManager.SaveFolder
-	local filePath = folderPath .. "/" .. configName .. ".json"
+	local filePath = folderPath .. "/" .. ui.configName .. ".json"
 
 	local success = pcall(function()
 		delfile(filePath)
@@ -25439,7 +25440,7 @@ function Xan:DeleteConfiguration(configName)
 	if success then
 		self:Notify({
 			Title = "Configuration Deleted",
-			Content = "Deleted '" .. configName .. "'",
+			Content = "Deleted '" .. ui.configName .. "'",
 			Type = "Info",
 			Duration = 3,
 		})
@@ -30996,7 +30997,7 @@ Xan.MobileTrigger = Xan.TriggerButton
 function Xan.Quick(title, tabName, tabIcon, layout)
 	local win = Xan.New({
 		Title = title or "My Hub",
-		Layout = layout or "Auto",
+		Layout = Layout or "Auto",
 	})
 	local tab = win:AddTab(tabName or "Main", tabIcon or Util.GuessIcon(tabName or "Main"))
 	return win, tab
@@ -31544,13 +31545,13 @@ function Xan:CreateOnboarding(config)
 		or {
 			Default = {
 				Name = "Default",
-				Description = "Classic sidebar layout with vertical tabs. Clean, organized, and familiar.",
+				Description = "Classic sidebar ui.layout with vertical tabs. Clean, organized, and familiar.",
 				Image = "rbxassetid://89652460172678",
 				Script = "https://xan.bar/example.lua",
 			},
 			Traditional = {
 				Name = "Traditional",
-				Description = "Horizontal top tabs layout. Great for scripts with many features.",
+				Description = "Horizontal top tabs ui.layout. Great for scripts with many features.",
 				Image = "rbxassetid://136331728991340",
 				Script = "https://xan.bar/layout_traditional.lua",
 			},
@@ -32274,7 +32275,7 @@ function Xan:CreateOnboarding(config)
 		Position = UDim2.new(0.5, 0, 0, 48),
 		Size = UDim2.new(0.85, 0, 0, 20),
 		Font = Enum.Font.Roboto,
-		Text = "Select a layout for your demo. This can be changed anytime.",
+		Text = "Select a ui.layout for your demo. This can be changed anytime.",
 		TextColor3 = Xan.CurrentTheme.TextDim,
 		TextSize = IsMobile and 12 or 13,
 		ZIndex = 13,
