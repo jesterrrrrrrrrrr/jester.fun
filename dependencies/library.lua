@@ -1,19 +1,19 @@
-  Players = game:GetService("Players")
-  TweenService = game:GetService("TweenService")
-  UserInputService = game:GetService("UserInputService")
-  RunService = game:GetService("RunService")
-  HttpService = game:GetService("HttpService")
-  CoreGui = game:GetService("CoreGui")
-  TextService = game:GetService("TextService")
-  TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local HttpService = game:GetService("HttpService")
+local CoreGui = game:GetService("CoreGui")
+local TextService = game:GetService("TextService")
+local TeleportService = game:GetService("TeleportService")
 
-   Player = Players. Player
-  Mouse =  Player:GetMouse()
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
 
-  IsMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
-  IsTablet = IsMobile and (workspace.CurrentCamera.ViewportSize.X > 600)
+local IsMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
+local IsTablet = IsMobile and (workspace.CurrentCamera.ViewportSize.X > 600)
 
-  ZIndex = {
+local ZIndex = {
 	Base = 1,
 	Sidebar = 5,
 	Content = 10,
@@ -65,7 +65,7 @@ if getgenv().XanBarInstance then
 	end)
 
 	pcall(function()
-		for _, gui in pairs(game:GetService("Players"). Player.PlayerGui:GetChildren()) do
+		for _, gui in pairs(game:GetService("Players").LocalPlayer.PlayerGui:GetChildren()) do
 			if gui.Name:find("Xan") or gui.Name:find("xan") then
 				gui:Destroy()
 			end
@@ -73,7 +73,7 @@ if getgenv().XanBarInstance then
 	end)
 end
 
-  Xan = {
+local Xan = {
 	Version = "2.0.0",
 	Author = "",
 	Windows = {},
@@ -99,13 +99,13 @@ end
 
 getgenv().XanBarInstance = Xan
 
-  Icons
-  Logos
-  GameIcons
-  ActiveBindsGui
+local Icons
+local Logos
+local GameIcons
+local ActiveBindsGui
 
-  ActiveBindsFrame
-  ActiveBindsLayout
+local ActiveBindsFrame
+local ActiveBindsLayout
 
 Xan.Themes = {
 	Default = {
@@ -417,19 +417,19 @@ Xan.ThemesFolder = "xanbar"
 Xan.ThemesFile = "xanbar/custom_themes.json"
 Xan.ActiveThemeFile = "xanbar/active_theme.txt"
 
-  function color3ToTable(color)
+local function color3ToTable(color)
 	return { R = color.R, G = color.G, B = color.B }
 end
 
-  function tableToColor3(t)
+local function tableToColor3(t)
 	if not t or type(t) ~= "table" then
 		return nil
 	end
 	return Color3.new(t.R or 0, t.G or 0, t.B or 0)
 end
 
-  function themeToTable(theme)
-	  t = {}
+local function themeToTable(theme)
+	local t = {}
 	for key, value in pairs(theme) do
 		if typeof(value) == "Color3" then
 			t[key] = color3ToTable(value)
@@ -440,8 +440,8 @@ end
 	return t
 end
 
-  function tableToTheme(t)
-	  theme = {}
+local function tableToTheme(t)
+	local theme = {}
 	for key, value in pairs(t) do
 		if type(value) == "table" and value.R ~= nil then
 			theme[key] = tableToColor3(value)
@@ -453,15 +453,15 @@ end
 end
 
 function Xan:SaveCustomThemes()
-	  hasFileFuncs = pcall(function()
+	local hasFileFuncs = pcall(function()
 		return writefile and readfile and isfile and makefolder
 	end)
 	if not hasFileFuncs then
 		return false
 	end
 
-	  customThemes = {}
-	  builtInThemes = {
+	local customThemes = {}
+	local builtInThemes = {
 		"Default",
 		"Rose",
 		"Midnight",
@@ -474,7 +474,7 @@ function Xan:SaveCustomThemes()
 	}
 
 	for themeName, themeData in pairs(self.Themes) do
-		  isBuiltIn = false
+		local isBuiltIn = false
 		for _, name in ipairs(builtInThemes) do
 			if themeName == name then
 				isBuiltIn = true
@@ -490,12 +490,12 @@ function Xan:SaveCustomThemes()
 		return true
 	end
 
-	  success, err = pcall(function()
+	local success, err = pcall(function()
 		if not isfolder(Xan.ThemesFolder) then
 			makefolder(Xan.ThemesFolder)
 		end
 
-		  json = game:GetService("HttpService"):JSONEncode(customThemes)
+		local json = game:GetService("HttpService"):JSONEncode(customThemes)
 		writefile(Xan.ThemesFile, json)
 	end)
 
@@ -503,20 +503,20 @@ function Xan:SaveCustomThemes()
 end
 
 function Xan:LoadCustomThemes()
-	  hasFileFuncs = pcall(function()
+	local hasFileFuncs = pcall(function()
 		return writefile and readfile and isfile
 	end)
 	if not hasFileFuncs then
 		return false
 	end
 
-	  success, result = pcall(function()
+	local success, result = pcall(function()
 		if not isfile(Xan.ThemesFile) then
 			return false
 		end
 
-		  json = readfile(Xan.ThemesFile)
-		  customThemes = game:GetService("HttpService"):JSONDecode(json)
+		local json = readfile(Xan.ThemesFile)
+		local customThemes = game:GetService("HttpService"):JSONDecode(json)
 
 		for themeName, themeData in pairs(customThemes) do
 			self.Themes[themeName] = tableToTheme(themeData)
@@ -529,7 +529,7 @@ function Xan:LoadCustomThemes()
 end
 
 function Xan:DeleteCustomTheme(themeName)
-	  builtInThemes = {
+	local builtInThemes = {
 		"Default",
 		"Rose",
 		"Midnight",
@@ -557,8 +557,8 @@ function Xan:DeleteCustomTheme(themeName)
 end
 
 function Xan:GetCustomThemeNames()
-	  customThemes = {}
-	  builtInThemes = {
+	local customThemes = {}
+	local builtInThemes = {
 		"Default",
 		"Rose",
 		"Midnight",
@@ -571,7 +571,7 @@ function Xan:GetCustomThemeNames()
 	}
 
 	for themeName, _ in pairs(self.Themes) do
-		  isBuiltIn = false
+		local isBuiltIn = false
 		for _, name in ipairs(builtInThemes) do
 			if themeName == name then
 				isBuiltIn = true
@@ -587,14 +587,14 @@ function Xan:GetCustomThemeNames()
 end
 
 function Xan:SaveActiveTheme(themeName)
-	  hasFileFuncs = pcall(function()
+	local hasFileFuncs = pcall(function()
 		return writefile and isfile and makefolder
 	end)
 	if not hasFileFuncs then
 		return false
 	end
 
-	  success = pcall(function()
+	local success = pcall(function()
 		if not isfolder(Xan.ThemesFolder) then
 			makefolder(Xan.ThemesFolder)
 		end
@@ -605,14 +605,14 @@ function Xan:SaveActiveTheme(themeName)
 end
 
 function Xan:LoadActiveTheme()
-	  hasFileFuncs = pcall(function()
+	local hasFileFuncs = pcall(function()
 		return readfile and isfile
 	end)
 	if not hasFileFuncs then
 		return nil
 	end
 
-	  success, themeName = pcall(function()
+	local success, themeName = pcall(function()
 		if not isfile(Xan.ActiveThemeFile) then
 			return nil
 		end
@@ -633,12 +633,12 @@ pcall(function()
 	Xan:LoadActiveTheme()
 end)
 
-  Util = {}
+local Util = {}
 
 function Util.Create(class, props, children)
-	  obj = Instance.new(class)
+	local obj = Instance.new(class)
 
-	  success, rt = pcall(function()
+	local success, rt = pcall(function()
 		return obj.RichText
 	end)
 	if success and rt ~= nil then
@@ -663,14 +663,14 @@ end
 function Util.Tween(obj, duration, props, style, direction)
 	style = style or Enum.EasingStyle.Quint
 	direction = direction or Enum.EasingDirection.Out
-	  ti = TweenInfo.new(duration, style, direction)
-	  tween = TweenService:Create(obj, ti, props)
+	local ti = TweenInfo.new(duration, style, direction)
+	local tween = TweenService:Create(obj, ti, props)
 	tween:Play()
 	return tween
 end
 
 function Util.IsBrightColor(color)
-	  luminance = 0.299 * color.R + 0.587 * color.G + 0.114 * color.B
+	local luminance = 0.299 * color.R + 0.587 * color.G + 0.114 * color.B
 	return luminance > 0.6
 end
 
@@ -679,24 +679,24 @@ function Util.GetContrastText(bgColor)
 end
 
 function Util.TweenSequence(tweens, onComplete)
-	  idx = 1
-	  function next()
+	local idx = 1
+	local function next()
 		if idx > #tweens then
 			if onComplete then
 				onComplete()
 			end
 			return
 		end
-		  t = tweens[idx]
+		local t = tweens[idx]
 		idx = idx + 1
-		  tween = Util.Tween(t.obj, t.duration, t.props, t.style, t.direction)
+		local tween = Util.Tween(t.obj, t.duration, t.props, t.style, t.direction)
 		tween.Completed:Connect(next)
 	end
 	next()
 end
 
 function Util.Ripple(parent, x, y, color, duration)
-	  ripple = Util.Create("Frame", {
+	local ripple = Util.Create("Frame", {
 		Name = "Ripple",
 		BackgroundColor3 = color or Color3.new(1, 1, 1),
 		BackgroundTransparency = 0.7,
@@ -709,7 +709,7 @@ function Util.Ripple(parent, x, y, color, duration)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  maxSize = math.max(parent.AbsoluteSize.X, parent.AbsoluteSize.Y) * 2.5
+	local maxSize = math.max(parent.AbsoluteSize.X, parent.AbsoluteSize.Y) * 2.5
 	Util.Tween(ripple, duration or 0.5, {
 		Size = UDim2.new(0, maxSize, 0, maxSize),
 		BackgroundTransparency = 1,
@@ -724,29 +724,29 @@ Util._activeDragFrame = nil
 
 function Util.MakeDraggable(frame, handle)
 	handle = handle or frame
-	  dragging = false
-	  dragStart, startPos
-	  connections = {}
+	local dragging = false
+	local dragStart, startPos
+	local connections = {}
 
-	  function clampPosition(newX, newY, scaleX, scaleY)
-		  cam = workspace.CurrentCamera
-		  screenSize = cam and cam.ViewportSize or Vector2.new(1920, 1080)
-		  frameW = frame.AbsoluteSize.X
-		  frameH = frame.AbsoluteSize.Y
-		  anchorX = frame.AnchorPoint.X
-		  anchorY = frame.AnchorPoint.Y
+	local function clampPosition(newX, newY, scaleX, scaleY)
+		local cam = workspace.CurrentCamera
+		local screenSize = cam and cam.ViewportSize or Vector2.new(1920, 1080)
+		local frameW = frame.AbsoluteSize.X
+		local frameH = frame.AbsoluteSize.Y
+		local anchorX = frame.AnchorPoint.X
+		local anchorY = frame.AnchorPoint.Y
 
-		  padding = 30
-		  minVisibleW = math.min(frameW * 0.3, 100)
-		  minVisibleH = math.min(frameH * 0.3, 40)
+		local padding = 30
+		local minVisibleW = math.min(frameW * 0.3, 100)
+		local minVisibleH = math.min(frameH * 0.3, 40)
 
-		  absX = newX + scaleX * screenSize.X
-		  absY = newY + scaleY * screenSize.Y
+		local absX = newX + scaleX * screenSize.X
+		local absY = newY + scaleY * screenSize.Y
 
-		  left = absX - frameW * anchorX
-		  right = absX + frameW * (1 - anchorX)
-		  top = absY - frameH * anchorY
-		  bottom = absY + frameH * (1 - anchorY)
+		local left = absX - frameW * anchorX
+		local right = absX + frameW * (1 - anchorX)
+		local top = absY - frameH * anchorY
+		local bottom = absY + frameH * (1 - anchorY)
 
 		if right < minVisibleW then
 			absX = minVisibleW - frameW * (1 - anchorX)
@@ -793,9 +793,9 @@ function Util.MakeDraggable(frame, handle)
 			or input.UserInputType == Enum.UserInputType.Touch
 		then
 			if dragging and Util._activeDragFrame == frame then
-				  delta = input.Position - dragStart
-				  newX = startPos.X.Offset + delta.X
-				  newY = startPos.Y.Offset + delta.Y
+				local delta = input.Position - dragStart
+				local newX = startPos.X.Offset + delta.X
+				local newY = startPos.Y.Offset + delta.Y
 				newX, newY = clampPosition(newX, newY, startPos.X.Scale, startPos.Y.Scale)
 				frame.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
 			end
@@ -811,9 +811,9 @@ function Util.MakeDraggable(frame, handle)
 				or input.UserInputType == Enum.UserInputType.Touch
 			)
 		then
-			  delta = input.Position - dragStart
-			  newX = startPos.X.Offset + delta.X
-			  newY = startPos.Y.Offset + delta.Y
+			local delta = input.Position - dragStart
+			local newX = startPos.X.Offset + delta.X
+			local newY = startPos.Y.Offset + delta.Y
 			newX, newY = clampPosition(newX, newY, startPos.X.Scale, startPos.Y.Scale)
 			frame.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
 		end
@@ -838,12 +838,12 @@ end
 
 function Util.GetTextSize(text, fontSize, font, bounds)
 	bounds = bounds or Vector2.new(math.huge, math.huge)
-	  params = Instance.new("GetTextBoundsParams")
+	local params = Instance.new("GetTextBoundsParams")
 	params.Text = text
 	params.Size = fontSize
 	params.Font = font
 	params.Width = bounds.X
-	  success, result = pcall(function()
+	local success, result = pcall(function()
 		return TextService:GetTextBoundsAsync(params)
 	end)
 	if success then
@@ -855,7 +855,7 @@ end
 
 function Util.Round(n, decimals)
 	decimals = decimals or 0
-	  mult = 10 ^ decimals
+	local mult = 10 ^ decimals
 	return math.floor(n * mult + 0.5) / mult
 end
 
@@ -875,7 +875,7 @@ function Util.DeepCopy(t)
 	if type(t) ~= "table" then
 		return t
 	end
-	  copy = {}
+	local copy = {}
 	for k, v in pairs(t) do
 		copy[k] = Util.DeepCopy(v)
 	end
@@ -884,10 +884,10 @@ end
 
 function Util.GenerateRandomString(length)
 	length = length or math.random(10, 20)
-	  chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	  str = ""
+	local chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	local str = ""
 	for i = 1, length do
-		  rand = math.random(1, #chars)
+		local rand = math.random(1, #chars)
 		str = str .. chars:sub(rand, rand)
 	end
 	return str
@@ -905,16 +905,16 @@ function Util.GetEnum(val, enumType)
 		return val
 	end
 	if type(val) == "string" then
-		  normalizedVal = val:gsub("%s+", "")
-		  firstChar = normalizedVal:sub(1, 1):upper()
-		  rest = normalizedVal:sub(2):lower()
-		  pascalCase = firstChar .. rest
+		local normalizedVal = val:gsub("%s+", "")
+		local firstChar = normalizedVal:sub(1, 1):upper()
+		local rest = normalizedVal:sub(2):lower()
+		local pascalCase = firstChar .. rest
 
-		  enumTypes = enumType and { enumType }
+		local enumTypes = enumType and { enumType }
 			or { Enum.KeyCode, Enum.UserInputType, Enum.Font, Enum.EasingStyle, Enum.EasingDirection }
 
 		for _, enumT in ipairs(enumTypes) do
-			  success, result = pcall(function()
+			local success, result = pcall(function()
 				return enumT[val] or enumT[pascalCase] or enumT[val:upper()] or enumT[normalizedVal]
 			end)
 			if success and result then
@@ -930,7 +930,7 @@ function Util.ParseColor(val)
 		return val
 	end
 	if type(val) == "string" then
-		  colorMap = {
+		local colorMap = {
 			red = Color3.fromRGB(255, 85, 85),
 			green = Color3.fromRGB(85, 255, 85),
 			blue = Color3.fromRGB(85, 85, 255),
@@ -958,17 +958,17 @@ function Util.ParseColor(val)
 			violet = Color3.fromRGB(238, 130, 238),
 			accent = Xan.CurrentTheme and Xan.CurrentTheme.Accent or Color3.fromRGB(232, 84, 84),
 		}
-		  lower = val:lower()
+		local lower = val:lower()
 		if colorMap[lower] then
 			return colorMap[lower]
 		end
 
-		  r, g, b = val:match("(%d+)%s*,%s*(%d+)%s*,%s*(%d+)")
+		local r, g, b = val:match("(%d+)%s*,%s*(%d+)%s*,%s*(%d+)")
 		if r and g and b then
 			return Color3.fromRGB(tonumber(r), tonumber(g), tonumber(b))
 		end
 
-		  hex = val:match("#?(%x%x%x%x%x%x)")
+		local hex = val:match("#?(%x%x%x%x%x%x)")
 		if hex then
 			return Color3.fromHex("#" .. hex)
 		end
@@ -980,8 +980,8 @@ function Util.SafeCall(callback, context, ...)
 	if type(callback) ~= "function" then
 		return true, nil
 	end
-	  args = { ... }
-	  success, result = pcall(function()
+	local args = { ... }
+	local success, result = pcall(function()
 		return callback(table.unpack(args))
 	end)
 	if not success then
@@ -998,9 +998,9 @@ function Util.GuessIcon(name)
 	if not name then
 		return Icons.Home
 	end
-	  lower = name:lower()
+	local lower = name:lower()
 
-	  iconMap = {
+	local iconMap = {
 		combat = Icons.Aimbot or Icons.Crosshair,
 		aimbot = Icons.Aimbot or Icons.Crosshair,
 		aim = Icons.Aimbot or Icons.Crosshair,
@@ -1067,10 +1067,10 @@ function Util.GuessIcon(name)
 end
 
 function Util.SmartSliderDefaults(name, providedConfig)
-	  config = providedConfig or {}
-	  lower = (name or ""):lower()
+	local config = providedConfig or {}
+	local lower = (name or ""):lower()
 
-	  presets = {
+	local presets = {
 		walkspeed = { Min = 0, Max = 500, Default = 16, Suffix = " studs/s" },
 		speed = { Min = 0, Max = 500, Default = 16, Suffix = " studs/s" },
 		jumppower = { Min = 0, Max = 500, Default = 50, Suffix = "" },
@@ -1103,7 +1103,7 @@ function Util.SmartSliderDefaults(name, providedConfig)
 		level = { Min = 1, Max = 100, Default = 1, Suffix = "" },
 	}
 
-	  found = nil
+	local found = nil
 	for keyword, preset in pairs(presets) do
 		if lower:find(keyword) then
 			found = preset
@@ -1126,7 +1126,7 @@ function Util.SmartSliderDefaults(name, providedConfig)
 end
 
 function Util.NormalizeArgs(nameOrConfig, flagOrCallback, callbackOrNil)
-	  config = {}
+	local config = {}
 
 	if type(nameOrConfig) == "table" then
 		config = nameOrConfig
@@ -1147,26 +1147,26 @@ function Util.NormalizeArgs(nameOrConfig, flagOrCallback, callbackOrNil)
 	return config
 end
 
-  BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+local BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
-  function toBase62(num)
+local function toBase62(num)
 	if num == 0 then
 		return "0"
 	end
-	  result = ""
+	local result = ""
 	while num > 0 do
-		  idx = (num % 62) + 1
+		local idx = (num % 62) + 1
 		result = BASE62:sub(idx, idx) .. result
 		num = math.floor(num / 62)
 	end
 	return result
 end
 
-  function fromBase62(str)
-	  num = 0
+local function fromBase62(str)
+	local num = 0
 	for i = 1, #str do
-		  char = str:sub(i, i)
-		  idx = BASE62:find(char, 1, true)
+		local char = str:sub(i, i)
+		local idx = BASE62:find(char, 1, true)
 		if not idx then
 			return nil
 		end
@@ -1176,7 +1176,7 @@ end
 end
 
 function Util.EncodeTheme(theme)
-	  colorKeys = {
+	local colorKeys = {
 		"Accent",
 		"AccentDark",
 		"AccentLight",
@@ -1207,16 +1207,16 @@ function Util.EncodeTheme(theme)
 		"Warning",
 	}
 
-	  parts = {}
+	local parts = {}
 	table.insert(parts, (theme.Name or "Custom"):gsub("[^%w ]", ""):sub(1, 20))
 
 	for _, key in ipairs(colorKeys) do
-		  c = theme[key]
+		local c = theme[key]
 		if typeof(c) == "Color3" then
-			  r = math.floor(c.R * 255)
-			  g = math.floor(c.G * 255)
-			  b = math.floor(c.B * 255)
-			  packed = r * 65536 + g * 256 + b
+			local r = math.floor(c.R * 255)
+			local g = math.floor(c.G * 255)
+			local b = math.floor(c.B * 255)
+			local packed = r * 65536 + g * 256 + b
 			table.insert(parts, toBase62(packed))
 		else
 			table.insert(parts, "0")
@@ -1224,7 +1224,7 @@ function Util.EncodeTheme(theme)
 	end
 
 	if theme.BackgroundImage and theme.BackgroundImage ~= "" then
-		  id = theme.BackgroundImage:match("(%d+)")
+		local id = theme.BackgroundImage:match("(%d+)")
 		if id then
 			table.insert(parts, "I" .. id)
 		end
@@ -1242,7 +1242,7 @@ function Util.DecodeTheme(code)
 		return nil
 	end
 
-	  colorKeys = {
+	local colorKeys = {
 		"Accent",
 		"AccentDark",
 		"AccentLight",
@@ -1273,7 +1273,7 @@ function Util.DecodeTheme(code)
 		"Warning",
 	}
 
-	  parts = {}
+	local parts = {}
 	for part in code:gmatch("[^%-]+") do
 		table.insert(parts, part)
 	end
@@ -1282,29 +1282,29 @@ function Util.DecodeTheme(code)
 		return nil
 	end
 
-	  theme = {}
+	local theme = {}
 	theme.Name = tostring(parts[1] or "Untitled")
 
 	for i, key in ipairs(colorKeys) do
-		  encoded = parts[i + 1]
+		local encoded = parts[i + 1]
 		if encoded and encoded ~= "0" and encoded ~= "" then
-			  packed = fromBase62(encoded)
+			local packed = fromBase62(encoded)
 			if packed and type(packed) == "number" then
-				  r = math.floor(packed / 65536) % 256
-				  g = math.floor(packed / 256) % 256
-				  b = packed % 256
+				local r = math.floor(packed / 65536) % 256
+				local g = math.floor(packed / 256) % 256
+				local b = packed % 256
 				theme[key] = Color3.fromRGB(r, g, b)
 			end
 		end
 	end
 
 	for i = #colorKeys + 2, #parts do
-		  part = parts[i]
+		local part = parts[i]
 		if part and #part > 1 then
 			if part:sub(1, 1) == "I" then
 				theme.BackgroundImage = "rbxassetid://" .. part:sub(2)
 			elseif part:sub(1, 1) == "T" then
-				  trans = tonumber(part:sub(2))
+				local trans = tonumber(part:sub(2))
 				if trans then
 					theme.BackgroundImageTransparency = trans / 100
 				end
@@ -1315,7 +1315,7 @@ function Util.DecodeTheme(code)
 	return theme
 end
 
-  RenderManager = {}
+local RenderManager = {}
 
 function RenderManager.Init()
 	if Xan._RenderConnection then
@@ -1324,13 +1324,13 @@ function RenderManager.Init()
 
 	Xan._RenderConnection = RunService.RenderStepped:Connect(function(dt)
 		Xan._FrameCount = Xan._FrameCount + 1
-		  now = os.clock()
+		local now = os.clock()
 
 		for id, task in pairs(Xan._RenderTasks) do
 			if task.active then
-				  shouldRun = true
+				local shouldRun = true
 				if task.throttle then
-					  lastRun = task.lastRun or 0
+					local lastRun = task.lastRun or 0
 					if now - lastRun < task.throttle then
 						shouldRun = false
 					end
@@ -1340,7 +1340,7 @@ function RenderManager.Init()
 				end
 				if shouldRun then
 					task.lastRun = now
-					  success, err = pcall(task.callback, dt, now)
+					local success, err = pcall(task.callback, dt, now)
 					if not success and task.onError then
 						task.onError(err)
 					end
@@ -1349,7 +1349,7 @@ function RenderManager.Init()
 		end
 
 		for i = #Xan._Spinners, 1, -1 do
-			  spinner = Xan._Spinners[i]
+			local spinner = Xan._Spinners[i]
 			if spinner.element and spinner.element.Parent then
 				spinner.element.Rotation = spinner.element.Rotation + dt * spinner.speed
 			else
@@ -1393,7 +1393,7 @@ function RenderManager.ResumeTask(id)
 	end
 end
 
-  CrosshairEngine = {
+local CrosshairEngine = {
 	Active = nil,
 	SaveFolder = "xanbar",
 	SaveFile = "xanbar/crosshair.json",
@@ -1417,9 +1417,9 @@ CrosshairEngine.Settings = {
 CrosshairEngine.CachedImageData = nil
 CrosshairEngine.LastImageAsset = nil
 
-  function hasDrawingAPI()
-	  success = pcall(function()
-		  test = Drawing.new("Line")
+local function hasDrawingAPI()
+	local success = pcall(function()
+		local test = Drawing.new("Line")
 		test:Remove()
 	end)
 	return success
@@ -1430,7 +1430,7 @@ function CrosshairEngine.CreateGuiCrosshair()
 		return
 	end
 
-	  screenGui = Instance.new("ScreenGui")
+	local screenGui = Instance.new("ScreenGui")
 	screenGui.Name = Xan.GhostMode and Util.GenerateRandomString(14) or "XanBar_Crosshair"
 	screenGui.ResetOnSpawn = false
 	screenGui.DisplayOrder = 999999
@@ -1441,10 +1441,10 @@ function CrosshairEngine.CreateGuiCrosshair()
 		screenGui.Parent = game:GetService("CoreGui")
 	end)
 	if not screenGui.Parent then
-		screenGui.Parent = game:GetService("Players"). Player:WaitForChild("PlayerGui")
+		screenGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  container = Instance.new("Frame")
+	local container = Instance.new("Frame")
 	container.Name = "Container"
 	container.BackgroundTransparency = 1
 	container.Size = UDim2.new(1, 0, 1, 0)
@@ -1463,7 +1463,7 @@ function CrosshairEngine.CreateGuiCrosshair()
 	}
 
 	for i = 1, 4 do
-		  outline = Instance.new("Frame")
+		local outline = Instance.new("Frame")
 		outline.Name = "LineOutline" .. i
 		outline.BackgroundColor3 = Color3.new(0, 0, 0)
 		outline.BorderSizePixel = 0
@@ -1473,7 +1473,7 @@ function CrosshairEngine.CreateGuiCrosshair()
 		outline.Parent = container
 		CrosshairEngine.GuiCrosshair.Outlines[i] = outline
 
-		  line = Instance.new("Frame")
+		local line = Instance.new("Frame")
 		line.Name = "Line" .. i
 		line.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
 		line.BorderSizePixel = 0
@@ -1484,7 +1484,7 @@ function CrosshairEngine.CreateGuiCrosshair()
 		CrosshairEngine.GuiCrosshair.Lines[i] = line
 	end
 
-	  dotOutline = Instance.new("Frame")
+	local dotOutline = Instance.new("Frame")
 	dotOutline.Name = "DotOutline"
 	dotOutline.BackgroundColor3 = Color3.new(0, 0, 0)
 	dotOutline.BorderSizePixel = 0
@@ -1495,7 +1495,7 @@ function CrosshairEngine.CreateGuiCrosshair()
 	Instance.new("UICorner", dotOutline).CornerRadius = UDim.new(1, 0)
 	CrosshairEngine.GuiCrosshair.DotOutline = dotOutline
 
-	  dot = Instance.new("Frame")
+	local dot = Instance.new("Frame")
 	dot.Name = "Dot"
 	dot.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
 	dot.BorderSizePixel = 0
@@ -1506,7 +1506,7 @@ function CrosshairEngine.CreateGuiCrosshair()
 	Instance.new("UICorner", dot).CornerRadius = UDim.new(1, 0)
 	CrosshairEngine.GuiCrosshair.Dot = dot
 
-	  circleOutline = Instance.new("Frame")
+	local circleOutline = Instance.new("Frame")
 	circleOutline.Name = "CircleOutline"
 	circleOutline.BackgroundTransparency = 1
 	circleOutline.BorderSizePixel = 0
@@ -1514,14 +1514,14 @@ function CrosshairEngine.CreateGuiCrosshair()
 	circleOutline.Visible = false
 	circleOutline.ZIndex = 999998
 	circleOutline.Parent = container
-	  circleOutlineCorner = Instance.new("UICorner", circleOutline)
+	local circleOutlineCorner = Instance.new("UICorner", circleOutline)
 	circleOutlineCorner.CornerRadius = UDim.new(1, 0)
-	  circleOutlineStroke = Instance.new("UIStroke", circleOutline)
+	local circleOutlineStroke = Instance.new("UIStroke", circleOutline)
 	circleOutlineStroke.Color = Color3.new(0, 0, 0)
 	circleOutlineStroke.Thickness = 4
 	CrosshairEngine.GuiCrosshair.CircleOutline = circleOutline
 
-	  circle = Instance.new("Frame")
+	local circle = Instance.new("Frame")
 	circle.Name = "Circle"
 	circle.BackgroundTransparency = 1
 	circle.BorderSizePixel = 0
@@ -1529,14 +1529,14 @@ function CrosshairEngine.CreateGuiCrosshair()
 	circle.Visible = false
 	circle.ZIndex = 999999
 	circle.Parent = container
-	  circleCorner = Instance.new("UICorner", circle)
+	local circleCorner = Instance.new("UICorner", circle)
 	circleCorner.CornerRadius = UDim.new(1, 0)
-	  circleStroke = Instance.new("UIStroke", circle)
+	local circleStroke = Instance.new("UIStroke", circle)
 	circleStroke.Color = Color3.fromRGB(255, 50, 50)
 	circleStroke.Thickness = 2
 	CrosshairEngine.GuiCrosshair.Circle = circle
 
-	  image = Instance.new("ImageLabel")
+	local image = Instance.new("ImageLabel")
 	image.Name = "Image"
 	image.BackgroundTransparency = 1
 	image.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -1564,13 +1564,13 @@ function CrosshairEngine.Create()
 
 	CrosshairEngine.Drawings.lines = {}
 	for i = 1, 4 do
-		  line = Drawing.new("Line")
+		local line = Drawing.new("Line")
 		line.Visible = false
 		line.Thickness = 2
 		line.Color = Color3.fromRGB(255, 50, 50)
 		CrosshairEngine.Drawings.lines[i] = line
 
-		  outline = Drawing.new("Line")
+		local outline = Drawing.new("Line")
 		outline.Visible = false
 		outline.Thickness = 4
 		outline.Color = Color3.fromRGB(0, 0, 0)
@@ -1661,26 +1661,26 @@ function CrosshairEngine.RenderGui()
 		end
 	end
 
-	  cam = workspace.CurrentCamera
+	local cam = workspace.CurrentCamera
 	if not cam then
 		return
 	end
 
-	  viewportSize = cam.ViewportSize
-	  cx, cy = viewportSize.X / 2, viewportSize.Y / 2
+	local viewportSize = cam.ViewportSize
+	local cx, cy = viewportSize.X / 2, viewportSize.Y / 2
 
-	  s = CrosshairEngine.Settings
-	  style = s.Style
-	  color = s.Color
-	  size = s.Size
-	  thick = s.Thickness
-	  gap = s.Gap
-	  outline = s.Outline
-	  outlineColor = s.OutlineColor
+	local s = CrosshairEngine.Settings
+	local style = s.Style
+	local color = s.Color
+	local size = s.Size
+	local thick = s.Thickness
+	local gap = s.Gap
+	local outline = s.Outline
+	local outlineColor = s.OutlineColor
 
 	CrosshairEngine.HideAll()
 
-	  gui = CrosshairEngine.GuiCrosshair
+	local gui = CrosshairEngine.GuiCrosshair
 
 	if style == "None" then
 		return
@@ -1696,7 +1696,7 @@ function CrosshairEngine.RenderGui()
 		gui.Dot.BackgroundColor3 = color
 		gui.Dot.Visible = true
 	elseif style == "Cross" or style == "Small Cross" then
-		  len = style == "Small Cross" and size / 2 or size
+		local len = style == "Small Cross" and size / 2 or size
 
 		if outline then
 			gui.Outlines[1].Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -1733,8 +1733,8 @@ function CrosshairEngine.RenderGui()
 			gui.Dot.Visible = true
 		end
 	elseif style == "Open Cross" then
-		  len = size / 2
-		  g = gap
+		local len = size / 2
+		local g = gap
 
 		if outline then
 			gui.Outlines[1].Position = UDim2.new(0.5, -(len + g + len / 2), 0.5, 0)
@@ -1791,12 +1791,12 @@ function CrosshairEngine.RenderGui()
 			gui.Dot.Visible = true
 		end
 	elseif style == "Circle" then
-		  diameter = size * 2
+		local diameter = size * 2
 
 		if outline then
 			gui.CircleOutline.Position = UDim2.new(0.5, 0, 0.5, 0)
 			gui.CircleOutline.Size = UDim2.new(0, diameter + thick * 2, 0, diameter + thick * 2)
-			  stroke = gui.CircleOutline:FindFirstChildOfClass("UIStroke")
+			local stroke = gui.CircleOutline:FindFirstChildOfClass("UIStroke")
 			if stroke then
 				stroke.Color = outlineColor
 				stroke.Thickness = thick + 2
@@ -1806,7 +1806,7 @@ function CrosshairEngine.RenderGui()
 
 		gui.Circle.Position = UDim2.new(0.5, 0, 0.5, 0)
 		gui.Circle.Size = UDim2.new(0, diameter, 0, diameter)
-		  stroke = gui.Circle:FindFirstChildOfClass("UIStroke")
+		local stroke = gui.Circle:FindFirstChildOfClass("UIStroke")
 		if stroke then
 			stroke.Color = color
 			stroke.Thickness = thick
@@ -1824,8 +1824,8 @@ function CrosshairEngine.RenderGui()
 		gui.Dot.BackgroundColor3 = color
 		gui.Dot.Visible = true
 	elseif style == "Icon" then
-		  imgSize = math.max(size * 3, 24)
-		  assetId = s.ImageAsset and tostring(s.ImageAsset):gsub("rbxassetid://", ""):gsub("%s+", "") or ""
+		local imgSize = math.max(size * 3, 24)
+		local assetId = s.ImageAsset and tostring(s.ImageAsset):gsub("rbxassetid://", ""):gsub("%s+", "") or ""
 
 		if assetId ~= "" then
 			gui.Image.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -1853,28 +1853,28 @@ function CrosshairEngine.Render()
 		CrosshairEngine.Create()
 	end
 
-	  style = CrosshairEngine.Settings.Style
+	local style = CrosshairEngine.Settings.Style
 	if not CrosshairEngine.UseDrawing or style == "Icon" then
 		CrosshairEngine.RenderGui()
 		return
 	end
 
-	  cam = workspace.CurrentCamera
+	local cam = workspace.CurrentCamera
 	if not cam then
 		return
 	end
 
-	  center = cam.ViewportSize / 2
-	  cx, cy = center.X, center.Y
+	local center = cam.ViewportSize / 2
+	local cx, cy = center.X, center.Y
 
-	  s = CrosshairEngine.Settings
-	  style = s.Style
-	  color = s.Color
-	  size = s.Size
-	  thick = s.Thickness
-	  gap = s.Gap
-	  outline = s.Outline
-	  outlineColor = s.OutlineColor
+	local s = CrosshairEngine.Settings
+	local style = s.Style
+	local color = s.Color
+	local size = s.Size
+	local thick = s.Thickness
+	local gap = s.Gap
+	local outline = s.Outline
+	local outlineColor = s.OutlineColor
 
 	CrosshairEngine.HideAll()
 
@@ -1892,9 +1892,9 @@ function CrosshairEngine.Render()
 		CrosshairEngine.Drawings.dot.Color = color
 		CrosshairEngine.Drawings.dot.Visible = true
 	elseif style == "Cross" or style == "Small Cross" then
-		  len = style == "Small Cross" and size / 2 or size
+		local len = style == "Small Cross" and size / 2 or size
 
-		  positions = {
+		local positions = {
 			{ Vector2.new(cx - len, cy), Vector2.new(cx + len, cy) },
 			{ Vector2.new(cx, cy - len), Vector2.new(cx, cy + len) },
 		}
@@ -1927,10 +1927,10 @@ function CrosshairEngine.Render()
 			CrosshairEngine.Drawings.dot.Visible = true
 		end
 	elseif style == "Open Cross" then
-		  len = size / 2
-		  g = gap
+		local len = size / 2
+		local g = gap
 
-		  positions = {
+		local positions = {
 			{ Vector2.new(cx - len - g, cy), Vector2.new(cx - g, cy) },
 			{ Vector2.new(cx + g, cy), Vector2.new(cx + len + g, cy) },
 			{ Vector2.new(cx, cy - len - g), Vector2.new(cx, cy - g) },
@@ -1990,11 +1990,11 @@ function CrosshairEngine.Render()
 		CrosshairEngine.Drawings.dot.Visible = true
 	elseif style == "Icon" then
 		if s.ImageAsset and s.ImageAsset ~= "" then
-			  imgSize = size * 3
+			local imgSize = size * 3
 			CrosshairEngine.Drawings.image.Size = Vector2.new(imgSize, imgSize)
 			CrosshairEngine.Drawings.image.Position = Vector2.new(cx - imgSize / 2, cy - imgSize / 2)
 
-			  assetId = tostring(s.ImageAsset):gsub("rbxassetid://", ""):gsub("%s+", "")
+			local assetId = tostring(s.ImageAsset):gsub("rbxassetid://", ""):gsub("%s+", "")
 
 			if assetId ~= CrosshairEngine.LastImageAsset then
 				CrosshairEngine.LastImageAsset = assetId
@@ -2002,9 +2002,9 @@ function CrosshairEngine.Render()
 
 				pcall(function()
 					if getsynasset then
-						  path = "crosshair_" .. assetId .. ".png"
+						local path = "crosshair_" .. assetId .. ".png"
 						if not isfile(path) then
-							  imageData = game:HttpGet("https://rbxassetdelivery.com/v1/assetId/" .. assetId)
+							local imageData = game:HttpGet("https://rbxassetdelivery.com/v1/assetId/" .. assetId)
 							if imageData and #imageData > 100 then
 								writefile(path, imageData)
 							end
@@ -2013,20 +2013,20 @@ function CrosshairEngine.Render()
 							CrosshairEngine.CachedImageData = getsynasset(path)
 						end
 					else
-						  cdnUrl = "https://tr.rbxcdn.com/" .. assetId
+						local cdnUrl = "https://tr.rbxcdn.com/" .. assetId
 						CrosshairEngine.CachedImageData = game:HttpGet(cdnUrl)
 					end
 				end)
 
 				if not CrosshairEngine.CachedImageData then
 					pcall(function()
-						  url = "https://assetgame.roblox.com/asset/?id=" .. assetId
+						local url = "https://assetgame.roblox.com/asset/?id=" .. assetId
 						CrosshairEngine.CachedImageData = game:HttpGet(url)
 					end)
 				end
 			end
 
-			  imageLoaded = false
+			local imageLoaded = false
 			if CrosshairEngine.CachedImageData then
 				imageLoaded = pcall(function()
 					if type(CrosshairEngine.CachedImageData) == "string" and #CrosshairEngine.CachedImageData > 100 then
@@ -2041,7 +2041,7 @@ function CrosshairEngine.Render()
 			end
 
 			if not imageLoaded then
-				  iconSize = size
+				local iconSize = size
 				CrosshairEngine.Drawings.lines[1].From = Vector2.new(cx - iconSize, cy - iconSize)
 				CrosshairEngine.Drawings.lines[1].To = Vector2.new(cx + iconSize, cy - iconSize)
 				CrosshairEngine.Drawings.lines[1].Color = color
@@ -2151,19 +2151,19 @@ function CrosshairEngine.UpdateSettings(newSettings)
 end
 
 function CrosshairEngine.Save()
-	  hasFileFuncs = pcall(function()
+	local hasFileFuncs = pcall(function()
 		return writefile and isfile and makefolder
 	end)
 	if not hasFileFuncs then
 		return false
 	end
 
-	  success = pcall(function()
+	local success = pcall(function()
 		if not isfolder(CrosshairEngine.SaveFolder) then
 			makefolder(CrosshairEngine.SaveFolder)
 		end
 
-		  data = {
+		local data = {
 			Enabled = CrosshairEngine.Settings.Enabled,
 			Style = CrosshairEngine.Settings.Style,
 			Color = {
@@ -2179,7 +2179,7 @@ function CrosshairEngine.Save()
 			ImageAsset = CrosshairEngine.Settings.ImageAsset,
 		}
 
-		  json = game:GetService("HttpService"):JSONEncode(data)
+		local json = game:GetService("HttpService"):JSONEncode(data)
 		writefile(CrosshairEngine.SaveFile, json)
 	end)
 
@@ -2187,22 +2187,22 @@ function CrosshairEngine.Save()
 end
 
 function CrosshairEngine.Load(autoEnable)
-	  hasFileFuncs = pcall(function()
+	local hasFileFuncs = pcall(function()
 		return readfile and isfile
 	end)
 	if not hasFileFuncs then
 		return false
 	end
 
-	  success = pcall(function()
+	local success = pcall(function()
 		if not isfile(CrosshairEngine.SaveFile) then
 			return
 		end
 
-		  json = readfile(CrosshairEngine.SaveFile)
-		  data = game:GetService("HttpService"):JSONDecode(json)
+		local json = readfile(CrosshairEngine.SaveFile)
+		local data = game:GetService("HttpService"):JSONDecode(json)
 
-		  wasEnabled = data.Enabled or false
+		local wasEnabled = data.Enabled or false
 		CrosshairEngine.Settings.Enabled = false
 		CrosshairEngine.Settings.Style = data.Style or "Cross"
 		if data.Color then
@@ -2328,11 +2328,11 @@ function RenderManager.Cleanup()
 	end
 end
 
-  UI = {}
+local UI = {}
 
 function UI.Frame(props, children)
 	props = props or {}
-	  defaults = {
+	local defaults = {
 		BackgroundColor3 = Xan.CurrentTheme and Xan.CurrentTheme.Card or Color3.fromRGB(22, 22, 28),
 		BackgroundTransparency = props.Transparent and 1 or 0,
 		BorderSizePixel = 0,
@@ -2348,7 +2348,7 @@ end
 
 function UI.Text(props, children)
 	props = props or {}
-	  defaults = {
+	local defaults = {
 		BackgroundTransparency = 1,
 		Font = Enum.Font.Roboto,
 		TextColor3 = Xan.CurrentTheme and Xan.CurrentTheme.Text or Color3.fromRGB(245, 245, 250),
@@ -2365,7 +2365,7 @@ end
 
 function UI.Button(props, children)
 	props = props or {}
-	  defaults = {
+	local defaults = {
 		BackgroundColor3 = Xan.CurrentTheme and Xan.CurrentTheme.BackgroundTertiary or Color3.fromRGB(28, 28, 35),
 		BorderSizePixel = 0,
 		Font = Enum.Font.Roboto,
@@ -2383,7 +2383,7 @@ end
 
 function UI.Image(props, children)
 	props = props or {}
-	  defaults = {
+	local defaults = {
 		BackgroundTransparency = 1,
 		ImageColor3 = props.Tint or Color3.new(1, 1, 1),
 		ScaleType = Enum.ScaleType.Fit,
@@ -2399,7 +2399,7 @@ end
 
 function UI.ImageButton(props, children)
 	props = props or {}
-	  defaults = {
+	local defaults = {
 		BackgroundTransparency = 1,
 		ImageColor3 = props.Tint or Color3.new(1, 1, 1),
 		ScaleType = Enum.ScaleType.Fit,
@@ -2421,7 +2421,7 @@ end
 
 function UI.Stroke(props)
 	props = props or {}
-	  defaults = {
+	local defaults = {
 		Color = Xan.CurrentTheme and Xan.CurrentTheme.CardBorder or Color3.fromRGB(40, 40, 50),
 		Thickness = 1,
 		Transparency = 0,
@@ -2468,7 +2468,7 @@ end
 
 function UI.Scroll(props, children)
 	props = props or {}
-	  defaults = {
+	local defaults = {
 		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		ScrollBarThickness = 4,
@@ -2486,8 +2486,8 @@ end
 
 function UI.Card(props, children)
 	props = props or {}
-	  theme = Xan.CurrentTheme or Xan.Themes.Default
-	  frame = UI.Frame({
+	local theme = Xan.CurrentTheme or Xan.Themes.Default
+	local frame = UI.Frame({
 		Name = props.Name or "Card",
 		BackgroundColor3 = props.BackgroundColor3 or theme.Card,
 		Position = props.Position,
@@ -2591,13 +2591,13 @@ GameIcons = {
 	ObbyBuster = "rbxassetid://100914950961043",
 }
 
-  Components = {}
+local Components = {}
 
 function Components.Shadow(parent, theme, radius, offset)
 	radius = radius or 12
 	offset = offset or 4
 
-	  shadow = Util.Create("ImageLabel", {
+	local shadow = Util.Create("ImageLabel", {
 		Name = "Shadow",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, -offset, 0, -offset),
@@ -2628,7 +2628,7 @@ function Components.Divider(parent, theme, layoutOrder)
 end
 
 function Components.Section(parent, title, theme, layoutOrder)
-	  section = Util.Create("Frame", {
+	local section = Util.Create("Frame", {
 		Name = "Section",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, 28),
@@ -2653,7 +2653,7 @@ function Components.Section(parent, title, theme, layoutOrder)
 end
 
 function Components.Label(parent, text, theme, layoutOrder)
-	  label = Util.Create("Frame", {
+	local label = Util.Create("Frame", {
 		Name = "Label",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, IsMobile and 26 or 22),
@@ -2661,7 +2661,7 @@ function Components.Label(parent, text, theme, layoutOrder)
 		Parent = parent,
 	})
 
-	  textLabel = Util.Create("TextLabel", {
+	local textLabel = Util.Create("TextLabel", {
 		Name = "Text",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -2680,10 +2680,10 @@ function Components.Label(parent, text, theme, layoutOrder)
 end
 
 function Components.Paragraph(parent, title, content, theme, layoutOrder)
-	  textHeight = Util.GetTextSize(content, 13, Font.fromEnum(Enum.Font.Roboto), Vector2.new(300, math.huge))
-	  height = 24 + textHeight.Y + 8
+	local textHeight = Util.GetTextSize(content, 13, Font.fromEnum(Enum.Font.Roboto), Vector2.new(300, math.huge))
+	local height = 24 + textHeight.Y + 8
 
-	  paragraph = Util.Create("Frame", {
+	local paragraph = Util.Create("Frame", {
 		Name = "Paragraph",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, height),
@@ -2691,7 +2691,7 @@ function Components.Paragraph(parent, title, content, theme, layoutOrder)
 		Parent = parent,
 	})
 
-	  titleLabel = Util.Create("TextLabel", {
+	local titleLabel = Util.Create("TextLabel", {
 		Name = "Title",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 0),
@@ -2704,7 +2704,7 @@ function Components.Paragraph(parent, title, content, theme, layoutOrder)
 		Parent = paragraph,
 	})
 
-	  contentLabel = Util.Create("TextLabel", {
+	local contentLabel = Util.Create("TextLabel", {
 		Name = "Content",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 24),
@@ -2719,7 +2719,7 @@ function Components.Paragraph(parent, title, content, theme, layoutOrder)
 		Parent = paragraph,
 	})
 
-	  paragraphObj = {
+	local paragraphObj = {
 		Frame = paragraph,
 		TitleLabel = titleLabel,
 		ContentLabel = contentLabel,
@@ -2728,7 +2728,7 @@ function Components.Paragraph(parent, title, content, theme, layoutOrder)
 	function paragraphObj:SetText(newContent)
 		if newContent then
 			contentLabel.Text = newContent
-			  newHeight =
+			local newHeight =
 				Util.GetTextSize(newContent, 13, Font.fromEnum(Enum.Font.Roboto), Vector2.new(300, math.huge))
 			contentLabel.Size = UDim2.new(1, 0, 0, newHeight.Y + 4)
 			paragraph.Size = UDim2.new(1, 0, 0, 24 + newHeight.Y + 8)
@@ -2763,31 +2763,31 @@ end
 
 function Components.Dropdown(config)
 	config = config or {}
-	  parent = config.Parent
-	  name = config.Name or "Dropdown"
-	  options = config.Options or {}
-	  default = config.Default or options[1]
-	  callback = config.Callback or function() end
-	  layoutOrder = config.LayoutOrder or 0
-	  width = config.Width
-	  compact = config.Compact
-	  floating = config.Floating
-	  floatingParent = config.FloatingParent
-	  getTheme = config.GetTheme or function()
+	local parent = config.Parent
+	local name = config.Name or "Dropdown"
+	local options = config.Options or {}
+	local default = config.Default or options[1]
+	local callback = config.Callback or function() end
+	local layoutOrder = config.LayoutOrder or 0
+	local width = config.Width
+	local compact = config.Compact
+	local floating = config.Floating
+	local floatingParent = config.FloatingParent
+	local getTheme = config.GetTheme or function()
 		return Xan.CurrentTheme
 	end
 
-	  selected = default
-	  expanded = false
-	  optionButtons = {}
-	  inputConnection = nil
+	local selected = default
+	local expanded = false
+	local optionButtons = {}
+	local inputConnection = nil
 
-	  theme = getTheme()
-	  headerHeight = compact and 32 or (IsMobile and 44 or 40)
-	  optionHeight = compact and 28 or (IsMobile and 36 or 32)
-	  listWidth = width or 130
+	local theme = getTheme()
+	local headerHeight = compact and 32 or (IsMobile and 44 or 40)
+	local optionHeight = compact and 28 or (IsMobile and 36 or 32)
+	local listWidth = width or 130
 
-	  dropdownFrame = Util.Create("Frame", {
+	local dropdownFrame = Util.Create("Frame", {
 		Name = name,
 		BackgroundColor3 = theme.Card or theme.Surface or Color3.fromRGB(30, 30, 38),
 		Size = width and UDim2.new(0, width, 0, headerHeight) or UDim2.new(1, 0, 0, headerHeight),
@@ -2803,7 +2803,7 @@ function Components.Dropdown(config)
 		}),
 	})
 
-	  header = Util.Create("TextButton", {
+	local header = Util.Create("TextButton", {
 		Name = "Header",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, headerHeight),
@@ -2812,7 +2812,7 @@ function Components.Dropdown(config)
 		Parent = dropdownFrame,
 	})
 
-	  valueLabel = Util.Create("TextLabel", {
+	local valueLabel = Util.Create("TextLabel", {
 		Name = "Value",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12, 0, 0),
@@ -2826,7 +2826,7 @@ function Components.Dropdown(config)
 		Parent = header,
 	})
 
-	  arrow = Util.Create("ImageLabel", {
+	local arrow = Util.Create("ImageLabel", {
 		Name = "Arrow",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(1, 0.5),
@@ -2838,10 +2838,10 @@ function Components.Dropdown(config)
 		Parent = header,
 	})
 
-	  spacing = 4
-	  optionsListHeight = #options * optionHeight + math.max(0, #options - 1) * spacing + 8
+	local spacing = 4
+	local optionsListHeight = #options * optionHeight + math.max(0, #options - 1) * spacing + 8
 
-	  optionsList, optionsInner
+	local optionsList, optionsInner
 
 	if floating and floatingParent then
 		optionsList = Util.Create("Frame", {
@@ -2904,15 +2904,15 @@ function Components.Dropdown(config)
 		optionsInner = optionsList
 	end
 
-	  function updateListPosition()
+	local function updateListPosition()
 		if floating and floatingParent and optionsList then
-			  btnPos = header.AbsolutePosition
-			  btnSize = header.AbsoluteSize
+			local btnPos = header.AbsolutePosition
+			local btnSize = header.AbsoluteSize
 			optionsList.Position = UDim2.new(0, btnPos.X, 0, btnPos.Y + btnSize.Y + 4)
 		end
 	end
 
-	  function closeDropdown()
+	local function closeDropdown()
 		if expanded then
 			expanded = false
 			if floating then
@@ -2928,10 +2928,10 @@ function Components.Dropdown(config)
 		end
 	end
 
-	  function updateTheme()
-		  t = getTheme()
+	local function updateTheme()
+		local t = getTheme()
 		dropdownFrame.BackgroundColor3 = t.Card or t.Surface or Color3.fromRGB(30, 30, 38)
-		  stroke = dropdownFrame:FindFirstChild("Stroke")
+		local stroke = dropdownFrame:FindFirstChild("Stroke")
 		if stroke then
 			stroke.Color = t.CardBorder or t.Border or Color3.fromRGB(45, 45, 55)
 		end
@@ -2940,33 +2940,33 @@ function Components.Dropdown(config)
 
 		if floating and optionsList then
 			optionsList.BackgroundColor3 = t.Card or t.Surface or Color3.fromRGB(30, 30, 38)
-			  listStroke = optionsList:FindFirstChildOfClass("UIStroke")
+			local listStroke = optionsList:FindFirstChildOfClass("UIStroke")
 			if listStroke then
 				listStroke.Color = t.CardBorder or t.Border or Color3.fromRGB(45, 45, 55)
 			end
 		end
 
 		for i, btn in ipairs(optionButtons) do
-			  opt = options[i]
-			  isSelected = selected == opt
-			  dropColor = t.Dropdown or t.Input or Color3.fromRGB(25, 25, 32)
+			local opt = options[i]
+			local isSelected = selected == opt
+			local dropColor = t.Dropdown or t.Input or Color3.fromRGB(25, 25, 32)
 			btn.BackgroundColor3 = isSelected and (t.Accent or Color3.fromRGB(220, 60, 85)) or dropColor
 			btn.TextColor3 = isSelected and Color3.new(1, 1, 1) or (t.Text or Color3.fromRGB(255, 255, 255))
 		end
 	end
 
-	  function createOptions()
+	local function createOptions()
 		for _, btn in pairs(optionButtons) do
 			btn:Destroy()
 		end
 		optionButtons = {}
 
-		  t = getTheme()
+		local t = getTheme()
 		for i, option in ipairs(options) do
-			  isSelected = selected == option
-			  dropColor = t.Dropdown or t.Input or Color3.fromRGB(25, 25, 32)
+			local isSelected = selected == option
+			local dropColor = t.Dropdown or t.Input or Color3.fromRGB(25, 25, 32)
 
-			  optionBtn = Util.Create("TextButton", {
+			local optionBtn = Util.Create("TextButton", {
 				Name = option,
 				BackgroundColor3 = isSelected and (t.Accent or Color3.fromRGB(220, 60, 85)) or dropColor,
 				Size = UDim2.new(1, 0, 0, optionHeight),
@@ -2984,22 +2984,22 @@ function Components.Dropdown(config)
 
 			optionBtn.MouseEnter:Connect(function()
 				if selected ~= option then
-					  t = getTheme()
-					  hoverColor = t.DropdownHover or t.CardHover or Color3.fromRGB(40, 40, 50)
+					local t = getTheme()
+					local hoverColor = t.DropdownHover or t.CardHover or Color3.fromRGB(40, 40, 50)
 					Util.Tween(optionBtn, 0.12, { BackgroundColor3 = hoverColor })
 				end
 			end)
 
 			optionBtn.MouseLeave:Connect(function()
-				  t = getTheme()
-				  dropColor = t.Dropdown or t.Input or Color3.fromRGB(25, 25, 32)
-				  targetColor = selected == option and (t.Accent or Color3.fromRGB(220, 60, 85)) or dropColor
+				local t = getTheme()
+				local dropColor = t.Dropdown or t.Input or Color3.fromRGB(25, 25, 32)
+				local targetColor = selected == option and (t.Accent or Color3.fromRGB(220, 60, 85)) or dropColor
 				Util.Tween(optionBtn, 0.12, { BackgroundColor3 = targetColor })
 			end)
 
 			optionBtn.MouseButton1Click:Connect(function()
-				  t = getTheme()
-				  dropColor = t.Dropdown or t.Input or Color3.fromRGB(25, 25, 32)
+				local t = getTheme()
+				local dropColor = t.Dropdown or t.Input or Color3.fromRGB(25, 25, 32)
 
 				for j, btn in ipairs(optionButtons) do
 					Util.Tween(btn, 0.15, {
@@ -3028,7 +3028,7 @@ function Components.Dropdown(config)
 
 	createOptions()
 
-	  expandedHeight = headerHeight + optionsListHeight + 4
+	local expandedHeight = headerHeight + optionsListHeight + 4
 
 	header.MouseButton1Click:Connect(function()
 		expanded = not expanded
@@ -3050,8 +3050,8 @@ function Components.Dropdown(config)
 	end)
 
 	if floating then
-		  UIS = game:GetService("UserInputService")
-		  GuiService = game:GetService("GuiService")
+		local UIS = game:GetService("UserInputService")
+		local GuiService = game:GetService("GuiService")
 		inputConnection = UIS.InputBegan:Connect(function(input, gameProcessed)
 			if not expanded then
 				return
@@ -3063,19 +3063,19 @@ function Components.Dropdown(config)
 				input.UserInputType == Enum.UserInputType.MouseButton1
 				or input.UserInputType == Enum.UserInputType.Touch
 			then
-				  guiInset = GuiService:GetGuiInset()
-				  mousePos = UIS:GetMouseLocation() - guiInset
+				local guiInset = GuiService:GetGuiInset()
+				local mousePos = UIS:GetMouseLocation() - guiInset
 
-				  btnPos = header.AbsolutePosition
-				  btnSize = header.AbsoluteSize
-				  listPos = optionsList.AbsolutePosition
-				  listSize = optionsList.AbsoluteSize
+				local btnPos = header.AbsolutePosition
+				local btnSize = header.AbsoluteSize
+				local listPos = optionsList.AbsolutePosition
+				local listSize = optionsList.AbsoluteSize
 
-				  inBtn = mousePos.X >= btnPos.X
+				local inBtn = mousePos.X >= btnPos.X
 					and mousePos.X <= btnPos.X + btnSize.X
 					and mousePos.Y >= btnPos.Y
 					and mousePos.Y <= btnPos.Y + btnSize.Y
-				  inList = mousePos.X >= listPos.X
+				local inList = mousePos.X >= listPos.X
 					and mousePos.X <= listPos.X + listSize.X
 					and mousePos.Y >= listPos.Y
 					and mousePos.Y <= listPos.Y + listSize.Y
@@ -3088,16 +3088,16 @@ function Components.Dropdown(config)
 	end
 
 	header.MouseEnter:Connect(function()
-		  t = getTheme()
+		local t = getTheme()
 		Util.Tween(dropdownFrame, 0.12, { BackgroundColor3 = t.CardHover or Color3.fromRGB(38, 38, 48) })
 	end)
 
 	header.MouseLeave:Connect(function()
-		  t = getTheme()
+		local t = getTheme()
 		Util.Tween(dropdownFrame, 0.12, { BackgroundColor3 = t.Card or t.Surface or Color3.fromRGB(30, 30, 38) })
 	end)
 
-	  dropdown = {
+	local dropdown = {
 		Frame = dropdownFrame,
 		List = optionsList,
 		Value = selected,
@@ -3127,7 +3127,7 @@ function Components.Dropdown(config)
 		self.Value = selected
 		valueLabel.Text = tostring(selected)
 
-		  newOptionsListHeight = #options * optionHeight + math.max(0, #options - 1) * spacing + 8
+		local newOptionsListHeight = #options * optionHeight + math.max(0, #options - 1) * spacing + 8
 		if floating then
 			optionsList.Size = UDim2.new(0, listWidth, 0, newOptionsListHeight)
 		else
@@ -3189,7 +3189,7 @@ function Xan:_notifyThemeChanged()
 	end
 end
 
-  LayoutRegistry = {
+local LayoutRegistry = {
 	Default = {
 		Name = "Default",
 		Description = "Sidebar layout with tabs on the left",
@@ -3235,7 +3235,7 @@ function Xan:GetLayout(layoutName)
 end
 
 function Xan:GetAvailableLayouts()
-	  layouts = {}
+	local layouts = {}
 	for name, info in pairs(LayoutRegistry) do
 		table.insert(layouts, {
 			Name = name,
@@ -3247,13 +3247,13 @@ function Xan:GetAvailableLayouts()
 	return layouts
 end
 
-  WindowBuilders = {}
+local WindowBuilders = {}
 
 function WindowBuilders.CreateScreenGui(title)
-	  guiName = Xan.GhostMode and Util.GenerateRandomString(math.random(12, 20))
+	local guiName = Xan.GhostMode and Util.GenerateRandomString(math.random(12, 20))
 		or ("XanBar_" .. title:gsub("%s+", ""))
 
-	  screenGui = Util.Create("ScreenGui", {
+	local screenGui = Util.Create("ScreenGui", {
 		Name = guiName,
 		ResetOnSpawn = false,
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
@@ -3265,14 +3265,14 @@ function WindowBuilders.CreateScreenGui(title)
 		screenGui.Parent = CoreGui
 	end)
 	if not screenGui.Parent then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
 	return screenGui
 end
 
 function WindowBuilders.CreateMainFrame(screenGui, size, position, theme)
-	  mainFrame = Util.Create("Frame", {
+	local mainFrame = Util.Create("Frame", {
 		Name = "Main",
 		BackgroundColor3 = theme.Background,
 		Size = size,
@@ -3298,7 +3298,7 @@ function WindowBuilders.CreateMainFrame(screenGui, size, position, theme)
 	end
 
 	if theme.BackgroundImage and theme.BackgroundImage ~= "" then
-		  bgImage = Util.Create("ImageLabel", {
+		local bgImage = Util.Create("ImageLabel", {
 			Name = "BackgroundImage",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -3312,7 +3312,7 @@ function WindowBuilders.CreateMainFrame(screenGui, size, position, theme)
 			Util.Create("UICorner", { CornerRadius = UDim.new(0, 12) }),
 		})
 
-		  bgOverlay = Util.Create("Frame", {
+		local bgOverlay = Util.Create("Frame", {
 			Name = "BackgroundOverlay",
 			BackgroundColor3 = theme.BackgroundOverlay or theme.Background,
 			BackgroundTransparency = theme.BackgroundOverlayTransparency or 0.5,
@@ -3331,11 +3331,11 @@ function WindowBuilders.CreateMainFrame(screenGui, size, position, theme)
 end
 
 function WindowBuilders.CreateDragBar(screenGui, mainFrame, theme)
-	  frameHeight = mainFrame.Size.Y.Offset
-	  dragBarPadding = 15
-	  dragBarOffset = IsMobile and (frameHeight / 2 + dragBarPadding - 30) or (frameHeight / 2 + dragBarPadding)
+	local frameHeight = mainFrame.Size.Y.Offset
+	local dragBarPadding = 15
+	local dragBarOffset = IsMobile and (frameHeight / 2 + dragBarPadding - 30) or (frameHeight / 2 + dragBarPadding)
 
-	  dragBarContainer = Util.Create("Frame", {
+	local dragBarContainer = Util.Create("Frame", {
 		Name = "DragBarContainer",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -3345,7 +3345,7 @@ function WindowBuilders.CreateDragBar(screenGui, mainFrame, theme)
 		Parent = screenGui,
 	})
 
-	  dragBarCosmetic = Util.Create("Frame", {
+	local dragBarCosmetic = Util.Create("Frame", {
 		Name = "DragBar",
 		BackgroundColor3 = theme.CardBorder,
 		BackgroundTransparency = 0.6,
@@ -3358,7 +3358,7 @@ function WindowBuilders.CreateDragBar(screenGui, mainFrame, theme)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  dragBarInteract = Util.Create("TextButton", {
+	local dragBarInteract = Util.Create("TextButton", {
 		Name = "DragInteract",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 20, 1, 10),
@@ -3381,14 +3381,14 @@ function WindowBuilders.CreateDragBar(screenGui, mainFrame, theme)
 end
 
 function WindowBuilders.SetupDragBarBehavior(dragBar, mainFrame, theme)
-	  dragBarDragging = false
-	  dragBarHovered = false
-	  dragBarRelative = nil
-	  dragBarTaskId = "dragBar_" .. tostring(mainFrame)
-	  dragGuiInset = nil
+	local dragBarDragging = false
+	local dragBarHovered = false
+	local dragBarRelative = nil
+	local dragBarTaskId = "dragBar_" .. tostring(mainFrame)
+	local dragGuiInset = nil
 
-	  function updateDragBarPosition()
-		  mainPos = mainFrame.Position
+	local function updateDragBarPosition()
+		local mainPos = mainFrame.Position
 		dragBar.Container.Position =
 			UDim2.new(mainPos.X.Scale, mainPos.X.Offset, mainPos.Y.Scale, mainPos.Y.Offset + dragBar.Offset)
 	end
@@ -3436,16 +3436,16 @@ function WindowBuilders.SetupDragBarBehavior(dragBar, mainFrame, theme)
 
 			RenderManager.AddTask(dragBarTaskId, function()
 				if dragBarDragging and dragGuiInset then
-					  mousePos = UserInputService:GetMouseLocation()
-					  newPos = mousePos + dragBarRelative + dragGuiInset
+					local mousePos = UserInputService:GetMouseLocation()
+					local newPos = mousePos + dragBarRelative + dragGuiInset
 
-					  cam = workspace.CurrentCamera
-					  screenSize = cam and cam.ViewportSize or Vector2.new(1920, 1080)
-					  frameW = mainFrame.AbsoluteSize.X
-					  minX = frameW * 0.3
-					  maxX = screenSize.X - frameW * 0.3
-					  minY = 20
-					  maxY = screenSize.Y - 20
+					local cam = workspace.CurrentCamera
+					local screenSize = cam and cam.ViewportSize or Vector2.new(1920, 1080)
+					local frameW = mainFrame.AbsoluteSize.X
+					local minX = frameW * 0.3
+					local maxX = screenSize.X - frameW * 0.3
+					local minY = 20
+					local maxY = screenSize.Y - 20
 					newPos = Vector2.new(math.clamp(newPos.X, minX, maxX), math.clamp(newPos.Y, minY, maxY))
 
 					Util.Tween(mainFrame, 0.4, {
@@ -3467,8 +3467,8 @@ function WindowBuilders.SetupDragBarBehavior(dragBar, mainFrame, theme)
 			dragBarDragging = false
 			RenderManager.RemoveTask(dragBarTaskId)
 
-			  targetColor = dragBarHovered and Xan.CurrentTheme.Accent or Xan.CurrentTheme.CardBorder
-			  targetTrans = dragBarHovered and 0.3 or 0.6
+			local targetColor = dragBarHovered and Xan.CurrentTheme.Accent or Xan.CurrentTheme.CardBorder
+			local targetTrans = dragBarHovered and 0.3 or 0.6
 			Util.Tween(dragBar.Cosmetic, 0.4, {
 				BackgroundColor3 = targetColor,
 				BackgroundTransparency = targetTrans,
@@ -3489,9 +3489,9 @@ function WindowBuilders.CreateSidebar(mainFrame, sidebarWidth, theme, hasSidebar
 		return nil, nil
 	end
 
-	  sidebarExtension = IsMobile and 8 or 12
+	local sidebarExtension = IsMobile and 8 or 12
 
-	  sidebar = Instance.new("CanvasGroup")
+	local sidebar = Instance.new("CanvasGroup")
 	sidebar.Name = "Sidebar"
 	sidebar.BackgroundColor3 = theme.Sidebar
 	sidebar.BackgroundTransparency = theme.SidebarTransparency or 0
@@ -3503,8 +3503,8 @@ function WindowBuilders.CreateSidebar(mainFrame, sidebarWidth, theme, hasSidebar
 	sidebar.Parent = mainFrame
 	Util.Create("UICorner", { CornerRadius = UDim.new(0, 12), Parent = sidebar })
 
-	  depthBarWidth = IsMobile and 14 or 12
-	  sidebarDepthBar = Util.Create("Frame", {
+	local depthBarWidth = IsMobile and 14 or 12
+	local sidebarDepthBar = Util.Create("Frame", {
 		Name = "Cover",
 		BackgroundColor3 = theme.SidebarDepth or theme.Background,
 		BackgroundTransparency = 0,
@@ -3525,12 +3525,12 @@ function WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, 
 	end
 
 	logoPosition = logoPosition or "none"
-	  logoSize = 28
-	  logoPadding = 8
-	  hasDesktopLogo = showLogo and logoImage and logoPosition ~= "none" and not IsMobile
-	  logoOffset = hasDesktopLogo and (logoSize + logoPadding) or 0
+	local logoSize = 28
+	local logoPadding = 8
+	local hasDesktopLogo = showLogo and logoImage and logoPosition ~= "none" and not IsMobile
+	local logoOffset = hasDesktopLogo and (logoSize + logoPadding) or 0
 
-	  brandFrame = Util.Create("Frame", {
+	local brandFrame = Util.Create("Frame", {
 		Name = "Brand",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, IsMobile and 52 or 52),
@@ -3539,9 +3539,9 @@ function WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, 
 	})
 
 	if not IsMobile then
-		  isTwoToneLogo = logoImage == Logos.XanBar or logoImage == Logos.XanBarBody
-		  titleX = 16
-		  titleWidth = -56
+		local isTwoToneLogo = logoImage == Logos.XanBar or logoImage == Logos.XanBarBody
+		local titleX = 16
+		local titleWidth = -56
 
 		if hasDesktopLogo then
 			if logoPosition == "left" then
@@ -3553,11 +3553,11 @@ function WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, 
 		end
 
 		if hasDesktopLogo then
-			  logoX = logoPosition == "left" and 14 or nil
-			  logoAnchor = logoPosition == "right" and Vector2.new(1, 0.5) or Vector2.new(0, 0.5)
-			  logoPos = logoPosition == "right" and UDim2.new(1, -14, 0.5, 0) or UDim2.new(0, logoX, 0.5, 0)
+			local logoX = logoPosition == "left" and 14 or nil
+			local logoAnchor = logoPosition == "right" and Vector2.new(1, 0.5) or Vector2.new(0, 0.5)
+			local logoPos = logoPosition == "right" and UDim2.new(1, -14, 0.5, 0) or UDim2.new(0, logoX, 0.5, 0)
 
-			  logoContainer = Util.Create("Frame", {
+			local logoContainer = Util.Create("Frame", {
 				Name = "LogoContainer",
 				BackgroundTransparency = 1,
 				AnchorPoint = logoAnchor,
@@ -3621,9 +3621,9 @@ function WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, 
 		})
 	else
 		if showLogo and logoImage then
-			  isTwoToneLogo = logoImage == Logos.XanBar or logoImage == Logos.XanBarBody
+			local isTwoToneLogo = logoImage == Logos.XanBar or logoImage == Logos.XanBarBody
 
-			  logoContainer = Util.Create("Frame", {
+			local logoContainer = Util.Create("Frame", {
 				Name = "LogoContainer",
 				BackgroundTransparency = 1,
 				AnchorPoint = Vector2.new(0.5, 0.5),
@@ -3659,7 +3659,7 @@ function WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, 
 				})
 			end
 		else
-			  logoFrame = Util.Create("Frame", {
+			local logoFrame = Util.Create("Frame", {
 				Name = "Logo",
 				BackgroundColor3 = theme.Accent,
 				AnchorPoint = Vector2.new(0.5, 0.5),
@@ -3681,7 +3681,7 @@ function WindowBuilders.CreateTabContainer(sidebar, topOffset, theme)
 		return nil
 	end
 
-	  tabContainer = Util.Create("ScrollingFrame", {
+	local tabContainer = Util.Create("ScrollingFrame", {
 		Name = "TabList",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, topOffset),
@@ -3706,7 +3706,7 @@ function WindowBuilders.CreateTabContainer(sidebar, topOffset, theme)
 		}),
 	})
 
-	  scrollIndicator = Util.Create("Frame", {
+	local scrollIndicator = Util.Create("Frame", {
 		Name = "ScrollIndicator",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 1, -32),
@@ -3716,7 +3716,7 @@ function WindowBuilders.CreateTabContainer(sidebar, topOffset, theme)
 		Parent = sidebar,
 	})
 
-	  gradient = Util.Create("Frame", {
+	local gradient = Util.Create("Frame", {
 		Name = "Gradient",
 		BackgroundColor3 = theme.Sidebar,
 		Position = UDim2.new(0, 0, 0, 0),
@@ -3734,7 +3734,7 @@ function WindowBuilders.CreateTabContainer(sidebar, topOffset, theme)
 		}),
 	})
 
-	  scrollText = Util.Create("TextLabel", {
+	local scrollText = Util.Create("TextLabel", {
 		Name = "ScrollText",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 8),
@@ -3748,7 +3748,7 @@ function WindowBuilders.CreateTabContainer(sidebar, topOffset, theme)
 		Parent = scrollIndicator,
 	})
 
-	  chevron = Util.Create("TextLabel", {
+	local chevron = Util.Create("TextLabel", {
 		Name = "Chevron",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.5, -6, 0, 18),
@@ -3762,18 +3762,18 @@ function WindowBuilders.CreateTabContainer(sidebar, topOffset, theme)
 		Parent = scrollIndicator,
 	})
 
-	  chevronBounce = 0
-	  bounceConn = nil
+	local chevronBounce = 0
+	local bounceConn = nil
 
-	  function updateScrollIndicator()
-		  canvasY = tabContainer.AbsoluteCanvasSize.Y
-		  frameY = tabContainer.AbsoluteSize.Y
-		  scrollY = tabContainer.CanvasPosition.Y
-		  maxScroll = math.max(0, canvasY - frameY)
-		  canScroll = canvasY > frameY + 10
-		  nearBottom = scrollY >= maxScroll - 5
+	local function updateScrollIndicator()
+		local canvasY = tabContainer.AbsoluteCanvasSize.Y
+		local frameY = tabContainer.AbsoluteSize.Y
+		local scrollY = tabContainer.CanvasPosition.Y
+		local maxScroll = math.max(0, canvasY - frameY)
+		local canScroll = canvasY > frameY + 10
+		local nearBottom = scrollY >= maxScroll - 5
 
-		  shouldShow = canScroll and not nearBottom
+		local shouldShow = canScroll and not nearBottom
 
 		if shouldShow and not scrollIndicator.Visible then
 			scrollIndicator.Visible = true
@@ -3787,7 +3787,7 @@ function WindowBuilders.CreateTabContainer(sidebar, topOffset, theme)
 			if not bounceConn then
 				bounceConn = RunService.Heartbeat:Connect(function(dt)
 					chevronBounce = chevronBounce + dt * 3
-					  offset = math.sin(chevronBounce) * 2
+					local offset = math.sin(chevronBounce) * 2
 					chevron.Position = UDim2.new(0.5, -6, 0, 18 + offset)
 				end)
 			end
@@ -3824,7 +3824,7 @@ function WindowBuilders.CreateTabContainer(sidebar, topOffset, theme)
 end
 
 function WindowBuilders.CreateTraditionalTopbar(mainFrame, title, topbarHeight, theme)
-	  traditionalTopbar = Util.Create("Frame", {
+	local traditionalTopbar = Util.Create("Frame", {
 		Name = "Topbar",
 		BackgroundColor3 = theme.Sidebar,
 		Size = UDim2.new(1, 0, 0, topbarHeight),
@@ -3859,7 +3859,7 @@ function WindowBuilders.CreateTraditionalTopbar(mainFrame, title, topbarHeight, 
 		Parent = traditionalTopbar,
 	})
 
-	  topBarControls = Util.Create("Frame", {
+	local topBarControls = Util.Create("Frame", {
 		Name = "Controls",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(1, 0.5),
@@ -3877,7 +3877,7 @@ function WindowBuilders.CreateTraditionalTopbar(mainFrame, title, topbarHeight, 
 		}),
 	})
 
-	  tradSettingsBtn = Util.Create("ImageButton", {
+	local tradSettingsBtn = Util.Create("ImageButton", {
 		Name = "Settings",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, 22, 0, 22),
@@ -3889,7 +3889,7 @@ function WindowBuilders.CreateTraditionalTopbar(mainFrame, title, topbarHeight, 
 		Parent = topBarControls,
 	})
 
-	  tradMinBtn = Util.Create("ImageButton", {
+	local tradMinBtn = Util.Create("ImageButton", {
 		Name = "Minimize",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, 22, 0, 22),
@@ -3901,7 +3901,7 @@ function WindowBuilders.CreateTraditionalTopbar(mainFrame, title, topbarHeight, 
 		Parent = topBarControls,
 	})
 
-	  tradCloseBtn = Util.Create("ImageButton", {
+	local tradCloseBtn = Util.Create("ImageButton", {
 		Name = "Close",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, 22, 0, 22),
@@ -3913,7 +3913,7 @@ function WindowBuilders.CreateTraditionalTopbar(mainFrame, title, topbarHeight, 
 		Parent = topBarControls,
 	})
 
-	  tradTopbarDivider = Util.Create("Frame", {
+	local tradTopbarDivider = Util.Create("Frame", {
 		Name = "Divider",
 		BackgroundColor3 = theme.CardBorder,
 		BackgroundTransparency = 0.5,
@@ -3935,7 +3935,7 @@ function WindowBuilders.CreateTraditionalTopbar(mainFrame, title, topbarHeight, 
 end
 
 function WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabListHeight, theme)
-	  tabListContainer = Util.Create("Frame", {
+	local tabListContainer = Util.Create("Frame", {
 		Name = "TabListContainer",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, topbarHeight + 4),
@@ -3945,7 +3945,7 @@ function WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabLis
 		Parent = mainFrame,
 	})
 
-	  traditionalTabList = Util.Create("ScrollingFrame", {
+	local traditionalTabList = Util.Create("ScrollingFrame", {
 		Name = "TabList",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 0),
@@ -3971,7 +3971,7 @@ function WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabLis
 		}),
 	})
 
-	  leftFade = Util.Create("Frame", {
+	local leftFade = Util.Create("Frame", {
 		Name = "LeftFade",
 		BackgroundColor3 = theme.Background,
 		Position = UDim2.new(0, 0, 0, 0),
@@ -3991,7 +3991,7 @@ function WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabLis
 		}),
 	})
 
-	  scrollLeftBtn = Util.Create("TextButton", {
+	local scrollLeftBtn = Util.Create("TextButton", {
 		Name = "ScrollLeft",
 		BackgroundColor3 = theme.Card or theme.Background,
 		BackgroundTransparency = 0.3,
@@ -4012,7 +4012,7 @@ function WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabLis
 		}),
 	})
 
-	  leftIcon = Util.Create("ImageLabel", {
+	local leftIcon = Util.Create("ImageLabel", {
 		Name = "Icon",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -4025,7 +4025,7 @@ function WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabLis
 		Parent = scrollLeftBtn,
 	})
 
-	  rightFade = Util.Create("Frame", {
+	local rightFade = Util.Create("Frame", {
 		Name = "RightFade",
 		BackgroundColor3 = theme.Background,
 		AnchorPoint = Vector2.new(1, 0),
@@ -4046,7 +4046,7 @@ function WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabLis
 		}),
 	})
 
-	  scrollRightBtn = Util.Create("TextButton", {
+	local scrollRightBtn = Util.Create("TextButton", {
 		Name = "ScrollRight",
 		BackgroundColor3 = theme.Card or theme.Background,
 		BackgroundTransparency = 0.3,
@@ -4067,7 +4067,7 @@ function WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabLis
 		}),
 	})
 
-	  rightIcon = Util.Create("ImageLabel", {
+	local rightIcon = Util.Create("ImageLabel", {
 		Name = "Icon",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -4080,13 +4080,13 @@ function WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabLis
 		Parent = scrollRightBtn,
 	})
 
-	  function updateScrollVisibility()
-		  canvasWidth = traditionalTabList.AbsoluteCanvasSize.X
-		  frameWidth = traditionalTabList.AbsoluteSize.X
-		  scrollPos = traditionalTabList.CanvasPosition.X
-		  hasOverflow = canvasWidth > frameWidth + 10
-		  canScrollLeft = scrollPos > 5
-		  canScrollRight = scrollPos < (canvasWidth - frameWidth - 5)
+	local function updateScrollVisibility()
+		local canvasWidth = traditionalTabList.AbsoluteCanvasSize.X
+		local frameWidth = traditionalTabList.AbsoluteSize.X
+		local scrollPos = traditionalTabList.CanvasPosition.X
+		local hasOverflow = canvasWidth > frameWidth + 10
+		local canScrollLeft = scrollPos > 5
+		local canScrollRight = scrollPos < (canvasWidth - frameWidth - 5)
 
 		scrollLeftBtn.Visible = hasOverflow and canScrollLeft
 		leftFade.Visible = hasOverflow and canScrollLeft
@@ -4099,15 +4099,15 @@ function WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabLis
 	traditionalTabList:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScrollVisibility)
 
 	scrollLeftBtn.MouseButton1Click:Connect(function()
-		  currentPos = traditionalTabList.CanvasPosition.X
-		  newPos = math.max(currentPos - 100, 0)
+		local currentPos = traditionalTabList.CanvasPosition.X
+		local newPos = math.max(currentPos - 100, 0)
 		Util.Tween(traditionalTabList, 0.2, { CanvasPosition = Vector2.new(newPos, 0) })
 	end)
 
 	scrollRightBtn.MouseButton1Click:Connect(function()
-		  currentPos = traditionalTabList.CanvasPosition.X
-		  maxScroll = traditionalTabList.AbsoluteCanvasSize.X - traditionalTabList.AbsoluteSize.X
-		  newPos = math.min(currentPos + 100, maxScroll)
+		local currentPos = traditionalTabList.CanvasPosition.X
+		local maxScroll = traditionalTabList.AbsoluteCanvasSize.X - traditionalTabList.AbsoluteSize.X
+		local newPos = math.min(currentPos + 100, maxScroll)
 		Util.Tween(traditionalTabList, 0.2, { CanvasPosition = Vector2.new(newPos, 0) })
 	end)
 
@@ -4137,9 +4137,9 @@ function WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabLis
 end
 
 function WindowBuilders.CreateContentArea(mainFrame, sidebarWidth, topBarHeight, theme)
-	  hasSidebar = sidebarWidth > 0
+	local hasSidebar = sidebarWidth > 0
 
-	  contentFrame = Util.Create("Frame", {
+	local contentFrame = Util.Create("Frame", {
 		Name = "Content",
 		BackgroundColor3 = theme.Background,
 		BackgroundTransparency = theme.BackgroundTransparency or 0,
@@ -4153,7 +4153,7 @@ function WindowBuilders.CreateContentArea(mainFrame, sidebarWidth, topBarHeight,
 		Util.Create("UICorner", { CornerRadius = UDim.new(0, 12) }),
 	})
 
-	  contentCover = nil
+	local contentCover = nil
 	if hasSidebar then
 		contentCover = Util.Create("Frame", {
 			Name = "ContentCover",
@@ -4175,7 +4175,7 @@ function WindowBuilders.CreateContentTopbar(contentFrame, theme, hasSidebar)
 		return nil, nil
 	end
 
-	  topbar = Util.Create("Frame", {
+	local topbar = Util.Create("Frame", {
 		Name = "Topbar",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, 48),
@@ -4193,11 +4193,11 @@ function WindowBuilders.CreateControlButtons(topbar, theme, hasSidebar)
 		return nil
 	end
 
-	  iconBtnSize = IsMobile and 36 or 24
-	  btnPadding = IsMobile and 10 or 8
-	  controlsWidth = (iconBtnSize * 3) + (btnPadding * 2) + 12
+	local iconBtnSize = IsMobile and 36 or 24
+	local btnPadding = IsMobile and 10 or 8
+	local controlsWidth = (iconBtnSize * 3) + (btnPadding * 2) + 12
 
-	  controlsFrame = Util.Create("Frame", {
+	local controlsFrame = Util.Create("Frame", {
 		Name = "Controls",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(1, -controlsWidth - 8, 0, 0),
@@ -4222,7 +4222,7 @@ function WindowBuilders.CreateSettingsButton(parent, iconBtnSize, theme)
 		return nil
 	end
 
-	  settingsBtn = Util.Create("ImageButton", {
+	local settingsBtn = Util.Create("ImageButton", {
 		Name = "TopbarSettings",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, iconBtnSize, 0, iconBtnSize),
@@ -4250,7 +4250,7 @@ function WindowBuilders.CreateSearchButton(parent, iconBtnSize, theme)
 		return nil
 	end
 
-	  searchBtn = Util.Create("ImageButton", {
+	local searchBtn = Util.Create("ImageButton", {
 		Name = "IconSearch",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, iconBtnSize, 0, iconBtnSize),
@@ -4278,7 +4278,7 @@ function WindowBuilders.CreateMinimizeButton(parent, iconBtnSize, theme, windowB
 		return nil
 	end
 
-	  minBtn
+	local minBtn
 	if windowButtonStyle == "macOS" then
 		minBtn = Util.Create("Frame", {
 			Name = "MacMinimize",
@@ -4320,7 +4320,7 @@ function WindowBuilders.CreateCloseButton(parent, iconBtnSize, theme, windowButt
 		return nil
 	end
 
-	  closeBtn
+	local closeBtn
 	if windowButtonStyle == "macOS" then
 		closeBtn = Util.Create("Frame", {
 			Name = "MacClose",
@@ -4358,10 +4358,10 @@ function WindowBuilders.CreateCloseButton(parent, iconBtnSize, theme, windowButt
 end
 
 function WindowBuilders.CreateContentContainer(contentFrame, contentOffset, hasSidebar)
-	  yOffset = hasSidebar and 48 or contentOffset
-	  heightOffset = hasSidebar and -54 or -(contentOffset + 6)
+	local yOffset = hasSidebar and 48 or contentOffset
+	local heightOffset = hasSidebar and -54 or -(contentOffset + 6)
 
-	  contentContainer = Instance.new("CanvasGroup")
+	local contentContainer = Instance.new("CanvasGroup")
 	contentContainer.Name = "ContentContainer"
 	contentContainer.BackgroundTransparency = 1
 	contentContainer.Position = UDim2.new(0, 0, 0, yOffset)
@@ -4390,40 +4390,40 @@ function WindowBuilders.AnimateWindowOpen(mainFrame, dragBar, size)
 	end)
 end
 
-  Layouts = {}
+local Layouts = {}
 
 function Layouts.BuildSidebarLayout(config, theme, libraryRef)
-	  size = config.Size or (IsMobile and UDim2.new(0.92, 0, 0.85, 0) or UDim2.new(0, 580, 0, 420))
-	  position = config.Position or (IsMobile and UDim2.new(0.5, 0, 0.55, 0) or UDim2.new(0.5, 0, 0.5, 0))
-	  title = config.Title or "My Script"
-	  subtitle = config.Subtitle or ""
-	  showSettings = config.ShowSettings ~= false
-	  showUserInfo = config.ShowUserInfo ~= false
-	  logoImage = config.Logo or Logos.Default
-	  showLogo = config.ShowLogo ~= false
-	  logoPosition = config.LogoPosition or "none"
-	  windowButtonStyle = config.WindowButtonStyle or config.ButtonStyle or "Default"
+	local size = config.Size or (IsMobile and UDim2.new(0.92, 0, 0.85, 0) or UDim2.new(0, 580, 0, 420))
+	local position = config.Position or (IsMobile and UDim2.new(0.5, 0, 0.55, 0) or UDim2.new(0.5, 0, 0.5, 0))
+	local title = config.Title or "My Script"
+	local subtitle = config.Subtitle or ""
+	local showSettings = config.ShowSettings ~= false
+	local showUserInfo = config.ShowUserInfo ~= false
+	local logoImage = config.Logo or Logos.Default
+	local showLogo = config.ShowLogo ~= false
+	local logoPosition = config.LogoPosition or "none"
+	local windowButtonStyle = config.WindowButtonStyle or config.ButtonStyle or "Default"
 
-	  screenGui = WindowBuilders.CreateScreenGui(title)
-	  mainFrame = WindowBuilders.CreateMainFrame(screenGui, size, position, theme)
-	  dragBar = WindowBuilders.CreateDragBar(screenGui, mainFrame, theme)
+	local screenGui = WindowBuilders.CreateScreenGui(title)
+	local mainFrame = WindowBuilders.CreateMainFrame(screenGui, size, position, theme)
+	local dragBar = WindowBuilders.CreateDragBar(screenGui, mainFrame, theme)
 	WindowBuilders.SetupDragBarBehavior(dragBar, mainFrame, theme)
 
-	  sidebarWidth = IsMobile and 76 or 180
-	  sidebar, sidebarDepthBar = WindowBuilders.CreateSidebar(mainFrame, sidebarWidth, theme, true)
-	  brandFrame =
+	local sidebarWidth = IsMobile and 76 or 180
+	local sidebar, sidebarDepthBar = WindowBuilders.CreateSidebar(mainFrame, sidebarWidth, theme, true)
+	local brandFrame =
 		WindowBuilders.CreateSidebarBrand(sidebar, title, subtitle, logoImage, showLogo, theme, logoPosition)
 
 
-	  tabListY = showUserInfo and (IsMobile and 108 or 124) or (IsMobile and 60 or 60)
-	  tabList = WindowBuilders.CreateTabContainer(sidebar, tabListY, theme)
+	local tabListY = showUserInfo and (IsMobile and 108 or 124) or (IsMobile and 60 or 60)
+	local tabList = WindowBuilders.CreateTabContainer(sidebar, tabListY, theme)
 
-	  contentFrame, contentCover = WindowBuilders.CreateContentArea(mainFrame, sidebarWidth, 0, theme)
-	  topbar = WindowBuilders.CreateContentTopbar(contentFrame, theme, true)
-	  controlsFrame, iconBtnSize = WindowBuilders.CreateControlButtons(topbar, theme, true)
+	local contentFrame, contentCover = WindowBuilders.CreateContentArea(mainFrame, sidebarWidth, 0, theme)
+	local topbar = WindowBuilders.CreateContentTopbar(contentFrame, theme, true)
+	local controlsFrame, iconBtnSize = WindowBuilders.CreateControlButtons(topbar, theme, true)
 	iconBtnSize = iconBtnSize or (IsMobile and 36 or 24)
 
-	  contentContainer = WindowBuilders.CreateContentContainer(contentFrame, 48, true)
+	local contentContainer = WindowBuilders.CreateContentContainer(contentFrame, 48, true)
 
 	WindowBuilders.AnimateWindowOpen(mainFrame, dragBar, size)
 
@@ -4451,35 +4451,35 @@ function Layouts.BuildSidebarLayout(config, theme, libraryRef)
 end
 
 function Layouts.BuildTraditionalLayout(config, theme, libraryRef)
-	  size = IsMobile and UDim2.new(0, 500, 0, 275) or UDim2.new(0, 500, 0, 475)
-	  position = config.Position or UDim2.new(0.5, 0, 0.5, 0)
-	  title = config.Title or "My Script"
-	  windowButtonStyle = config.WindowButtonStyle or config.ButtonStyle or "Default"
-	  tabButtonStyle = config.TabButtonStyle or "Rounded"
+	local size = IsMobile and UDim2.new(0, 500, 0, 275) or UDim2.new(0, 500, 0, 475)
+	local position = config.Position or UDim2.new(0.5, 0, 0.5, 0)
+	local title = config.Title or "My Script"
+	local windowButtonStyle = config.WindowButtonStyle or config.ButtonStyle or "Default"
+	local tabButtonStyle = config.TabButtonStyle or "Rounded"
 
-	  topbarHeight = IsMobile and 38 or 42
-	  tabListHeight = IsMobile and 32 or 34
-	  topBarTotalHeight = topbarHeight + 4 + tabListHeight + 4
+	local topbarHeight = IsMobile and 38 or 42
+	local tabListHeight = IsMobile and 32 or 34
+	local topBarTotalHeight = topbarHeight + 4 + tabListHeight + 4
 
-	  screenGui = WindowBuilders.CreateScreenGui(title)
-	  mainFrame = WindowBuilders.CreateMainFrame(screenGui, size, position, theme)
-	  dragBar = WindowBuilders.CreateDragBar(screenGui, mainFrame, theme)
+	local screenGui = WindowBuilders.CreateScreenGui(title)
+	local mainFrame = WindowBuilders.CreateMainFrame(screenGui, size, position, theme)
+	local dragBar = WindowBuilders.CreateDragBar(screenGui, mainFrame, theme)
 	WindowBuilders.SetupDragBarBehavior(dragBar, mainFrame, theme)
 
-	  tradTopbarData = WindowBuilders.CreateTraditionalTopbar(mainFrame, title, topbarHeight, theme)
-	  traditionalTopbar = tradTopbarData.Frame
-	  tradSettingsBtn = tradTopbarData.SettingsBtn
-	  tradMinBtn = tradTopbarData.MinBtn
-	  tradCloseBtn = tradTopbarData.CloseBtn
-	  tradTopbarDivider = tradTopbarData.Divider
+	local tradTopbarData = WindowBuilders.CreateTraditionalTopbar(mainFrame, title, topbarHeight, theme)
+	local traditionalTopbar = tradTopbarData.Frame
+	local tradSettingsBtn = tradTopbarData.SettingsBtn
+	local tradMinBtn = tradTopbarData.MinBtn
+	local tradCloseBtn = tradTopbarData.CloseBtn
+	local tradTopbarDivider = tradTopbarData.Divider
 
-	  contentStartY = topbarHeight - 14
-	  contentFrame, contentCover = WindowBuilders.CreateContentArea(mainFrame, 0, contentStartY, theme)
+	local contentStartY = topbarHeight - 14
+	local contentFrame, contentCover = WindowBuilders.CreateContentArea(mainFrame, 0, contentStartY, theme)
 
-	  traditionalTabList = WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabListHeight, theme)
+	local traditionalTabList = WindowBuilders.CreateTraditionalTabList(mainFrame, topbarHeight, tabListHeight, theme)
 
-	  tabsOffset = (topbarHeight - contentStartY) + 4 + tabListHeight + 4
-	  contentContainer = WindowBuilders.CreateContentContainer(contentFrame, tabsOffset, false)
+	local tabsOffset = (topbarHeight - contentStartY) + 4 + tabListHeight + 4
+	local contentContainer = WindowBuilders.CreateContentContainer(contentFrame, tabsOffset, false)
 
 	WindowBuilders.AnimateWindowOpen(mainFrame, dragBar, size)
 
@@ -4513,20 +4513,20 @@ function Layouts.BuildTraditionalLayout(config, theme, libraryRef)
 end
 
 function Layouts.BuildCompactLayout(config, theme, libraryRef)
-	  maxCompactWidth = 420
-	  defaultSize = UDim2.new(0, 360, 0, 380)
-	  configSize = config.Size or defaultSize
-	  width = math.min(configSize.X.Offset, maxCompactWidth)
-	  size = UDim2.new(0, width, 0, configSize.Y.Offset)
-	  position = config.Position or UDim2.new(0.5, 0, 0.5, 0)
-	  title = config.Title or "My Script"
+	local maxCompactWidth = 420
+	local defaultSize = UDim2.new(0, 360, 0, 380)
+	local configSize = config.Size or defaultSize
+	local width = math.min(configSize.X.Offset, maxCompactWidth)
+	local size = UDim2.new(0, width, 0, configSize.Y.Offset)
+	local position = config.Position or UDim2.new(0.5, 0, 0.5, 0)
+	local title = config.Title or "My Script"
 
-	  screenGui = WindowBuilders.CreateScreenGui(title)
-	  mainFrame = WindowBuilders.CreateMainFrame(screenGui, size, position, theme)
-	  dragBar = WindowBuilders.CreateDragBar(screenGui, mainFrame, theme)
+	local screenGui = WindowBuilders.CreateScreenGui(title)
+	local mainFrame = WindowBuilders.CreateMainFrame(screenGui, size, position, theme)
+	local dragBar = WindowBuilders.CreateDragBar(screenGui, mainFrame, theme)
 	WindowBuilders.SetupDragBarBehavior(dragBar, mainFrame, theme)
 
-	  mainStroke = mainFrame:FindFirstChildOfClass("UIStroke")
+	local mainStroke = mainFrame:FindFirstChildOfClass("UIStroke")
 	if mainStroke then
 		mainStroke:Destroy()
 	end
@@ -4539,11 +4539,11 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 
 	mainFrame.AutomaticSize = Enum.AutomaticSize.None
 
-	  topbarHeight = 32
-	  tabsAreaHeight = 32
-	  headerHeight = topbarHeight + tabsAreaHeight
+	local topbarHeight = 32
+	local tabsAreaHeight = 32
+	local headerHeight = topbarHeight + tabsAreaHeight
 
-	  headerFrame = Util.Create("Frame", {
+	local headerFrame = Util.Create("Frame", {
 		Name = "Header",
 		BackgroundColor3 = theme.Sidebar,
 		Size = UDim2.new(1, 0, 0, headerHeight),
@@ -4564,7 +4564,7 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		Parent = headerFrame,
 	})
 
-	  compactTopbar = Util.Create("TextButton", {
+	local compactTopbar = Util.Create("TextButton", {
 		Name = "CompactTopbar",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, topbarHeight),
@@ -4589,9 +4589,9 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		Parent = compactTopbar,
 	})
 
-	  topbarDragging = false
-	  topbarDragStart = nil
-	  topbarStartPos = nil
+	local topbarDragging = false
+	local topbarDragStart = nil
+	local topbarStartPos = nil
 
 	compactTopbar.InputBegan:Connect(function(input)
 		if
@@ -4612,8 +4612,8 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 				or input.UserInputType == Enum.UserInputType.Touch
 			)
 		then
-			  delta = input.Position - topbarDragStart
-			  newPos = UDim2.new(
+			local delta = input.Position - topbarDragStart
+			local newPos = UDim2.new(
 				topbarStartPos.X.Scale,
 				topbarStartPos.X.Offset + delta.X,
 				topbarStartPos.Y.Scale,
@@ -4632,7 +4632,7 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		end
 	end)
 
-	  controlsContainer = Util.Create("Frame", {
+	local controlsContainer = Util.Create("Frame", {
 		Name = "Controls",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(1, 0.5),
@@ -4650,7 +4650,7 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		}),
 	})
 
-	  compactMinBtn = Util.Create("ImageButton", {
+	local compactMinBtn = Util.Create("ImageButton", {
 		Name = "Minimize",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, 20, 0, 20),
@@ -4662,7 +4662,7 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		Parent = controlsContainer,
 	})
 
-	  compactCloseBtn = Util.Create("ImageButton", {
+	local compactCloseBtn = Util.Create("ImageButton", {
 		Name = "Close",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, 20, 0, 20),
@@ -4674,7 +4674,7 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		Parent = controlsContainer,
 	})
 
-	  tabsWrapper = Util.Create("Frame", {
+	local tabsWrapper = Util.Create("Frame", {
 		Name = "TabsWrapper",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, topbarHeight),
@@ -4684,7 +4684,7 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		Parent = headerFrame,
 	})
 
-	  tabsContainer = Util.Create("ScrollingFrame", {
+	local tabsContainer = Util.Create("ScrollingFrame", {
 		Name = "TabsContainer",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 24, 0, 0),
@@ -4709,7 +4709,7 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		}),
 	})
 
-	  scrollLeftBtn = Util.Create("TextButton", {
+	local scrollLeftBtn = Util.Create("TextButton", {
 		Name = "ScrollLeft",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 2, 0.5, 0),
@@ -4725,7 +4725,7 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		Parent = tabsWrapper,
 	})
 
-	  scrollRightBtn = Util.Create("TextButton", {
+	local scrollRightBtn = Util.Create("TextButton", {
 		Name = "ScrollRight",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(1, -2, 0.5, 0),
@@ -4741,13 +4741,13 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		Parent = tabsWrapper,
 	})
 
-	  function updateCompactScrollVisibility()
-		  canvasWidth = tabsContainer.AbsoluteCanvasSize.X
-		  frameWidth = tabsContainer.AbsoluteSize.X
-		  scrollPos = tabsContainer.CanvasPosition.X
-		  hasOverflow = canvasWidth > frameWidth + 5
-		  canScrollLeft = scrollPos > 2
-		  canScrollRight = scrollPos < (canvasWidth - frameWidth - 2)
+	local function updateCompactScrollVisibility()
+		local canvasWidth = tabsContainer.AbsoluteCanvasSize.X
+		local frameWidth = tabsContainer.AbsoluteSize.X
+		local scrollPos = tabsContainer.CanvasPosition.X
+		local hasOverflow = canvasWidth > frameWidth + 5
+		local canScrollLeft = scrollPos > 2
+		local canScrollRight = scrollPos < (canvasWidth - frameWidth - 2)
 		scrollLeftBtn.Visible = hasOverflow and canScrollLeft
 		scrollRightBtn.Visible = hasOverflow and canScrollRight
 	end
@@ -4757,15 +4757,15 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 	tabsContainer:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateCompactScrollVisibility)
 
 	scrollLeftBtn.MouseButton1Click:Connect(function()
-		  currentPos = tabsContainer.CanvasPosition.X
-		  newPos = math.max(currentPos - 80, 0)
+		local currentPos = tabsContainer.CanvasPosition.X
+		local newPos = math.max(currentPos - 80, 0)
 		Util.Tween(tabsContainer, 0.2, { CanvasPosition = Vector2.new(newPos, 0) })
 	end)
 
 	scrollRightBtn.MouseButton1Click:Connect(function()
-		  currentPos = tabsContainer.CanvasPosition.X
-		  maxScroll = tabsContainer.AbsoluteCanvasSize.X - tabsContainer.AbsoluteSize.X
-		  newPos = math.min(currentPos + 80, maxScroll)
+		local currentPos = tabsContainer.CanvasPosition.X
+		local maxScroll = tabsContainer.AbsoluteCanvasSize.X - tabsContainer.AbsoluteSize.X
+		local newPos = math.min(currentPos + 80, maxScroll)
 		Util.Tween(tabsContainer, 0.2, { CanvasPosition = Vector2.new(newPos, 0) })
 	end)
 
@@ -4784,9 +4784,9 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 
 	task.delay(0.1, updateCompactScrollVisibility)
 
-	  contentStartY = headerHeight - 1
+	local contentStartY = headerHeight - 1
 
-	  contentFrame = Util.Create("Frame", {
+	local contentFrame = Util.Create("Frame", {
 		Name = "Content",
 		BackgroundColor3 = theme.Background,
 		BackgroundTransparency = 0,
@@ -4811,7 +4811,7 @@ function Layouts.BuildCompactLayout(config, theme, libraryRef)
 		Parent = contentFrame,
 	})
 
-	  contentContainer = Instance.new("CanvasGroup")
+	local contentContainer = Instance.new("CanvasGroup")
 	contentContainer.Name = "ContentContainer"
 	contentContainer.BackgroundTransparency = 1
 	contentContainer.Position = UDim2.new(0, 0, 0, 0)
@@ -4852,8 +4852,8 @@ Xan.WindowBuilders = WindowBuilders
 function Xan:CreateWindow(config)
 	config = config or {}
 
-	  requestedLayout = config.Layout or "Auto"
-	  forceDesktop = config.ForceDesktop == true
+	local requestedLayout = config.Layout or "Auto"
+	local forceDesktop = config.ForceDesktop == true
 
 	if requestedLayout == "Auto" or requestedLayout == nil then
 		if IsMobile and not forceDesktop then
@@ -4870,7 +4870,7 @@ function Xan:CreateWindow(config)
 	end
 
 	if requestedLayout == "Mobile" and IsMobile and not forceDesktop then
-		  mobileConfig = {
+		local mobileConfig = {
 			Theme = config.Theme,
 			Position = config.MobilePosition or UDim2.new(1, -70, 0.5, 0),
 			ButtonSize = config.MobileButtonSize or 56,
@@ -4882,11 +4882,11 @@ function Xan:CreateWindow(config)
 			Buttons = {},
 		}
 
-		  mobileWrapper = self:CreateMobileButtons(mobileConfig)
+		local mobileWrapper = self:CreateMobileButtons(mobileConfig)
 
-		  tabsData = {}
+		local tabsData = {}
 		mobileWrapper.AddTab = function(_, nameOrConfig, iconArg)
-			  tabName, tabIcon, tabCallback
+			local tabName, tabIcon, tabCallback
 			if type(nameOrConfig) == "string" then
 				tabName = nameOrConfig
 				tabIcon = iconArg
@@ -4896,12 +4896,12 @@ function Xan:CreateWindow(config)
 				tabCallback = nameOrConfig.Callback
 			end
 
-			  resolvedIcon = tabIcon
+			local resolvedIcon = tabIcon
 			if type(tabIcon) == "string" then
 				resolvedIcon = Icons[tabIcon] or tabIcon
 			end
 
-			  btnConfig = {
+			local btnConfig = {
 				Name = tabName,
 				Icon = resolvedIcon or Icons.Home,
 				Callback = tabCallback or function() end,
@@ -4909,7 +4909,7 @@ function Xan:CreateWindow(config)
 
 			table.insert(mobileConfig.Buttons, btnConfig)
 
-			  tab = {
+			local tab = {
 				Name = tabName,
 				_elements = {},
 				CreateToggle = function()
@@ -4981,13 +4981,13 @@ function Xan:CreateWindow(config)
 		return mobileWrapper
 	end
 
-	  layoutInfo = LayoutRegistry[requestedLayout] or LayoutRegistry.Default
+	local layoutInfo = LayoutRegistry[requestedLayout] or LayoutRegistry.Default
 	config.Layout = layoutInfo.Name
 
-	  title = config.Title or "My Script"
-	  subtitle = config.Subtitle or ""
+	local title = config.Title or "My Script"
+	local subtitle = config.Subtitle or ""
 
-	  theme
+	local theme
 	if self.SavedThemeName and self.Themes[self.SavedThemeName] then
 		theme = self.Themes[self.SavedThemeName]
 		self.CurrentTheme = theme
@@ -4997,38 +4997,38 @@ function Xan:CreateWindow(config)
 	else
 		theme = self.CurrentTheme
 	end
-	  minSize = config.MinSize or Vector2.new(400, 300)
-	  saveConfig = config.SaveConfig ~= false
-	  configName = config.ConfigName or title:gsub("%s+", "_"):lower()
-	  showUserInfo = config.ShowUserInfo ~= false
-	  userAvatar = config.UserAvatar
-	  userName = config.UserName or  Player.DisplayName
-	  userSubtitle = config.UserSubtitle or "@" ..  Player.Name
-	  logoImage = config.Logo or Logos.Default
-	  showLogo = config.ShowLogo ~= false
-	  showSplash = config.ShowSplash
+	local minSize = config.MinSize or Vector2.new(400, 300)
+	local saveConfig = config.SaveConfig ~= false
+	local configName = config.ConfigName or title:gsub("%s+", "_"):lower()
+	local showUserInfo = config.ShowUserInfo ~= false
+	local userAvatar = config.UserAvatar
+	local userName = config.UserName or LocalPlayer.DisplayName
+	local userSubtitle = config.UserSubtitle or "@" .. LocalPlayer.Name
+	local logoImage = config.Logo or Logos.Default
+	local showLogo = config.ShowLogo ~= false
+	local showSplash = config.ShowSplash
 	if showSplash == nil then
 		showSplash = IsMobile
 	end
-	  splashDuration = config.SplashDuration or 2
-	  windowButtonStyle = config.WindowButtonStyle or config.ButtonStyle or "Default"
-	  showSettings = config.ShowSettings ~= false
-	  showSearch = config.ShowSearch ~= false
-	  showActiveList = config.ShowActiveList
+	local splashDuration = config.SplashDuration or 2
+	local windowButtonStyle = config.WindowButtonStyle or config.ButtonStyle or "Default"
+	local showSettings = config.ShowSettings ~= false
+	local showSearch = config.ShowSearch ~= false
+	local showActiveList = config.ShowActiveList
 	if showActiveList == nil then
 		showActiveList = Xan.ActiveBindsVisible
 	end
-	  layout = layoutInfo.Name
-	  hasSidebar = layoutInfo.HasSidebar
+	local layout = layoutInfo.Name
+	local hasSidebar = layoutInfo.HasSidebar
 
-	  profilePage = config.ProfilePage
-	  profileEnabled = profilePage ~= nil
-	  profileCloseSafeguardTime = 0
+	local profilePage = config.ProfilePage
+	local profileEnabled = profilePage ~= nil
+	local profileCloseSafeguardTime = 0
 
 	self.CurrentTheme = theme
 
 	if showSplash then
-		  splashDone = false
+		local splashDone = false
 		self:CreateSplashScreen({
 			Title = title,
 			Subtitle = subtitle,
@@ -5044,7 +5044,7 @@ function Xan:CreateWindow(config)
 		end
 	end
 
-	  guiObjects
+	local guiObjects
 	if layout == "Traditional" then
 		guiObjects = Layouts.BuildTraditionalLayout(config, theme, self)
 	elseif layout == "Compact" then
@@ -5053,58 +5053,58 @@ function Xan:CreateWindow(config)
 		guiObjects = Layouts.BuildSidebarLayout(config, theme, self)
 	end
 
-	  screenGui = guiObjects.ScreenGui
-	  mainFrame = guiObjects.MainFrame
-	  dragBar = guiObjects.DragBar
-	  dragBarContainer = dragBar.Container
-	  dragBarCosmetic = dragBar.Cosmetic
-	  dragBarOffset = dragBar.Offset
-	  size = guiObjects.Size
-	  position = guiObjects.Position
+	local screenGui = guiObjects.ScreenGui
+	local mainFrame = guiObjects.MainFrame
+	local dragBar = guiObjects.DragBar
+	local dragBarContainer = dragBar.Container
+	local dragBarCosmetic = dragBar.Cosmetic
+	local dragBarOffset = dragBar.Offset
+	local size = guiObjects.Size
+	local position = guiObjects.Position
 
-	  sidebar = guiObjects.Sidebar
-	  sidebarDepthBar = guiObjects.SidebarDepthBar
-	  sidebarWidth = guiObjects.SidebarWidth or 0
+	local sidebar = guiObjects.Sidebar
+	local sidebarDepthBar = guiObjects.SidebarDepthBar
+	local sidebarWidth = guiObjects.SidebarWidth or 0
 
-	  traditionalTopbar = guiObjects.TraditionalTopbar
-	  traditionalTabList = guiObjects.TraditionalTabList
-	  topTabContainer = guiObjects.TopTabContainer or guiObjects.TabsContainer
-	  tradTopbarDivider = guiObjects.TradTopbarDivider
-	  tradSettingsBtn = guiObjects.TradSettingsBtn
-	  tradMinBtn = guiObjects.TradMinBtn or guiObjects.CompactMinBtn
-	  tradCloseBtn = guiObjects.TradCloseBtn or guiObjects.CompactCloseBtn
+	local traditionalTopbar = guiObjects.TraditionalTopbar
+	local traditionalTabList = guiObjects.TraditionalTabList
+	local topTabContainer = guiObjects.TopTabContainer or guiObjects.TabsContainer
+	local tradTopbarDivider = guiObjects.TradTopbarDivider
+	local tradSettingsBtn = guiObjects.TradSettingsBtn
+	local tradMinBtn = guiObjects.TradMinBtn or guiObjects.CompactMinBtn
+	local tradCloseBtn = guiObjects.TradCloseBtn or guiObjects.CompactCloseBtn
 
-	  brandFrame = guiObjects.BrandFrame
+	local brandFrame = guiObjects.BrandFrame
 
-	  contentFrame = guiObjects.ContentFrame
-	  contentCover = guiObjects.ContentCover
-	  topbar = guiObjects.Topbar
-	  controlsFrame = guiObjects.ControlsFrame
-	  contentContainer = guiObjects.ContentContainer
-	  iconBtnSize = guiObjects.IconBtnSize or (IsMobile and 36 or 24)
-	  btnPadding = IsMobile and 10 or 8
-	  controlsWidth = (iconBtnSize * 3) + (btnPadding * 2) + 12
+	local contentFrame = guiObjects.ContentFrame
+	local contentCover = guiObjects.ContentCover
+	local topbar = guiObjects.Topbar
+	local controlsFrame = guiObjects.ControlsFrame
+	local contentContainer = guiObjects.ContentContainer
+	local iconBtnSize = guiObjects.IconBtnSize or (IsMobile and 36 or 24)
+	local btnPadding = IsMobile and 10 or 8
+	local controlsWidth = (iconBtnSize * 3) + (btnPadding * 2) + 12
 
-	  topbarHeight = guiObjects.TopbarHeight or 0
-	  tabListHeight = guiObjects.TabListHeight or 0
-	  tabListSpacing = hasSidebar and 0 or 8
-	  topBarHeight = topbarHeight + tabListSpacing + tabListHeight + (hasSidebar and 0 or 8)
+	local topbarHeight = guiObjects.TopbarHeight or 0
+	local tabListHeight = guiObjects.TabListHeight or 0
+	local tabListSpacing = hasSidebar and 0 or 8
+	local topBarHeight = topbarHeight + tabListSpacing + tabListHeight + (hasSidebar and 0 or 8)
 
-	  doClose
-	  doMinimize
-	  doMaximize
-	  handleMinimizeClick
-	  openSettings
+	local doClose
+	local doMinimize
+	local doMaximize
+	local handleMinimizeClick
+	local openSettings
 
-	  tabListY = showUserInfo and (IsMobile and 108 or 124) or (IsMobile and 60 or 60)
-	  tabList = guiObjects.TabList
+	local tabListY = showUserInfo and (IsMobile and 108 or 124) or (IsMobile and 60 or 60)
+	local tabList = guiObjects.TabList
 		or (hasSidebar and sidebar and WindowBuilders.CreateTabContainer(sidebar, tabListY, theme) or topTabContainer)
 
 	
 
-	  settingsBtnSize = IsMobile and 44 or 28
-	  slidersIcon = "rbxassetid://133630958135516"
-	  settingsBtn
+	local settingsBtnSize = IsMobile and 44 or 28
+	local slidersIcon = "rbxassetid://133630958135516"
+	local settingsBtn
 	if hasSidebar and brandFrame then
 		settingsBtn = Util.Create("ImageButton", {
 			Name = "SettingsBtn",
@@ -5135,7 +5135,7 @@ function Xan:CreateWindow(config)
 		end)
 	end
 
-	  userFrame
+	local userFrame
 	if showUserInfo and hasSidebar and sidebar then
 		userFrame = Util.Create("Frame", {
 			Name = "UserInfo",
@@ -5148,8 +5148,8 @@ function Xan:CreateWindow(config)
 			Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
 		})
 
-		  avatarSize = IsMobile and 30 or 40
-		  avatarFrame = Util.Create("ImageLabel", {
+		local avatarSize = IsMobile and 30 or 40
+		local avatarFrame = Util.Create("ImageLabel", {
 			Name = "Avatar",
 			BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary,
 			AnchorPoint = IsMobile and Vector2.new(0.5, 0.5) or Vector2.new(0, 0.5),
@@ -5163,7 +5163,7 @@ function Xan:CreateWindow(config)
 			Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 		})
 
-		  loadingDots = Util.Create("Frame", {
+		local loadingDots = Util.Create("Frame", {
 			Name = "LoadingDots",
 			BackgroundTransparency = 1,
 			AnchorPoint = Vector2.new(0.5, 0.5),
@@ -5173,10 +5173,10 @@ function Xan:CreateWindow(config)
 			Parent = avatarFrame,
 		})
 
-		  dotSize = 4
-		  dotSpacing = 10
+		local dotSize = 4
+		local dotSpacing = 10
 		for i = 1, 3 do
-			  dot = Util.Create("Frame", {
+			local dot = Util.Create("Frame", {
 				Name = "Dot" .. i,
 				BackgroundColor3 = Xan.CurrentTheme.TextDim,
 				AnchorPoint = Vector2.new(0.5, 0.5),
@@ -5189,14 +5189,14 @@ function Xan:CreateWindow(config)
 			})
 		end
 
-		  dotAnimTaskId = "dotAnim_" .. tostring(loadingDots)
+		local dotAnimTaskId = "dotAnim_" .. tostring(loadingDots)
 		task.spawn(function()
-			  dots = loadingDots:GetChildren()
+			local dots = loadingDots:GetChildren()
 			RenderManager.AddTask(dotAnimTaskId, function()
-				  t = os.clock() * 3
+				local t = os.clock() * 3
 				for i, dot in ipairs(dots) do
 					if dot:IsA("Frame") then
-						  offset = math.sin(t + i * 0.8) * 2
+						local offset = math.sin(t + i * 0.8) * 2
 						dot.Position = UDim2.new(0.5, (i - 2) * dotSpacing, 0.5, offset)
 						dot.BackgroundTransparency = 0.3 + math.abs(math.sin(t + i * 0.8)) * 0.4
 					end
@@ -5205,13 +5205,13 @@ function Xan:CreateWindow(config)
 		end)
 
 		task.spawn(function()
-			  imageUrl
+			local imageUrl
 			if userAvatar then
 				imageUrl = userAvatar
 			else
-				  success, result = pcall(function()
+				local success, result = pcall(function()
 					return Players:GetUserThumbnailAsync(
-						 Player.UserId,
+						LocalPlayer.UserId,
 						Enum.ThumbnailType.HeadShot,
 						Enum.ThumbnailSize.Size150x150
 					)
@@ -5246,7 +5246,7 @@ function Xan:CreateWindow(config)
 				Parent = userFrame,
 			})
 
-			  usernameLabel = Util.Create("TextLabel", {
+			local usernameLabel = Util.Create("TextLabel", {
 				Name = "Username",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 58, 0, 26),
@@ -5261,9 +5261,9 @@ function Xan:CreateWindow(config)
 				Parent = userFrame,
 			})
 
-			  usernameTooltip = nil
-			  maxDisplayLength = 14
-			  isTruncated = #userName > maxDisplayLength
+			local usernameTooltip = nil
+			local maxDisplayLength = 14
+			local isTruncated = #userName > maxDisplayLength
 
 			if isTruncated then
 				usernameLabel.MouseEnter:Connect(function()
@@ -5301,11 +5301,11 @@ function Xan:CreateWindow(config)
 					})
 
 					usernameTooltip.BackgroundTransparency = 1
-					  tooltipText = usernameTooltip:FindFirstChild("Text")
+					local tooltipText = usernameTooltip:FindFirstChild("Text")
 					if tooltipText then
 						tooltipText.TextTransparency = 1
 					end
-					  stroke = usernameTooltip:FindFirstChild("UIStroke")
+					local stroke = usernameTooltip:FindFirstChild("UIStroke")
 					if stroke then
 						stroke.Transparency = 1
 					end
@@ -5321,10 +5321,10 @@ function Xan:CreateWindow(config)
 
 				usernameLabel.MouseLeave:Connect(function()
 					if usernameTooltip then
-						  tooltip = usernameTooltip
+						local tooltip = usernameTooltip
 						usernameTooltip = nil
 
-						  stroke = tooltip:FindFirstChild("UIStroke")
+						local stroke = tooltip:FindFirstChild("UIStroke")
 						Util.Tween(tooltip, 0.1, { BackgroundTransparency = 1 })
 						Util.Tween(tooltip:FindFirstChild("Text"), 0.1, { TextTransparency = 1 })
 						if stroke then
@@ -5342,7 +5342,7 @@ function Xan:CreateWindow(config)
 		end
 
 		if profileEnabled then
-			  userButton = Util.Create("TextButton", {
+			local userButton = Util.Create("TextButton", {
 				Name = "UserButton",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -5358,19 +5358,19 @@ function Xan:CreateWindow(config)
 				Util.Tween(userFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary })
 			end)
 
-			  profileOverlay = nil
-			  profileOpen = false
-			  selectedGame = profilePage.DefaultGame or "Frontlines"
-			  gameDropdownOpen = false
+			local profileOverlay = nil
+			local profileOpen = false
+			local selectedGame = profilePage.DefaultGame or "Frontlines"
+			local gameDropdownOpen = false
 
-			  function showProfilePage()
+			local function showProfilePage()
 				if profileOpen then
 					return
 				end
 				profileOpen = true
 
-				  dropdownOpen = false
-				  dropdownFrame = nil
+				local dropdownOpen = false
+				local dropdownFrame = nil
 
 				profileOverlay = Util.Create("Frame", {
 					Name = "ProfileOverlay",
@@ -5384,8 +5384,8 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 12) }),
 				})
 
-				  hubSidebarWidth = IsMobile and 0 or 200
-				  hubSidebar = Util.Create("Frame", {
+				local hubSidebarWidth = IsMobile and 0 or 200
+				local hubSidebar = Util.Create("Frame", {
 					Name = "HubSidebar",
 					BackgroundColor3 = Xan.CurrentTheme.Sidebar,
 					BackgroundTransparency = 1,
@@ -5397,7 +5397,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 12) }),
 				})
 
-				  hubLogo = Util.Create("ImageLabel", {
+				local hubLogo = Util.Create("ImageLabel", {
 					Name = "Logo",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 16, 0, 16),
@@ -5408,7 +5408,7 @@ function Xan:CreateWindow(config)
 					Parent = hubSidebar,
 				})
 
-				  hubTitle = Util.Create("TextLabel", {
+				local hubTitle = Util.Create("TextLabel", {
 					Name = "Title",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 46, 0, 16),
@@ -5423,7 +5423,7 @@ function Xan:CreateWindow(config)
 					Parent = hubSidebar,
 				})
 
-				  hubTagline = Util.Create("TextLabel", {
+				local hubTagline = Util.Create("TextLabel", {
 					Name = "Tagline",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 16, 0, 40),
@@ -5438,7 +5438,7 @@ function Xan:CreateWindow(config)
 					Parent = hubSidebar,
 				})
 
-				  userSection = Util.Create("Frame", {
+				local userSection = Util.Create("Frame", {
 					Name = "UserSection",
 					BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 					BackgroundTransparency = 1,
@@ -5478,7 +5478,7 @@ function Xan:CreateWindow(config)
 					Parent = userSection,
 				})
 
-				  gamesList = {}
+				local gamesList = {}
 				if profilePage.Games then
 					for gameName, _ in pairs(profilePage.Games) do
 						table.insert(gamesList, gameName)
@@ -5486,14 +5486,14 @@ function Xan:CreateWindow(config)
 				end
 				table.sort(gamesList)
 
-				  currentGame = selectedGame
+				local currentGame = selectedGame
 				if not profilePage.Games or not profilePage.Games[currentGame] then
 					currentGame = gamesList[1] or ""
 				end
 
-				  function getGameIcon(gameName)
+				local function getGameIcon(gameName)
 					if profilePage.Games and profilePage.Games[gameName] then
-						  gameData = profilePage.Games[gameName]
+						local gameData = profilePage.Games[gameName]
 						if gameData.Icon then
 							return gameData.Icon
 						end
@@ -5501,7 +5501,7 @@ function Xan:CreateWindow(config)
 					return GameIcons[gameName] or Icons.Home
 				end
 
-				  function getGameBanner(gameName)
+				local function getGameBanner(gameName)
 					if
 						profilePage.Games
 						and profilePage.Games[gameName]
@@ -5512,11 +5512,11 @@ function Xan:CreateWindow(config)
 					return profilePage.BannerImage or ""
 				end
 
-				  productsList = profilePage.Products or { { Name = profilePage.ProductName or title } }
-				  currentProduct = productsList[1].Name
+				local productsList = profilePage.Products or { { Name = profilePage.ProductName or title } }
+				local currentProduct = productsList[1].Name
 
-				  productBtnHeight = IsMobile and 44 or 38
-				  productSelector = Util.Create("TextButton", {
+				local productBtnHeight = IsMobile and 44 or 38
+				local productSelector = Util.Create("TextButton", {
 					Name = "ProductSelector",
 					BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 					BackgroundTransparency = 1,
@@ -5530,7 +5530,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 				})
 
-				  productSelectorLabel = Util.Create("TextLabel", {
+				local productSelectorLabel = Util.Create("TextLabel", {
 					Name = "Label",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 14, 0, 0),
@@ -5545,7 +5545,7 @@ function Xan:CreateWindow(config)
 					Parent = productSelector,
 				})
 
-				  gamesHeader = Util.Create("TextLabel", {
+				local gamesHeader = Util.Create("TextLabel", {
 					Name = "GamesHeader",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 14, 0, 126 + productBtnHeight + 16),
@@ -5559,8 +5559,8 @@ function Xan:CreateWindow(config)
 					Parent = hubSidebar,
 				})
 
-				  gameBtnHeight = IsMobile and 48 or 42
-				  gamesContainer = Util.Create("ScrollingFrame", {
+				local gameBtnHeight = IsMobile and 48 or 42
+				local gamesContainer = Util.Create("ScrollingFrame", {
 					Name = "GamesContainer",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 10, 0, 126 + productBtnHeight + 38),
@@ -5576,13 +5576,13 @@ function Xan:CreateWindow(config)
 					Util.Create("UIListLayout", { Padding = UDim.new(0, 6), SortOrder = Enum.SortOrder.LayoutOrder }),
 				})
 
-				  gameButtons = {}
-				  selectedGameBtn = nil
-				  currentProfileTheme = Xan.CurrentTheme
+				local gameButtons = {}
+				local selectedGameBtn = nil
+				local currentProfileTheme = Xan.CurrentTheme
 
 				for i, gameName in ipairs(gamesList) do
-					  isSelected = gameName == currentGame
-					  gameBtn = Util.Create("TextButton", {
+					local isSelected = gameName == currentGame
+					local gameBtn = Util.Create("TextButton", {
 						Name = gameName,
 						BackgroundColor3 = isSelected and Xan.CurrentTheme.BackgroundSecondary
 							or Xan.CurrentTheme.BackgroundTertiary,
@@ -5602,7 +5602,7 @@ function Xan:CreateWindow(config)
 						}),
 					})
 
-					  gameIcon = Util.Create("ImageLabel", {
+					local gameIcon = Util.Create("ImageLabel", {
 						Name = "Icon",
 						BackgroundTransparency = 1,
 						Position = UDim2.new(0, 12, 0.5, -12),
@@ -5615,7 +5615,7 @@ function Xan:CreateWindow(config)
 						Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 					})
 
-					  gameLabel = Util.Create("TextLabel", {
+					local gameLabel = Util.Create("TextLabel", {
 						Name = "Label",
 						BackgroundTransparency = 1,
 						Position = UDim2.new(0, 44, 0, 0),
@@ -5636,7 +5636,7 @@ function Xan:CreateWindow(config)
 					end
 				end
 
-				  optionalLabel = Util.Create("TextLabel", {
+				local optionalLabel = Util.Create("TextLabel", {
 					Name = "Optional",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 10, 1, -24),
@@ -5652,7 +5652,7 @@ function Xan:CreateWindow(config)
 					Parent = hubSidebar,
 				})
 
-				  rightPanel = Util.Create("Frame", {
+				local rightPanel = Util.Create("Frame", {
 					Name = "RightPanel",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, hubSidebarWidth, 0, 0),
@@ -5662,7 +5662,7 @@ function Xan:CreateWindow(config)
 					Parent = profileOverlay,
 				})
 
-				  bannerImage = Util.Create("ImageLabel", {
+				local bannerImage = Util.Create("ImageLabel", {
 					Name = "Banner",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 0),
@@ -5674,7 +5674,7 @@ function Xan:CreateWindow(config)
 					Parent = rightPanel,
 				})
 
-				  bannerDarkOverlay = Util.Create("Frame", {
+				local bannerDarkOverlay = Util.Create("Frame", {
 					Name = "BannerDark",
 					BackgroundColor3 = Color3.new(0, 0, 0),
 					BackgroundTransparency = 0.4,
@@ -5683,7 +5683,7 @@ function Xan:CreateWindow(config)
 					Parent = rightPanel,
 				})
 
-				  bannerGradient = Util.Create("Frame", {
+				local bannerGradient = Util.Create("Frame", {
 					Name = "BannerGradient",
 					BackgroundColor3 = Xan.CurrentTheme.Background,
 					Size = UDim2.new(1, 0, 0, 180),
@@ -5700,8 +5700,8 @@ function Xan:CreateWindow(config)
 					}),
 				})
 
-				  closeBtnSize = IsMobile and 48 or 32
-				  closeBtn = Util.Create("TextButton", {
+				local closeBtnSize = IsMobile and 48 or 32
+				local closeBtn = Util.Create("TextButton", {
 					Name = "ProfileCloseBtn",
 					BackgroundColor3 = Color3.fromRGB(40, 40, 45),
 					BackgroundTransparency = 1,
@@ -5719,7 +5719,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 				})
 
-				  contentArea = Util.Create("Frame", {
+				local contentArea = Util.Create("Frame", {
 					Name = "Content",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 20, 0, 20),
@@ -5728,7 +5728,7 @@ function Xan:CreateWindow(config)
 					Parent = rightPanel,
 				})
 
-				  productTitle = Util.Create("TextLabel", {
+				local productTitle = Util.Create("TextLabel", {
 					Name = "ProductTitle",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, -110, 0, 26),
@@ -5742,7 +5742,7 @@ function Xan:CreateWindow(config)
 					Parent = contentArea,
 				})
 
-				  productSub = Util.Create("TextLabel", {
+				local productSub = Util.Create("TextLabel", {
 					Name = "ProductSub",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 26),
@@ -5757,7 +5757,7 @@ function Xan:CreateWindow(config)
 					Parent = contentArea,
 				})
 
-				  productImg = Util.Create("ImageLabel", {
+				local productImg = Util.Create("ImageLabel", {
 					Name = "ProductImage",
 					BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary,
 					BackgroundTransparency = 1,
@@ -5772,7 +5772,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
 				})
 
-				  priceLabel = Util.Create("TextLabel", {
+				local priceLabel = Util.Create("TextLabel", {
 					Name = "Price",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 52),
@@ -5787,25 +5787,25 @@ function Xan:CreateWindow(config)
 					Parent = contentArea,
 				})
 
-				  loadBtn
-				  loadBtnLoading = false
+				local loadBtn
+				local loadBtnLoading = false
 				if profilePage.OnLoad then
-					  function getMutedAccent()
+					local function getMutedAccent()
 						return Color3.fromRGB(
 							math.floor(Xan.CurrentTheme.Accent.R * 180),
 							math.floor(Xan.CurrentTheme.Accent.G * 180),
 							math.floor(Xan.CurrentTheme.Accent.B * 180)
 						)
 					end
-					  function getMutedAccentHover()
+					local function getMutedAccentHover()
 						return Color3.fromRGB(
 							math.floor(Xan.CurrentTheme.Accent.R * 210),
 							math.floor(Xan.CurrentTheme.Accent.G * 210),
 							math.floor(Xan.CurrentTheme.Accent.B * 210)
 						)
 					end
-					  mutedSuccess = Color3.fromRGB(60, 140, 80)
-					  loadingColor = Color3.fromRGB(80, 80, 90)
+					local mutedSuccess = Color3.fromRGB(60, 140, 80)
+					local loadingColor = Color3.fromRGB(80, 80, 90)
 
 					loadBtn = Util.Create("TextButton", {
 						Name = "LoadBtn",
@@ -5863,15 +5863,15 @@ function Xan:CreateWindow(config)
 					end)
 				end
 
-				  joinGameBtn = nil
-				  function getGameId(gameName)
+				local joinGameBtn = nil
+				local function getGameId(gameName)
 					if profilePage.Games and profilePage.Games[gameName] and profilePage.Games[gameName].GameId then
 						return profilePage.Games[gameName].GameId
 					end
 					return profilePage.GameId
 				end
 
-				  currentGameId = getGameId(currentGame)
+				local currentGameId = getGameId(currentGame)
 				if currentGameId then
 					joinGameBtn = Util.Create("TextButton", {
 						Name = "JoinGame",
@@ -5895,22 +5895,22 @@ function Xan:CreateWindow(config)
 						Util.Tween(joinGameBtn, 0.15, { TextColor3 = Xan.CurrentTheme.Accent })
 					end)
 					joinGameBtn.MouseButton1Click:Connect(function()
-						  gameId = getGameId(currentGame)
+						local gameId = getGameId(currentGame)
 						if gameId then
 							joinGameBtn.Text = "Joining..."
 							Util.Tween(joinGameBtn, 0.15, { TextColor3 = Xan.CurrentTheme.TextDim })
 
 							task.spawn(function()
 								pcall(function()
-									  TeleportService = game:GetService("TeleportService")
-									TeleportService:Teleport(gameId,  Player)
+									local TeleportService = game:GetService("TeleportService")
+									TeleportService:Teleport(gameId, LocalPlayer)
 								end)
 							end)
 						end
 					end)
 				end
 
-				  subHeader = Util.Create("TextLabel", {
+				local subHeader = Util.Create("TextLabel", {
 					Name = "SubHeader",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 180),
@@ -5925,7 +5925,7 @@ function Xan:CreateWindow(config)
 					Parent = contentArea,
 				})
 
-				  subValue = Util.Create("TextLabel", {
+				local subValue = Util.Create("TextLabel", {
 					Name = "SubValue",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 200),
@@ -5940,7 +5940,7 @@ function Xan:CreateWindow(config)
 					Parent = contentArea,
 				})
 
-				  statusHeader = Util.Create("TextLabel", {
+				local statusHeader = Util.Create("TextLabel", {
 					Name = "StatusHeader",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 235),
@@ -5955,7 +5955,7 @@ function Xan:CreateWindow(config)
 					Parent = contentArea,
 				})
 
-				  statusDot = Util.Create("Frame", {
+				local statusDot = Util.Create("Frame", {
 					Name = "StatusDot",
 					BackgroundColor3 = Xan.CurrentTheme.Success,
 					BackgroundTransparency = 1,
@@ -5967,7 +5967,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 				})
 
-				  statusValue = Util.Create("TextLabel", {
+				local statusValue = Util.Create("TextLabel", {
 					Name = "StatusValue",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 14, 0, 255),
@@ -5982,10 +5982,10 @@ function Xan:CreateWindow(config)
 					Parent = contentArea,
 				})
 
-				  pulseTaskId = "statusPulse_" .. tostring(statusDot)
-				  pulseActive = false
-				  pulseUp = true
-				  function startStatusPulse()
+				local pulseTaskId = "statusPulse_" .. tostring(statusDot)
+				local pulseActive = false
+				local pulseUp = true
+				local function startStatusPulse()
 					if pulseActive then
 						return
 					end
@@ -5997,7 +5997,7 @@ function Xan:CreateWindow(config)
 							pulseActive = false
 							return
 						end
-						  current = statusDot.BackgroundTransparency
+						local current = statusDot.BackgroundTransparency
 						if pulseUp then
 							statusDot.BackgroundTransparency = math.max(current - 0.02, 0)
 							if statusDot.BackgroundTransparency <= 0 then
@@ -6011,12 +6011,12 @@ function Xan:CreateWindow(config)
 						end
 					end, { frameSkip = 2 })
 				end
-				  function stopStatusPulse()
+				local function stopStatusPulse()
 					RenderManager.RemoveTask(pulseTaskId)
 					pulseActive = false
 				end
 
-				  featuresHeader = Util.Create("TextLabel", {
+				local featuresHeader = Util.Create("TextLabel", {
 					Name = "FeaturesHeader",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 290),
@@ -6031,7 +6031,7 @@ function Xan:CreateWindow(config)
 					Parent = contentArea,
 				})
 
-				  featuresValue = Util.Create("TextLabel", {
+				local featuresValue = Util.Create("TextLabel", {
 					Name = "FeaturesValue",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 310),
@@ -6048,22 +6048,22 @@ function Xan:CreateWindow(config)
 					Parent = contentArea,
 				})
 
-				  function updateGameContent(gameName)
+				local function updateGameContent(gameName)
 					currentGame = gameName
 					selectedGame = gameName
 
-					  gameData = profilePage.Games and profilePage.Games[gameName] or {}
+					local gameData = profilePage.Games and profilePage.Games[gameName] or {}
 
 					productSub.Text = "for " .. gameName
 					productImg.Image = getGameIcon(gameName)
 					bannerImage.Image = getGameBanner(gameName)
 
 					for gn, btns in pairs(gameButtons) do
-						  isSelected = gn == gameName
+						local isSelected = gn == gameName
 						btns.btn.BackgroundColor3 = isSelected and Xan.CurrentTheme.BackgroundSecondary
 							or Xan.CurrentTheme.BackgroundTertiary
 						btns.label.TextColor3 = isSelected and Xan.CurrentTheme.Text or Xan.CurrentTheme.TextSecondary
-						  stroke = btns.btn:FindFirstChildOfClass("UIStroke")
+						local stroke = btns.btn:FindFirstChildOfClass("UIStroke")
 						if stroke then
 							stroke.Color = isSelected and Xan.CurrentTheme.Accent or Xan.CurrentTheme.CardBorder
 							stroke.Thickness = isSelected and 1.5 or 1
@@ -6073,7 +6073,7 @@ function Xan:CreateWindow(config)
 
 					subValue.Text = gameData.Expiry or profilePage.SubscriptionExpiry or "N/A"
 
-					  status = gameData.Status or profilePage.Status or "active"
+					local status = gameData.Status or profilePage.Status or "active"
 					statusValue.Text = status
 					if string.lower(status) == "expired" or string.lower(status) == "inactive" then
 						statusValue.TextColor3 = Xan.CurrentTheme.Error
@@ -6090,7 +6090,7 @@ function Xan:CreateWindow(config)
 						startStatusPulse()
 					end
 
-					  features = gameData.Features or {}
+					local features = gameData.Features or {}
 					if #features > 0 then
 						featuresValue.Text = table.concat(features, ", ")
 						featuresHeader.Visible = true
@@ -6101,7 +6101,7 @@ function Xan:CreateWindow(config)
 					end
 
 					if joinGameBtn then
-						  gameId = getGameId(gameName)
+						local gameId = getGameId(gameName)
 						if gameId then
 							joinGameBtn.Visible = true
 							joinGameBtn.Text = "Join Game →"
@@ -6130,7 +6130,7 @@ function Xan:CreateWindow(config)
 					end)
 				end
 
-				  function toggleProductDropdown()
+				local function toggleProductDropdown()
 					if dropdownOpen then
 						if dropdownFrame then
 							Util.Tween(dropdownFrame, 0.15, { BackgroundTransparency = 1 })
@@ -6151,10 +6151,10 @@ function Xan:CreateWindow(config)
 					else
 						dropdownOpen = true
 						productSelectorLabel.Text = "▼ " .. currentProduct
-						  itemHeight = IsMobile and 40 or 34
-						  dropHeight = #productsList * itemHeight + 8
+						local itemHeight = IsMobile and 40 or 34
+						local dropHeight = #productsList * itemHeight + 8
 
-						  dropTheme = Xan.CurrentTheme
+						local dropTheme = Xan.CurrentTheme
 						dropdownFrame = Util.Create("Frame", {
 							Name = "ProductDropdown",
 							BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary,
@@ -6179,9 +6179,9 @@ function Xan:CreateWindow(config)
 						})
 
 						for i, product in ipairs(productsList) do
-							  prodName = type(product) == "table" and product.Name or product
-							  currentTheme = Xan.CurrentTheme
-							  optBtn = Util.Create("TextButton", {
+							local prodName = type(product) == "table" and product.Name or product
+							local currentTheme = Xan.CurrentTheme
+							local optBtn = Util.Create("TextButton", {
 								Name = prodName,
 								BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 								BackgroundTransparency = 1,
@@ -6229,12 +6229,12 @@ function Xan:CreateWindow(config)
 				end)
 				productSelector.MouseButton1Click:Connect(toggleProductDropdown)
 
-				  mobileGameSwitcher = nil
-				  mobileGameDropdown = nil
-				  mobileDropdownOpen = false
+				local mobileGameSwitcher = nil
+				local mobileGameDropdown = nil
+				local mobileDropdownOpen = false
 
 				if IsMobile then
-					  mobileTheme = Xan.CurrentTheme
+					local mobileTheme = Xan.CurrentTheme
 					mobileGameSwitcher = Util.Create("TextButton", {
 						Name = "MobileGameSwitcher",
 						BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary,
@@ -6251,7 +6251,7 @@ function Xan:CreateWindow(config)
 						Util.Create("UIStroke", { Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 					})
 
-					  switcherIcon = Util.Create("ImageLabel", {
+					local switcherIcon = Util.Create("ImageLabel", {
 						Name = "Icon",
 						BackgroundTransparency = 1,
 						Position = UDim2.new(0, 12, 0.5, -12),
@@ -6264,7 +6264,7 @@ function Xan:CreateWindow(config)
 						Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 					})
 
-					  switcherLabel = Util.Create("TextLabel", {
+					local switcherLabel = Util.Create("TextLabel", {
 						Name = "Label",
 						BackgroundTransparency = 1,
 						Position = UDim2.new(0, 44, 0, 0),
@@ -6280,7 +6280,7 @@ function Xan:CreateWindow(config)
 						Parent = mobileGameSwitcher,
 					})
 
-					  switcherArrow = Util.Create("TextLabel", {
+					local switcherArrow = Util.Create("TextLabel", {
 						Name = "Arrow",
 						BackgroundTransparency = 1,
 						Position = UDim2.new(1, -24, 0, 0),
@@ -6294,12 +6294,12 @@ function Xan:CreateWindow(config)
 						Parent = mobileGameSwitcher,
 					})
 
-					  function updateMobileSwitcher()
+					local function updateMobileSwitcher()
 						switcherIcon.Image = getGameIcon(currentGame)
 						switcherLabel.Text = currentGame
 					end
 
-					  function toggleMobileDropdown()
+					local function toggleMobileDropdown()
 						if mobileDropdownOpen then
 							if mobileGameDropdown then
 								Util.Tween(mobileGameDropdown, 0.15, { BackgroundTransparency = 1 })
@@ -6321,12 +6321,12 @@ function Xan:CreateWindow(config)
 							mobileDropdownOpen = true
 							switcherArrow.Text = "▼"
 
-							  itemHeight = 48
-							  dropHeight = #gamesList * itemHeight + 12
-							  maxHeight = 240
+							local itemHeight = 48
+							local dropHeight = #gamesList * itemHeight + 12
+							local maxHeight = 240
 							dropHeight = math.min(dropHeight, maxHeight)
 
-							  mobileDropTheme = Xan.CurrentTheme
+							local mobileDropTheme = Xan.CurrentTheme
 							mobileGameDropdown = Util.Create("ScrollingFrame", {
 								Name = "MobileGameDropdown",
 								BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary,
@@ -6354,9 +6354,9 @@ function Xan:CreateWindow(config)
 							})
 
 							for i, gameName in ipairs(gamesList) do
-								  isSelected = gameName == currentGame
-								  currentTheme = Xan.CurrentTheme
-								  optBtn = Util.Create("TextButton", {
+								local isSelected = gameName == currentGame
+								local currentTheme = Xan.CurrentTheme
+								local optBtn = Util.Create("TextButton", {
 									Name = gameName,
 									BackgroundColor3 = isSelected and Xan.CurrentTheme.Accent
 										or Xan.CurrentTheme.BackgroundTertiary,
@@ -6371,7 +6371,7 @@ function Xan:CreateWindow(config)
 									Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 								})
 
-								  optIcon = Util.Create("ImageLabel", {
+								local optIcon = Util.Create("ImageLabel", {
 									BackgroundTransparency = 1,
 									Position = UDim2.new(0, 8, 0.5, -10),
 									Size = UDim2.new(0, 20, 0, 20),
@@ -6383,7 +6383,7 @@ function Xan:CreateWindow(config)
 									Util.Create("UICorner", { CornerRadius = UDim.new(0, 3) }),
 								})
 
-								  optLabel = Util.Create("TextLabel", {
+								local optLabel = Util.Create("TextLabel", {
 									BackgroundTransparency = 1,
 									Position = UDim2.new(0, 34, 0, 0),
 									Size = UDim2.new(1, -42, 1, 0),
@@ -6464,9 +6464,9 @@ function Xan:CreateWindow(config)
 					end
 					if mobileGameSwitcher then
 						Util.Tween(mobileGameSwitcher, 0.25, { BackgroundTransparency = 0 })
-						  switcherIcon = mobileGameSwitcher:FindFirstChild("Icon")
-						  switcherLabel = mobileGameSwitcher:FindFirstChild("Label")
-						  switcherArrow = mobileGameSwitcher:FindFirstChild("Arrow")
+						local switcherIcon = mobileGameSwitcher:FindFirstChild("Icon")
+						local switcherLabel = mobileGameSwitcher:FindFirstChild("Label")
+						local switcherArrow = mobileGameSwitcher:FindFirstChild("Arrow")
 						if switcherIcon then
 							Util.Tween(switcherIcon, 0.25, { ImageTransparency = 0 })
 						end
@@ -6493,7 +6493,7 @@ function Xan:CreateWindow(config)
 					Util.Tween(featuresValue, 0.25, { TextTransparency = 0 })
 				end)
 
-				  function closeProfile()
+				local function closeProfile()
 					if not profileOpen then
 						return
 					end
@@ -6562,9 +6562,9 @@ function Xan:CreateWindow(config)
 		end
 	end
 
-	  sidebarControlsParent = hasSidebar and controlsFrame or nil
+	local sidebarControlsParent = hasSidebar and controlsFrame or nil
 
-	  topbarSettingsBtn = Util.Create("ImageButton", {
+	local topbarSettingsBtn = Util.Create("ImageButton", {
 		Name = "TopbarSettings",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, iconBtnSize, 0, iconBtnSize),
@@ -6585,7 +6585,7 @@ function Xan:CreateWindow(config)
 		Util.Tween(topbarSettingsBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.TextDim, ImageTransparency = 0.3 })
 	end)
 
-	  searchBtn = Util.Create("ImageButton", {
+	local searchBtn = Util.Create("ImageButton", {
 		Name = "Search",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, iconBtnSize, 0, iconBtnSize),
@@ -6599,19 +6599,19 @@ function Xan:CreateWindow(config)
 		Parent = sidebarControlsParent,
 	})
 
-	  isMacStyle = windowButtonStyle == "macOS"
+	local isMacStyle = windowButtonStyle == "macOS"
 		or windowButtonStyle == "macos"
 		or windowButtonStyle == "Mac"
 		or windowButtonStyle == "mac"
-	  currentButtonStyle = isMacStyle and "macOS" or "Default"
+	local currentButtonStyle = isMacStyle and "macOS" or "Default"
 
-	  macBtnSize = IsMobile and 28 or 14
-	  macColors = {
+	local macBtnSize = IsMobile and 28 or 14
+	local macColors = {
 		Close = Color3.fromRGB(255, 95, 87),
 		Minimize = Color3.fromRGB(255, 189, 46),
 	}
 
-	  macMinimizeBtn = Util.Create("TextButton", {
+	local macMinimizeBtn = Util.Create("TextButton", {
 		Name = "MacMinimize",
 		BackgroundColor3 = macColors.Minimize,
 		BackgroundTransparency = isMacStyle and 0 or 1,
@@ -6626,7 +6626,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  macCloseBtn = Util.Create("TextButton", {
+	local macCloseBtn = Util.Create("TextButton", {
 		Name = "MacClose",
 		BackgroundColor3 = macColors.Close,
 		BackgroundTransparency = isMacStyle and 0 or 1,
@@ -6641,7 +6641,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  iconMinimizeBtn = Util.Create("ImageButton", {
+	local iconMinimizeBtn = Util.Create("ImageButton", {
 		Name = "IconMinimize",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, iconBtnSize, 0, iconBtnSize),
@@ -6655,7 +6655,7 @@ function Xan:CreateWindow(config)
 		Parent = sidebarControlsParent,
 	})
 
-	  iconCloseBtn = Util.Create("ImageButton", {
+	local iconCloseBtn = Util.Create("ImageButton", {
 		Name = "IconClose",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, iconBtnSize, 0, iconBtnSize),
@@ -6669,8 +6669,8 @@ function Xan:CreateWindow(config)
 		Parent = sidebarControlsParent,
 	})
 
-	  minimizeBtn = isMacStyle and macMinimizeBtn or iconMinimizeBtn
-	  closeBtn = isMacStyle and macCloseBtn or iconCloseBtn
+	local minimizeBtn = isMacStyle and macMinimizeBtn or iconMinimizeBtn
+	local closeBtn = isMacStyle and macCloseBtn or iconCloseBtn
 
 	macCloseBtn.MouseEnter:Connect(function()
 		if currentButtonStyle == "macOS" then
@@ -6714,9 +6714,9 @@ function Xan:CreateWindow(config)
 		end
 	end)
 
-	  setButtonStyle
+	local setButtonStyle
 
-	  searchOverlay = Util.Create("Frame", {
+	local searchOverlay = Util.Create("Frame", {
 		Name = "SearchOverlay",
 		BackgroundColor3 = Xan.CurrentTheme.Background,
 		Position = UDim2.new(0, 0, 0, 0),
@@ -6730,7 +6730,7 @@ function Xan:CreateWindow(config)
 
 	
 
-	  searchTopRightCover = Util.Create("Frame", {
+	local searchTopRightCover = Util.Create("Frame", {
 		Name = "TopRightCover",
 		BackgroundColor3 = Xan.CurrentTheme.Background,
 		Position = UDim2.new(1, -12, 0, 0),
@@ -6741,7 +6741,7 @@ function Xan:CreateWindow(config)
 		Parent = mainFrame,
 	})
 
-	  searchBottomRightCover = Util.Create("Frame", {
+	local searchBottomRightCover = Util.Create("Frame", {
 		Name = "BottomRightCover",
 		BackgroundColor3 = Xan.CurrentTheme.Background,
 		Position = UDim2.new(1, -12, 1, -12),
@@ -6752,7 +6752,7 @@ function Xan:CreateWindow(config)
 		Parent = mainFrame,
 	})
 
-	  searchTopbar = Util.Create("Frame", {
+	local searchTopbar = Util.Create("Frame", {
 		Name = "SearchTopbar",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, 48),
@@ -6760,7 +6760,7 @@ function Xan:CreateWindow(config)
 		Parent = searchOverlay,
 	})
 
-	  searchTopbarDivider = Util.Create("Frame", {
+	local searchTopbarDivider = Util.Create("Frame", {
 		Name = "Divider",
 		BackgroundColor3 = Xan.CurrentTheme.Divider,
 		Position = UDim2.new(0, 0, 1, 0),
@@ -6769,7 +6769,7 @@ function Xan:CreateWindow(config)
 		Parent = searchTopbar,
 	})
 
-	  searchInputContainer = Util.Create("Frame", {
+	local searchInputContainer = Util.Create("Frame", {
 		Name = "SearchInputContainer",
 		BackgroundColor3 = Xan.CurrentTheme.Card,
 		Position = UDim2.new(0, 16, 0.5, 0),
@@ -6793,7 +6793,7 @@ function Xan:CreateWindow(config)
 		Util.Tween(searchInputContainer, 0.2, { BackgroundColor3 = Xan.CurrentTheme.Card })
 	end)
 
-	  searchInput = Util.Create("TextBox", {
+	local searchInput = Util.Create("TextBox", {
 		Name = "SearchInput",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 16, 0, 0),
@@ -6810,7 +6810,7 @@ function Xan:CreateWindow(config)
 		Parent = searchInputContainer,
 	})
 
-	  searchEnterBtn = Util.Create("ImageButton", {
+	local searchEnterBtn = Util.Create("ImageButton", {
 		Name = "EnterBtn",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(1, -12, 0.5, 0),
@@ -6824,7 +6824,7 @@ function Xan:CreateWindow(config)
 		Parent = searchInputContainer,
 	})
 
-	  searchControlsFrame = Util.Create("Frame", {
+	local searchControlsFrame = Util.Create("Frame", {
 		Name = "SearchControls",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(1, -controlsWidth - 8, 0, 0),
@@ -6841,7 +6841,7 @@ function Xan:CreateWindow(config)
 		}),
 	})
 
-	  searchCloseSearchBtn = Util.Create("ImageButton", {
+	local searchCloseSearchBtn = Util.Create("ImageButton", {
 		Name = "CloseSearch",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, iconBtnSize, 0, iconBtnSize),
@@ -6853,7 +6853,7 @@ function Xan:CreateWindow(config)
 		Parent = searchControlsFrame,
 	})
 
-	  searchMinBtn = Util.Create("ImageButton", {
+	local searchMinBtn = Util.Create("ImageButton", {
 		Name = "Minimize",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, iconBtnSize, 0, iconBtnSize),
@@ -6867,7 +6867,7 @@ function Xan:CreateWindow(config)
 		Parent = searchControlsFrame,
 	})
 
-	  searchCloseBtn = Util.Create("ImageButton", {
+	local searchCloseBtn = Util.Create("ImageButton", {
 		Name = "Close",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, iconBtnSize, 0, iconBtnSize),
@@ -6881,7 +6881,7 @@ function Xan:CreateWindow(config)
 		Parent = searchControlsFrame,
 	})
 
-	  searchMacMinBtn = Util.Create("TextButton", {
+	local searchMacMinBtn = Util.Create("TextButton", {
 		Name = "SearchMacMinimize",
 		BackgroundColor3 = macColors.Minimize,
 		BackgroundTransparency = isMacStyle and 0 or 1,
@@ -6896,7 +6896,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  searchMacCloseBtn = Util.Create("TextButton", {
+	local searchMacCloseBtn = Util.Create("TextButton", {
 		Name = "SearchMacClose",
 		BackgroundColor3 = macColors.Close,
 		BackgroundTransparency = isMacStyle and 0 or 1,
@@ -6916,7 +6916,7 @@ function Xan:CreateWindow(config)
 			return
 		end
 
-		  toMac = style == "macOS" or style == "macos" or style == "Mac"
+		local toMac = style == "macOS" or style == "macos" or style == "Mac"
 
 		if toMac then
 			Util.Tween(iconMinimizeBtn, 0.2, { ImageTransparency = 1 })
@@ -6925,10 +6925,10 @@ function Xan:CreateWindow(config)
 			Util.Tween(searchCloseBtn, 0.2, { ImageTransparency = 1 })
 
 			if traditionalTopbar then
-				  tradControls = traditionalTopbar:FindFirstChild("Controls")
+				local tradControls = traditionalTopbar:FindFirstChild("Controls")
 				if tradControls then
-					  tradMinimize = tradControls:FindFirstChild("Minimize")
-					  tradClose = tradControls:FindFirstChild("Close")
+					local tradMinimize = tradControls:FindFirstChild("Minimize")
+					local tradClose = tradControls:FindFirstChild("Close")
 
 					if tradMinimize then
 						Util.Tween(tradMinimize, 0.2, { ImageTransparency = 1 })
@@ -6945,8 +6945,8 @@ function Xan:CreateWindow(config)
 							tradClose.Visible = false
 						end
 
-						  existingMacMin = tradControls:FindFirstChild("MacMinimize")
-						  existingMacClose = tradControls:FindFirstChild("MacClose")
+						local existingMacMin = tradControls:FindFirstChild("MacMinimize")
+						local existingMacClose = tradControls:FindFirstChild("MacClose")
 
 						if not existingMacMin then
 							existingMacMin = Util.Create("Frame", {
@@ -6960,7 +6960,7 @@ function Xan:CreateWindow(config)
 								Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 							})
 
-							  minBtn = Util.Create("TextButton", {
+							local minBtn = Util.Create("TextButton", {
 								Name = "ClickArea",
 								BackgroundTransparency = 1,
 								Size = UDim2.new(1, 0, 1, 0),
@@ -6985,7 +6985,7 @@ function Xan:CreateWindow(config)
 								Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 							})
 
-							  closeBtn = Util.Create("TextButton", {
+							local closeBtn = Util.Create("TextButton", {
 								Name = "ClickArea",
 								BackgroundTransparency = 1,
 								Size = UDim2.new(1, 0, 1, 0),
@@ -7033,12 +7033,12 @@ function Xan:CreateWindow(config)
 			Util.Tween(searchMacCloseBtn, 0.2, { BackgroundTransparency = 1 })
 
 			if traditionalTopbar then
-				  tradControls = traditionalTopbar:FindFirstChild("Controls")
+				local tradControls = traditionalTopbar:FindFirstChild("Controls")
 				if tradControls then
-					  existingMacMin = tradControls:FindFirstChild("MacMinimize")
-					  existingMacClose = tradControls:FindFirstChild("MacClose")
-					  tradMinimize = tradControls:FindFirstChild("Minimize")
-					  tradClose = tradControls:FindFirstChild("Close")
+					local existingMacMin = tradControls:FindFirstChild("MacMinimize")
+					local existingMacClose = tradControls:FindFirstChild("MacClose")
+					local tradMinimize = tradControls:FindFirstChild("Minimize")
+					local tradClose = tradControls:FindFirstChild("Close")
 
 					if existingMacMin then
 						Util.Tween(existingMacMin, 0.2, { BackgroundTransparency = 1 })
@@ -7097,7 +7097,7 @@ function Xan:CreateWindow(config)
 		end
 	end
 
-	  searchContent = Util.Create("Frame", {
+	local searchContent = Util.Create("Frame", {
 		Name = "SearchContent",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 50),
@@ -7107,7 +7107,7 @@ function Xan:CreateWindow(config)
 		Parent = searchOverlay,
 	})
 
-	  searchResultsScroll = Util.Create("ScrollingFrame", {
+	local searchResultsScroll = Util.Create("ScrollingFrame", {
 		Name = "SearchResults",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -7132,7 +7132,7 @@ function Xan:CreateWindow(config)
 		}),
 	})
 
-	  searchNoResults = Util.Create("Frame", {
+	local searchNoResults = Util.Create("Frame", {
 		Name = "NoResults",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -7143,7 +7143,7 @@ function Xan:CreateWindow(config)
 		Parent = searchContent,
 	})
 
-	  noResultsIcon = Util.Create("ImageLabel", {
+	local noResultsIcon = Util.Create("ImageLabel", {
 		Name = "Icon",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.5, 0, 0, 0),
@@ -7156,7 +7156,7 @@ function Xan:CreateWindow(config)
 		Parent = searchNoResults,
 	})
 
-	  noResultsText = Util.Create("TextLabel", {
+	local noResultsText = Util.Create("TextLabel", {
 		Name = "Text",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.5, 0, 0, 60),
@@ -7170,7 +7170,7 @@ function Xan:CreateWindow(config)
 		Parent = searchNoResults,
 	})
 
-	  noResultsHint = Util.Create("TextLabel", {
+	local noResultsHint = Util.Create("TextLabel", {
 		Name = "Hint",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.5, 0, 0, 92),
@@ -7185,21 +7185,21 @@ function Xan:CreateWindow(config)
 		Parent = searchNoResults,
 	})
 
-	  searchOpen = false
-	  searchElements = {}
-	  searchGames = {}
-	  searchResultItems = {}
-	  expandedItems = {}
+	local searchOpen = false
+	local searchElements = {}
+	local searchGames = {}
+	local searchResultItems = {}
+	local expandedItems = {}
 
-	  tabs = {}
-	  currentTab = nil
-	  minimized = false
-	  window
-	  selectTab
+	local tabs = {}
+	local currentTab = nil
+	local minimized = false
+	local window
+	local selectTab
 
-	  elementOriginalData = {}
+	local elementOriginalData = {}
 
-	  function clearSearchResults()
+	local function clearSearchResults()
 		for el, data in pairs(elementOriginalData) do
 			if data.sizeConnections then
 				for _, conn in ipairs(data.sizeConnections) do
@@ -7250,7 +7250,7 @@ function Xan:CreateWindow(config)
 				end
 
 				if data.pickerWasVisible ~= nil then
-					  pickerContainer = el:FindFirstChild("Picker")
+					local pickerContainer = el:FindFirstChild("Picker")
 					if pickerContainer then
 						pickerContainer.Visible = data.pickerWasVisible
 					end
@@ -7268,8 +7268,8 @@ function Xan:CreateWindow(config)
 		expandedItems = {}
 	end
 
-	  function getTypeBadgeText(elementType)
-		  typeMap = {
+	local function getTypeBadgeText(elementType)
+		local typeMap = {
 			Toggle = "Toggle",
 			Slider = "Slider",
 			Button = "button",
@@ -7282,7 +7282,7 @@ function Xan:CreateWindow(config)
 		return typeMap[elementType] or elementType
 	end
 
-	  function getTypeBadgeColor(elementType)
+	local function getTypeBadgeColor(elementType)
 		if elementType == "Toggle" then
 			return Xan.CurrentTheme.ToggleEnabled
 		elseif elementType == "Slider" then
@@ -7296,11 +7296,11 @@ function Xan:CreateWindow(config)
 		end
 	end
 
-	  function createSearchResultItem(elementData, index)
-		  isGame = elementData.Type == "Game"
-		  baseHeight = IsMobile and 56 or 52
+	local function createSearchResultItem(elementData, index)
+		local isGame = elementData.Type == "Game"
+		local baseHeight = IsMobile and 56 or 52
 
-		  item = Util.Create("Frame", {
+		local item = Util.Create("Frame", {
 			Name = "SearchResult_" .. (elementData.Name or "item"),
 			BackgroundColor3 = Xan.CurrentTheme.Card,
 			Size = UDim2.new(1, 0, 0, baseHeight),
@@ -7324,7 +7324,7 @@ function Xan:CreateWindow(config)
 			end
 		end)
 
-		  header = Util.Create("Frame", {
+		local header = Util.Create("Frame", {
 			Name = "Header",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 0, baseHeight),
@@ -7332,7 +7332,7 @@ function Xan:CreateWindow(config)
 			Parent = item,
 		})
 
-		  tabIcon = Util.Create("ImageLabel", {
+		local tabIcon = Util.Create("ImageLabel", {
 			Name = "TabIcon",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 12, 0.5, 0),
@@ -7344,7 +7344,7 @@ function Xan:CreateWindow(config)
 			Parent = header,
 		})
 
-		  titleLabel = Util.Create("TextLabel", {
+		local titleLabel = Util.Create("TextLabel", {
 			Name = "Title",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 54, 0, IsMobile and 10 or 8),
@@ -7359,7 +7359,7 @@ function Xan:CreateWindow(config)
 			Parent = header,
 		})
 
-		  subtitleLabel = Util.Create("TextLabel", {
+		local subtitleLabel = Util.Create("TextLabel", {
 			Name = "Subtitle",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 54, 0, IsMobile and 28 or 26),
@@ -7374,9 +7374,9 @@ function Xan:CreateWindow(config)
 			Parent = header,
 		})
 
-		  isButtonType = elementData.Type == "Button"
+		local isButtonType = elementData.Type == "Button"
 
-		  typeBadge = Util.Create("Frame", {
+		local typeBadge = Util.Create("Frame", {
 			Name = "TypeBadge",
 			BackgroundColor3 = getTypeBadgeColor(elementData.Type),
 			BackgroundTransparency = isButtonType and 1 or 0.85,
@@ -7389,7 +7389,7 @@ function Xan:CreateWindow(config)
 			Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 		})
 
-		  typeBadgeText = Util.Create("TextLabel", {
+		local typeBadgeText = Util.Create("TextLabel", {
 			Name = "Text",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -7402,7 +7402,7 @@ function Xan:CreateWindow(config)
 			Parent = typeBadge,
 		})
 
-		  expandBtn = Util.Create("ImageButton", {
+		local expandBtn = Util.Create("ImageButton", {
 			Name = "ExpandBtn",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(1, -14, 0.5, 0),
@@ -7415,8 +7415,8 @@ function Xan:CreateWindow(config)
 			Parent = header,
 		})
 
-		  expanded = false
-		  elementContainer = Util.Create("Frame", {
+		local expanded = false
+		local elementContainer = Util.Create("Frame", {
 			Name = "ElementContainer",
 			BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 			BackgroundTransparency = 0.5,
@@ -7437,7 +7437,7 @@ function Xan:CreateWindow(config)
 		})
 
 		if isGame and elementData.GameData then
-			  gameThumb = Util.Create("ImageLabel", {
+			local gameThumb = Util.Create("ImageLabel", {
 				Name = "GameThumb",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 				Position = UDim2.new(0, 0, 0.5, 0),
@@ -7450,7 +7450,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 			})
 
-			  loadGameBtn = Util.Create("TextButton", {
+			local loadGameBtn = Util.Create("TextButton", {
 				Name = "LoadBtn",
 				BackgroundColor3 = Xan.CurrentTheme.Accent,
 				Position = UDim2.new(1, 0, 0.5, 0),
@@ -7482,7 +7482,7 @@ function Xan:CreateWindow(config)
 		else
 		end
 
-		  function toggleExpand()
+		local function toggleExpand()
 			expanded = not expanded
 			expandedItems[item] = expanded
 
@@ -7490,7 +7490,7 @@ function Xan:CreateWindow(config)
 				expandBtn.Image = "rbxassetid://130501145004936"
 				elementContainer.Visible = true
 
-				  contentHeight = 70
+				local contentHeight = 70
 				if isGame then
 					contentHeight = 70
 				elseif elementData.Type == "Toggle" or elementData.Type == "Button" then
@@ -7508,15 +7508,15 @@ function Xan:CreateWindow(config)
 				end
 
 				if not isGame and elementData.ElementFrame then
-					  el = elementData.ElementFrame
+					local el = elementData.ElementFrame
 
-					  strokeTransparencies = {}
-					  bgTransparencies = {}
-					  sizeConnections = {}
-					  hiddenElements = {}
-					  clipsDescendantsOriginal = {}
+					local strokeTransparencies = {}
+					local bgTransparencies = {}
+					local sizeConnections = {}
+					local hiddenElements = {}
+					local clipsDescendantsOriginal = {}
 
-					  function hideAllStrokes()
+					local function hideAllStrokes()
 						for _, child in ipairs(el:GetDescendants()) do
 							if child:IsA("UIStroke") then
 								if strokeTransparencies[child] == nil then
@@ -7525,7 +7525,7 @@ function Xan:CreateWindow(config)
 								child.Transparency = 1
 							end
 						end
-						  mainStrokeCheck = el:FindFirstChildOfClass("UIStroke")
+						local mainStrokeCheck = el:FindFirstChildOfClass("UIStroke")
 						if mainStrokeCheck then
 							if strokeTransparencies[mainStrokeCheck] == nil then
 								strokeTransparencies[mainStrokeCheck] = mainStrokeCheck.Transparency
@@ -7544,20 +7544,20 @@ function Xan:CreateWindow(config)
 						end
 					end)
 
-					  mainStroke = el:FindFirstChildOfClass("UIStroke")
+					local mainStroke = el:FindFirstChildOfClass("UIStroke")
 					if mainStroke then
 						strokeTransparencies[mainStroke] = mainStroke.Transparency
 						mainStroke.Transparency = 1
 					end
 
-					  originalAutoSize = el.AutomaticSize
-					  originalBgTransparency = el.BackgroundTransparency
+					local originalAutoSize = el.AutomaticSize
+					local originalBgTransparency = el.BackgroundTransparency
 					el.BackgroundTransparency = 1
 
-					  elType = elementData.Type
+					local elType = elementData.Type
 
 					if elType == "Dropdown" or elType == "Select" then
-						  headerFrame = el:FindFirstChild("Header")
+						local headerFrame = el:FindFirstChild("Header")
 						if headerFrame then
 							hiddenElements[headerFrame] = headerFrame.Visible
 							headerFrame.Visible = false
@@ -7565,7 +7565,7 @@ function Xan:CreateWindow(config)
 
 						for _, child in ipairs(el:GetChildren()) do
 							if child:IsA("Frame") or child:IsA("TextButton") then
-								  nameL = string.lower(child.Name)
+								local nameL = string.lower(child.Name)
 								if
 									nameL:find("selected")
 									or nameL:find("button")
@@ -7587,13 +7587,13 @@ function Xan:CreateWindow(config)
 					end
 
 					if elType == "ColorPicker" then
-						  headerFrame = el:FindFirstChild("Header")
+						local headerFrame = el:FindFirstChild("Header")
 						if headerFrame then
 							hiddenElements[headerFrame] = headerFrame.Visible
 							headerFrame.Visible = false
 						end
 
-						  pickerContainer = el:FindFirstChild("Picker")
+						local pickerContainer = el:FindFirstChild("Picker")
 						if pickerContainer then
 							elementOriginalData[el] = elementOriginalData[el] or {}
 							elementOriginalData[el].pickerWasVisible = pickerContainer.Visible
@@ -7645,13 +7645,13 @@ function Xan:CreateWindow(config)
 							child.ZIndex = child.ZIndex + 10
 						end
 						if child:IsA("Frame") or child:IsA("ScrollingFrame") then
-							  conn = child:GetPropertyChangedSignal("Size"):Connect(function() end)
+							local conn = child:GetPropertyChangedSignal("Size"):Connect(function() end)
 							table.insert(sizeConnections, conn)
 						end
 					end
 					el.ZIndex = 210
 
-					  strokeConn = el.DescendantAdded:Connect(function(desc)
+					local strokeConn = el.DescendantAdded:Connect(function(desc)
 						if desc:IsA("UIStroke") then
 							task.defer(function()
 								if strokeTransparencies[desc] == nil then
@@ -7663,7 +7663,7 @@ function Xan:CreateWindow(config)
 					end)
 					table.insert(sizeConnections, strokeConn)
 
-					  elSizeConn = el:GetPropertyChangedSignal("Size"):Connect(function()
+					local elSizeConn = el:GetPropertyChangedSignal("Size"):Connect(function()
 						if elType == "Dropdown" or elType == "Select" or elType == "ColorPicker" then
 							el.Size = UDim2.new(1, 20, 1, 0)
 						elseif elType == "Input" then
@@ -7687,8 +7687,8 @@ function Xan:CreateWindow(config)
 				expandBtn.Image = "rbxassetid://93846133167406"
 
 				if not isGame and elementData.ElementFrame then
-					  el = elementData.ElementFrame
-					  data = elementOriginalData[el]
+					local el = elementData.ElementFrame
+					local data = elementOriginalData[el]
 
 					if data and data.originalParent then
 						if data.sizeConnections then
@@ -7739,7 +7739,7 @@ function Xan:CreateWindow(config)
 						end
 
 						if data.pickerWasVisible ~= nil then
-							  pickerContainer = el:FindFirstChild("Picker")
+							local pickerContainer = el:FindFirstChild("Picker")
 							if pickerContainer then
 								pickerContainer.Visible = data.pickerWasVisible
 							end
@@ -7763,7 +7763,7 @@ function Xan:CreateWindow(config)
 			end
 		end
 
-		  headerBtn = Util.Create("TextButton", {
+		local headerBtn = Util.Create("TextButton", {
 			Name = "HeaderBtn",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -7789,16 +7789,16 @@ function Xan:CreateWindow(config)
 		return item
 	end
 
-	  function performSearch(query)
+	local function performSearch(query)
 		clearSearchResults()
 
-		  results = {}
-		  queryLower = string.lower(query or "")
+		local results = {}
+		local queryLower = string.lower(query or "")
 
 		for _, data in ipairs(searchElements) do
-			  nameLower = string.lower(data.Name or "")
-			  tabLower = string.lower(data.TabName or "")
-			  typeLower = string.lower(data.Type or "")
+			local nameLower = string.lower(data.Name or "")
+			local tabLower = string.lower(data.TabName or "")
+			local typeLower = string.lower(data.Type or "")
 
 			if
 				query == ""
@@ -7811,7 +7811,7 @@ function Xan:CreateWindow(config)
 		end
 
 		for _, gameData in ipairs(searchGames) do
-			  nameLower = string.lower(gameData.Name or "")
+			local nameLower = string.lower(gameData.Name or "")
 
 			if query == "" or string.find(nameLower, queryLower, 1, true) then
 				table.insert(results, {
@@ -7834,7 +7834,7 @@ function Xan:CreateWindow(config)
 		end
 	end
 
-	  function openSearch()
+	local function openSearch()
 		if not showSearch then
 			return
 		end
@@ -7851,7 +7851,7 @@ function Xan:CreateWindow(config)
 		performSearch("")
 	end
 
-	  function closeSearch()
+	local function closeSearch()
 		if not searchOpen then
 			return
 		end
@@ -7947,8 +7947,8 @@ function Xan:CreateWindow(config)
 	end)
 
 	searchInput:GetPropertyChangedSignal("Text"):Connect(function()
-		  text = searchInput.Text
-		  hasText = #text > 0
+		local text = searchInput.Text
+		local hasText = #text > 0
 		searchEnterBtn.Visible = hasText
 		performSearch(text)
 	end)
@@ -7965,11 +7965,11 @@ function Xan:CreateWindow(config)
 		Util.Tween(searchEnterBtn, 0.15, { ImageTransparency = 0.2 })
 	end)
 
-	  settingsOpen = false
-	  settingsCloseProtection = 0
-	  settingsPanelWidth = IsMobile and 300 or 340
+	local settingsOpen = false
+	local settingsCloseProtection = 0
+	local settingsPanelWidth = IsMobile and 300 or 340
 
-	  settingsPanel = Instance.new("CanvasGroup")
+	local settingsPanel = Instance.new("CanvasGroup")
 	settingsPanel.Name = "SettingsPanel"
 	settingsPanel.BackgroundColor3 = Xan.CurrentTheme.Background
 	settingsPanel.AnchorPoint = Vector2.new(1, 0)
@@ -7982,7 +7982,7 @@ function Xan:CreateWindow(config)
 	settingsPanel.Parent = mainFrame
 	Util.Create("UICorner", { CornerRadius = UDim.new(0, 10), Parent = settingsPanel })
 
-	  settingsBlurContainer = Util.Create("Frame", {
+	local settingsBlurContainer = Util.Create("Frame", {
 		Name = "SettingsBlurContainer",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, sidebarWidth, 0, 0),
@@ -7997,7 +7997,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(0, 12), Parent = settingsBlurContainer })
 	end
 
-	  settingsBlurOverlay = Util.Create("Frame", {
+	local settingsBlurOverlay = Util.Create("Frame", {
 		Name = "BlurOverlay",
 		BackgroundColor3 = Xan.CurrentTheme.Background,
 		BackgroundTransparency = 1,
@@ -8008,7 +8008,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
 	})
 
-	  settingsBlurGradient = Util.Create("UIGradient", {
+	local settingsBlurGradient = Util.Create("UIGradient", {
 		Color = ColorSequence.new({
 			ColorSequenceKeypoint.new(0, Color3.fromRGB(15, 15, 20)),
 			ColorSequenceKeypoint.new(0.5, Color3.fromRGB(20, 20, 28)),
@@ -8018,7 +8018,7 @@ function Xan:CreateWindow(config)
 		Parent = settingsBlurOverlay,
 	})
 
-	  settingsContentBlocker = Util.Create("TextButton", {
+	local settingsContentBlocker = Util.Create("TextButton", {
 		Name = "SettingsContentBlocker",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 0),
@@ -8033,7 +8033,7 @@ function Xan:CreateWindow(config)
 	settingsContentBlocker.MouseEnter:Connect(function() end)
 	settingsContentBlocker.MouseMoved:Connect(function() end)
 
-	  settingsPanelInputBlocker = Util.Create("TextButton", {
+	local settingsPanelInputBlocker = Util.Create("TextButton", {
 		Name = "InputBlocker",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 0),
@@ -8044,7 +8044,7 @@ function Xan:CreateWindow(config)
 		Parent = settingsPanel,
 	})
 
-	  settingsPanelCoverL = Util.Create("Frame", {
+	local settingsPanelCoverL = Util.Create("Frame", {
 		Name = "CoverL",
 		BackgroundColor3 = Xan.CurrentTheme.Background,
 		Position = UDim2.new(0, 0, 0, 0),
@@ -8054,7 +8054,7 @@ function Xan:CreateWindow(config)
 		Parent = settingsPanel,
 	})
 
-	  settingsHeader = Util.Create("Frame", {
+	local settingsHeader = Util.Create("Frame", {
 		Name = "Header",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, 56),
@@ -8062,7 +8062,7 @@ function Xan:CreateWindow(config)
 		Parent = settingsPanel,
 	})
 
-	  settingsTitle = Util.Create("TextLabel", {
+	local settingsTitle = Util.Create("TextLabel", {
 		Name = "Title",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 20, 0, 0),
@@ -8076,8 +8076,8 @@ function Xan:CreateWindow(config)
 		Parent = settingsHeader,
 	})
 
-	  settingsCloseBtnSize = IsMobile and 36 or 18
-	  settingsCloseBtn = Util.Create("ImageButton", {
+	local settingsCloseBtnSize = IsMobile and 36 or 18
+	local settingsCloseBtn = Util.Create("ImageButton", {
 		Name = "Close",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(1, 0.5),
@@ -8098,7 +8098,7 @@ function Xan:CreateWindow(config)
 		Util.Tween(settingsCloseBtn, 0.15, { ImageColor3 = Xan.CurrentTheme.TextDim, ImageTransparency = 0.3 })
 	end)
 
-	  settingsHeaderDivider = Util.Create("Frame", {
+	local settingsHeaderDivider = Util.Create("Frame", {
 		Name = "Divider",
 		BackgroundColor3 = Xan.CurrentTheme.Divider,
 		Position = UDim2.new(0, 16, 1, 0),
@@ -8107,7 +8107,7 @@ function Xan:CreateWindow(config)
 		Parent = settingsHeader,
 	})
 
-	  settingsScroll = Util.Create("ScrollingFrame", {
+	local settingsScroll = Util.Create("ScrollingFrame", {
 		Name = "Content",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 60),
@@ -8132,7 +8132,7 @@ function Xan:CreateWindow(config)
 		}),
 	})
 
-	  activeThemeTooltipDestroy = nil
+	local activeThemeTooltipDestroy = nil
 
 	settingsScroll:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
 		if activeThemeTooltipDestroy then
@@ -8141,8 +8141,8 @@ function Xan:CreateWindow(config)
 		end
 	end)
 
-	  function createSettingsSection(name, order)
-		  section = Util.Create("Frame", {
+	local function createSettingsSection(name, order)
+		local section = Util.Create("Frame", {
 			Name = "Section_" .. name,
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 0, 20),
@@ -8167,7 +8167,7 @@ function Xan:CreateWindow(config)
 
 	createSettingsSection("Window Style", 1)
 
-	  windowStyleFrame = Util.Create("Frame", {
+	local windowStyleFrame = Util.Create("Frame", {
 		Name = "WindowStyleSelector",
 		BackgroundColor3 = Xan.CurrentTheme.Card,
 		Size = UDim2.new(1, 0, 0, 80),
@@ -8179,13 +8179,13 @@ function Xan:CreateWindow(config)
 		Util.Create("UIStroke", { Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 	})
 
-	  styleOptions = { "Default", "macOS" }
-	  styleWidth = (settingsPanelWidth - 56) / 2
-	  styleButtons = {}
+	local styleOptions = { "Default", "macOS" }
+	local styleWidth = (settingsPanelWidth - 56) / 2
+	local styleButtons = {}
 
 	for i, styleName in ipairs(styleOptions) do
-		  isSelected = currentButtonStyle == styleName
-		  styleBtn = Util.Create("TextButton", {
+		local isSelected = currentButtonStyle == styleName
+		local styleBtn = Util.Create("TextButton", {
 			Name = styleName,
 			BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 			Position = UDim2.new(0, 12 + (i - 1) * (styleWidth + 8), 0, 12),
@@ -8204,7 +8204,7 @@ function Xan:CreateWindow(config)
 			}),
 		})
 
-		  styleBtnOverlay = Util.Create("TextButton", {
+		local styleBtnOverlay = Util.Create("TextButton", {
 			Name = "Overlay",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -8214,7 +8214,7 @@ function Xan:CreateWindow(config)
 			Parent = styleBtn,
 		})
 
-		  previewContainer = Util.Create("Frame", {
+		local previewContainer = Util.Create("Frame", {
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.5, 0, 0, 6),
 			AnchorPoint = Vector2.new(0.5, 0),
@@ -8224,7 +8224,7 @@ function Xan:CreateWindow(config)
 		})
 
 		if styleName == "Default" then
-			  minIcon = Util.Create("ImageLabel", {
+			local minIcon = Util.Create("ImageLabel", {
 				Name = "MinIcon",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0.5, 0),
@@ -8236,7 +8236,7 @@ function Xan:CreateWindow(config)
 				ZIndex = 308,
 				Parent = previewContainer,
 			})
-			  maxIcon = Util.Create("ImageLabel", {
+			local maxIcon = Util.Create("ImageLabel", {
 				Name = "MaxIcon",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0.5, 0),
@@ -8248,7 +8248,7 @@ function Xan:CreateWindow(config)
 				ZIndex = 308,
 				Parent = previewContainer,
 			})
-			  closeIcon = Util.Create("ImageLabel", {
+			local closeIcon = Util.Create("ImageLabel", {
 				Name = "CloseIcon",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, 0, 0.5, 0),
@@ -8260,7 +8260,7 @@ function Xan:CreateWindow(config)
 				Parent = previewContainer,
 			})
 
-			  cycleState = 0
+			local cycleState = 0
 			task.spawn(function()
 				while styleBtn and styleBtn.Parent do
 					task.wait(2)
@@ -8281,7 +8281,7 @@ function Xan:CreateWindow(config)
 				end
 			end)
 		else
-			  minDot = Util.Create("Frame", {
+			local minDot = Util.Create("Frame", {
 				Name = "MinDot",
 				BackgroundColor3 = Color3.fromRGB(255, 189, 46),
 				Position = UDim2.new(0, 4, 0.5, 0),
@@ -8290,7 +8290,7 @@ function Xan:CreateWindow(config)
 				ZIndex = 306,
 				Parent = previewContainer,
 			}, { Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }) })
-			  maxDot = Util.Create("Frame", {
+			local maxDot = Util.Create("Frame", {
 				Name = "MaxDot",
 				BackgroundColor3 = Color3.fromRGB(40, 200, 80),
 				BackgroundTransparency = 1,
@@ -8300,7 +8300,7 @@ function Xan:CreateWindow(config)
 				ZIndex = 306,
 				Parent = previewContainer,
 			}, { Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }) })
-			  closeDot = Util.Create("Frame", {
+			local closeDot = Util.Create("Frame", {
 				Name = "CloseDot",
 				BackgroundColor3 = Color3.fromRGB(255, 95, 87),
 				Position = UDim2.new(1, -4, 0.5, 0),
@@ -8310,7 +8310,7 @@ function Xan:CreateWindow(config)
 				Parent = previewContainer,
 			}, { Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }) })
 
-			  cycleState = 0
+			local cycleState = 0
 			task.spawn(function()
 				while styleBtn and styleBtn.Parent do
 					task.wait(2)
@@ -8332,7 +8332,7 @@ function Xan:CreateWindow(config)
 			end)
 		end
 
-		  styleLabel = Util.Create("TextLabel", {
+		local styleLabel = Util.Create("TextLabel", {
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 0, 1, -16),
 			Size = UDim2.new(1, 0, 0, 14),
@@ -8363,7 +8363,7 @@ function Xan:CreateWindow(config)
 					Color = Xan.CurrentTheme.CardBorder,
 					Thickness = 1,
 				})
-				  label = sb:FindFirstChild("TextLabel")
+				local label = sb:FindFirstChild("TextLabel")
 				if label then
 					label.TextColor3 = Xan.CurrentTheme.Text
 				end
@@ -8381,18 +8381,18 @@ function Xan:CreateWindow(config)
 
 	createSettingsSection("Theme", 5)
 
-	  themeNames = {}
+	local themeNames = {}
 	for name, _ in pairs(Xan.Themes) do
 		table.insert(themeNames, name)
 	end
 	table.sort(themeNames)
 
-	  themePreviewSize = IsMobile and 56 or 50
-	  themeCols = 3
-	  themeRows = math.ceil((#themeNames + 1) / themeCols)
-	  themeGridHeight = themeRows * (themePreviewSize + 8) + 8
+	local themePreviewSize = IsMobile and 56 or 50
+	local themeCols = 3
+	local themeRows = math.ceil((#themeNames + 1) / themeCols)
+	local themeGridHeight = themeRows * (themePreviewSize + 8) + 8
 
-	  themeFrame = Util.Create("Frame", {
+	local themeFrame = Util.Create("Frame", {
 		Name = "ThemeSelector",
 		BackgroundColor3 = Xan.CurrentTheme.Card,
 		Size = UDim2.new(1, 0, 0, themeGridHeight + 32),
@@ -8405,7 +8405,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UIStroke", { Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 	})
 
-	  themeGrid = Util.Create("Frame", {
+	local themeGrid = Util.Create("Frame", {
 		Name = "Grid",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 8, 0, 8),
@@ -8420,7 +8420,7 @@ function Xan:CreateWindow(config)
 		}),
 	})
 
-	  themeSuccessIndicator = Util.Create("Frame", {
+	local themeSuccessIndicator = Util.Create("Frame", {
 		Name = "SuccessIndicator",
 		BackgroundColor3 = Color3.fromRGB(16, 185, 129),
 		BackgroundTransparency = 1,
@@ -8433,7 +8433,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 	})
 
-	  successIcon = Util.Create("TextLabel", {
+	local successIcon = Util.Create("TextLabel", {
 		Name = "Icon",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 6, 0, 0),
@@ -8447,7 +8447,7 @@ function Xan:CreateWindow(config)
 		Parent = themeSuccessIndicator,
 	})
 
-	  successText = Util.Create("TextLabel", {
+	local successText = Util.Create("TextLabel", {
 		Name = "Text",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 20, 0, 0),
@@ -8462,7 +8462,7 @@ function Xan:CreateWindow(config)
 		Parent = themeSuccessIndicator,
 	})
 
-	  function showThemeSuccess()
+	local function showThemeSuccess()
 		themeSuccessIndicator.BackgroundTransparency = 1
 		successIcon.TextTransparency = 1
 		successText.TextTransparency = 1
@@ -8478,18 +8478,18 @@ function Xan:CreateWindow(config)
 		end)
 	end
 
-	  themeButtons = {}
-	  selectedTheme = Xan.SavedThemeName or Xan.CurrentTheme.Name or "Default"
-	  openThemeEditor
+	local themeButtons = {}
+	local selectedTheme = Xan.SavedThemeName or Xan.CurrentTheme.Name or "Default"
+	local openThemeEditor
 
 	for i, themeName in ipairs(themeNames) do
-		  t = Xan.Themes[themeName]
+		local t = Xan.Themes[themeName]
 		if not t then
 			continue
 		end
 
-		  isSelected = themeName == selectedTheme
-		  themeBtn = Util.Create("TextButton", {
+		local isSelected = themeName == selectedTheme
+		local themeBtn = Util.Create("TextButton", {
 			Name = "ThemePreview_" .. themeName,
 			BackgroundColor3 = t.Background,
 			Text = "",
@@ -8503,7 +8503,7 @@ function Xan:CreateWindow(config)
 		})
 
 		if t.BackgroundImage then
-			  bgImage = Util.Create("ImageLabel", {
+			local bgImage = Util.Create("ImageLabel", {
 				Name = "BackgroundImage",
 				BackgroundTransparency = 1,
 				Image = t.BackgroundImage,
@@ -8530,7 +8530,7 @@ function Xan:CreateWindow(config)
 			end
 		end
 
-		  activeIndicator = Util.Create("Frame", {
+		local activeIndicator = Util.Create("Frame", {
 			Name = "ActiveIndicator",
 			BackgroundColor3 = t.Accent,
 			BackgroundTransparency = isSelected and 0 or 1,
@@ -8543,7 +8543,7 @@ function Xan:CreateWindow(config)
 			Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 		})
 
-		  checkIcon = Util.Create("TextLabel", {
+		local checkIcon = Util.Create("TextLabel", {
 			Name = "Check",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -8556,7 +8556,7 @@ function Xan:CreateWindow(config)
 			Parent = activeIndicator,
 		})
 
-		  sidebarPreview = Util.Create("Frame", {
+		local sidebarPreview = Util.Create("Frame", {
 			Name = "ThemePreviewSidebar",
 			BackgroundColor3 = t.Sidebar,
 			BackgroundTransparency = t.SidebarTransparency or 0,
@@ -8566,7 +8566,7 @@ function Xan:CreateWindow(config)
 			Parent = themeBtn,
 		}, { Util.Create("UICorner", { CornerRadius = UDim.new(0, 3) }) })
 
-		  accentDot = Util.Create("Frame", {
+		local accentDot = Util.Create("Frame", {
 			Name = "ThemePreviewDot",
 			BackgroundColor3 = t.Accent,
 			Position = UDim2.new(0.5, -3, 0.25, 0),
@@ -8575,7 +8575,7 @@ function Xan:CreateWindow(config)
 			Parent = sidebarPreview,
 		}, { Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }) })
 
-		  card1 = Util.Create("Frame", {
+		local card1 = Util.Create("Frame", {
 			Name = "ThemePreviewCard1",
 			BackgroundColor3 = t.Card,
 			BackgroundTransparency = t.CardTransparency or 0,
@@ -8585,7 +8585,7 @@ function Xan:CreateWindow(config)
 			Parent = themeBtn,
 		}, { Util.Create("UICorner", { CornerRadius = UDim.new(0, 2) }) })
 
-		  card2 = Util.Create("Frame", {
+		local card2 = Util.Create("Frame", {
 			Name = "ThemePreviewCard2",
 			BackgroundColor3 = t.Card,
 			BackgroundTransparency = t.CardTransparency or 0,
@@ -8595,7 +8595,7 @@ function Xan:CreateWindow(config)
 			Parent = themeBtn,
 		}, { Util.Create("UICorner", { CornerRadius = UDim.new(0, 2) }) })
 
-		  accentLine = Util.Create("Frame", {
+		local accentLine = Util.Create("Frame", {
 			Name = "ThemePreviewAccent",
 			BackgroundColor3 = t.Accent,
 			Position = UDim2.new(0.32, 3, 0.68, 2),
@@ -8604,7 +8604,7 @@ function Xan:CreateWindow(config)
 			Parent = themeBtn,
 		}, { Util.Create("UICorner", { CornerRadius = UDim.new(0, 2) }) })
 
-		  hoverGlow = Util.Create("Frame", {
+		local hoverGlow = Util.Create("Frame", {
 			Name = "HoverGlow",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -8622,13 +8622,13 @@ function Xan:CreateWindow(config)
 			}),
 		})
 
-		  tooltipDelay = nil
-		  tooltipHideDelay = nil
-		  tooltip = nil
-		  isHovering = false
-		  isTooltipHovering = false
+		local tooltipDelay = nil
+		local tooltipHideDelay = nil
+		local tooltip = nil
+		local isHovering = false
+		local isTooltipHovering = false
 
-		  builtInThemes = {
+		local builtInThemes = {
 			Default = true,
 			Rose = true,
 			Midnight = true,
@@ -8640,9 +8640,9 @@ function Xan:CreateWindow(config)
 			Sunset = true,
 			Ocean = true,
 		}
-		  isCustomTheme = not builtInThemes[themeName]
+		local isCustomTheme = not builtInThemes[themeName]
 
-		  function destroyTooltip()
+		local function destroyTooltip()
 			if tooltipHideDelay then
 				pcall(function()
 					task.cancel(tooltipHideDelay)
@@ -8668,7 +8668,7 @@ function Xan:CreateWindow(config)
 			end
 		end
 
-		  function scheduleTooltipHide()
+		local function scheduleTooltipHide()
 			if tooltipHideDelay then
 				pcall(function()
 					task.cancel(tooltipHideDelay)
@@ -8681,22 +8681,22 @@ function Xan:CreateWindow(config)
 			end)
 		end
 
-		  function createTooltip()
+		local function createTooltip()
 			destroyTooltip()
 
 			if not themeBtn or not themeBtn.Parent then
 				return
 			end
 
-			  btnAbsPos = themeBtn.AbsolutePosition
-			  btnAbsSize = themeBtn.AbsoluteSize
-			  scrollAbsPos = settingsScroll.AbsolutePosition
-			  scrollAbsSize = settingsScroll.AbsoluteSize
+			local btnAbsPos = themeBtn.AbsolutePosition
+			local btnAbsSize = themeBtn.AbsoluteSize
+			local scrollAbsPos = settingsScroll.AbsolutePosition
+			local scrollAbsSize = settingsScroll.AbsoluteSize
 
-			  btnTop = btnAbsPos.Y
-			  btnBottom = btnAbsPos.Y + btnAbsSize.Y
-			  scrollTop = scrollAbsPos.Y
-			  scrollBottom = scrollAbsPos.Y + scrollAbsSize.Y
+			local btnTop = btnAbsPos.Y
+			local btnBottom = btnAbsPos.Y + btnAbsSize.Y
+			local scrollTop = scrollAbsPos.Y
+			local scrollBottom = scrollAbsPos.Y + scrollAbsSize.Y
 
 			if btnBottom < scrollTop or btnTop > scrollBottom then
 				return
@@ -8707,9 +8707,9 @@ function Xan:CreateWindow(config)
 			end
 			activeThemeTooltipDestroy = destroyTooltip
 
-			  textWidth = #themeName * 6.5 + 18
-			  tooltipHeight = 24
-			  totalWidth = textWidth
+			local textWidth = #themeName * 6.5 + 18
+			local tooltipHeight = 24
+			local totalWidth = textWidth
 
 			if isCustomTheme then
 				totalWidth = textWidth + 50
@@ -8744,7 +8744,7 @@ function Xan:CreateWindow(config)
 			})
 
 			if isCustomTheme then
-				  editBtn = Util.Create("TextButton", {
+				local editBtn = Util.Create("TextButton", {
 					Name = "EditBtn",
 					BackgroundColor3 = t.Accent,
 					AnchorPoint = Vector2.new(1, 0.5),
@@ -8805,10 +8805,10 @@ function Xan:CreateWindow(config)
 				scheduleTooltipHide()
 			end)
 
-			  panelAbsPos = settingsPanel.AbsolutePosition
+			local panelAbsPos = settingsPanel.AbsolutePosition
 
-			  tooltipX = btnAbsPos.X + btnAbsSize.X / 2 - panelAbsPos.X - totalWidth / 2
-			  tooltipY = btnAbsPos.Y + btnAbsSize.Y + 6 - panelAbsPos.Y
+			local tooltipX = btnAbsPos.X + btnAbsSize.X / 2 - panelAbsPos.X - totalWidth / 2
+			local tooltipY = btnAbsPos.Y + btnAbsSize.Y + 6 - panelAbsPos.Y
 
 			tooltip.Position = UDim2.new(0, tooltipX + totalWidth / 2, 0, tooltipY)
 			tooltip.Size = UDim2.new(0, 0, 0, 0)
@@ -8844,19 +8844,19 @@ function Xan:CreateWindow(config)
 
 		themeBtn.MouseButton1Click:Connect(function()
 			for tn, btn in pairs(themeButtons) do
-				  tm = Xan.Themes[tn]
+				local tm = Xan.Themes[tn]
 				if tm then
-					  isActive = tn == themeName
+					local isActive = tn == themeName
 
-					  indicator = btn:FindFirstChild("ActiveIndicator")
+					local indicator = btn:FindFirstChild("ActiveIndicator")
 					if indicator then
 						Util.Tween(indicator, 0.2, {
 							BackgroundTransparency = isActive and 0 or 1,
 							BackgroundColor3 = tm.Accent,
 						})
-						  check = indicator:FindFirstChild("Check")
+						local check = indicator:FindFirstChild("Check")
 						if check then
-							  checkColor = Util.GetContrastText(tm.Accent)
+							local checkColor = Util.GetContrastText(tm.Accent)
 							check.TextColor3 = checkColor
 							Util.Tween(check, 0.2, { TextTransparency = isActive and 0 or 1 })
 						end
@@ -8881,17 +8881,17 @@ function Xan:CreateWindow(config)
 			end
 			if themeFrame then
 				themeFrame.BackgroundColor3 = t.Card
-				  stroke = themeFrame:FindFirstChild("UIStroke") or themeFrame:FindFirstChildWhichIsA("UIStroke")
+				local stroke = themeFrame:FindFirstChild("UIStroke") or themeFrame:FindFirstChildWhichIsA("UIStroke")
 				if stroke then
 					stroke.Color = t.CardBorder
 				end
 			end
 
 			if settingsScroll then
-				  styleSelector = settingsScroll:FindFirstChild("WindowStyleSelector")
+				local styleSelector = settingsScroll:FindFirstChild("WindowStyleSelector")
 				if styleSelector then
 					styleSelector.BackgroundColor3 = t.Card
-					  stroke = styleSelector:FindFirstChild("UIStroke")
+					local stroke = styleSelector:FindFirstChild("UIStroke")
 						or styleSelector:FindFirstChildWhichIsA("UIStroke")
 					if stroke then
 						stroke.Color = t.CardBorder
@@ -8900,15 +8900,15 @@ function Xan:CreateWindow(config)
 					for _, child in ipairs(styleSelector:GetChildren()) do
 						if child:IsA("TextButton") then
 							child.BackgroundColor3 = t.BackgroundTertiary
-							  isSelected = child.Name == currentButtonStyle
+							local isSelected = child.Name == currentButtonStyle
 
-							  border = child:FindFirstChild("Border")
+							local border = child:FindFirstChild("Border")
 							if border then
 								border.Color = isSelected and t.Accent or t.CardBorder
 								border.Transparency = isSelected and 0.3 or 0
 							end
 
-							  lbl = child:FindFirstChild("TextLabel")
+							local lbl = child:FindFirstChild("TextLabel")
 							if lbl then
 								lbl.TextColor3 = isSelected and t.Accent or t.Text
 							end
@@ -8916,10 +8916,10 @@ function Xan:CreateWindow(config)
 					end
 				end
 
-				  keybinds = settingsScroll:FindFirstChild("Keybinds")
+				local keybinds = settingsScroll:FindFirstChild("Keybinds")
 				if keybinds then
 					keybinds.BackgroundColor3 = t.Card
-					  stroke = keybinds:FindFirstChild("UIStroke")
+					local stroke = keybinds:FindFirstChild("UIStroke")
 					if stroke then
 						stroke.Color = t.CardBorder
 					end
@@ -8930,7 +8930,7 @@ function Xan:CreateWindow(config)
 						elseif child:IsA("TextButton") then
 							child.BackgroundColor3 = t.BackgroundTertiary
 							child.TextColor3 = t.Text
-							  stroke = child:FindFirstChild("UIStroke")
+							local stroke = child:FindFirstChild("UIStroke")
 							if stroke then
 								stroke.Color = t.CardBorder
 							end
@@ -8938,18 +8938,18 @@ function Xan:CreateWindow(config)
 					end
 				end
 
-				  activeListToggle = settingsScroll:FindFirstChild("ActiveListToggle")
+				local activeListToggle = settingsScroll:FindFirstChild("ActiveListToggle")
 				if activeListToggle then
 					activeListToggle.BackgroundColor3 = t.Card
-					  stroke = activeListToggle:FindFirstChildWhichIsA("UIStroke")
+					local stroke = activeListToggle:FindFirstChildWhichIsA("UIStroke")
 					if stroke then
 						stroke.Color = t.CardBorder
 					end
-					  lbl = activeListToggle:FindFirstChild("Label")
+					local lbl = activeListToggle:FindFirstChild("Label")
 					if lbl then
 						lbl.TextColor3 = t.Text
 					end
-					  toggleBg = activeListToggle:FindFirstChild("ToggleBg")
+					local toggleBg = activeListToggle:FindFirstChild("ToggleBg")
 					if toggleBg then
 						toggleBg.BackgroundColor3 = Xan.ActiveBindsVisible and t.ToggleEnabled or t.Toggle
 					end
@@ -8957,7 +8957,7 @@ function Xan:CreateWindow(config)
 
 				for _, child in ipairs(settingsScroll:GetChildren()) do
 					if child.Name:find("Section_") then
-						  lbl = child:FindFirstChild("SectionLabel")
+						local lbl = child:FindFirstChild("SectionLabel")
 						if lbl then
 							lbl.TextColor3 = t.Accent
 						end
@@ -8974,11 +8974,11 @@ function Xan:CreateWindow(config)
 			end
 
 			if traditionalTopbar then
-				  tradControls = traditionalTopbar:FindFirstChild("Controls")
+				local tradControls = traditionalTopbar:FindFirstChild("Controls")
 				if tradControls then
-					  tSettingsBtn = tradControls:FindFirstChild("Settings")
-					  tMinBtn = tradControls:FindFirstChild("Minimize")
-					  tCloseBtn = tradControls:FindFirstChild("Close")
+					local tSettingsBtn = tradControls:FindFirstChild("Settings")
+					local tMinBtn = tradControls:FindFirstChild("Minimize")
+					local tCloseBtn = tradControls:FindFirstChild("Close")
 					if tSettingsBtn and tSettingsBtn:IsA("ImageButton") then
 						tSettingsBtn.ImageColor3 = t.TextDim
 					end
@@ -8991,11 +8991,11 @@ function Xan:CreateWindow(config)
 				end
 
 				traditionalTopbar.BackgroundColor3 = t.Sidebar
-				  titleEl = traditionalTopbar:FindFirstChild("Title")
+				local titleEl = traditionalTopbar:FindFirstChild("Title")
 				if titleEl then
 					titleEl.TextColor3 = t.Text
 				end
-				  cornerRepair = traditionalTopbar:FindFirstChild("CornerRepair")
+				local cornerRepair = traditionalTopbar:FindFirstChild("CornerRepair")
 				if cornerRepair then
 					cornerRepair.BackgroundColor3 = t.Sidebar
 				end
@@ -9008,17 +9008,17 @@ function Xan:CreateWindow(config)
 			if traditionalTabList then
 				for _, child in ipairs(traditionalTabList:GetChildren()) do
 					if child:IsA("TextButton") then
-						  isActive = currentTab and currentTab.Button == child
+						local isActive = currentTab and currentTab.Button == child
 						child.BackgroundColor3 = isActive and t.Accent or t.Card
-						  stroke = child:FindFirstChildOfClass("UIStroke")
+						local stroke = child:FindFirstChildOfClass("UIStroke")
 						if stroke then
 							stroke.Color = isActive and t.Accent or t.CardBorder
 						end
-						  lbl = child:FindFirstChild("Label")
+						local lbl = child:FindFirstChild("Label")
 						if lbl then
 							lbl.TextColor3 = isActive and t.Text or t.TextDim
 						end
-						  iconEl = child:FindFirstChild("Icon")
+						local iconEl = child:FindFirstChild("Icon")
 						if iconEl then
 							if iconEl:IsA("ImageLabel") or iconEl:IsA("ImageButton") then
 								iconEl.ImageColor3 = isActive and t.Text or t.TextDim
@@ -9029,18 +9029,18 @@ function Xan:CreateWindow(config)
 					end
 				end
 
-				  scrollLeftBtn = traditionalTabList.Parent:FindFirstChild("ScrollLeft")
-				  scrollRightBtn = traditionalTabList.Parent:FindFirstChild("ScrollRight")
+				local scrollLeftBtn = traditionalTabList.Parent:FindFirstChild("ScrollLeft")
+				local scrollRightBtn = traditionalTabList.Parent:FindFirstChild("ScrollRight")
 				if scrollLeftBtn then
 					scrollLeftBtn.BackgroundColor3 = t.Card
-					  iconEl = scrollLeftBtn:FindFirstChild("Icon")
+					local iconEl = scrollLeftBtn:FindFirstChild("Icon")
 					if iconEl then
 						iconEl.ImageColor3 = t.TextDim
 					end
 				end
 				if scrollRightBtn then
 					scrollRightBtn.BackgroundColor3 = t.Card
-					  iconEl = scrollRightBtn:FindFirstChild("Icon")
+					local iconEl = scrollRightBtn:FindFirstChild("Icon")
 					if iconEl then
 						iconEl.ImageColor3 = t.TextDim
 					end
@@ -9048,7 +9048,7 @@ function Xan:CreateWindow(config)
 			end
 
 			themeSuccessIndicator.BackgroundColor3 = t.Accent
-			  successContrastColor = Util.GetContrastText(t.Accent)
+			local successContrastColor = Util.GetContrastText(t.Accent)
 			successIcon.TextColor3 = successContrastColor
 			successText.TextColor3 = successContrastColor
 			showThemeSuccess()
@@ -9057,7 +9057,7 @@ function Xan:CreateWindow(config)
 		themeButtons[themeName] = themeBtn
 	end
 
-	  addThemeBtn = Util.Create("TextButton", {
+	local addThemeBtn = Util.Create("TextButton", {
 		Name = "AddCustomTheme",
 		BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 		Text = "",
@@ -9070,7 +9070,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UIStroke", { Name = "Border", Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 	})
 
-	  addThemePlus = Util.Create("TextLabel", {
+	local addThemePlus = Util.Create("TextLabel", {
 		Name = "Plus",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -9094,8 +9094,8 @@ function Xan:CreateWindow(config)
 		Util.Tween(addThemePlus, 0.2, { TextColor3 = Xan.CurrentTheme.TextDim })
 	end)
 
-	  themeEditorOpen = false
-	  themeEditorGui = nil
+	local themeEditorOpen = false
+	local themeEditorGui = nil
 
 	openThemeEditor = function(editThemeName)
 		if themeEditorOpen then
@@ -9103,8 +9103,8 @@ function Xan:CreateWindow(config)
 		end
 		themeEditorOpen = true
 
-		  baseTheme = editThemeName and Xan.Themes[editThemeName] or Xan.CurrentTheme
-		  isEditing = editThemeName and Xan.Themes[editThemeName] ~= nil
+		local baseTheme = editThemeName and Xan.Themes[editThemeName] or Xan.CurrentTheme
+		local isEditing = editThemeName and Xan.Themes[editThemeName] ~= nil
 
 		themeEditorGui = Util.Create("ScreenGui", {
 			Name = Xan.GhostMode and Util.GenerateRandomString(12) or "XanBar_ThemeEditor",
@@ -9116,10 +9116,10 @@ function Xan:CreateWindow(config)
 			themeEditorGui.Parent = CoreGui
 		end)
 		if not themeEditorGui.Parent then
-			themeEditorGui.Parent =  Player:WaitForChild("PlayerGui")
+			themeEditorGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 		end
 
-		  clickCatcher = Util.Create("TextButton", {
+		local clickCatcher = Util.Create("TextButton", {
 			Name = "ClickCatcher",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -9129,10 +9129,10 @@ function Xan:CreateWindow(config)
 			Parent = themeEditorGui,
 		})
 
-		  editorWidth = IsMobile and 320 or 440
-		  editorHeight = IsMobile and 400 or 520
+		local editorWidth = IsMobile and 320 or 440
+		local editorHeight = IsMobile and 400 or 520
 
-		  editorFrame = Util.Create("Frame", {
+		local editorFrame = Util.Create("Frame", {
 			Name = "Editor",
 			BackgroundColor3 = Xan.CurrentTheme.Background,
 			AnchorPoint = Vector2.new(0.5, 0.5),
@@ -9156,7 +9156,7 @@ function Xan:CreateWindow(config)
 			Parent = editorFrame,
 		})
 
-		  editorHeader = Util.Create("Frame", {
+		local editorHeader = Util.Create("Frame", {
 			Name = "Header",
 			BackgroundColor3 = Xan.CurrentTheme.Sidebar,
 			Size = UDim2.new(1, 0, 0, IsMobile and 52 or 56),
@@ -9190,8 +9190,8 @@ function Xan:CreateWindow(config)
 			Parent = editorHeader,
 		})
 
-		  closeBtnSize = IsMobile and 32 or 24
-		  closeEditorBtn = Util.Create("ImageButton", {
+		local closeBtnSize = IsMobile and 32 or 24
+		local closeEditorBtn = Util.Create("ImageButton", {
 			Name = "Close",
 			BackgroundTransparency = 1,
 			AnchorPoint = Vector2.new(1, 0.5),
@@ -9212,8 +9212,8 @@ function Xan:CreateWindow(config)
 			Util.Tween(closeEditorBtn, 0.15, { ImageColor3 = Xan.CurrentTheme.TextDim, ImageTransparency = 0.3 })
 		end)
 
-		  deleteBtn = nil
-		  rightOffset = closeBtnSize + 20
+		local deleteBtn = nil
+		local rightOffset = closeBtnSize + 20
 		if isEditing then
 			deleteBtn = Util.Create("TextButton", {
 				Name = "DeleteLink",
@@ -9239,12 +9239,12 @@ function Xan:CreateWindow(config)
 			rightOffset = rightOffset + 58
 		end
 
-		  importBtnWidth = IsMobile and 40 or 46
-		  titleOffset = IsMobile and 110 or 128
-		  availableWidth = editorWidth - titleOffset - rightOffset - 24
-		  importInputWidth = math.max(IsMobile and 80 or 100, availableWidth - importBtnWidth - 8)
+		local importBtnWidth = IsMobile and 40 or 46
+		local titleOffset = IsMobile and 110 or 128
+		local availableWidth = editorWidth - titleOffset - rightOffset - 24
+		local importInputWidth = math.max(IsMobile and 80 or 100, availableWidth - importBtnWidth - 8)
 
-		  importInput = Util.Create("TextBox", {
+		local importInput = Util.Create("TextBox", {
 			Name = "ImportInput",
 			BackgroundColor3 = Xan.CurrentTheme.Input,
 			AnchorPoint = Vector2.new(0, 0.5),
@@ -9273,9 +9273,9 @@ function Xan:CreateWindow(config)
 			}),
 		})
 
-		  accentTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
+		local accentTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
 
-		  importBtn = Util.Create("TextButton", {
+		local importBtn = Util.Create("TextButton", {
 			Name = "ImportBtn",
 			BackgroundColor3 = Xan.CurrentTheme.Accent,
 			AnchorPoint = Vector2.new(0, 0.5),
@@ -9299,9 +9299,9 @@ function Xan:CreateWindow(config)
 			Util.Tween(importBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Accent })
 		end)
 
-		  dragging = false
-		  dragStart = nil
-		  startPos = nil
+		local dragging = false
+		local dragStart = nil
+		local startPos = nil
 
 		editorHeader.InputBegan:Connect(function(input)
 			if
@@ -9331,7 +9331,7 @@ function Xan:CreateWindow(config)
 					or input.UserInputType == Enum.UserInputType.Touch
 				)
 			then
-				  delta = input.Position - dragStart
+				local delta = input.Position - dragStart
 				editorFrame.Position = UDim2.new(
 					startPos.X.Scale,
 					startPos.X.Offset + delta.X,
@@ -9341,10 +9341,10 @@ function Xan:CreateWindow(config)
 			end
 		end)
 
-		  headerHeight = IsMobile and 52 or 56
-		  footerHeight = IsMobile and 70 or 72
+		local headerHeight = IsMobile and 52 or 56
+		local footerHeight = IsMobile and 70 or 72
 
-		  editorScroll = Util.Create("ScrollingFrame", {
+		local editorScroll = Util.Create("ScrollingFrame", {
 			Name = "Content",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 0, 0, headerHeight),
@@ -9368,7 +9368,7 @@ function Xan:CreateWindow(config)
 			}),
 		})
 
-		  customTheme = {}
+		local customTheme = {}
 		for k, v in pairs(baseTheme) do
 			customTheme[k] = v
 		end
@@ -9378,7 +9378,7 @@ function Xan:CreateWindow(config)
 			customTheme.Dropdown = customTheme.Input or customTheme.BackgroundTertiary or Color3.fromRGB(25, 25, 32)
 		end
 		if not customTheme.DropdownHover then
-			  dropBase = customTheme.Dropdown
+			local dropBase = customTheme.Dropdown
 			customTheme.DropdownHover = Color3.fromRGB(
 				math.min(255, math.floor(dropBase.R * 255) + 10),
 				math.min(255, math.floor(dropBase.G * 255) + 10),
@@ -9386,15 +9386,15 @@ function Xan:CreateWindow(config)
 			)
 		end
 
-		  rowHeight = IsMobile and 38 or 36
-		  labelSize = IsMobile and 13 or 14
-		  hexSize = IsMobile and 11 or 12
+		local rowHeight = IsMobile and 38 or 36
+		local labelSize = IsMobile and 13 or 14
+		local hexSize = IsMobile and 11 or 12
 
-		  hasChanges = false
-		  applyLabel = nil
-		  applyGradient = nil
+		local hasChanges = false
+		local applyLabel = nil
+		local applyGradient = nil
 
-		  function markChanged()
+		local function markChanged()
 			if hasChanges then
 				return
 			end
@@ -9409,19 +9409,19 @@ function Xan:CreateWindow(config)
 				end)
 			end
 			if applyGradient then
-				  t = Xan.CurrentTheme
-				  darkenAmount = 0.7
-				  topColor = Color3.fromRGB(
+				local t = Xan.CurrentTheme
+				local darkenAmount = 0.7
+				local topColor = Color3.fromRGB(
 					math.floor(t.Accent.R * 255 * darkenAmount),
 					math.floor(t.Accent.G * 255 * darkenAmount),
 					math.floor(t.Accent.B * 255 * darkenAmount)
 				)
-				  midColor = Color3.fromRGB(
+				local midColor = Color3.fromRGB(
 					math.floor(t.AccentDark.R * 255 * darkenAmount),
 					math.floor(t.AccentDark.G * 255 * darkenAmount),
 					math.floor(t.AccentDark.B * 255 * darkenAmount)
 				)
-				  bottomColor = Color3.fromRGB(
+				local bottomColor = Color3.fromRGB(
 					math.floor(t.AccentDark.R * 255 * 0.5),
 					math.floor(t.AccentDark.G * 255 * 0.5),
 					math.floor(t.AccentDark.B * 255 * 0.5)
@@ -9434,15 +9434,15 @@ function Xan:CreateWindow(config)
 			end
 		end
 
-		  activeColorPicker = nil
+		local activeColorPicker = nil
 
-		  function createColorRow(label, colorKey, order)
-			  currentColor = customTheme[colorKey]
+		local function createColorRow(label, colorKey, order)
+			local currentColor = customTheme[colorKey]
 			if typeof(currentColor) ~= "Color3" then
 				return
 			end
 
-			  row = Util.Create("Frame", {
+			local row = Util.Create("Frame", {
 				Name = "Row_" .. colorKey,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, rowHeight),
@@ -9465,7 +9465,7 @@ function Xan:CreateWindow(config)
 				Parent = row,
 			})
 
-			  colorPreview = Util.Create("TextButton", {
+			local colorPreview = Util.Create("TextButton", {
 				Name = "Preview",
 				BackgroundColor3 = currentColor,
 				AnchorPoint = Vector2.new(1, 0.5),
@@ -9480,7 +9480,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UIStroke", { Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 			})
 
-			  hexLabel = Util.Create("TextLabel", {
+			local hexLabel = Util.Create("TextLabel", {
 				Name = "HexLabel",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -9497,20 +9497,20 @@ function Xan:CreateWindow(config)
 				Parent = colorPreview,
 			})
 
-			  pickerOpen = false
-			  pickerFrame = nil
+			local pickerOpen = false
+			local pickerFrame = nil
 
-			  function updateHexLabel()
-				  c = customTheme[colorKey]
+			local function updateHexLabel()
+				local c = customTheme[colorKey]
 				hexLabel.Text =
 					string.format("#%02X%02X%02X", math.floor(c.R * 255), math.floor(c.G * 255), math.floor(c.B * 255))
 				hexLabel.TextColor3 = Util.GetContrastText(c)
 				colorPreview.BackgroundColor3 = c
 			end
 
-			  pickerBlocker = nil
+			local pickerBlocker = nil
 
-			  function closePicker()
+			local function closePicker()
 				if pickerBlocker then
 					pickerBlocker:Destroy()
 					pickerBlocker = nil
@@ -9540,7 +9540,7 @@ function Xan:CreateWindow(config)
 				editorScroll.ScrollingEnabled = true
 			end
 
-			  function openPicker()
+			local function openPicker()
 				if activeColorPicker and activeColorPicker ~= closePicker then
 					activeColorPicker()
 				end
@@ -9548,16 +9548,16 @@ function Xan:CreateWindow(config)
 				pickerOpen = true
 				editorScroll.ScrollingEnabled = false
 
-				  h, s, v = Color3.toHSV(customTheme[colorKey])
+				local h, s, v = Color3.toHSV(customTheme[colorKey])
 
-				  previewPos = colorPreview.AbsolutePosition
-				  previewSize = colorPreview.AbsoluteSize
-				  editorPos = editorFrame.AbsolutePosition
-				  pickerWidth = IsMobile and 200 or 180
-				  pickerHeight = IsMobile and 160 or 140
+				local previewPos = colorPreview.AbsolutePosition
+				local previewSize = colorPreview.AbsoluteSize
+				local editorPos = editorFrame.AbsolutePosition
+				local pickerWidth = IsMobile and 200 or 180
+				local pickerHeight = IsMobile and 160 or 140
 
-				  pickerX = previewPos.X + previewSize.X - pickerWidth - editorPos.X
-				  pickerY = previewPos.Y + previewSize.Y + 4 - editorPos.Y
+				local pickerX = previewPos.X + previewSize.X - pickerWidth - editorPos.X
+				local pickerY = previewPos.Y + previewSize.Y + 4 - editorPos.Y
 
 				pickerBlocker = Util.Create("TextButton", {
 					Name = "PickerBlocker",
@@ -9586,8 +9586,8 @@ function Xan:CreateWindow(config)
 					Util.Create("UIStroke", { Color = Xan.CurrentTheme.Accent, Thickness = 1, ZIndex = 1000 }),
 				})
 
-				  svSize = IsMobile and 120 or 100
-				  satValPicker = Util.Create("ImageLabel", {
+				local svSize = IsMobile and 120 or 100
+				local satValPicker = Util.Create("ImageLabel", {
 					Name = "SatVal",
 					BackgroundColor3 = Color3.fromHSV(h, 1, 1),
 					Position = UDim2.new(0, 8, 0, 8),
@@ -9599,7 +9599,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 				})
 
-				  satValCursor = Util.Create("Frame", {
+				local satValCursor = Util.Create("Frame", {
 					Name = "Cursor",
 					BackgroundColor3 = Color3.new(1, 1, 1),
 					Position = UDim2.new(s, -6, 1 - v, -6),
@@ -9611,7 +9611,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UIStroke", { Color = Color3.new(0, 0, 0), Thickness = 2 }),
 				})
 
-				  hueBar = Util.Create("ImageLabel", {
+				local hueBar = Util.Create("ImageLabel", {
 					Name = "Hue",
 					BackgroundColor3 = Color3.new(1, 1, 1),
 					Position = UDim2.new(0, svSize + 16, 0, 8),
@@ -9623,7 +9623,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				})
 
-				  hueCursor = Util.Create("Frame", {
+				local hueCursor = Util.Create("Frame", {
 					Name = "Cursor",
 					BackgroundColor3 = Color3.new(1, 1, 1),
 					Position = UDim2.new(0, -2, h, -4),
@@ -9635,7 +9635,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UIStroke", { Color = Color3.new(0, 0, 0), Thickness = 1 }),
 				})
 
-				  hexInput = Util.Create("TextBox", {
+				local hexInput = Util.Create("TextBox", {
 					Name = "HexInput",
 					BackgroundColor3 = Xan.CurrentTheme.Input,
 					Position = UDim2.new(0, 8, 1, -(IsMobile and 32 or 28)),
@@ -9652,11 +9652,11 @@ function Xan:CreateWindow(config)
 					Util.Create("UIPadding", { PaddingLeft = UDim.new(0, 6) }),
 				})
 
-				  svDragging, hueDragging = false, false
+				local svDragging, hueDragging = false, false
 
-				  function updateColor(newH, newS, newV)
+				local function updateColor(newH, newS, newV)
 					h, s, v = newH, newS, newV
-					  newColor = Color3.fromHSV(h, s, v)
+					local newColor = Color3.fromHSV(h, s, v)
 					customTheme[colorKey] = newColor
 					satValPicker.BackgroundColor3 = Color3.fromHSV(h, 1, 1)
 					satValCursor.Position = UDim2.new(s, -6, 1 - v, -6)
@@ -9672,12 +9672,12 @@ function Xan:CreateWindow(config)
 						or input.UserInputType == Enum.UserInputType.Touch
 					then
 						svDragging = true
-						  rel = Vector2.new(
+						local rel = Vector2.new(
 							input.Position.X - satValPicker.AbsolutePosition.X,
 							input.Position.Y - satValPicker.AbsolutePosition.Y
 						)
-						  newS = math.clamp(rel.X / satValPicker.AbsoluteSize.X, 0, 1)
-						  newV = 1 - math.clamp(rel.Y / satValPicker.AbsoluteSize.Y, 0, 1)
+						local newS = math.clamp(rel.X / satValPicker.AbsoluteSize.X, 0, 1)
+						local newV = 1 - math.clamp(rel.Y / satValPicker.AbsoluteSize.Y, 0, 1)
 						updateColor(h, newS, newV)
 					end
 				end)
@@ -9688,13 +9688,13 @@ function Xan:CreateWindow(config)
 						or input.UserInputType == Enum.UserInputType.Touch
 					then
 						hueDragging = true
-						  relY = input.Position.Y - hueBar.AbsolutePosition.Y
-						  newH = math.clamp(relY / hueBar.AbsoluteSize.Y, 0, 1)
+						local relY = input.Position.Y - hueBar.AbsolutePosition.Y
+						local newH = math.clamp(relY / hueBar.AbsoluteSize.Y, 0, 1)
 						updateColor(newH, s, v)
 					end
 				end)
 
-				  moveConn = UserInputService.InputChanged:Connect(function(input)
+				local moveConn = UserInputService.InputChanged:Connect(function(input)
 					if
 						svDragging
 						and (
@@ -9702,12 +9702,12 @@ function Xan:CreateWindow(config)
 							or input.UserInputType == Enum.UserInputType.Touch
 						)
 					then
-						  rel = Vector2.new(
+						local rel = Vector2.new(
 							input.Position.X - satValPicker.AbsolutePosition.X,
 							input.Position.Y - satValPicker.AbsolutePosition.Y
 						)
-						  newS = math.clamp(rel.X / satValPicker.AbsoluteSize.X, 0, 1)
-						  newV = 1 - math.clamp(rel.Y / satValPicker.AbsoluteSize.Y, 0, 1)
+						local newS = math.clamp(rel.X / satValPicker.AbsoluteSize.X, 0, 1)
+						local newV = 1 - math.clamp(rel.Y / satValPicker.AbsoluteSize.Y, 0, 1)
 						updateColor(h, newS, newV)
 					elseif
 						hueDragging
@@ -9716,13 +9716,13 @@ function Xan:CreateWindow(config)
 							or input.UserInputType == Enum.UserInputType.Touch
 						)
 					then
-						  relY = input.Position.Y - hueBar.AbsolutePosition.Y
-						  newH = math.clamp(relY / hueBar.AbsoluteSize.Y, 0, 1)
+						local relY = input.Position.Y - hueBar.AbsolutePosition.Y
+						local newH = math.clamp(relY / hueBar.AbsoluteSize.Y, 0, 1)
 						updateColor(newH, s, v)
 					end
 				end)
 
-				  endConn = UserInputService.InputEnded:Connect(function(input)
+				local endConn = UserInputService.InputEnded:Connect(function(input)
 					if
 						input.UserInputType == Enum.UserInputType.MouseButton1
 						or input.UserInputType == Enum.UserInputType.Touch
@@ -9733,12 +9733,12 @@ function Xan:CreateWindow(config)
 				end)
 
 				hexInput.FocusLost:Connect(function()
-					  hex = hexInput.Text:gsub("#", "")
-					  success, color = pcall(function()
+					local hex = hexInput.Text:gsub("#", "")
+					local success, color = pcall(function()
 						return Color3.fromHex(hex)
 					end)
 					if success then
-						  newH, newS, newV = Color3.toHSV(color)
+						local newH, newS, newV = Color3.toHSV(color)
 						updateColor(newH, newS, newV)
 					else
 						hexInput.Text = "#" .. customTheme[colorKey]:ToHex():upper()
@@ -9762,13 +9762,13 @@ function Xan:CreateWindow(config)
 			return row
 		end
 
-		  function createSliderRow(label, key, min, max, order)
-			  currentVal = customTheme[key] or 0.5
+		local function createSliderRow(label, key, min, max, order)
+			local currentVal = customTheme[key] or 0.5
 			if type(currentVal) ~= "number" then
 				return
 			end
 
-			  row = Util.Create("Frame", {
+			local row = Util.Create("Frame", {
 				Name = "Row_" .. key,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, rowHeight),
@@ -9790,7 +9790,7 @@ function Xan:CreateWindow(config)
 				Parent = row,
 			})
 
-			  sliderBg = Util.Create("Frame", {
+			local sliderBg = Util.Create("Frame", {
 				Name = "SliderBg",
 				BackgroundColor3 = Xan.CurrentTheme.Slider,
 				AnchorPoint = Vector2.new(1, 0.5),
@@ -9802,8 +9802,8 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  fillPct = math.clamp((currentVal - min) / (max - min), 0, 1)
-			  sliderFill = Util.Create("Frame", {
+			local fillPct = math.clamp((currentVal - min) / (max - min), 0, 1)
+			local sliderFill = Util.Create("Frame", {
 				Name = "Fill",
 				BackgroundColor3 = Xan.CurrentTheme.Accent,
 				Size = UDim2.new(fillPct, 0, 1, 0),
@@ -9813,7 +9813,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  sliderKnob = Util.Create("Frame", {
+			local sliderKnob = Util.Create("Frame", {
 				Name = "Knob",
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				AnchorPoint = Vector2.new(0.5, 0.5),
@@ -9825,7 +9825,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  dragging = false
+			local dragging = false
 			sliderBg.InputBegan:Connect(function(input)
 				if
 					input.UserInputType == Enum.UserInputType.MouseButton1
@@ -9850,10 +9850,10 @@ function Xan:CreateWindow(config)
 						or input.UserInputType == Enum.UserInputType.Touch
 					)
 				then
-					  absPos = sliderBg.AbsolutePosition.X
-					  absSize = sliderBg.AbsoluteSize.X
-					  mouseX = input.Position.X
-					  pct = math.clamp((mouseX - absPos) / absSize, 0, 1)
+					local absPos = sliderBg.AbsolutePosition.X
+					local absSize = sliderBg.AbsoluteSize.X
+					local mouseX = input.Position.X
+					local pct = math.clamp((mouseX - absPos) / absSize, 0, 1)
 					sliderFill.Size = UDim2.new(pct, 0, 1, 0)
 					sliderKnob.Position = UDim2.new(pct, 0, 0.5, 0)
 					customTheme[key] = min + (max - min) * pct
@@ -9864,8 +9864,8 @@ function Xan:CreateWindow(config)
 			return row
 		end
 
-		  function createSectionLabel(text, order)
-			  lbl = Util.Create("TextLabel", {
+		local function createSectionLabel(text, order)
+			local lbl = Util.Create("TextLabel", {
 				Name = "Section_" .. text,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 28 or 26),
@@ -9881,8 +9881,8 @@ function Xan:CreateWindow(config)
 			return lbl
 		end
 
-		  function createImageRow(label, key, order)
-			  row = Util.Create("Frame", {
+		local function createImageRow(label, key, order)
+			local row = Util.Create("Frame", {
 				Name = "Row_" .. key,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, rowHeight),
@@ -9904,7 +9904,7 @@ function Xan:CreateWindow(config)
 				Parent = row,
 			})
 
-			  input = Util.Create("TextBox", {
+			local input = Util.Create("TextBox", {
 				Name = "Input",
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				AnchorPoint = Vector2.new(1, 0.5),
@@ -9982,7 +9982,7 @@ function Xan:CreateWindow(config)
 		createColorRow("Shadow", "Shadow", 81)
 		createSliderRow("Shadow Transparency", "ShadowTransparency", 0, 1, 82)
 
-		  footerFrame = Util.Create("Frame", {
+		local footerFrame = Util.Create("Frame", {
 			Name = "Footer",
 			BackgroundColor3 = Xan.CurrentTheme.Sidebar,
 			AnchorPoint = Vector2.new(0, 1),
@@ -10004,11 +10004,11 @@ function Xan:CreateWindow(config)
 			Parent = footerFrame,
 		})
 
-		  inputHeight = IsMobile and 36 or 34
-		  shareWidth = IsMobile and 60 or 70
-		  nameContainerWidth = IsMobile and 110 or 130
+		local inputHeight = IsMobile and 36 or 34
+		local shareWidth = IsMobile and 60 or 70
+		local nameContainerWidth = IsMobile and 110 or 130
 
-		  nameContainer = Util.Create("Frame", {
+		local nameContainer = Util.Create("Frame", {
 			Name = "NameContainer",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 16, 0.5, 0),
@@ -10018,10 +10018,10 @@ function Xan:CreateWindow(config)
 			Parent = footerFrame,
 		})
 
-		  labelTextWidth = IsMobile and 72 or 68
-		  tooltipIconSize = IsMobile and 14 or 12
+		local labelTextWidth = IsMobile and 72 or 68
+		local tooltipIconSize = IsMobile and 14 or 12
 
-		  nameLabel = Util.Create("TextLabel", {
+		local nameLabel = Util.Create("TextLabel", {
 			Name = "Label",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 0, 0, 0),
@@ -10035,7 +10035,7 @@ function Xan:CreateWindow(config)
 			Parent = nameContainer,
 		})
 
-		  tooltipIcon = Util.Create("ImageButton", {
+		local tooltipIcon = Util.Create("ImageButton", {
 			Name = "TooltipIcon",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, labelTextWidth + 4, 0, 1),
@@ -10047,10 +10047,10 @@ function Xan:CreateWindow(config)
 			Parent = nameContainer,
 		})
 
-		  tooltipVisible = false
-		  tooltipFrame = nil
+		local tooltipVisible = false
+		local tooltipFrame = nil
 
-		  function showTooltip()
+		local function showTooltip()
 			if tooltipVisible then
 				return
 			end
@@ -10070,7 +10070,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UIStroke", { Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 			})
 
-			  tooltipText = Util.Create("TextLabel", {
+			local tooltipText = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 10, 0, 8),
@@ -10089,13 +10089,13 @@ function Xan:CreateWindow(config)
 			Util.Tween(tooltipFrame, 0.2, { Size = UDim2.new(0, IsMobile and 200 or 220, 0, IsMobile and 70 or 60) })
 		end
 
-		  function hideTooltip()
+		local function hideTooltip()
 			if not tooltipVisible then
 				return
 			end
 			tooltipVisible = false
 			if tooltipFrame then
-				  tf = tooltipFrame
+				local tf = tooltipFrame
 				Util.Tween(tf, 0.15, { Size = UDim2.new(0, IsMobile and 200 or 220, 0, 0) })
 				task.delay(0.15, function()
 					if tf and tf.Parent then
@@ -10122,7 +10122,7 @@ function Xan:CreateWindow(config)
 			end
 		end)
 
-		  nameInput = Util.Create("TextBox", {
+		local nameInput = Util.Create("TextBox", {
 			Name = "NameInput",
 			BackgroundColor3 = Xan.CurrentTheme.Input,
 			Position = UDim2.new(0, 0, 1, -inputHeight),
@@ -10148,28 +10148,28 @@ function Xan:CreateWindow(config)
 			Util.Tween(nameInput.UIStroke, 0.15, { Color = Xan.CurrentTheme.InputBorder })
 		end)
 
-		  function doImport()
-			  code = importInput.Text
+		local function doImport()
+			local code = importInput.Text
 			if not code or code == "" then
 				Xan:Notify({ Title = "Import", Content = "No code entered", Type = "Warning", Duration = 2 })
 				return
 			end
 
-			  success, decoded = pcall(Util.DecodeTheme, code)
+			local success, decoded = pcall(Util.DecodeTheme, code)
 			if not success or not decoded or type(decoded) ~= "table" then
 				importInput.Text = ""
 				Xan:Notify({ Title = "Import Failed", Content = "Invalid theme code", Type = "Error", Duration = 3 })
 				return
 			end
 
-			  themeName = "Untitled"
+			local themeName = "Untitled"
 			if type(decoded.Name) == "string" and decoded.Name ~= "" then
 				themeName = decoded.Name
 			end
 			customTheme.Name = themeName
 			nameInput.Text = themeName
 
-			  count = 0
+			local count = 0
 			for key, val in pairs(decoded) do
 				if key ~= "Name" and typeof(val) == "Color3" then
 					customTheme[key] = val
@@ -10179,13 +10179,13 @@ function Xan:CreateWindow(config)
 
 			for _, row in pairs(editorScroll:GetChildren()) do
 				if row:IsA("Frame") and row.Name:match("^Row_") then
-					  colorKey = row.Name:gsub("^Row_", "")
-					  color = customTheme[colorKey]
+					local colorKey = row.Name:gsub("^Row_", "")
+					local color = customTheme[colorKey]
 					if color and typeof(color) == "Color3" then
-						  preview = row:FindFirstChild("Preview")
+						local preview = row:FindFirstChild("Preview")
 						if preview then
 							preview.BackgroundColor3 = color
-							  hex = preview:FindFirstChild("HexLabel")
+							local hex = preview:FindFirstChild("HexLabel")
 							if hex then
 								hex.Text = "#" .. color:ToHex():upper()
 								hex.TextColor3 = (color.R * 0.299 + color.G * 0.587 + color.B * 0.114) > 0.5
@@ -10216,7 +10216,7 @@ function Xan:CreateWindow(config)
 
 		importBtn.MouseButton1Click:Connect(doImport)
 
-		  shareBtn = Util.Create("TextButton", {
+		local shareBtn = Util.Create("TextButton", {
 			Name = "Share",
 			BackgroundColor3 = Xan.CurrentTheme.Card,
 			AnchorPoint = Vector2.new(1, 0.5),
@@ -10241,14 +10241,14 @@ function Xan:CreateWindow(config)
 			Util.Tween(shareBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 		end)
 
-		  shareCodePopup = nil
+		local shareCodePopup = nil
 		shareBtn.MouseButton1Click:Connect(function()
 			if shareCodePopup then
 				return
 			end
 
 			customTheme.Name = nameInput.Text ~= "" and nameInput.Text or "Untitled"
-			  code = Util.EncodeTheme(customTheme)
+			local code = Util.EncodeTheme(customTheme)
 
 			shareCodePopup = Util.Create("Frame", {
 				Name = "SharePopup",
@@ -10278,7 +10278,7 @@ function Xan:CreateWindow(config)
 				Parent = shareCodePopup,
 			})
 
-			  closePopupBtn = Util.Create("ImageButton", {
+			local closePopupBtn = Util.Create("ImageButton", {
 				Name = "Close",
 				BackgroundTransparency = 1,
 				AnchorPoint = Vector2.new(1, 0),
@@ -10291,7 +10291,7 @@ function Xan:CreateWindow(config)
 				Parent = shareCodePopup,
 			})
 
-			  codeBox = Util.Create("TextBox", {
+			local codeBox = Util.Create("TextBox", {
 				Name = "CodeBox",
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				Position = UDim2.new(0, 12, 0, 36),
@@ -10314,7 +10314,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  copyBtn = Util.Create("TextButton", {
+			local copyBtn = Util.Create("TextButton", {
 				Name = "Copy",
 				BackgroundColor3 = Xan.CurrentTheme.Accent,
 				Position = UDim2.new(0, 12, 1, -42),
@@ -10354,7 +10354,7 @@ function Xan:CreateWindow(config)
 				end)
 			end)
 
-			  function closeSharePopup()
+			local function closeSharePopup()
 				if not shareCodePopup then
 					return
 				end
@@ -10375,9 +10375,9 @@ function Xan:CreateWindow(config)
 			end)
 		end)
 
-		  applyBtnWidth = IsMobile and 100 or 110
-		  applyTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
-		  applyBtn = Util.Create("TextButton", {
+		local applyBtnWidth = IsMobile and 100 or 110
+		local applyTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
+		local applyBtn = Util.Create("TextButton", {
 			Name = "Apply",
 			BackgroundColor3 = Xan.CurrentTheme.Accent,
 			AnchorPoint = Vector2.new(1, 0.5),
@@ -10407,7 +10407,7 @@ function Xan:CreateWindow(config)
 			Util.Tween(applyBtn, 0.1, { BackgroundColor3 = Xan.CurrentTheme.Accent })
 		end)
 
-		  function closeEditor()
+		local function closeEditor()
 			themeEditorOpen = false
 			if themeEditorGui then
 				themeEditorGui:Destroy()
@@ -10417,10 +10417,10 @@ function Xan:CreateWindow(config)
 
 		if deleteBtn then
 			deleteBtn.MouseButton1Click:Connect(function()
-				  themeToDelete = editThemeName
+				local themeToDelete = editThemeName
 
 				if themeButtons[themeToDelete] then
-					  btnToRemove = themeButtons[themeToDelete]
+					local btnToRemove = themeButtons[themeToDelete]
 					btnToRemove:Destroy()
 					themeButtons[themeToDelete] = nil
 				end
@@ -10433,17 +10433,17 @@ function Xan:CreateWindow(config)
 					Xan:ApplyTheme("Default")
 
 					for tn, btn in pairs(themeButtons) do
-						  tm = Xan.Themes[tn]
+						local tm = Xan.Themes[tn]
 						if tm then
-							  isActive = tn == "Default"
-							  bdr = btn:FindFirstChild("Border")
+							local isActive = tn == "Default"
+							local bdr = btn:FindFirstChild("Border")
 							if bdr then
 								Util.Tween(bdr, 0.2, {
 									Color = isActive and tm.Accent or tm.CardBorder,
 									Thickness = isActive and 2 or 1,
 								})
 							end
-							  indicator = btn:FindFirstChild("ActiveIndicator")
+							local indicator = btn:FindFirstChild("ActiveIndicator")
 							if indicator then
 								Util.Tween(indicator, 0.2, {
 									BackgroundTransparency = isActive and 0 or 1,
@@ -10472,24 +10472,24 @@ function Xan:CreateWindow(config)
 		closeEditorBtn.MouseButton1Click:Connect(closeEditor)
 
 		applyBtn.MouseButton1Click:Connect(function()
-			  enteredName = nameInput.Text
-			  finalName
+			local enteredName = nameInput.Text
+			local finalName
 
 			if isEditing and enteredName == editThemeName then
 				finalName = enteredName
 			elseif enteredName == "" or enteredName == "Untitled" then
-				  baseName = "Untitled"
+				local baseName = "Untitled"
 				if not Xan.Themes[baseName] then
 					finalName = baseName
 				else
-					  counter = 1
+					local counter = 1
 					while Xan.Themes[baseName .. " " .. counter] do
 						counter = counter + 1
 					end
 					finalName = baseName .. " " .. counter
 				end
 			elseif Xan.Themes[enteredName] and enteredName ~= editThemeName then
-				  counter = 1
+				local counter = 1
 				while Xan.Themes[enteredName .. " " .. counter] do
 					counter = counter + 1
 				end
@@ -10506,40 +10506,40 @@ function Xan:CreateWindow(config)
 			end
 
 			if isEditing and themeButtons[editThemeName] then
-				  existingBtn = themeButtons[editThemeName]
-				  t = Xan.Themes[customTheme.Name]
+				local existingBtn = themeButtons[editThemeName]
+				local t = Xan.Themes[customTheme.Name]
 				existingBtn.BackgroundColor3 = t.Background
-				  sidebar = existingBtn:FindFirstChild("ThemePreviewSidebar")
+				local sidebar = existingBtn:FindFirstChild("ThemePreviewSidebar")
 				if sidebar then
 					sidebar.BackgroundColor3 = t.Sidebar
 				end
-				  dot = sidebar and sidebar:FindFirstChild("ThemePreviewDot")
+				local dot = sidebar and sidebar:FindFirstChild("ThemePreviewDot")
 				if dot then
 					dot.BackgroundColor3 = t.Accent
 				end
-				  card1 = existingBtn:FindFirstChild("ThemePreviewCard1")
+				local card1 = existingBtn:FindFirstChild("ThemePreviewCard1")
 				if card1 then
 					card1.BackgroundColor3 = t.Card
 				end
-				  card2 = existingBtn:FindFirstChild("ThemePreviewCard2")
+				local card2 = existingBtn:FindFirstChild("ThemePreviewCard2")
 				if card2 then
 					card2.BackgroundColor3 = t.Card
 				end
-				  accentLine = existingBtn:FindFirstChild("ThemePreviewAccent")
+				local accentLine = existingBtn:FindFirstChild("ThemePreviewAccent")
 				if accentLine then
 					accentLine.BackgroundColor3 = t.Accent
 				end
-				  indicator = existingBtn:FindFirstChild("ActiveIndicator")
+				local indicator = existingBtn:FindFirstChild("ActiveIndicator")
 				if indicator then
 					indicator.BackgroundColor3 = t.Accent
 				end
-				  bdr = existingBtn:FindFirstChild("Border")
+				local bdr = existingBtn:FindFirstChild("Border")
 				if bdr then
 					bdr.Color = t.Accent
 				end
-				  glow = existingBtn:FindFirstChild("HoverGlow")
+				local glow = existingBtn:FindFirstChild("HoverGlow")
 				if glow then
-					  gs = glow:FindFirstChild("GlowStroke")
+					local gs = glow:FindFirstChild("GlowStroke")
 					if gs then
 						gs.Color = t.Accent
 					end
@@ -10554,14 +10554,14 @@ function Xan:CreateWindow(config)
 			end
 
 			if not themeButtons[customTheme.Name] then
-				  t = Xan.Themes[customTheme.Name]
-				  currentCount = 0
+				local t = Xan.Themes[customTheme.Name]
+				local currentCount = 0
 				for _ in pairs(themeButtons) do
 					currentCount = currentCount + 1
 				end
-				  newLayoutOrder = currentCount + 1
+				local newLayoutOrder = currentCount + 1
 
-				  newThemeBtn = Util.Create("TextButton", {
+				local newThemeBtn = Util.Create("TextButton", {
 					Name = "ThemePreview_" .. customTheme.Name,
 					BackgroundColor3 = t.Background,
 					Text = "",
@@ -10573,7 +10573,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 				})
 
-				  newActiveIndicator = Util.Create("Frame", {
+				local newActiveIndicator = Util.Create("Frame", {
 					Name = "ActiveIndicator",
 					BackgroundColor3 = t.Accent,
 					BackgroundTransparency = 0,
@@ -10597,7 +10597,7 @@ function Xan:CreateWindow(config)
 					Parent = newActiveIndicator,
 				})
 
-				  newSidebar = Util.Create("Frame", {
+				local newSidebar = Util.Create("Frame", {
 					Name = "ThemePreviewSidebar",
 					BackgroundColor3 = t.Sidebar,
 					Position = UDim2.new(0, 3, 0, 3),
@@ -10650,13 +10650,13 @@ function Xan:CreateWindow(config)
 					Util.Create("UIStroke", { Name = "GlowStroke", Color = t.Accent, Thickness = 2, Transparency = 1 }),
 				})
 
-				  newThemeName = customTheme.Name
-				  newT = t
-				  newTooltipDelay = nil
-				  newTooltip = nil
-				  newIsHovering = false
+				local newThemeName = customTheme.Name
+				local newT = t
+				local newTooltipDelay = nil
+				local newTooltip = nil
+				local newIsHovering = false
 
-				  function destroyNewTooltip()
+				local function destroyNewTooltip()
 					if newTooltip then
 						pcall(function()
 							newTooltip:Destroy()
@@ -10665,7 +10665,7 @@ function Xan:CreateWindow(config)
 					end
 				end
 
-				  function createNewTooltip()
+				local function createNewTooltip()
 					destroyNewTooltip()
 					if not newIsHovering then
 						return
@@ -10674,9 +10674,9 @@ function Xan:CreateWindow(config)
 						return
 					end
 
-					  textWidth = #newThemeName * 7 + 16
-					  editBtnWidth = 24
-					  totalWidth = textWidth + editBtnWidth + 8
+					local textWidth = #newThemeName * 7 + 16
+					local editBtnWidth = 24
+					local totalWidth = textWidth + editBtnWidth + 8
 
 					newTooltip = Util.Create("Frame", {
 						Name = "Tooltip_" .. newThemeName,
@@ -10705,7 +10705,7 @@ function Xan:CreateWindow(config)
 						Parent = newTooltip,
 					})
 
-					  editBtn = Util.Create("TextButton", {
+					local editBtn = Util.Create("TextButton", {
 						Name = "EditBtn",
 						BackgroundColor3 = newT.Accent,
 						BackgroundTransparency = 0.8,
@@ -10742,13 +10742,13 @@ function Xan:CreateWindow(config)
 						openThemeEditor(newThemeName)
 					end)
 
-					  btnAbsPos = newThemeBtn.AbsolutePosition
-					  btnAbsSize = newThemeBtn.AbsoluteSize
-					  panelAbsPos = settingsPanel.AbsolutePosition
-					  newTooltipHeight = 22
+					local btnAbsPos = newThemeBtn.AbsolutePosition
+					local btnAbsSize = newThemeBtn.AbsoluteSize
+					local panelAbsPos = settingsPanel.AbsolutePosition
+					local newTooltipHeight = 22
 
-					  tooltipX = btnAbsPos.X + btnAbsSize.X / 2 - panelAbsPos.X - totalWidth / 2
-					  tooltipY = btnAbsPos.Y + btnAbsSize.Y + 6 - panelAbsPos.Y
+					local tooltipX = btnAbsPos.X + btnAbsSize.X / 2 - panelAbsPos.X - totalWidth / 2
+					local tooltipY = btnAbsPos.Y + btnAbsSize.Y + 6 - panelAbsPos.Y
 
 					newTooltip.Position = UDim2.new(0, tooltipX + totalWidth / 2, 0, tooltipY)
 					newTooltip.Size = UDim2.new(0, 0, 0, 0)
@@ -10763,14 +10763,14 @@ function Xan:CreateWindow(config)
 				newThemeBtn.MouseEnter:Connect(function()
 					newIsHovering = true
 					if newThemeName ~= selectedTheme then
-						  bdr = newThemeBtn:FindFirstChild("Border")
+						local bdr = newThemeBtn:FindFirstChild("Border")
 						if bdr then
 							Util.Tween(bdr, 0.2, { Color = newT.Accent, Thickness = 2 })
 						end
 					end
-					  glow = newThemeBtn:FindFirstChild("HoverGlow")
+					local glow = newThemeBtn:FindFirstChild("HoverGlow")
 					if glow then
-						  gs = glow:FindFirstChild("GlowStroke")
+						local gs = glow:FindFirstChild("GlowStroke")
 						if gs then
 							Util.Tween(gs, 0.25, { Transparency = 0.3 })
 						end
@@ -10791,14 +10791,14 @@ function Xan:CreateWindow(config)
 				newThemeBtn.MouseLeave:Connect(function()
 					newIsHovering = false
 					if newThemeName ~= selectedTheme then
-						  bdr = newThemeBtn:FindFirstChild("Border")
+						local bdr = newThemeBtn:FindFirstChild("Border")
 						if bdr then
 							Util.Tween(bdr, 0.2, { Color = newT.CardBorder, Thickness = 1 })
 						end
 					end
-					  glow = newThemeBtn:FindFirstChild("HoverGlow")
+					local glow = newThemeBtn:FindFirstChild("HoverGlow")
 					if glow then
-						  gs = glow:FindFirstChild("GlowStroke")
+						local gs = glow:FindFirstChild("GlowStroke")
 						if gs then
 							Util.Tween(gs, 0.2, { Transparency = 1 })
 						end
@@ -10813,23 +10813,23 @@ function Xan:CreateWindow(config)
 
 				newThemeBtn.MouseButton1Click:Connect(function()
 					for tn, btn in pairs(themeButtons) do
-						  tm = Xan.Themes[tn]
+						local tm = Xan.Themes[tn]
 						if tm then
-							  isActive = tn == newThemeName
-							  bdr = btn:FindFirstChild("Border")
+							local isActive = tn == newThemeName
+							local bdr = btn:FindFirstChild("Border")
 							if bdr then
 								Util.Tween(bdr, 0.2, {
 									Color = isActive and tm.Accent or tm.CardBorder,
 									Thickness = isActive and 2 or 1,
 								})
 							end
-							  indicator = btn:FindFirstChild("ActiveIndicator")
+							local indicator = btn:FindFirstChild("ActiveIndicator")
 							if indicator then
 								Util.Tween(indicator, 0.2, {
 									BackgroundTransparency = isActive and 0 or 1,
 									BackgroundColor3 = tm.Accent,
 								})
-								  chk = indicator:FindFirstChild("Check")
+								local chk = indicator:FindFirstChild("Check")
 								if chk then
 									chk.TextColor3 = Util.GetContrastText(tm.Accent)
 									Util.Tween(chk, 0.2, { TextTransparency = isActive and 0 or 1 })
@@ -10847,30 +10847,30 @@ function Xan:CreateWindow(config)
 				themeButtons[customTheme.Name] = newThemeBtn
 				addThemeBtn.LayoutOrder = newLayoutOrder + 1
 
-				  newRows = math.ceil((currentCount + 2) / 3)
-				  newHeight = newRows * (themePreviewSize + 8) + 8
+				local newRows = math.ceil((currentCount + 2) / 3)
+				local newHeight = newRows * (themePreviewSize + 8) + 8
 				Util.Tween(themeFrame, 0.3, { Size = UDim2.new(1, 0, 0, newHeight + 32) })
 			end
 
 			selectedTheme = customTheme.Name
 			for tn, btn in pairs(themeButtons) do
-				  tm = Xan.Themes[tn]
+				local tm = Xan.Themes[tn]
 				if tm then
-					  isActive = tn == customTheme.Name
-					  bdr = btn:FindFirstChild("Border")
+					local isActive = tn == customTheme.Name
+					local bdr = btn:FindFirstChild("Border")
 					if bdr then
 						Util.Tween(bdr, 0.2, {
 							Color = isActive and tm.Accent or tm.CardBorder,
 							Thickness = isActive and 2 or 1,
 						})
 					end
-					  indicator = btn:FindFirstChild("ActiveIndicator")
+					local indicator = btn:FindFirstChild("ActiveIndicator")
 					if indicator then
 						Util.Tween(indicator, 0.2, {
 							BackgroundTransparency = isActive and 0 or 1,
 							BackgroundColor3 = tm.Accent,
 						})
-						  chk = indicator:FindFirstChild("Check")
+						local chk = indicator:FindFirstChild("Check")
 						if chk then
 							chk.TextColor3 = Util.GetContrastText(tm.Accent)
 							Util.Tween(chk, 0.2, { TextTransparency = isActive and 0 or 1 })
@@ -10902,7 +10902,7 @@ function Xan:CreateWindow(config)
 
 	createSettingsSection("Active List", 7)
 
-	  activeListFrame = Util.Create("Frame", {
+	local activeListFrame = Util.Create("Frame", {
 		Name = "ActiveListToggle",
 		BackgroundColor3 = Xan.CurrentTheme.Card,
 		Size = UDim2.new(1, 0, 0, 50),
@@ -10914,7 +10914,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UIStroke", { Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 	})
 
-	  activeListLabel = Util.Create("TextLabel", {
+	local activeListLabel = Util.Create("TextLabel", {
 		Name = "Label",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12, 0, 0),
@@ -10928,7 +10928,7 @@ function Xan:CreateWindow(config)
 		Parent = activeListFrame,
 	})
 
-	  activeListToggleBg = Util.Create("Frame", {
+	local activeListToggleBg = Util.Create("Frame", {
 		Name = "ToggleBg",
 		BackgroundColor3 = Xan.ActiveBindsVisible and Xan.CurrentTheme.ToggleEnabled or Xan.CurrentTheme.Toggle,
 		AnchorPoint = Vector2.new(1, 0.5),
@@ -10940,7 +10940,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  activeListKnob = Util.Create("Frame", {
+	local activeListKnob = Util.Create("Frame", {
 		Name = "Knob",
 		BackgroundColor3 = Color3.new(1, 1, 1),
 		Position = Xan.ActiveBindsVisible and UDim2.new(1, -22, 0.5, -10) or UDim2.new(0, 2, 0.5, -10),
@@ -10951,7 +10951,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  activeListToggleBtn = Util.Create("TextButton", {
+	local activeListToggleBtn = Util.Create("TextButton", {
 		Name = "ToggleBtn",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -10989,7 +10989,7 @@ function Xan:CreateWindow(config)
 	if not IsMobile then
 		createSettingsSection("Controls", 10)
 
-		  keybindFrame = Util.Create("Frame", {
+		local keybindFrame = Util.Create("Frame", {
 			Name = "Keybinds",
 			BackgroundColor3 = Xan.CurrentTheme.Card,
 			Size = UDim2.new(1, 0, 0, 96),
@@ -11001,11 +11001,11 @@ function Xan:CreateWindow(config)
 			Util.Create("UIStroke", { Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 		})
 
-		  function createKeybindRow(name, default, yPos, changedCallback)
-			  currentKey = default
-			  listening = false
+		local function createKeybindRow(name, default, yPos, changedCallback)
+			local currentKey = default
+			local listening = false
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, yPos),
@@ -11019,7 +11019,7 @@ function Xan:CreateWindow(config)
 				Parent = keybindFrame,
 			})
 
-			  keyBtn = Util.Create("TextButton", {
+			local keyBtn = Util.Create("TextButton", {
 				Name = "KeybindButton",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 				Position = UDim2.new(1, -90, 0, yPos + 6),
@@ -11039,7 +11039,7 @@ function Xan:CreateWindow(config)
 				keyBtn.TextColor3 = Xan.CurrentTheme.Accent
 			end)
 
-			  inputConn
+			local inputConn
 			inputConn = UserInputService.InputBegan:Connect(function(input, gpe)
 				if not listening then
 					return
@@ -11069,7 +11069,7 @@ function Xan:CreateWindow(config)
 
 	createSettingsSection("Actions", 20)
 
-	  unloadBtn = Util.Create("Frame", {
+	local unloadBtn = Util.Create("Frame", {
 		Name = "UnloadButton",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, IsMobile and 48 or 44),
@@ -11078,7 +11078,7 @@ function Xan:CreateWindow(config)
 		Parent = settingsScroll,
 	})
 
-	  unloadBtnInner = Util.Create("TextButton", {
+	local unloadBtnInner = Util.Create("TextButton", {
 		BackgroundColor3 = Xan.CurrentTheme.Error,
 		BackgroundTransparency = 0.85,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -11096,7 +11096,7 @@ function Xan:CreateWindow(config)
 		}),
 	})
 
-	  unloadIcon = Util.Create("ImageLabel", {
+	local unloadIcon = Util.Create("ImageLabel", {
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 14, 0.5, 0),
 		AnchorPoint = Vector2.new(0, 0.5),
@@ -11107,7 +11107,7 @@ function Xan:CreateWindow(config)
 		Parent = unloadBtnInner,
 	})
 
-	  unloadLabel = Util.Create("TextLabel", {
+	local unloadLabel = Util.Create("TextLabel", {
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 40, 0, 0),
 		Size = UDim2.new(1, -50, 1, 0),
@@ -11139,7 +11139,7 @@ function Xan:CreateWindow(config)
 		end)
 	end)
 
-	  function disableContentInteraction()
+	local function disableContentInteraction()
 		for _, desc in ipairs(contentContainer:GetDescendants()) do
 			if desc:IsA("GuiButton") then
 				desc.Active = false
@@ -11148,7 +11148,7 @@ function Xan:CreateWindow(config)
 		contentContainer.Visible = false
 	end
 
-	  function enableContentInteraction()
+	local function enableContentInteraction()
 		for _, desc in ipairs(contentContainer:GetDescendants()) do
 			if desc:IsA("GuiButton") then
 				desc.Active = true
@@ -11189,7 +11189,7 @@ function Xan:CreateWindow(config)
 		Util.Tween(settingsPanel, 0.4, { GroupTransparency = 0 }, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 	end
 
-	  function closeSettings()
+	local function closeSettings()
 		if not settingsOpen then
 			return
 		end
@@ -11253,7 +11253,7 @@ function Xan:CreateWindow(config)
 		end
 	end)
 
-	  function registerSearchElement(
+	local function registerSearchElement(
 		elementName,
 		tabName,
 		tabData,
@@ -11273,7 +11273,7 @@ function Xan:CreateWindow(config)
 		})
 	end
 
-	  function registerSearchGame(gameName, thumbnail, callback)
+	local function registerSearchGame(gameName, thumbnail, callback)
 		table.insert(searchGames, {
 			Name = gameName,
 			Thumbnail = thumbnail,
@@ -11281,7 +11281,7 @@ function Xan:CreateWindow(config)
 		})
 	end
 
-	  originalSize = size
+	local originalSize = size
 
 	Xan.ActiveBindsVisible = showActiveList
 
@@ -11320,7 +11320,7 @@ function Xan:CreateWindow(config)
 	end
 
 	if sidebar then
-		  sidebarBrand = sidebar:FindFirstChild("Brand")
+		local sidebarBrand = sidebar:FindFirstChild("Brand")
 		if sidebarBrand then
 			Util.MakeDraggable(mainFrame, sidebarBrand)
 		end
@@ -11330,9 +11330,9 @@ function Xan:CreateWindow(config)
 		Util.MakeDraggable(mainFrame, traditionalTopbar)
 	end
 
-	  cornerDragSize = 40
+	local cornerDragSize = 40
 
-	  bottomLeftDrag = Util.Create("Frame", {
+	local bottomLeftDrag = Util.Create("Frame", {
 		Name = "BottomLeftDrag",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 1, -cornerDragSize),
@@ -11353,7 +11353,7 @@ function Xan:CreateWindow(config)
 	})
 
 
-	  bottomRightDrag = Util.Create("Frame", {
+	local bottomRightDrag = Util.Create("Frame", {
 		Name = "BottomRightDrag",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(1, -cornerDragSize, 1, -cornerDragSize),
@@ -11373,7 +11373,7 @@ function Xan:CreateWindow(config)
 			return
 		end
 
-		  inactiveTextColor = Xan.CurrentTheme.TextDim
+		local inactiveTextColor = Xan.CurrentTheme.TextDim
 
 		for _, t in pairs(tabs) do
 			if hasSidebar then
@@ -11384,7 +11384,7 @@ function Xan:CreateWindow(config)
 				if t.Button:FindFirstChild("Label") then
 					Util.Tween(t.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.TextSecondary, TextTransparency = 0.2 })
 				end
-				  iconEl = t.Button:FindFirstChild("Icon")
+				local iconEl = t.Button:FindFirstChild("Icon")
 				if iconEl then
 					if iconEl:IsA("ImageLabel") or iconEl:IsA("ImageButton") then
 						Util.Tween(iconEl, 0.2, { ImageColor3 = Xan.CurrentTheme.TextSecondary, ImageTransparency = 0.2 })
@@ -11397,14 +11397,14 @@ function Xan:CreateWindow(config)
 					BackgroundColor3 = Xan.CurrentTheme.Card or Xan.CurrentTheme.BackgroundSecondary,
 					BackgroundTransparency = 0.3,
 				})
-				  stroke = t.Button:FindFirstChildOfClass("UIStroke")
+				local stroke = t.Button:FindFirstChildOfClass("UIStroke")
 				if stroke then
 					Util.Tween(stroke, 0.2, { Color = Xan.CurrentTheme.CardBorder, Transparency = 0.3 })
 				end
 				if t.Button:FindFirstChild("Label") then
 					Util.Tween(t.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.TextSecondary, TextTransparency = 0 })
 				end
-				  iconEl = t.Button:FindFirstChild("Icon")
+				local iconEl = t.Button:FindFirstChild("Icon")
 				if iconEl then
 					if iconEl:IsA("ImageLabel") then
 						Util.Tween(iconEl, 0.2, { ImageColor3 = Xan.CurrentTheme.TextSecondary, ImageTransparency = 0 })
@@ -11430,7 +11430,7 @@ function Xan:CreateWindow(config)
 			if tabData.Button:FindFirstChild("Label") then
 				Util.Tween(tabData.Button.Label, 0.2, { TextColor3 = Color3.new(200, 200, 200), TextTransparency = 0 })
 			end
-			  iconEl = tabData.Button:FindFirstChild("Icon")
+			local iconEl = tabData.Button:FindFirstChild("Icon")
 			if iconEl then
 				if iconEl:IsA("ImageLabel") or iconEl:IsA("ImageButton") then
 					Util.Tween(iconEl, 0.2, { ImageColor3 = Color3.new(200, 200 ,200), ImageTransparency = 0 })
@@ -11443,14 +11443,14 @@ function Xan:CreateWindow(config)
 				BackgroundColor3 = Xan.CurrentTheme.Accent,
 				BackgroundTransparency = 0,
 			})
-			  stroke = tabData.Button:FindFirstChildOfClass("UIStroke")
+			local stroke = tabData.Button:FindFirstChildOfClass("UIStroke")
 			if stroke then
 				Util.Tween(stroke, 0.2, { Color = Xan.CurrentTheme.Accent, Transparency = 0.5 })
 			end
 			if tabData.Button:FindFirstChild("Label") then
 				Util.Tween(tabData.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.Accent, TextTransparency = 0 })
 			end
-			  iconEl = tabData.Button:FindFirstChild("Icon")
+			local iconEl = tabData.Button:FindFirstChild("Icon")
 			if iconEl then
 				if iconEl:IsA("ImageLabel") then
 					Util.Tween(iconEl, 0.2, { ImageColor3 = Color3.new(200, 200, 200), ImageTransparency = 0 })
@@ -11475,7 +11475,7 @@ function Xan:CreateWindow(config)
 		currentTab = tabData
 	end
 
-	  minimizedBar = Util.Create("Frame", {
+	local minimizedBar = Util.Create("Frame", {
 		Name = "MinimizedBar",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 0),
@@ -11487,10 +11487,10 @@ function Xan:CreateWindow(config)
 
 	Util.MakeDraggable(mainFrame, minimizedBar)
 
-	  minLogoSize = IsMobile and 22 or 24
-	  isTwoToneLogo = logoImage == Logos.XanBar or logoImage == Logos.XanBarBody
+	local minLogoSize = IsMobile and 22 or 24
+	local isTwoToneLogo = logoImage == Logos.XanBar or logoImage == Logos.XanBarBody
 
-	  minimizedLogoContainer = Util.Create("Frame", {
+	local minimizedLogoContainer = Util.Create("Frame", {
 		Name = "MinimizedLogoContainer",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12, 0.5, 0),
@@ -11500,7 +11500,7 @@ function Xan:CreateWindow(config)
 		Parent = minimizedBar,
 	})
 
-	  minimizedLogo = Util.Create("ImageLabel", {
+	local minimizedLogo = Util.Create("ImageLabel", {
 		Name = "MinimizedLogo",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 0),
@@ -11512,7 +11512,7 @@ function Xan:CreateWindow(config)
 		Parent = minimizedLogoContainer,
 	})
 
-	  minimizedLogoAccent = nil
+	local minimizedLogoAccent = nil
 	if isTwoToneLogo then
 		minimizedLogoAccent = Util.Create("ImageLabel", {
 			Name = "MinimizedLogoAccent",
@@ -11527,7 +11527,7 @@ function Xan:CreateWindow(config)
 		})
 	end
 
-	  minimizedTitle = Util.Create("TextLabel", {
+	local minimizedTitle = Util.Create("TextLabel", {
 		Name = "MinimizedTitle",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12 + minLogoSize + 8, 0, 0),
@@ -11542,11 +11542,11 @@ function Xan:CreateWindow(config)
 		Parent = minimizedBar,
 	})
 
-	  minIconSize = IsMobile and 28 or 22
-	  minMacBtnSize = IsMobile and 24 or 14
-	  minBtnPadding = 8
-	  minControlsWidth = (minIconSize * 2) + minBtnPadding + 12
-	  minControlsFrame = Util.Create("Frame", {
+	local minIconSize = IsMobile and 28 or 22
+	local minMacBtnSize = IsMobile and 24 or 14
+	local minBtnPadding = 8
+	local minControlsWidth = (minIconSize * 2) + minBtnPadding + 12
+	local minControlsFrame = Util.Create("Frame", {
 		Name = "MinControls",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(1, -minControlsWidth - 8, 0, 0),
@@ -11563,12 +11563,12 @@ function Xan:CreateWindow(config)
 		}),
 	})
 
-	  minMacColors = {
+	local minMacColors = {
 		Close = Color3.fromRGB(255, 95, 87),
 		Maximize = Color3.fromRGB(40, 200, 64),
 	}
 
-	  minMacMaximizeBtn = Util.Create("TextButton", {
+	local minMacMaximizeBtn = Util.Create("TextButton", {
 		Name = "MacMaximize",
 		BackgroundColor3 = minMacColors.Maximize,
 		BackgroundTransparency = isMacStyle and 1 or 1,
@@ -11583,7 +11583,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  minMacCloseBtn = Util.Create("TextButton", {
+	local minMacCloseBtn = Util.Create("TextButton", {
 		Name = "MacClose",
 		BackgroundColor3 = minMacColors.Close,
 		BackgroundTransparency = isMacStyle and 1 or 1,
@@ -11598,7 +11598,7 @@ function Xan:CreateWindow(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  minIconMaximizeBtn = Util.Create("ImageButton", {
+	local minIconMaximizeBtn = Util.Create("ImageButton", {
 		Name = "IconMaximize",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, minIconSize, 0, minIconSize),
@@ -11612,7 +11612,7 @@ function Xan:CreateWindow(config)
 		Parent = minControlsFrame,
 	})
 
-	  minIconCloseBtn = Util.Create("ImageButton", {
+	local minIconCloseBtn = Util.Create("ImageButton", {
 		Name = "IconClose",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, minIconSize, 0, minIconSize),
@@ -11826,14 +11826,14 @@ function Xan:CreateWindow(config)
 			end
 
 			if traditionalTopbar then
-				  cornerRepair = traditionalTopbar:FindFirstChild("CornerRepair")
+				local cornerRepair = traditionalTopbar:FindFirstChild("CornerRepair")
 				if cornerRepair then
 					Util.Tween(cornerRepair, 0.2, { BackgroundTransparency = 1 }, Enum.EasingStyle.Exponential)
 				end
 			end
 
 			if traditionalTabList then
-				  tabListContainer = traditionalTabList.Parent
+				local tabListContainer = traditionalTabList.Parent
 				if tabListContainer then
 					Util.Tween(tabListContainer, 0.2, { BackgroundTransparency = 1 }, Enum.EasingStyle.Exponential)
 				end
@@ -11844,7 +11844,7 @@ function Xan:CreateWindow(config)
 						if child:FindFirstChild("Title") then
 							Util.Tween(child.Title, 0.3, { TextTransparency = 1 }, Enum.EasingStyle.Exponential)
 						end
-						  icon = child:FindFirstChild("Icon")
+						local icon = child:FindFirstChild("Icon")
 						if icon then
 							if icon:IsA("ImageLabel") or icon:IsA("ImageButton") then
 								Util.Tween(icon, 0.3, { ImageTransparency = 1 }, Enum.EasingStyle.Exponential)
@@ -11871,11 +11871,11 @@ function Xan:CreateWindow(config)
 				Util.Tween(contentContainer, 0.3, { GroupTransparency = 1 }, Enum.EasingStyle.Exponential)
 			end
 
-			  compTopbar = guiObjects.CompactTopbar
+			local compTopbar = guiObjects.CompactTopbar
 			if compTopbar then
-				  headerFrame = compTopbar.Parent
+				local headerFrame = compTopbar.Parent
 				if headerFrame then
-					  tabsWrapper = headerFrame:FindFirstChild("TabsWrapper")
+					local tabsWrapper = headerFrame:FindFirstChild("TabsWrapper")
 					if tabsWrapper then
 						for _, child in ipairs(tabsWrapper:GetDescendants()) do
 							if child:IsA("TextButton") or child:IsA("Frame") then
@@ -11900,18 +11900,18 @@ function Xan:CreateWindow(config)
 					tradTopbarDivider.Visible = false
 				end
 				if traditionalTopbar then
-					  cornerRepair = traditionalTopbar:FindFirstChild("CornerRepair")
+					local cornerRepair = traditionalTopbar:FindFirstChild("CornerRepair")
 					if cornerRepair then
 						cornerRepair.Visible = false
 					end
 
-					  tradControls = traditionalTopbar:FindFirstChild("Controls")
+					local tradControls = traditionalTopbar:FindFirstChild("Controls")
 					if tradControls then
-						  tradMinBtnEl = tradControls:FindFirstChild("Minimize")
+						local tradMinBtnEl = tradControls:FindFirstChild("Minimize")
 						if tradMinBtnEl and tradMinBtnEl:IsA("ImageButton") then
 							tradMinBtnEl.Image = "rbxassetid://7072720870"
 						end
-						  macMinBtnEl = tradControls:FindFirstChild("MacMinimize")
+						local macMinBtnEl = tradControls:FindFirstChild("MacMinimize")
 						if macMinBtnEl then
 							Util.Tween(macMinBtnEl, 0.2, { BackgroundColor3 = Color3.fromRGB(40, 200, 70) })
 						end
@@ -11927,16 +11927,16 @@ function Xan:CreateWindow(config)
 					contentFrame.Visible = false
 				end
 
-				  compTopbar = guiObjects.CompactTopbar
-				  compTopbarHeight = guiObjects.TopbarHeight or 36
+				local compTopbar = guiObjects.CompactTopbar
+				local compTopbarHeight = guiObjects.TopbarHeight or 36
 				if compTopbar then
-					  headerFrame = compTopbar.Parent
+					local headerFrame = compTopbar.Parent
 					if headerFrame then
-						  tabsWrapper = headerFrame:FindFirstChild("TabsWrapper")
+						local tabsWrapper = headerFrame:FindFirstChild("TabsWrapper")
 						if tabsWrapper then
 							tabsWrapper.Visible = false
 						end
-						  cornerRepair = headerFrame:FindFirstChild("CornerRepair")
+						local cornerRepair = headerFrame:FindFirstChild("CornerRepair")
 						if cornerRepair then
 							cornerRepair.Visible = false
 						end
@@ -11949,16 +11949,16 @@ function Xan:CreateWindow(config)
 						)
 					end
 
-					  compControls = compTopbar:FindFirstChild("Controls")
+					local compControls = compTopbar:FindFirstChild("Controls")
 					if compControls then
-						  compMinBtnEl = compControls:FindFirstChild("Minimize")
+						local compMinBtnEl = compControls:FindFirstChild("Minimize")
 						if compMinBtnEl and compMinBtnEl:IsA("ImageButton") then
 							compMinBtnEl.Image = "rbxassetid://114251372753378"
 						end
 					end
 				end
 
-				  minimizedHeight = compTopbar and (compTopbarHeight + 6) or (IsMobile and 38 or 42)
+				local minimizedHeight = compTopbar and (compTopbarHeight + 6) or (IsMobile and 38 or 42)
 				Util.Tween(mainFrame, 0.5, {
 					Size = UDim2.new(0, originalSize.X.Offset, 0, minimizedHeight),
 				}, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out)
@@ -12029,25 +12029,25 @@ function Xan:CreateWindow(config)
 				contentFrame.Visible = false
 			end
 
-			  props = { Size = originalSize }
+			local props = { Size = originalSize }
 
-			  cam = workspace.CurrentCamera
-			  screenSize = cam and cam.ViewportSize or Vector2.new(1920, 1080)
-			  currentPos = mainFrame.AbsolutePosition
-			  expandedW = originalSize.X.Offset > 0 and originalSize.X.Offset
+			local cam = workspace.CurrentCamera
+			local screenSize = cam and cam.ViewportSize or Vector2.new(1920, 1080)
+			local currentPos = mainFrame.AbsolutePosition
+			local expandedW = originalSize.X.Offset > 0 and originalSize.X.Offset
 				or (screenSize.X * originalSize.X.Scale)
-			  expandedH = originalSize.Y.Offset > 0 and originalSize.Y.Offset
+			local expandedH = originalSize.Y.Offset > 0 and originalSize.Y.Offset
 				or (screenSize.Y * originalSize.Y.Scale)
 
-			  needsRecenter = false
+			local needsRecenter = false
 			if IsMobile then
 				needsRecenter = true
 			else
-				  padding = 50
-				  rightEdge = currentPos.X + expandedW / 2
-				  bottomEdge = currentPos.Y + expandedH / 2
-				  leftEdge = currentPos.X - expandedW / 2
-				  topEdge = currentPos.Y - expandedH / 2
+				local padding = 50
+				local rightEdge = currentPos.X + expandedW / 2
+				local bottomEdge = currentPos.Y + expandedH / 2
+				local leftEdge = currentPos.X - expandedW / 2
+				local topEdge = currentPos.Y - expandedH / 2
 
 				if
 					leftEdge < padding
@@ -12150,18 +12150,18 @@ function Xan:CreateWindow(config)
 					tradTopbarDivider.Visible = true
 				end
 				if traditionalTopbar then
-					  cornerRepair = traditionalTopbar:FindFirstChild("CornerRepair")
+					local cornerRepair = traditionalTopbar:FindFirstChild("CornerRepair")
 					if cornerRepair then
 						cornerRepair.Visible = true
 					end
 
-					  tradControls = traditionalTopbar:FindFirstChild("Controls")
+					local tradControls = traditionalTopbar:FindFirstChild("Controls")
 					if tradControls then
-						  tradMinBtnEl = tradControls:FindFirstChild("Minimize")
+						local tradMinBtnEl = tradControls:FindFirstChild("Minimize")
 						if tradMinBtnEl and tradMinBtnEl:IsA("ImageButton") then
 							tradMinBtnEl.Image = "rbxassetid://88679699501643"
 						end
-						  macMinBtnEl = tradControls:FindFirstChild("MacMinimize")
+						local macMinBtnEl = tradControls:FindFirstChild("MacMinimize")
 						if macMinBtnEl then
 							Util.Tween(macMinBtnEl, 0.2, { BackgroundColor3 = Color3.fromRGB(254, 189, 46) })
 						end
@@ -12180,16 +12180,16 @@ function Xan:CreateWindow(config)
 					dragBarContainer.Visible = true
 				end
 
-				  compTopbar = guiObjects.CompactTopbar
-				  compHeaderHeight = guiObjects.HeaderHeight or 74
+				local compTopbar = guiObjects.CompactTopbar
+				local compHeaderHeight = guiObjects.HeaderHeight or 74
 				if compTopbar then
-					  headerFrame = compTopbar.Parent
+					local headerFrame = compTopbar.Parent
 					if headerFrame then
-						  tabsWrapper = headerFrame:FindFirstChild("TabsWrapper")
+						local tabsWrapper = headerFrame:FindFirstChild("TabsWrapper")
 						if tabsWrapper then
 							tabsWrapper.Visible = true
 						end
-						  cornerRepair = headerFrame:FindFirstChild("CornerRepair")
+						local cornerRepair = headerFrame:FindFirstChild("CornerRepair")
 						if cornerRepair then
 							cornerRepair.Visible = true
 						end
@@ -12202,9 +12202,9 @@ function Xan:CreateWindow(config)
 						)
 					end
 
-					  compControls = compTopbar:FindFirstChild("Controls")
+					local compControls = compTopbar:FindFirstChild("Controls")
 					if compControls then
-						  compMinBtnEl = compControls:FindFirstChild("Minimize")
+						local compMinBtnEl = compControls:FindFirstChild("Minimize")
 						if compMinBtnEl and compMinBtnEl:IsA("ImageButton") then
 							compMinBtnEl.Image = "rbxassetid://88679699501643"
 						end
@@ -12217,7 +12217,7 @@ function Xan:CreateWindow(config)
 					Util.Tween(tradTopbarDivider, 0.3, { BackgroundTransparency = 0.5 }, Enum.EasingStyle.Exponential)
 				end
 				if traditionalTopbar then
-					  cornerRepair = traditionalTopbar:FindFirstChild("CornerRepair")
+					local cornerRepair = traditionalTopbar:FindFirstChild("CornerRepair")
 					if cornerRepair then
 						Util.Tween(cornerRepair, 0.3, { BackgroundTransparency = 0 }, Enum.EasingStyle.Exponential)
 					end
@@ -12237,7 +12237,7 @@ function Xan:CreateWindow(config)
 				if traditionalTabList then
 					for _, child in ipairs(traditionalTabList:GetChildren()) do
 						if child:IsA("TextButton") then
-							  isActive = tabs[1] and tabs[1].Button == child
+							local isActive = tabs[1] and tabs[1].Button == child
 							Util.Tween(
 								child,
 								0.3,
@@ -12247,7 +12247,7 @@ function Xan:CreateWindow(config)
 							if child:FindFirstChild("Title") then
 								Util.Tween(child.Title, 0.3, { TextTransparency = 0 }, Enum.EasingStyle.Exponential)
 							end
-							  icon = child:FindFirstChild("Icon")
+							local icon = child:FindFirstChild("Icon")
 							if icon then
 								if icon:IsA("ImageLabel") or icon:IsA("ImageButton") then
 									Util.Tween(icon, 0.3, { ImageTransparency = 0 }, Enum.EasingStyle.Exponential)
@@ -12267,15 +12267,15 @@ function Xan:CreateWindow(config)
 					end
 				end
 
-				  compTopbar2 = guiObjects.CompactTopbar
+				local compTopbar2 = guiObjects.CompactTopbar
 				if compTopbar2 then
-					  headerFrame2 = compTopbar2.Parent
+					local headerFrame2 = compTopbar2.Parent
 					if headerFrame2 then
-						  tabsWrapper2 = headerFrame2:FindFirstChild("TabsWrapper")
+						local tabsWrapper2 = headerFrame2:FindFirstChild("TabsWrapper")
 						if tabsWrapper2 then
 							for _, child in ipairs(tabsWrapper2:GetDescendants()) do
 								if child:IsA("TextButton") then
-									  isActive = tabs[1] and tabs[1].Button == child
+									local isActive = tabs[1] and tabs[1].Button == child
 									Util.Tween(
 										child,
 										0.3,
@@ -12290,7 +12290,7 @@ function Xan:CreateWindow(config)
 									Util.Tween(child, 0.3, { ImageTransparency = 0 }, Enum.EasingStyle.Exponential)
 								end
 								if child:IsA("UIStroke") then
-									  isActive = child.Parent and tabs[1] and tabs[1].Button == child.Parent
+									local isActive = child.Parent and tabs[1] and tabs[1].Button == child.Parent
 									Util.Tween(
 										child,
 										0.3,
@@ -12378,11 +12378,11 @@ function Xan:CreateWindow(config)
 	end
 
 	if not hasSidebar and traditionalTopbar then
-		  tradControls = traditionalTopbar:FindFirstChild("Controls")
+		local tradControls = traditionalTopbar:FindFirstChild("Controls")
 		if tradControls then
-			  tradMinBtn = tradControls:FindFirstChild("Minimize")
-			  tradCloseBtn = tradControls:FindFirstChild("Close")
-			  tradSettingsBtn = tradControls:FindFirstChild("Settings")
+			local tradMinBtn = tradControls:FindFirstChild("Minimize")
+			local tradCloseBtn = tradControls:FindFirstChild("Close")
+			local tradSettingsBtn = tradControls:FindFirstChild("Settings")
 
 			if tradMinBtn then
 				tradMinBtn.MouseButton1Click:Connect(handleMinimizeClick)
@@ -12428,12 +12428,12 @@ function Xan:CreateWindow(config)
 	end
 
 	if not hasSidebar and not traditionalTopbar then
-		  compTopbar = guiObjects.CompactTopbar
+		local compTopbar = guiObjects.CompactTopbar
 		if compTopbar then
-			  compControls = compTopbar:FindFirstChild("Controls")
+			local compControls = compTopbar:FindFirstChild("Controls")
 			if compControls then
-				  compMinBtn = compControls:FindFirstChild("Minimize")
-				  compCloseBtn = compControls:FindFirstChild("Close")
+				local compMinBtn = compControls:FindFirstChild("Minimize")
+				local compCloseBtn = compControls:FindFirstChild("Close")
 
 				if compMinBtn then
 					compMinBtn.MouseButton1Click:Connect(handleMinimizeClick)
@@ -12475,8 +12475,8 @@ function Xan:CreateWindow(config)
 		end)
 	end
 
-	  isAnimating = false
-	  hiddenSize = UDim2.new(0, originalSize.X.Offset * 0.92, 0, 0)
+	local isAnimating = false
+	local hiddenSize = UDim2.new(0, originalSize.X.Offset * 0.92, 0, 0)
 
 	function window:Show()
 		if isAnimating then
@@ -12528,14 +12528,14 @@ function Xan:CreateWindow(config)
 					tradTopbarDivider.Visible = false
 				end
 				if traditionalTopbar then
-					  cornerRepair = traditionalTopbar:FindFirstChild("CornerRepair")
+					local cornerRepair = traditionalTopbar:FindFirstChild("CornerRepair")
 					if cornerRepair then
 						cornerRepair.Visible = false
 					end
 					traditionalTopbar.Visible = true
 				end
 
-				  minimizedHeight = IsMobile and 38 or 42
+				local minimizedHeight = IsMobile and 38 or 42
 				mainFrame.Size = UDim2.new(0, originalSize.X.Offset * 0.92, 0, 0)
 				mainFrame.BackgroundTransparency = 1
 
@@ -12622,8 +12622,8 @@ function Xan:CreateWindow(config)
 				Util.Tween(traditionalTopbar, 0.25, { BackgroundTransparency = 1 }, Enum.EasingStyle.Exponential)
 			end
 
-			  minimizedHeight = IsMobile and 38 or 42
-			  minimizedHiddenSize = UDim2.new(0, originalSize.X.Offset * 0.92, 0, 0)
+			local minimizedHeight = IsMobile and 38 or 42
+			local minimizedHiddenSize = UDim2.new(0, originalSize.X.Offset * 0.92, 0, 0)
 
 			task.delay(0.1, function()
 				Util.Tween(mainFrame, 0.45, {
@@ -12761,19 +12761,19 @@ function Xan:CreateWindow(config)
 
 	function window:CreateTab(tabConfig)
 		tabConfig = tabConfig or {}
-		  tabName = tabConfig.Name or "Tab"
-		  tabIcon = tabConfig.Icon or Icons.Home
-		  tabOrder = tabConfig.LayoutOrder or (#tabs + 1)
+		local tabName = tabConfig.Name or "Tab"
+		local tabIcon = tabConfig.Icon or Icons.Home
+		local tabOrder = tabConfig.LayoutOrder or (#tabs + 1)
 
-		  currentTabTheme = Xan.CurrentTheme
-		  tabBtn
-		  icon
-		  topTabBtn
+		local currentTabTheme = Xan.CurrentTheme
+		local tabBtn
+		local icon
+		local topTabBtn
 
 		if not tabList then
 			warn("[xan.bar] tabList is nil - creating fallback tab container")
 			if sidebar then
-				  tabListY = 124
+				local tabListY = 124
 				tabList = WindowBuilders.CreateTabContainer(sidebar, tabListY, theme)
 			end
 		end
@@ -12797,7 +12797,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
 			})
 
-			  iconSize = IsMobile and 32 or 26
+			local iconSize = IsMobile and 32 or 26
 			icon = Util.Create("ImageLabel", {
 				Name = "Icon",
 				BackgroundTransparency = 1,
@@ -12811,7 +12811,7 @@ function Xan:CreateWindow(config)
 			})
 
 			if not IsMobile then
-				  label = Util.Create("TextLabel", {
+				local label = Util.Create("TextLabel", {
 					Name = "Label",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 48, 0, 0),
@@ -12848,7 +12848,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UIPadding", { PaddingLeft = UDim.new(0, 12), PaddingRight = UDim.new(0, 16) }),
 			})
 
-			  isEmoji = type(tabIcon) == "string" and not string.match(tabIcon, "^rbxassetid://")
+			local isEmoji = type(tabIcon) == "string" and not string.match(tabIcon, "^rbxassetid://")
 
 			if isEmoji then
 				icon = Util.Create("TextLabel", {
@@ -12881,7 +12881,7 @@ function Xan:CreateWindow(config)
 				})
 			end
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				AnchorPoint = Vector2.new(0, 0.5),
@@ -12898,7 +12898,7 @@ function Xan:CreateWindow(config)
 			})
 		end
 
-		  tabContent = Util.Create("CanvasGroup", {
+		local tabContent = Util.Create("CanvasGroup", {
 			Name = tabName,
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -12908,7 +12908,7 @@ function Xan:CreateWindow(config)
 			Parent = contentContainer,
 		})
 
-		  scrollFrame = Util.Create("ScrollingFrame", {
+		local scrollFrame = Util.Create("ScrollingFrame", {
 			Name = "Scroll",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -12933,7 +12933,7 @@ function Xan:CreateWindow(config)
 			}),
 		})
 
-		  tabData = {
+		local tabData = {
 			Name = tabName,
 			Button = tabBtn,
 			Content = tabContent,
@@ -12955,11 +12955,11 @@ function Xan:CreateWindow(config)
 						BackgroundColor3 = Xan.CurrentTheme.Card or Xan.CurrentTheme.BackgroundSecondary,
 						BackgroundTransparency = 0.1,
 					})
-					  stroke = tabBtn:FindFirstChildOfClass("UIStroke")
+					local stroke = tabBtn:FindFirstChildOfClass("UIStroke")
 					if stroke then
 						Util.Tween(stroke, 0.15, { Color = Xan.CurrentTheme.Accent, Transparency = 0.5 })
 					end
-					  iconEl = tabBtn:FindFirstChild("Icon")
+					local iconEl = tabBtn:FindFirstChild("Icon")
 					if iconEl then
 						if iconEl:IsA("ImageLabel") then
 							Util.Tween(iconEl, 0.15, { ImageColor3 = Xan.CurrentTheme.Text })
@@ -12967,7 +12967,7 @@ function Xan:CreateWindow(config)
 							Util.Tween(iconEl, 0.15, { TextColor3 = Xan.CurrentTheme.Text })
 						end
 					end
-					  lbl = tabBtn:FindFirstChild("Label")
+					local lbl = tabBtn:FindFirstChild("Label")
 					if lbl then
 						Util.Tween(lbl, 0.15, { TextColor3 = Xan.CurrentTheme.Text })
 					end
@@ -12984,11 +12984,11 @@ function Xan:CreateWindow(config)
 						BackgroundColor3 = Xan.CurrentTheme.Card or Xan.CurrentTheme.BackgroundSecondary,
 						BackgroundTransparency = 0.3,
 					})
-					  stroke = tabBtn:FindFirstChildOfClass("UIStroke")
+					local stroke = tabBtn:FindFirstChildOfClass("UIStroke")
 					if stroke then
 						Util.Tween(stroke, 0.15, { Color = Xan.CurrentTheme.CardBorder, Transparency = 0.3 })
 					end
-					  iconEl = tabBtn:FindFirstChild("Icon")
+					local iconEl = tabBtn:FindFirstChild("Icon")
 					if iconEl then
 						if iconEl:IsA("ImageLabel") then
 							Util.Tween(iconEl, 0.15, { ImageColor3 = Xan.CurrentTheme.TextDim })
@@ -12996,7 +12996,7 @@ function Xan:CreateWindow(config)
 							Util.Tween(iconEl, 0.15, { TextColor3 = Xan.CurrentTheme.TextDim })
 						end
 					end
-					  lbl = tabBtn:FindFirstChild("Label")
+					local lbl = tabBtn:FindFirstChild("Label")
 					if lbl then
 						Util.Tween(lbl, 0.15, { TextColor3 = Xan.CurrentTheme.TextDim })
 					end
@@ -13008,7 +13008,7 @@ function Xan:CreateWindow(config)
 			selectTab(tabData)
 		end
 		
-		  tab = {}
+		local tab = {}
 
 		function tab:CreateSection(title, layoutOrder)
 			return Components.Section(scrollFrame, title, theme, layoutOrder)
@@ -13028,11 +13028,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 44 or 38),
@@ -13040,7 +13040,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -13060,7 +13060,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  btnText = Util.Create("TextLabel", {
+			local btnText = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
@@ -13081,9 +13081,9 @@ function Xan:CreateWindow(config)
 			end)
 
 			btn.MouseButton1Click:Connect(function()
-				  pos = UserInputService:GetMouseLocation()
-				  relX = pos.X - btn.AbsolutePosition.X
-				  relY = pos.Y - btn.AbsolutePosition.Y
+				local pos = UserInputService:GetMouseLocation()
+				local relX = pos.X - btn.AbsolutePosition.X
+				local relY = pos.Y - btn.AbsolutePosition.Y
 				--Util.Ripple(btn, relX, relY, Xan.CurrentTheme.Accent, 0.4)
 
 				Util.Tween(btn, 0.1, { BackgroundColor3 = Xan.CurrentTheme.Card})
@@ -13094,9 +13094,9 @@ function Xan:CreateWindow(config)
 				callback()
 			end)
 
-			  function applyButtonTheme()
+			local function applyButtonTheme()
 				btn.BackgroundColor3 = Xan.CurrentTheme.Card
-				  stroke = btn:FindFirstChildOfClass("UIStroke")
+				local stroke = btn:FindFirstChildOfClass("UIStroke")
 				if stroke then
 					stroke.Color = Xan.CurrentTheme.CardBorder
 				end
@@ -13121,11 +13121,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreatePlainButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 44 or 38),
@@ -13133,7 +13133,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -13156,9 +13156,9 @@ function Xan:CreateWindow(config)
 			end)
 
 			btn.MouseButton1Click:Connect(function()
-				  pos = UserInputService:GetMouseLocation()
-				  relX = pos.X - btn.AbsolutePosition.X
-				  relY = pos.Y - btn.AbsolutePosition.Y
+				local pos = UserInputService:GetMouseLocation()
+				local relX = pos.X - btn.AbsolutePosition.X
+				local relY = pos.Y - btn.AbsolutePosition.Y
 				--Util.Ripple(btn, relX, relY, Xan.CurrentTheme.Accent, 0.4)
 
 				Util.Tween(btn, 0.1, { BackgroundColor3 = Xan.CurrentTheme.Card})
@@ -13183,11 +13183,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreatePrimaryButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  function getMutedAccent()
+			local function getMutedAccent()
 				return Color3.fromRGB(
 					math.floor(Xan.CurrentTheme.Accent.R * 180),
 					math.floor(Xan.CurrentTheme.Accent.G * 180),
@@ -13195,7 +13195,7 @@ function Xan:CreateWindow(config)
 				)
 			end
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = getMutedAccent(),
 				Size = UDim2.new(1, 0, 0, IsMobile and 44 or 38),
@@ -13219,9 +13219,9 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  accentTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
+			local accentTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -13235,7 +13235,7 @@ function Xan:CreateWindow(config)
 
 			btn.MouseEnter:Connect(function()
 				Util.Tween(btnFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Accent })
-				  stroke = btnFrame:FindFirstChild("Stroke")
+				local stroke = btnFrame:FindFirstChild("Stroke")
 				if stroke then
 					Util.Tween(stroke, 0.15, { Transparency = 0.3 })
 				end
@@ -13243,7 +13243,7 @@ function Xan:CreateWindow(config)
 
 			btn.MouseLeave:Connect(function()
 				Util.Tween(btnFrame, 0.15, { BackgroundColor3 = getMutedAccent() })
-				  stroke = btnFrame:FindFirstChild("Stroke")
+				local stroke = btnFrame:FindFirstChild("Stroke")
 				if stroke then
 					Util.Tween(stroke, 0.15, { Transparency = 0.6 })
 				end
@@ -13251,7 +13251,7 @@ function Xan:CreateWindow(config)
 
 			btn.MouseButton1Click:Connect(function()
 				Util.Tween(btnFrame, 0.06, { BackgroundColor3 = Xan.CurrentTheme.AccentDark })
-				  stroke = btnFrame:FindFirstChild("Stroke")
+				local stroke = btnFrame:FindFirstChild("Stroke")
 				if stroke then
 					Util.Tween(stroke, 0.06, { Transparency = 0 })
 				end
@@ -13275,14 +13275,14 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateDangerButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  icon = config.Icon or Icons.Warning or "rbxassetid://7733756006"
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local icon = config.Icon or Icons.Warning or "rbxassetid://7733756006"
 
-			  dangerRed = Color3.fromRGB(220, 60, 60)
+			local dangerRed = Color3.fromRGB(220, 60, 60)
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = dangerRed,
 				BackgroundTransparency = 0.85,
@@ -13299,7 +13299,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -13308,7 +13308,7 @@ function Xan:CreateWindow(config)
 				Parent = btnFrame,
 			})
 
-			  iconLabel = Util.Create("ImageLabel", {
+			local iconLabel = Util.Create("ImageLabel", {
 				Name = "Icon",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0.5, 0),
@@ -13320,7 +13320,7 @@ function Xan:CreateWindow(config)
 				Parent = btn,
 			})
 
-			  textLabel = Util.Create("TextLabel", {
+			local textLabel = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, IsMobile and 38 or 34, 0, 0),
@@ -13338,7 +13338,7 @@ function Xan:CreateWindow(config)
 				Util.Tween(btnFrame, 0.15, { BackgroundTransparency = 0.7 })
 				Util.Tween(iconLabel, 0.15, { ImageColor3 = Color3.new(1, 1, 1) })
 				Util.Tween(textLabel, 0.15, { TextColor3 = Color3.new(1, 1, 1) })
-				  stroke = btnFrame:FindFirstChild("Stroke")
+				local stroke = btnFrame:FindFirstChild("Stroke")
 				if stroke then
 					Util.Tween(stroke, 0.15, { Transparency = 0.2 })
 				end
@@ -13348,7 +13348,7 @@ function Xan:CreateWindow(config)
 				Util.Tween(btnFrame, 0.15, { BackgroundTransparency = 0.85 })
 				Util.Tween(iconLabel, 0.15, { ImageColor3 = dangerRed })
 				Util.Tween(textLabel, 0.15, { TextColor3 = dangerRed })
-				  stroke = btnFrame:FindFirstChild("Stroke")
+				local stroke = btnFrame:FindFirstChild("Stroke")
 				if stroke then
 					Util.Tween(stroke, 0.15, { Transparency = 0.5 })
 				end
@@ -13356,7 +13356,7 @@ function Xan:CreateWindow(config)
 
 			btn.MouseButton1Click:Connect(function()
 				Util.Tween(btnFrame, 0.06, { BackgroundTransparency = 0.5 })
-				  stroke = btnFrame:FindFirstChild("Stroke")
+				local stroke = btnFrame:FindFirstChild("Stroke")
 				if stroke then
 					Util.Tween(stroke, 0.06, { Transparency = 0 })
 				end
@@ -13380,11 +13380,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateOutlineButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 44 or 38),
@@ -13392,7 +13392,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				BackgroundTransparency = 0,
@@ -13442,12 +13442,12 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateIconButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  icon = config.Icon or "rbxassetid://7733715400"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local icon = config.Icon or "rbxassetid://7733715400"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 44 or 38),
@@ -13455,7 +13455,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -13473,7 +13473,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  iconLabel = Util.Create("ImageLabel", {
+			local iconLabel = Util.Create("ImageLabel", {
 				Name = "Icon",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0.5, -9),
@@ -13483,7 +13483,7 @@ function Xan:CreateWindow(config)
 				Parent = btn,
 			})
 
-			  textLabel = Util.Create("TextLabel", {
+			local textLabel = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 40, 0, 0),
@@ -13496,7 +13496,7 @@ function Xan:CreateWindow(config)
 				Parent = btn,
 			})
 
-			  indicator = Util.Create("TextLabel", {
+			local indicator = Util.Create("TextLabel", {
 				Name = "Indicator",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -14, 0, 0),
@@ -13520,9 +13520,9 @@ function Xan:CreateWindow(config)
 			end)
 
 			btn.MouseButton1Click:Connect(function()
-				  pos = UserInputService:GetMouseLocation()
-				  relX = pos.X - btn.AbsolutePosition.X
-				  relY = pos.Y - btn.AbsolutePosition.Y
+				local pos = UserInputService:GetMouseLocation()
+				local relX = pos.X - btn.AbsolutePosition.X
+				local relY = pos.Y - btn.AbsolutePosition.Y
 				--Util.Ripple(btn, relX, relY, Xan.CurrentTheme.Accent, 0.4)
 
 				Util.Tween(btn, 0.1, { BackgroundColor3 = Xan.CurrentTheme.Card})
@@ -13547,12 +13547,12 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateGlassButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  frosted = config.Frosted ~= false
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local frosted = config.Frosted ~= false
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 44 or 38),
@@ -13560,11 +13560,11 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  glassColor = frosted and Color3.fromRGB(200, 200, 210) or Xan.CurrentTheme.Accent
-			  glassTransparency = frosted and 0.4 or 0.88
-			  borderTransparency = frosted and 0.3 or 0.6
+			local glassColor = frosted and Color3.fromRGB(200, 200, 210) or Xan.CurrentTheme.Accent
+			local glassTransparency = frosted and 0.4 or 0.88
+			local borderTransparency = frosted and 0.3 or 0.6
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = glassColor,
 				BackgroundTransparency = glassTransparency,
@@ -13585,7 +13585,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  shimmer = Util.Create("Frame", {
+			local shimmer = Util.Create("Frame", {
 				Name = "Shimmer",
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				BackgroundTransparency = frosted and 0.7 or 0.94,
@@ -13608,7 +13608,7 @@ function Xan:CreateWindow(config)
 			btn.MouseEnter:Connect(function()
 				Util.Tween(btn, 0.2, { BackgroundTransparency = glassTransparency - 0.08 })
 				Util.Tween(shimmer, 0.2, { BackgroundTransparency = frosted and 0.6 or 0.88 })
-				  border = btn:FindFirstChild("GlassBorder")
+				local border = btn:FindFirstChild("GlassBorder")
 				if border then
 					Util.Tween(border, 0.2, { Transparency = borderTransparency - 0.15 })
 				end
@@ -13617,7 +13617,7 @@ function Xan:CreateWindow(config)
 			btn.MouseLeave:Connect(function()
 				Util.Tween(btn, 0.2, { BackgroundTransparency = glassTransparency })
 				Util.Tween(shimmer, 0.2, { BackgroundTransparency = frosted and 0.7 or 0.94 })
-				  border = btn:FindFirstChild("GlassBorder")
+				local border = btn:FindFirstChild("GlassBorder")
 				if border then
 					Util.Tween(border, 0.2, { Transparency = borderTransparency })
 				end
@@ -13642,11 +13642,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateBorderedButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
@@ -13662,9 +13662,9 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  stroke = btnFrame:FindFirstChild("Stroke")
+			local stroke = btnFrame:FindFirstChild("Stroke")
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -13674,7 +13674,7 @@ function Xan:CreateWindow(config)
 				Parent = btnFrame,
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
@@ -13726,12 +13726,12 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateIconBorderedButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  icon = config.Icon or Icons.Settings or "rbxassetid://7733715400"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local icon = config.Icon or Icons.Settings or "rbxassetid://7733715400"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
@@ -13747,9 +13747,9 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  stroke = btnFrame:FindFirstChild("Stroke")
+			local stroke = btnFrame:FindFirstChild("Stroke")
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -13758,7 +13758,7 @@ function Xan:CreateWindow(config)
 				Parent = btnFrame,
 			})
 
-			  iconLabel = Util.Create("ImageLabel", {
+			local iconLabel = Util.Create("ImageLabel", {
 				Name = "Icon",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0.5, 0),
@@ -13769,7 +13769,7 @@ function Xan:CreateWindow(config)
 				Parent = btnFrame,
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, IsMobile and 44 or 42, 0, 0),
@@ -13829,15 +13829,15 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateGradientButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  gradientStart = config.Colors and config.Colors[1] or Xan.CurrentTheme.AccentDark
-			  gradientEnd = config.Colors and config.Colors[2] or Xan.CurrentTheme.Accent
-			  rotation = config.Rotation or 90
-			  gradientTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local gradientStart = config.Colors and config.Colors[1] or Xan.CurrentTheme.AccentDark
+			local gradientEnd = config.Colors and config.Colors[2] or Xan.CurrentTheme.Accent
+			local rotation = config.Rotation or 90
+			local gradientTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 44 or 38),
@@ -13845,7 +13845,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				Size = UDim2.new(1, 0, 1, 0),
@@ -13865,7 +13865,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  gradientText = Util.Create("TextLabel", {
+			local gradientText = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -13877,7 +13877,7 @@ function Xan:CreateWindow(config)
 				Parent = btn,
 			})
 
-			  shine = Util.Create("Frame", {
+			local shine = Util.Create("Frame", {
 				Name = "Shine",
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				BackgroundTransparency = 1,
@@ -13921,7 +13921,7 @@ function Xan:CreateWindow(config)
 					gradientText.Text = text
 				end,
 				SetColors = function(_, newColors)
-					  gradient = btn:FindFirstChild("Gradient")
+					local gradient = btn:FindFirstChild("Gradient")
 					if gradient then
 						gradient.Color = ColorSequence.new({
 							ColorSequenceKeypoint.new(0, newColors[1]),
@@ -13934,11 +13934,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateD3DButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 32 or 26),
@@ -13946,7 +13946,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = Color3.fromRGB(50, 50, 55),
 				Size = UDim2.new(1, 0, 1, 0),
@@ -13964,7 +13964,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  highlight = Util.Create("Frame", {
+			local highlight = Util.Create("Frame", {
 				Name = "Highlight",
 				BackgroundColor3 = Color3.fromRGB(70, 70, 75),
 				BackgroundTransparency = 1,
@@ -13973,7 +13973,7 @@ function Xan:CreateWindow(config)
 				Parent = btn,
 			})
 
-			  shadow = Util.Create("Frame", {
+			local shadow = Util.Create("Frame", {
 				Name = "Shadow",
 				BackgroundColor3 = Color3.fromRGB(30, 30, 35),
 				BackgroundTransparency = 1,
@@ -14022,12 +14022,12 @@ function Xan:CreateWindow(config)
 
 		function tab:CreatePillButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  color = config.Color or Xan.CurrentTheme.Accent
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local color = config.Color or Xan.CurrentTheme.Accent
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 36 or 32),
@@ -14035,9 +14035,9 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  pillTextColor = Util.GetContrastText(color)
+			local pillTextColor = Util.GetContrastText(color)
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = color,
 				BackgroundTransparency = 0,
@@ -14059,14 +14059,14 @@ function Xan:CreateWindow(config)
 			})
 
 			btn.MouseEnter:Connect(function()
-				  border = btn:FindFirstChild("Border")
+				local border = btn:FindFirstChild("Border")
 				if border then
 					Util.Tween(border, 0.25, { Transparency = 0.2 })
 				end
 			end)
 
 			btn.MouseLeave:Connect(function()
-				  border = btn:FindFirstChild("Border")
+				local border = btn:FindFirstChild("Border")
 				if border then
 					Util.Tween(border, 0.25, { Transparency = 0.5 })
 				end
@@ -14091,11 +14091,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateSquareButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 40 or 34),
@@ -14103,7 +14103,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14148,11 +14148,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateCuteButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 44 or 38),
@@ -14161,7 +14161,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = Color3.fromRGB(255, 182, 193),
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14179,7 +14179,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  textLabel = Util.Create("TextLabel", {
+			local textLabel = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
@@ -14191,7 +14191,7 @@ function Xan:CreateWindow(config)
 				Parent = btn,
 			})
 
-			  animeGirl = Util.Create("ImageLabel", {
+			local animeGirl = Util.Create("ImageLabel", {
 				Name = "AnimeGirl",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -20, 1, 0),
@@ -14209,7 +14209,7 @@ function Xan:CreateWindow(config)
 					animeGirl.Image = "rbxassetid://96291759939890"
 					Util.Tween(animeGirl, 0.15, { ImageTransparency = 0 })
 				end)
-				  border = btn:FindFirstChild("Border")
+				local border = btn:FindFirstChild("Border")
 				if border then
 					Util.Tween(border, 0.2, { Color = Color3.fromRGB(255, 150, 170) })
 				end
@@ -14222,7 +14222,7 @@ function Xan:CreateWindow(config)
 					animeGirl.Image = "rbxassetid://133781880642114"
 					Util.Tween(animeGirl, 0.15, { ImageTransparency = 0 })
 				end)
-				  border = btn:FindFirstChild("Border")
+				local border = btn:FindFirstChild("Border")
 				if border then
 					Util.Tween(border, 0.2, { Color = Color3.fromRGB(255, 130, 150) })
 				end
@@ -14247,11 +14247,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateLuffyButton(config)
 			config = config or {}
-			  name = config.Name or "Adventure!"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Adventure!"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 48),
@@ -14260,7 +14260,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = Color3.fromRGB(65, 140, 160),
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14278,7 +14278,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  bgImageStatic = Util.Create("ImageLabel", {
+			local bgImageStatic = Util.Create("ImageLabel", {
 				Name = "BackgroundStatic",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14291,7 +14291,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 10) }),
 			})
 
-			  bgImageHover = Util.Create("ImageLabel", {
+			local bgImageHover = Util.Create("ImageLabel", {
 				Name = "BackgroundHover",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14304,7 +14304,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 10) }),
 			})
 
-			  overlay = Util.Create("Frame", {
+			local overlay = Util.Create("Frame", {
 				Name = "Overlay",
 				BackgroundColor3 = Color3.fromRGB(0, 0, 0),
 				BackgroundTransparency = 0.55,
@@ -14315,7 +14315,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 10) }),
 			})
 
-			  textLabel = Util.Create("TextLabel", {
+			local textLabel = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
@@ -14329,7 +14329,7 @@ function Xan:CreateWindow(config)
 				Parent = btn,
 			})
 
-			  luffy = Util.Create("ImageLabel", {
+			local luffy = Util.Create("ImageLabel", {
 				Name = "Luffy",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 1, 0),
@@ -14350,7 +14350,7 @@ function Xan:CreateWindow(config)
 					luffy.Image = "rbxassetid://127679351914202"
 					Util.Tween(luffy, 0.15, { ImageTransparency = 0 })
 				end)
-				  border = btn:FindFirstChild("Border")
+				local border = btn:FindFirstChild("Border")
 				if border then
 					Util.Tween(border, 0.25, { Color = Color3.fromRGB(100, 140, 180), Transparency = 0 })
 				end
@@ -14366,7 +14366,7 @@ function Xan:CreateWindow(config)
 					luffy.Image = "rbxassetid://110374776333443"
 					Util.Tween(luffy, 0.15, { ImageTransparency = 0 })
 				end)
-				  border = btn:FindFirstChild("Border")
+				local border = btn:FindFirstChild("Border")
 				if border then
 					Util.Tween(border, 0.25, { Color = Color3.fromRGB(60, 80, 100), Transparency = 0.3 })
 				end
@@ -14391,10 +14391,10 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateUnloadButton(config)
 			config = config or {}
-			  name = config.Name or "Unload"
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Unload"
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Error,
 				BackgroundTransparency = 0.85,
@@ -14411,7 +14411,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14420,7 +14420,7 @@ function Xan:CreateWindow(config)
 				Parent = btnFrame,
 			})
 
-			  iconLabel = Util.Create("ImageLabel", {
+			local iconLabel = Util.Create("ImageLabel", {
 				Name = "Icon",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0.5, 0),
@@ -14432,7 +14432,7 @@ function Xan:CreateWindow(config)
 				Parent = btn,
 			})
 
-			  textLabel = Util.Create("TextLabel", {
+			local textLabel = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, IsMobile and 44 or 40, 0, 0),
@@ -14450,7 +14450,7 @@ function Xan:CreateWindow(config)
 				Util.Tween(btnFrame, 0.2, { BackgroundTransparency = 0.7 })
 				Util.Tween(iconLabel, 0.2, { ImageColor3 = Color3.new(1, 1, 1) })
 				Util.Tween(textLabel, 0.2, { TextColor3 = Color3.new(1, 1, 1) })
-				  stroke = btnFrame:FindFirstChild("Stroke")
+				local stroke = btnFrame:FindFirstChild("Stroke")
 				if stroke then
 					Util.Tween(stroke, 0.2, { Transparency = 0 })
 				end
@@ -14460,7 +14460,7 @@ function Xan:CreateWindow(config)
 				Util.Tween(btnFrame, 0.2, { BackgroundTransparency = 0.85 })
 				Util.Tween(iconLabel, 0.2, { ImageColor3 = Xan.CurrentTheme.Error })
 				Util.Tween(textLabel, 0.2, { TextColor3 = Xan.CurrentTheme.Error })
-				  stroke = btnFrame:FindFirstChild("Stroke")
+				local stroke = btnFrame:FindFirstChild("Stroke")
 				if stroke then
 					Util.Tween(stroke, 0.2, { Transparency = 0.5 })
 				end
@@ -14481,11 +14481,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateMinimalButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 36 or 30),
@@ -14493,7 +14493,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14505,7 +14505,7 @@ function Xan:CreateWindow(config)
 				Parent = btnFrame,
 			})
 
-			  underline = Util.Create("Frame", {
+			local underline = Util.Create("Frame", {
 				Name = "Underline",
 				BackgroundColor3 = Xan.CurrentTheme.Accent,
 				BackgroundTransparency = 1,
@@ -14552,11 +14552,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateCompactButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 28 or 24),
@@ -14564,7 +14564,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14613,11 +14613,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateRetroButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 40 or 34),
@@ -14625,7 +14625,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  shadow = Util.Create("Frame", {
+			local shadow = Util.Create("Frame", {
 				Name = "Shadow",
 				BackgroundColor3 = Xan.CurrentTheme.Background,
 				Position = UDim2.new(0, 3, 0, 3),
@@ -14633,7 +14633,7 @@ function Xan:CreateWindow(config)
 				Parent = btnFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Position = UDim2.new(0, 0, 0, 0),
@@ -14679,12 +14679,12 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateHyperlink(config)
 			config = config or {}
-			  name = config.Name or "Link"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  color = config.Color or Xan.CurrentTheme.Accent
+			local name = config.Name or "Link"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local color = config.Color or Xan.CurrentTheme.Accent
 
-			  linkFrame = Util.Create("Frame", {
+			local linkFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 28 or 24),
@@ -14692,7 +14692,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Link",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14705,7 +14705,7 @@ function Xan:CreateWindow(config)
 				Parent = linkFrame,
 			})
 
-			  linkOrigColor = color
+			local linkOrigColor = color
 			btn.MouseEnter:Connect(function()
 				Util.Tween(btn, 0.1, { TextColor3 = Xan.CurrentTheme.Accent })
 			end)
@@ -14729,13 +14729,13 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateIconHyperlink(config)
 			config = config or {}
-			  name = config.Name or "Link"
-			  icon = config.Icon or Icons.Link or "rbxassetid://7733715400"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  color = config.Color or Xan.CurrentTheme.Accent
+			local name = config.Name or "Link"
+			local icon = config.Icon or Icons.Link or "rbxassetid://7733715400"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local color = config.Color or Xan.CurrentTheme.Accent
 
-			  linkFrame = Util.Create("Frame", {
+			local linkFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 28 or 24),
@@ -14743,7 +14743,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Link",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14752,7 +14752,7 @@ function Xan:CreateWindow(config)
 				Parent = linkFrame,
 			})
 
-			  iconLabel = Util.Create("ImageLabel", {
+			local iconLabel = Util.Create("ImageLabel", {
 				Name = "Icon",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0.5, -8),
@@ -14762,7 +14762,7 @@ function Xan:CreateWindow(config)
 				Parent = btn,
 			})
 
-			  textLabel = Util.Create("TextLabel", {
+			local textLabel = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 22, 0, 0),
@@ -14803,12 +14803,12 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateOutlinedLink(config)
 			config = config or {}
-			  name = config.Name or "Link"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  color = config.Color or Xan.CurrentTheme.Accent
+			local name = config.Name or "Link"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local color = config.Color or Xan.CurrentTheme.Accent
 
-			  linkFrame = Util.Create("Frame", {
+			local linkFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 36 or 30),
@@ -14816,7 +14816,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Link",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14837,7 +14837,7 @@ function Xan:CreateWindow(config)
 			})
 
 			btn.MouseEnter:Connect(function()
-				  border = btn:FindFirstChild("Border")
+				local border = btn:FindFirstChild("Border")
 				if border then
 					Util.Tween(border, 0.15, { Transparency = 0 })
 				end
@@ -14845,7 +14845,7 @@ function Xan:CreateWindow(config)
 			end)
 
 			btn.MouseLeave:Connect(function()
-				  border = btn:FindFirstChild("Border")
+				local border = btn:FindFirstChild("Border")
 				if border then
 					Util.Tween(border, 0.15, { Transparency = 0.5 })
 				end
@@ -14871,13 +14871,13 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateIconOutlinedLink(config)
 			config = config or {}
-			  name = config.Name or "Link"
-			  icon = config.Icon or Icons.Link or "rbxassetid://7733715400"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  color = config.Color or Xan.CurrentTheme.Accent
+			local name = config.Name or "Link"
+			local icon = config.Icon or Icons.Link or "rbxassetid://7733715400"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local color = config.Color or Xan.CurrentTheme.Accent
 
-			  linkFrame = Util.Create("Frame", {
+			local linkFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 36 or 30),
@@ -14885,7 +14885,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Link",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14902,7 +14902,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  iconLabel = Util.Create("ImageLabel", {
+			local iconLabel = Util.Create("ImageLabel", {
 				Name = "Icon",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 10, 0.5, -8),
@@ -14912,7 +14912,7 @@ function Xan:CreateWindow(config)
 				Parent = btn,
 			})
 
-			  textLabel = Util.Create("TextLabel", {
+			local textLabel = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 32, 0, 0),
@@ -14926,7 +14926,7 @@ function Xan:CreateWindow(config)
 			})
 
 			btn.MouseEnter:Connect(function()
-				  border = btn:FindFirstChild("Border")
+				local border = btn:FindFirstChild("Border")
 				if border then
 					Util.Tween(border, 0.15, { Transparency = 0 })
 				end
@@ -14934,7 +14934,7 @@ function Xan:CreateWindow(config)
 			end)
 
 			btn.MouseLeave:Connect(function()
-				  border = btn:FindFirstChild("Border")
+				local border = btn:FindFirstChild("Border")
 				if border then
 					Util.Tween(border, 0.15, { Transparency = 0.5 })
 				end
@@ -14963,11 +14963,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateShimmerLink(config)
 			config = config or {}
-			  name = config.Name or "Link"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Link"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  linkFrame = Util.Create("Frame", {
+			local linkFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 32 or 28),
@@ -14975,7 +14975,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Link",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -14987,18 +14987,18 @@ function Xan:CreateWindow(config)
 				Parent = linkFrame,
 			})
 
-			  colors = {
+			local colors = {
 				Xan.CurrentTheme.Accent,
 				Color3.fromRGB(255, 120, 180),
 				Color3.fromRGB(120, 180, 255),
 				Color3.fromRGB(180, 120, 255),
 			}
-			  colorIndex = 1
-			  shimmerActive = true
+			local colorIndex = 1
+			local shimmerActive = true
 
 			task.spawn(function()
 				while shimmerActive and btn and btn.Parent do
-					  nextIndex = colorIndex % #colors + 1
+					local nextIndex = colorIndex % #colors + 1
 					Util.Tween(btn, 2, { TextColor3 = colors[nextIndex] })
 					colorIndex = nextIndex
 					task.wait(2)
@@ -15031,12 +15031,12 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateRainbowButton(config)
 			config = config or {}
-			  name = config.Name or "Button"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  speed = config.Speed or 3
+			local name = config.Name or "Button"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local speed = config.Speed or 3
 
-			  btnFrame = Util.Create("Frame", {
+			local btnFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 44 or 38),
@@ -15044,7 +15044,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Button",
 				BackgroundColor3 = Color3.fromRGB(30, 30, 38),
 				Size = UDim2.new(1, 0, 1, 0),
@@ -15062,7 +15062,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  textLabel = Util.Create("TextLabel", {
+			local textLabel = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -15074,14 +15074,14 @@ function Xan:CreateWindow(config)
 				Parent = btn,
 			})
 
-			  rainbowActive = true
-			  hue = 0
+			local rainbowActive = true
+			local hue = 0
 
 			task.spawn(function()
 				while rainbowActive and btn and btn.Parent do
 					hue = (hue + 0.005 / speed) % 1
-					  color = Color3.fromHSV(hue, 0.7, 1)
-					  border = btn:FindFirstChild("Border")
+					local color = Color3.fromHSV(hue, 0.7, 1)
+					local border = btn:FindFirstChild("Border")
 					if border then
 						border.Color = color
 					end
@@ -15120,20 +15120,20 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateToggle(config)
 			config = config or {}
-			  name = config.Name or "Toggle"
-			  default = config.Default or false
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  showInActiveList = config.ShowInActiveList ~= false
+			local name = config.Name or "Toggle"
+			local default = config.Default or false
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local showInActiveList = config.ShowInActiveList ~= false
 
-			  enabled = default
+			local enabled = default
 			if flag then
 				Xan:SetDefault(flag, default)
 				Xan:SetFlag(flag, enabled)
 			end
 
-			  toggleFrame = Util.Create("Frame", {
+			local toggleFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
@@ -15149,7 +15149,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
@@ -15162,8 +15162,8 @@ function Xan:CreateWindow(config)
 				Parent = toggleFrame,
 			})
 
-			  currentToggleTheme = Xan.CurrentTheme
-			  toggleBg = Util.Create("Frame", {
+			local currentToggleTheme = Xan.CurrentTheme
+			local toggleBg = Util.Create("Frame", {
 				Name = "ToggleBg",
 				BackgroundColor3 = enabled and Xan.CurrentTheme.ToggleEnabled or Xan.CurrentTheme.Toggle,
 				Position = UDim2.new(1, -56, 0.5, -12),
@@ -15173,7 +15173,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  knob = Util.Create("Frame", {
+			local knob = Util.Create("Frame", {
 				Name = "Knob",
 				BackgroundColor3 = Xan.CurrentTheme.ToggleKnob,
 				Position = enabled and UDim2.new(0.7, 0, 0.5, 0) or UDim2.new(0.3, 0, 0.5, 0),
@@ -15184,7 +15184,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  function updateToggle(newState, skipCallback)
+			local function updateToggle(newState, skipCallback)
 				enabled = newState
 				if flag then
 					Xan:SetFlag(flag, enabled)
@@ -15211,7 +15211,7 @@ function Xan:CreateWindow(config)
 				end
 			end
 
-			  btn = Util.Create("TextButton", {
+			local btn = Util.Create("TextButton", {
 				Name = "Hitbox",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -15231,9 +15231,9 @@ function Xan:CreateWindow(config)
 				Util.Tween(toggleFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 			end)
 
-			  function applyToggleTheme()
+			local function applyToggleTheme()
 				toggleFrame.BackgroundColor3 = Xan.CurrentTheme.Card
-				  stroke = toggleFrame:FindFirstChildOfClass("UIStroke")
+				local stroke = toggleFrame:FindFirstChildOfClass("UIStroke")
 				if stroke then
 					stroke.Color = Xan.CurrentTheme.CardBorder
 				end
@@ -15271,24 +15271,24 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateSlider(config)
 			config = config or {}
-			  name = config.Name or "Slider"
-			  min = config.Min or 0
-			  max = config.Max or 100
-			  default = config.Default or min
-			  increment = config.Increment or 1
-			  suffix = config.Suffix or ""
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Slider"
+			local min = config.Min or 0
+			local max = config.Max or 100
+			local default = config.Default or min
+			local increment = config.Increment or 1
+			local suffix = config.Suffix or ""
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  value = math.clamp(default, min, max)
+			local value = math.clamp(default, min, max)
 			if flag then
 				Xan:SetDefault(flag, value)
 				Xan:SetFlag(flag, value)
 			end
 
-			  currentSliderTheme = Xan.CurrentTheme
-			  sliderFrame = Util.Create("Frame", {
+			local currentSliderTheme = Xan.CurrentTheme
+			local sliderFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 64 or 56),
@@ -15304,7 +15304,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 8 or 6),
@@ -15317,7 +15317,7 @@ function Xan:CreateWindow(config)
 				Parent = sliderFrame,
 			})
 
-			  valueLabel = Util.Create("TextLabel", {
+			local valueLabel = Util.Create("TextLabel", {
 				Name = "Value",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.6, 0, 0, IsMobile and 8 or 6),
@@ -15330,7 +15330,7 @@ function Xan:CreateWindow(config)
 				Parent = sliderFrame,
 			})
 
-			  trackFrame = Util.Create("Frame", {
+			local trackFrame = Util.Create("Frame", {
 				Name = "Track",
 				BackgroundColor3 = Xan.CurrentTheme.Slider,
 				Position = UDim2.new(0, 14, 1, IsMobile and -22 or -20),
@@ -15340,7 +15340,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  fill = Util.Create("Frame", {
+			local fill = Util.Create("Frame", {
 				Name = "Fill",
 				BackgroundColor3 = Xan.CurrentTheme.SliderFill,
 				Size = UDim2.new((value - min) / (max - min), 0, 1, 0),
@@ -15349,7 +15349,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  knob = Util.Create("Frame", {
+			local knob = Util.Create("Frame", {
 				Name = "Knob",
 				BackgroundColor3 = Xan.CurrentTheme.ToggleKnob,
 				Position = UDim2.new((value - min) / (max - min), -8, 0.5, -8),
@@ -15360,9 +15360,9 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  dragging = false
+			local dragging = false
 
-			  function updateSlider(newValue, skipCallback)
+			local function updateSlider(newValue, skipCallback)
 				newValue = math.clamp(newValue, min, max)
 				newValue = math.floor(newValue / increment + 0.5) * increment
 				newValue = Util.Round(newValue, 2)
@@ -15372,7 +15372,7 @@ function Xan:CreateWindow(config)
 					Xan:SetFlag(flag, value)
 				end
 
-				  percent = (value - min) / (max - min)
+				local percent = (value - min) / (max - min)
 				Util.Tween(knob, 0.15, { Position = UDim2.new(percent, -8, 0.5, -8) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 				Util.Tween(fill, 0.15, { Size = UDim2.new(percent, 0, 1, 0) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 				valueLabel.Text =  Util.Round(value, 2) .. suffix
@@ -15385,12 +15385,12 @@ function Xan:CreateWindow(config)
 				end
 			end
 
-			  function onInput(input)
-				  trackAbsPos = trackFrame.AbsolutePosition.X
-				  trackAbsSize = trackFrame.AbsoluteSize.X
-				  mouseX = input.Position.X
-				  percent = math.clamp((mouseX - trackAbsPos) / trackAbsSize, 0, 1)
-				  newValue = min + percent * (max - min)
+			local function onInput(input)
+				local trackAbsPos = trackFrame.AbsolutePosition.X
+				local trackAbsSize = trackFrame.AbsoluteSize.X
+				local mouseX = input.Position.X
+				local percent = math.clamp((mouseX - trackAbsPos) / trackAbsSize, 0, 1)
+				local newValue = min + percent * (max - min)
 				updateSlider(newValue)
 			end
 
@@ -15404,7 +15404,7 @@ function Xan:CreateWindow(config)
 				end
 			end)
 
-			  inputConn
+			local inputConn
 			inputConn = UserInputService.InputChanged:Connect(function(input)
 				if
 					dragging
@@ -15418,7 +15418,7 @@ function Xan:CreateWindow(config)
 			end)
 			table.insert(Xan.Connections, inputConn)
 
-			  inputEndConn
+			local inputEndConn
 			inputEndConn = UserInputService.InputEnded:Connect(function(input)
 				if
 					input.UserInputType == Enum.UserInputType.MouseButton1
@@ -15437,9 +15437,9 @@ function Xan:CreateWindow(config)
 				Util.Tween(sliderFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 			end)
 
-			  function applySliderTheme()
+			local function applySliderTheme()
 				sliderFrame.BackgroundColor3 = Xan.CurrentTheme.Card
-				  stroke = sliderFrame:FindFirstChildOfClass("UIStroke")
+				local stroke = sliderFrame:FindFirstChildOfClass("UIStroke")
 				if stroke then
 					stroke.Color = Xan.CurrentTheme.CardBorder
 				end
@@ -15448,7 +15448,7 @@ function Xan:CreateWindow(config)
 				trackFrame.BackgroundColor3 = Xan.CurrentTheme.Slider
 				fillFrame.BackgroundColor3 = Xan.CurrentTheme.SliderFill
 				sliderKnob.BackgroundColor3 = Xan.CurrentTheme.ToggleKnob
-				  knobStroke = sliderKnob:FindFirstChildOfClass("UIStroke")
+				local knobStroke = sliderKnob:FindFirstChildOfClass("UIStroke")
 				if knobStroke then
 					knobStroke.Color = Xan.CurrentTheme.SliderFill
 				end
@@ -15471,21 +15471,21 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateInput(config)
 			config = config or {}
-			  name = config.Name or "Input"
-			  default = config.Default or ""
-			  placeholder = config.Placeholder or "Enter text..."
-			  numeric = config.Numeric or false
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Input"
+			local default = config.Default or ""
+			local placeholder = config.Placeholder or "Enter text..."
+			local numeric = config.Numeric or false
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  value = default
+			local value = default
 			if flag then
 				Xan:SetFlag(flag, value)
 			end
 
-			  currentInputTheme = Xan.CurrentTheme
-			  inputFrame = Util.Create("Frame", {
+			local currentInputTheme = Xan.CurrentTheme
+			local inputFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 64 or 56),
@@ -15501,7 +15501,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 8 or 6),
@@ -15514,7 +15514,7 @@ function Xan:CreateWindow(config)
 				Parent = inputFrame,
 			})
 
-			  inputBox = Util.Create("TextBox", {
+			local inputBox = Util.Create("TextBox", {
 				Name = "Input",
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				Position = UDim2.new(0, 14, 1, IsMobile and -32 or -30),
@@ -15549,7 +15549,7 @@ function Xan:CreateWindow(config)
 				Util.Tween(inputBox.InputStroke, 0.2, { Color = Xan.CurrentTheme.InputBorder })
 				Util.Tween(inputFrame.Stroke, 0.2, { Color = Xan.CurrentTheme.CardBorder, Transparency = 0.6 })
 
-				  newValue = inputBox.Text
+				local newValue = inputBox.Text
 				if numeric then
 					newValue = tonumber(newValue) or value
 					inputBox.Text = tostring(newValue)
@@ -15594,16 +15594,16 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateDropdown(config)
 			config = config or {}
-			  name = config.Name or "Dropdown"
-			  options = config.Options or {}
-			  default = config.Default
-			  multi = config.Multi or false
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Dropdown"
+			local options = config.Options or {}
+			local default = config.Default
+			local multi = config.Multi or false
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  selected = multi and {} or (default or (options[1] or ""))
-			  expanded = false
+			local selected = multi and {} or (default or (options[1] or ""))
+			local expanded = false
 
 			if multi and default and type(default) == "table" then
 				for _, v in ipairs(default) do
@@ -15615,7 +15615,7 @@ function Xan:CreateWindow(config)
 				Xan:SetFlag(flag, selected)
 			end
 
-			  dropdownFrame = Util.Create("Frame", {
+			local dropdownFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
@@ -15630,14 +15630,14 @@ function Xan:CreateWindow(config)
 				),
 			})
 
-			  header = Util.Create("Frame", {
+			local header = Util.Create("Frame", {
 				Name = "Header",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
 				Parent = dropdownFrame,
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
@@ -15650,9 +15650,9 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  function getDisplayText()
+			local function getDisplayText()
 				if multi then
-					  items = {}
+					local items = {}
 					for k, v in pairs(selected) do
 						if v then
 							table.insert(items, k)
@@ -15670,7 +15670,7 @@ function Xan:CreateWindow(config)
 				end
 			end
 
-			  valueLabel = Util.Create("TextLabel", {
+			local valueLabel = Util.Create("TextLabel", {
 				Name = "Value",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.4, 0, 0, 0),
@@ -15684,7 +15684,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  arrow = Util.Create("TextLabel", {
+			local arrow = Util.Create("TextLabel", {
 				Name = "Arrow",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -30, 0, 0),
@@ -15697,10 +15697,10 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  spacing = 4
-			  optionHeight = IsMobile and 36 or 32
+			local spacing = 4
+			local optionHeight = IsMobile and 36 or 32
 
-			  optionsList = Util.Create("Frame", {
+			local optionsList = Util.Create("Frame", {
 				Name = "Options",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 8, 0, IsMobile and 52 or 44),
@@ -15714,25 +15714,25 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  optionButtons = {}
+			local optionButtons = {}
 
-			  function updateOptions()
+			local function updateOptions()
 				for _, btn in pairs(optionButtons) do
 					btn:Destroy()
 				end
 				optionButtons = {}
 
-				  totalHeight = #options * optionHeight + math.max(0, #options - 1) * spacing
+				local totalHeight = #options * optionHeight + math.max(0, #options - 1) * spacing
 				optionsList.Size = UDim2.new(1, -16, 0, totalHeight)
 
 				for i, option in ipairs(options) do
-					  isSelected = multi and selected[option] or selected == option
-					  selectedTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
-					  dropdownColor = Xan.CurrentTheme.Dropdown
+					local isSelected = multi and selected[option] or selected == option
+					local selectedTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
+					local dropdownColor = Xan.CurrentTheme.Dropdown
 						or Xan.CurrentTheme.Input
 						or Color3.fromRGB(25, 25, 32)
 
-					  optionBtn = Util.Create("TextButton", {
+					local optionBtn = Util.Create("TextButton", {
 						Name = option,
 						BackgroundColor3 = isSelected and Xan.CurrentTheme.Accent or dropdownColor,
 						Size = UDim2.new(1, 0, 0, optionHeight),
@@ -15749,7 +15749,7 @@ function Xan:CreateWindow(config)
 
 					optionBtn.MouseEnter:Connect(function()
 						if not isSelected then
-							  hoverColor = Xan.CurrentTheme.DropdownHover
+							local hoverColor = Xan.CurrentTheme.DropdownHover
 								or Xan.CurrentTheme.CardHover
 								or Color3.fromRGB(35, 35, 45)
 							Util.Tween(optionBtn, 0.15, { BackgroundColor3 = hoverColor })
@@ -15757,8 +15757,8 @@ function Xan:CreateWindow(config)
 					end)
 
 					optionBtn.MouseLeave:Connect(function()
-						  isCurrentlySelected = multi and selected[option] or selected == option
-						  dropdownColor = Xan.CurrentTheme.Dropdown
+						local isCurrentlySelected = multi and selected[option] or selected == option
+						local dropdownColor = Xan.CurrentTheme.Dropdown
 							or Xan.CurrentTheme.Input
 							or Color3.fromRGB(25, 25, 32)
 						Util.Tween(
@@ -15769,14 +15769,14 @@ function Xan:CreateWindow(config)
 					end)
 
 					optionBtn.MouseButton1Click:Connect(function()
-						  contrastText = Util.GetContrastText(Xan.CurrentTheme.Accent)
-						  dropdownColor = Xan.CurrentTheme.Dropdown
+						local contrastText = Util.GetContrastText(Xan.CurrentTheme.Accent)
+						local dropdownColor = Xan.CurrentTheme.Dropdown
 							or Xan.CurrentTheme.Input
 							or Color3.fromRGB(25, 25, 32)
 
 						if multi then
 							selected[option] = not selected[option]
-							  isNowSelected = selected[option]
+							local isNowSelected = selected[option]
 							Util.Tween(optionBtn, 0.2, {
 								BackgroundColor3 = isNowSelected and Xan.CurrentTheme.Accent or dropdownColor,
 								TextColor3 = isNowSelected and contrastText or Xan.CurrentTheme.Text,
@@ -15810,14 +15810,14 @@ function Xan:CreateWindow(config)
 
 			updateOptions()
 
-			  function toggleExpand()
+			local function toggleExpand()
 				expanded = not expanded
 				if expanded then
 					updateOptions()
 				end
 
-				  totalHeight = #options * optionHeight + math.max(0, #options - 1) * spacing + 12
-				  baseHeight = IsMobile and 52 or 44
+				local totalHeight = #options * optionHeight + math.max(0, #options - 1) * spacing + 12
+				local baseHeight = IsMobile and 52 or 44
 
 				Util.Tween(arrow, 0.5, { Rotation = expanded and 180 or 0 })
 				Util.Tween(
@@ -15828,7 +15828,7 @@ function Xan:CreateWindow(config)
 				)
 			end
 
-			  headerBtn = Util.Create("TextButton", {
+			local headerBtn = Util.Create("TextButton", {
 				Name = "Hitbox",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -15846,9 +15846,9 @@ function Xan:CreateWindow(config)
 				Util.Tween(dropdownFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 			end)
 
-			  function applyDropdownTheme()
+			local function applyDropdownTheme()
 				dropdownFrame.BackgroundColor3 = Xan.CurrentTheme.Card
-				  stroke = dropdownFrame:FindFirstChildOfClass("UIStroke")
+				local stroke = dropdownFrame:FindFirstChildOfClass("UIStroke")
 				if stroke then
 					stroke.Color = Xan.CurrentTheme.CardBorder
 				end
@@ -15903,29 +15903,29 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateKeybind(config)
 			config = config or {}
-			  name = config.Name or "Keybind"
-			  default = config.Default or Enum.KeyCode.Unknown
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  changedCallback = config.ChangedCallback or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  bindType = config.Type or "Toggle"
+			local name = config.Name or "Keybind"
+			local default = config.Default or Enum.KeyCode.Unknown
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local changedCallback = config.ChangedCallback or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local bindType = config.Type or "Toggle"
 
 			if bindType ~= "Toggle" and bindType ~= "Hold" then
 				bindType = "Toggle"
 			end
 
-			  currentKey = default
-			  listening = false
-			  isActive = false
-			  justBound = false
-			  lastBindTime = 0
+			local currentKey = default
+			local listening = false
+			local isActive = false
+			local justBound = false
+			local lastBindTime = 0
 
 			if flag then
 				Xan:SetFlag(flag, currentKey)
 			end
 
-			  keybindFrame = Util.Create("Frame", {
+			local keybindFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
@@ -15941,7 +15941,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
@@ -15954,7 +15954,7 @@ function Xan:CreateWindow(config)
 				Parent = keybindFrame,
 			})
 
-			  function getKeyName(key)
+			local function getKeyName(key)
 				if key == Enum.KeyCode.Unknown then
 					return "N/A"
 				end
@@ -15973,14 +15973,14 @@ function Xan:CreateWindow(config)
 				end
 
 				if key.EnumType == Enum.KeyCode then
-					  name = tostring(key):gsub("Enum.KeyCode.", "")
+					local name = tostring(key):gsub("Enum.KeyCode.", "")
 					return name
 				end
 
 				return "???"
 			end
 
-			  keyBtn = Util.Create("TextButton", {
+			local keyBtn = Util.Create("TextButton", {
 				Name = "KeyButton",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 				Position = UDim2.new(1, -100, 0.5, -14),
@@ -15995,7 +15995,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 			})
 
-			  function startListening()
+			local function startListening()
 				listening = true
 				keyBtn.Text = "..."
 				Util.Tween(keyBtn, 0.2, {
@@ -16004,7 +16004,7 @@ function Xan:CreateWindow(config)
 				})
 			end
 
-			  function stopListening(key)
+			local function stopListening(key)
 				listening = false
 				currentKey = key or currentKey
 				keyBtn.Text = getKeyName(currentKey)
@@ -16032,7 +16032,7 @@ function Xan:CreateWindow(config)
 				end
 			end)
 
-			  keybindConn = UserInputService.InputBegan:Connect(function(input, gameProcessed)
+			local keybindConn = UserInputService.InputBegan:Connect(function(input, gameProcessed)
 				if listening then
 					if input.UserInputType == Enum.UserInputType.Keyboard then
 						if input.KeyCode == Enum.KeyCode.Escape then
@@ -16057,7 +16057,7 @@ function Xan:CreateWindow(config)
 						return
 					end
 
-					  triggered = false
+					local triggered = false
 					if currentKey.EnumType == Enum.KeyCode and input.KeyCode == currentKey then
 						triggered = true
 					elseif currentKey.EnumType == Enum.UserInputType and input.UserInputType == currentKey then
@@ -16085,12 +16085,12 @@ function Xan:CreateWindow(config)
 			table.insert(Xan.Connections, keybindConn)
 
 			if bindType == "Hold" then
-				  releaseConn = UserInputService.InputEnded:Connect(function(input)
+				local releaseConn = UserInputService.InputEnded:Connect(function(input)
 					if currentKey == Enum.KeyCode.Unknown then
 						return
 					end
 
-					  released = false
+					local released = false
 					if currentKey.EnumType == Enum.KeyCode and input.KeyCode == currentKey then
 						released = true
 					elseif currentKey.EnumType == Enum.UserInputType and input.UserInputType == currentKey then
@@ -16109,7 +16109,7 @@ function Xan:CreateWindow(config)
 				end)
 				table.insert(Xan.Connections, releaseConn)
 
-				  focusLostConn = UserInputService.WindowFocusReleased:Connect(function()
+				local focusLostConn = UserInputService.WindowFocusReleased:Connect(function()
         Xan:RemoveFromBindList(name)
         Util.SafeCall(callback, false)
     end)
@@ -16169,22 +16169,22 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateColorPicker(config)
 			config = config or {}
-			  name = config.Name or "Color"
-			  default = config.Default or Color3.fromRGB(255, 255, 255)
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Color"
+			local default = config.Default or Color3.fromRGB(255, 255, 255)
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  currentColor = default
-			  expanded = false
-			  h, s, v = Color3.toHSV(default)
+			local currentColor = default
+			local expanded = false
+			local h, s, v = Color3.toHSV(default)
 
 			if flag then
 				Xan:SetFlag(flag, currentColor)
 			end
 
-			  currentColorTheme = Xan.CurrentTheme
-			  colorFrame = Util.Create("Frame", {
+			local currentColorTheme = Xan.CurrentTheme
+			local colorFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
@@ -16201,14 +16201,14 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  header = Util.Create("Frame", {
+			local header = Util.Create("Frame", {
 				Name = "Header",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
 				Parent = colorFrame,
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
@@ -16221,7 +16221,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  colorPreview = Util.Create("Frame", {
+			local colorPreview = Util.Create("Frame", {
 				Name = "Preview",
 				BackgroundColor3 = currentColor,
 				Position = UDim2.new(1, -54, 0.5, -12),
@@ -16236,7 +16236,7 @@ function Xan:CreateWindow(config)
 			})
 			colorPreview:SetAttribute("UserControlled", true)
 
-			  pickerContainer = Util.Create("Frame", {
+			local pickerContainer = Util.Create("Frame", {
 				Name = "Picker",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 56 or 48),
@@ -16245,7 +16245,7 @@ function Xan:CreateWindow(config)
 				Parent = colorFrame,
 			})
 
-			  satValPicker = Util.Create("ImageLabel", {
+			local satValPicker = Util.Create("ImageLabel", {
 				Name = "SatVal",
 				BackgroundColor3 = Color3.fromHSV(h, 1, 1),
 				Position = UDim2.new(0, 0, 0, 0),
@@ -16256,7 +16256,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 			})
 
-			  satValOverlay = Util.Create("ImageLabel", {
+			local satValOverlay = Util.Create("ImageLabel", {
 				Name = "Overlay",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -16273,7 +16273,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  satValCursor = Util.Create("Frame", {
+			local satValCursor = Util.Create("Frame", {
 				Name = "Cursor",
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				Position = UDim2.new(s, -6, 1 - v, -6),
@@ -16288,7 +16288,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  hueBar = Util.Create("Frame", {
+			local hueBar = Util.Create("Frame", {
 				Name = "HueBar",
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				Position = UDim2.new(1, -28, 0, 0),
@@ -16310,7 +16310,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  hueCursor = Util.Create("Frame", {
+			local hueCursor = Util.Create("Frame", {
 				Name = "HueCursor",
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				Position = UDim2.new(0.5, -10, h, -4),
@@ -16325,7 +16325,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  hexInput = Util.Create("TextBox", {
+			local hexInput = Util.Create("TextBox", {
 				Name = "Hex",
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				Position = UDim2.new(0, 0, 0, 108),
@@ -16346,7 +16346,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  function updateColor(newH, newS, newV, skipCallback)
+			local function updateColor(newH, newS, newV, skipCallback)
 				h, s, v = newH or h, newS or s, newV or v
 				currentColor = Color3.fromHSV(h, s, v)
 
@@ -16365,7 +16365,7 @@ function Xan:CreateWindow(config)
 				end
 			end
 
-			  svDragging, hueDragging = false, false
+			local svDragging, hueDragging = false, false
 
 			satValPicker.InputBegan:Connect(function(input)
 				if
@@ -16391,7 +16391,7 @@ function Xan:CreateWindow(config)
 				end
 			end)
 
-			  cpInputConn = UserInputService.InputChanged:Connect(function(input)
+			local cpInputConn = UserInputService.InputChanged:Connect(function(input)
 				if
 					svDragging
 					and (
@@ -16399,12 +16399,12 @@ function Xan:CreateWindow(config)
 						or input.UserInputType == Enum.UserInputType.Touch
 					)
 				then
-					  relX = math.clamp(
+					local relX = math.clamp(
 						(input.Position.X - satValPicker.AbsolutePosition.X) / satValPicker.AbsoluteSize.X,
 						0,
 						1
 					)
-					  relY = math.clamp(
+					local relY = math.clamp(
 						(input.Position.Y - satValPicker.AbsolutePosition.Y) / satValPicker.AbsoluteSize.Y,
 						0,
 						1
@@ -16417,19 +16417,19 @@ function Xan:CreateWindow(config)
 						or input.UserInputType == Enum.UserInputType.Touch
 					)
 				then
-					  relY =
+					local relY =
 						math.clamp((input.Position.Y - hueBar.AbsolutePosition.Y) / hueBar.AbsoluteSize.Y, 0, 1)
 					updateColor(relY, nil, nil)
 				end
 			end)
 			table.insert(Xan.Connections, cpInputConn)
 
-			  cpInputEndConn = UserInputService.InputEnded:Connect(function(input)
+			local cpInputEndConn = UserInputService.InputEnded:Connect(function(input)
 				if
 					input.UserInputType == Enum.UserInputType.MouseButton1
 					or input.UserInputType == Enum.UserInputType.Touch
 				then
-					  wasDragging = svDragging or hueDragging
+					local wasDragging = svDragging or hueDragging
 					svDragging = false
 					hueDragging = false
 					if
@@ -16446,22 +16446,22 @@ function Xan:CreateWindow(config)
 			table.insert(Xan.Connections, cpInputEndConn)
 
 			hexInput.FocusLost:Connect(function()
-				  hex = hexInput.Text:gsub("#", "")
-				  success, color = pcall(function()
+				local hex = hexInput.Text:gsub("#", "")
+				local success, color = pcall(function()
 					return Color3.fromHex(hex)
 				end)
 				if success then
-					  newH, newS, newV = Color3.toHSV(color)
+					local newH, newS, newV = Color3.toHSV(color)
 					updateColor(newH, newS, newV)
 				else
 					hexInput.Text = "#" .. currentColor:ToHex():upper()
 				end
 			end)
 
-			  function toggleExpand()
+			local function toggleExpand()
 				expanded = not expanded
-				  baseHeight = IsMobile and 52 or 44
-				  expandedHeight = IsMobile and 210 or 195
+				local baseHeight = IsMobile and 52 or 44
+				local expandedHeight = IsMobile and 210 or 195
 
 				if expanded then
 					pickerContainer.Visible = true
@@ -16490,7 +16490,7 @@ function Xan:CreateWindow(config)
 				end
 			end
 
-			  headerBtn = Util.Create("TextButton", {
+			local headerBtn = Util.Create("TextButton", {
 				Name = "Hitbox",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -16508,9 +16508,9 @@ function Xan:CreateWindow(config)
 				Util.Tween(colorFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 			end)
 
-			  function applyColorPickerTheme()
+			local function applyColorPickerTheme()
 				colorFrame.BackgroundColor3 = Xan.CurrentTheme.Card
-				  stroke = colorFrame:FindFirstChildOfClass("UIStroke")
+				local stroke = colorFrame:FindFirstChildOfClass("UIStroke")
 				if stroke then
 					stroke.Color = expanded and Xan.CurrentTheme.Accent or Xan.CurrentTheme.CardBorder
 					stroke.Transparency = 0
@@ -16518,7 +16518,7 @@ function Xan:CreateWindow(config)
 				colorLabel.TextColor3 = Xan.CurrentTheme.Text
 				hexInput.BackgroundColor3 = Xan.CurrentTheme.Input
 				hexInput.TextColor3 = Xan.CurrentTheme.Text
-				  hexStroke = hexInput:FindFirstChildOfClass("UIStroke")
+				local hexStroke = hexInput:FindFirstChildOfClass("UIStroke")
 				if hexStroke then
 					hexStroke.Color = Xan.CurrentTheme.InputBorder
 				end
@@ -16533,7 +16533,7 @@ function Xan:CreateWindow(config)
 					return currentColor
 				end,
 				Set = function(_, color, skipCallback)
-					  newH, newS, newV = Color3.toHSV(color)
+					local newH, newS, newV = Color3.toHSV(color)
 					updateColor(newH, newS, newV, skipCallback)
 				end,
 				UpdateTheme = applyColorPickerTheme,
@@ -16542,22 +16542,22 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateSmoothGraph(config)
 			config = config or {}
-			  name = config.Name or "Curve"
-			  default = config.Default or 0.15
-			  min = config.Min or 0.01
-			  max = config.Max or 1
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Curve"
+			local default = config.Default or 0.15
+			local min = config.Min or 0.01
+			local max = config.Max or 1
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  value = math.clamp(default, min, max)
+			local value = math.clamp(default, min, max)
 			if flag then
 				Xan:SetDefault(flag, value)
 				Xan:SetFlag(flag, value)
 			end
 
-			  currentGraphTheme = Xan.CurrentTheme
-			  graphFrame = Util.Create("Frame", {
+			local currentGraphTheme = Xan.CurrentTheme
+			local graphFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 160 or 145),
@@ -16573,7 +16573,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 10 or 8),
@@ -16586,7 +16586,7 @@ function Xan:CreateWindow(config)
 				Parent = graphFrame,
 			})
 
-			  valueLabel = Util.Create("TextLabel", {
+			local valueLabel = Util.Create("TextLabel", {
 				Name = "Value",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.5, 0, 0, IsMobile and 10 or 8),
@@ -16599,7 +16599,7 @@ function Xan:CreateWindow(config)
 				Parent = graphFrame,
 			})
 
-			  graphContainer = Util.Create("Frame", {
+			local graphContainer = Util.Create("Frame", {
 				Name = "Graph",
 				BackgroundColor3 = Color3.fromRGB(8, 10, 14),
 				Position = UDim2.new(0, 14, 0, IsMobile and 36 or 32),
@@ -16632,11 +16632,11 @@ function Xan:CreateWindow(config)
 				})
 			end
 
-			  graphLines = {}
-			  graphDots = {}
+			local graphLines = {}
+			local graphDots = {}
 
 			for i = 1, 20 do
-				  line = Util.Create("Frame", {
+				local line = Util.Create("Frame", {
 					Name = "Line" .. i,
 					BackgroundColor3 = Xan.CurrentTheme.Accent,
 					BorderSizePixel = 0,
@@ -16648,7 +16648,7 @@ function Xan:CreateWindow(config)
 			end
 
 			for i = 0, 20 do
-				  dot = Util.Create("Frame", {
+				local dot = Util.Create("Frame", {
 					Name = "Dot" .. i,
 					BackgroundColor3 = Xan.CurrentTheme.Accent,
 					AnchorPoint = Vector2.new(0.5, 0.5),
@@ -16660,19 +16660,19 @@ function Xan:CreateWindow(config)
 				graphDots[i] = dot
 			end
 
-			  function updateGraph()
-				  w = graphContainer.AbsoluteSize.X
-				  h = graphContainer.AbsoluteSize.Y
+			local function updateGraph()
+				local w = graphContainer.AbsoluteSize.X
+				local h = graphContainer.AbsoluteSize.Y
 				if w < 10 or h < 10 then
 					return
 				end
 
-				  smooth = value
-				  points = {}
+				local smooth = value
+				local points = {}
 
 				for i = 0, 20 do
-					  x = i / 20
-					  y = 1 - math.pow(x, 1 / math.max(smooth * 5, 0.01))
+					local x = i / 20
+					local y = 1 - math.pow(x, 1 / math.max(smooth * 5, 0.01))
 					y = math.clamp(y, 0, 1)
 					points[i] = { x = x * w, y = y * (h - 8) + 4 }
 				end
@@ -16684,16 +16684,16 @@ function Xan:CreateWindow(config)
 				end
 
 				for i = 1, 20 do
-					  line = graphLines[i]
-					  p1 = points[i - 1]
-					  p2 = points[i]
+					local line = graphLines[i]
+					local p1 = points[i - 1]
+					local p2 = points[i]
 					if p1 and p2 then
-						  dx = p2.x - p1.x
-						  dy = p2.y - p1.y
-						  length = math.sqrt(dx * dx + dy * dy)
-						  angle = math.deg(math.atan2(dy, dx))
-						  cx = (p1.x + p2.x) / 2
-						  cy = (p1.y + p2.y) / 2
+						local dx = p2.x - p1.x
+						local dy = p2.y - p1.y
+						local length = math.sqrt(dx * dx + dy * dy)
+						local angle = math.deg(math.atan2(dy, dx))
+						local cx = (p1.x + p2.x) / 2
+						local cy = (p1.y + p2.y) / 2
 
 						line.Position = UDim2.new(0, cx, 0, cy)
 						line.Size = UDim2.new(0, length + 1, 0, 2)
@@ -16702,11 +16702,11 @@ function Xan:CreateWindow(config)
 				end
 			end
 
-			  initAttempts = 0
-			  function tryInitGraph()
+			local initAttempts = 0
+			local function tryInitGraph()
 				initAttempts = initAttempts + 1
-				  w = graphContainer.AbsoluteSize.X
-				  h = graphContainer.AbsoluteSize.Y
+				local w = graphContainer.AbsoluteSize.X
+				local h = graphContainer.AbsoluteSize.Y
 				if w > 10 and h > 10 then
 					updateGraph()
 				elseif initAttempts < 10 then
@@ -16722,7 +16722,7 @@ function Xan:CreateWindow(config)
 				end
 			end)
 
-			  sliderTrack = Util.Create("Frame", {
+			local sliderTrack = Util.Create("Frame", {
 				Name = "SliderTrack",
 				BackgroundColor3 = Xan.CurrentTheme.Slider,
 				Position = UDim2.new(0, 14, 1, IsMobile and -32 or -28),
@@ -16732,7 +16732,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  sliderFill = Util.Create("Frame", {
+			local sliderFill = Util.Create("Frame", {
 				Name = "Fill",
 				BackgroundColor3 = Xan.CurrentTheme.SliderFill,
 				Size = UDim2.new((value - min) / (max - min), 0, 1, 0),
@@ -16741,7 +16741,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  sliderKnob = Util.Create("Frame", {
+			local sliderKnob = Util.Create("Frame", {
 				Name = "Knob",
 				BackgroundColor3 = Xan.CurrentTheme.ToggleKnob,
 				Position = UDim2.new((value - min) / (max - min), -8, 0.5, -8),
@@ -16756,9 +16756,9 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  dragging = false
+			local dragging = false
 
-			  function updateValue(newValue, skipCallback)
+			local function updateValue(newValue, skipCallback)
 				newValue = math.clamp(newValue, min, max)
 				newValue = Util.Round(newValue, 2)
 
@@ -16767,7 +16767,7 @@ function Xan:CreateWindow(config)
 					Xan:SetFlag(flag, value)
 				end
 
-				  percent = (value - min) / (max - min)
+				local percent = (value - min) / (max - min)
 				sliderFill.Size = UDim2.new(percent, 0, 1, 0)
 				sliderKnob.Position = UDim2.new(percent, -8, 0.5, -8)
 				valueLabel.Text = Util.Round(value, 2)
@@ -16785,7 +16785,7 @@ function Xan:CreateWindow(config)
 					or input.UserInputType == Enum.UserInputType.Touch
 				then
 					dragging = true
-					  percent = math.clamp(
+					local percent = math.clamp(
 						(input.Position.X - sliderTrack.AbsolutePosition.X) / sliderTrack.AbsoluteSize.X,
 						0,
 						1
@@ -16794,7 +16794,7 @@ function Xan:CreateWindow(config)
 				end
 			end)
 
-			  graphInputConn = UserInputService.InputChanged:Connect(function(input)
+			local graphInputConn = UserInputService.InputChanged:Connect(function(input)
 				if
 					dragging
 					and (
@@ -16802,7 +16802,7 @@ function Xan:CreateWindow(config)
 						or input.UserInputType == Enum.UserInputType.Touch
 					)
 				then
-					  percent = math.clamp(
+					local percent = math.clamp(
 						(input.Position.X - sliderTrack.AbsolutePosition.X) / sliderTrack.AbsoluteSize.X,
 						0,
 						1
@@ -16812,7 +16812,7 @@ function Xan:CreateWindow(config)
 			end)
 			table.insert(Xan.Connections, graphInputConn)
 
-			  graphInputEndConn = UserInputService.InputEnded:Connect(function(input)
+			local graphInputEndConn = UserInputService.InputEnded:Connect(function(input)
 				if
 					input.UserInputType == Enum.UserInputType.MouseButton1
 					or input.UserInputType == Enum.UserInputType.Touch
@@ -16843,26 +16843,26 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateBezierCurve(config)
 			config = config or {}
-			  name = config.Name or "Smoothing Curve"
-			  defaultP1 = config.P1 or { x = 0.25, y = 0.1 }
-			  defaultP2 = config.P2 or { x = 0.75, y = 0.9 }
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Smoothing Curve"
+			local defaultP1 = config.P1 or { x = 0.25, y = 0.1 }
+			local defaultP2 = config.P2 or { x = 0.75, y = 0.9 }
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  p1 = { x = defaultP1.x, y = defaultP1.y }
-			  p2 = { x = defaultP2.x, y = defaultP2.y }
+			local p1 = { x = defaultP1.x, y = defaultP1.y }
+			local p2 = { x = defaultP2.x, y = defaultP2.y }
 
 			if flag then
 				Xan:SetFlag(flag, { P1 = p1, P2 = p2 })
 			end
 
-			  graphHeight = IsMobile and 140 or 120
-			  headerHeight = IsMobile and 32 or 28
-			  bottomPadding = IsMobile and 14 or 12
-			  totalHeight = headerHeight + graphHeight + bottomPadding
+			local graphHeight = IsMobile and 140 or 120
+			local headerHeight = IsMobile and 32 or 28
+			local bottomPadding = IsMobile and 14 or 12
+			local totalHeight = headerHeight + graphHeight + bottomPadding
 
-			  bezierFrame = Util.Create("Frame", {
+			local bezierFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, totalHeight),
@@ -16877,7 +16877,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
@@ -16890,7 +16890,7 @@ function Xan:CreateWindow(config)
 				Parent = bezierFrame,
 			})
 
-			  valueLabel = Util.Create("TextLabel", {
+			local valueLabel = Util.Create("TextLabel", {
 				Name = "Value",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.5, 0, 0, 0),
@@ -16903,7 +16903,7 @@ function Xan:CreateWindow(config)
 				Parent = bezierFrame,
 			})
 
-			  graphContainer = Util.Create("Frame", {
+			local graphContainer = Util.Create("Frame", {
 				Name = "Graph",
 				BackgroundColor3 = Xan.CurrentTheme.Background,
 				Position = UDim2.new(0, 14, 0, headerHeight),
@@ -16914,9 +16914,9 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 			})
 
-			  gridLines = {}
+			local gridLines = {}
 			for i = 1, 4 do
-				  hLine = Util.Create("Frame", {
+				local hLine = Util.Create("Frame", {
 					Name = "HLine" .. i,
 					BackgroundColor3 = Xan.CurrentTheme.CardBorder,
 					BackgroundTransparency = 0.7,
@@ -16924,7 +16924,7 @@ function Xan:CreateWindow(config)
 					Size = UDim2.new(1, 0, 0, 1),
 					Parent = graphContainer,
 				})
-				  vLine = Util.Create("Frame", {
+				local vLine = Util.Create("Frame", {
 					Name = "VLine" .. i,
 					BackgroundColor3 = Xan.CurrentTheme.CardBorder,
 					BackgroundTransparency = 0.7,
@@ -16936,11 +16936,11 @@ function Xan:CreateWindow(config)
 				table.insert(gridLines, vLine)
 			end
 
-			  curveSegments = {}
-			  numSegments = 32
+			local curveSegments = {}
+			local numSegments = 32
 
 			for i = 1, numSegments do
-				  seg = Util.Create("Frame", {
+				local seg = Util.Create("Frame", {
 					Name = "Seg" .. i,
 					BackgroundColor3 = Xan.CurrentTheme.Accent,
 					Size = UDim2.new(0, 3, 0, 3),
@@ -16952,7 +16952,7 @@ function Xan:CreateWindow(config)
 				table.insert(curveSegments, seg)
 			end
 
-			  handle1 = Util.Create("Frame", {
+			local handle1 = Util.Create("Frame", {
 				Name = "Handle1",
 				BackgroundColor3 = Xan.CurrentTheme.Accent,
 				Size = UDim2.new(0, 12, 0, 12),
@@ -16967,7 +16967,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  handle2 = Util.Create("Frame", {
+			local handle2 = Util.Create("Frame", {
 				Name = "Handle2",
 				BackgroundColor3 = Xan.CurrentTheme.Accent,
 				Size = UDim2.new(0, 12, 0, 12),
@@ -16982,7 +16982,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  startDot = Util.Create("Frame", {
+			local startDot = Util.Create("Frame", {
 				Name = "Start",
 				BackgroundColor3 = Color3.fromRGB(100, 100, 110),
 				Position = UDim2.new(0, 0, 1, 0),
@@ -16993,7 +16993,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  endDot = Util.Create("Frame", {
+			local endDot = Util.Create("Frame", {
 				Name = "End",
 				BackgroundColor3 = Color3.fromRGB(100, 100, 110),
 				Position = UDim2.new(1, 0, 0, 0),
@@ -17004,21 +17004,21 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  function bezierPoint(t, p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y)
-				  u = 1 - t
-				  tt = t * t
-				  uu = u * u
-				  uuu = uu * u
-				  ttt = tt * t
+			local function bezierPoint(t, p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y)
+				local u = 1 - t
+				local tt = t * t
+				local uu = u * u
+				local uuu = uu * u
+				local ttt = tt * t
 
-				  x = uuu * p0x + 3 * uu * t * p1x + 3 * u * tt * p2x + ttt * p3x
-				  y = uuu * p0y + 3 * uu * t * p1y + 3 * u * tt * p2y + ttt * p3y
+				local x = uuu * p0x + 3 * uu * t * p1x + 3 * u * tt * p2x + ttt * p3x
+				local y = uuu * p0y + 3 * uu * t * p1y + 3 * u * tt * p2y + ttt * p3y
 				return x, y
 			end
 
-			  function updateCurve()
-				  w = graphContainer.AbsoluteSize.X
-				  h = graphContainer.AbsoluteSize.Y
+			local function updateCurve()
+				local w = graphContainer.AbsoluteSize.X
+				local h = graphContainer.AbsoluteSize.Y
 				if w < 10 or h < 10 then
 					return
 				end
@@ -17027,8 +17027,8 @@ function Xan:CreateWindow(config)
 				handle2.Position = UDim2.new(p2.x, 0, 1 - p2.y, 0)
 
 				for i, seg in ipairs(curveSegments) do
-					  t = (i - 1) / (numSegments - 1)
-					  bx, by = bezierPoint(t, 0, 0, p1.x, p1.y, p2.x, p2.y, 1, 1)
+					local t = (i - 1) / (numSegments - 1)
+					local bx, by = bezierPoint(t, 0, 0, p1.x, p1.y, p2.x, p2.y, 1, 1)
 					seg.Position = UDim2.new(bx, 0, 1 - by, 0)
 				end
 
@@ -17040,10 +17040,10 @@ function Xan:CreateWindow(config)
 				callback({ P1 = p1, P2 = p2 })
 			end
 
-			  draggingHandle = nil
+			local draggingHandle = nil
 
-			  function makeHandleDraggable(handle, point)
-				  btn = Util.Create("TextButton", {
+			local function makeHandleDraggable(handle, point)
+				local btn = Util.Create("TextButton", {
 					Name = "DragBtn",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 8, 1, 8),
@@ -17071,7 +17071,7 @@ function Xan:CreateWindow(config)
 			makeHandleDraggable(handle1, p1)
 			makeHandleDraggable(handle2, p2)
 
-			  graphBtn = Util.Create("TextButton", {
+			local graphBtn = Util.Create("TextButton", {
 				Name = "GraphBtn",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -17088,10 +17088,10 @@ function Xan:CreateWindow(config)
 						or input.UserInputType == Enum.UserInputType.Touch
 					)
 				then
-					  pos = graphContainer.AbsolutePosition
-					  size = graphContainer.AbsoluteSize
-					  relX = math.clamp((input.Position.X - pos.X) / size.X, 0.05, 0.95)
-					  relY = math.clamp(1 - (input.Position.Y - pos.Y) / size.Y, 0.05, 0.95)
+					local pos = graphContainer.AbsolutePosition
+					local size = graphContainer.AbsoluteSize
+					local relX = math.clamp((input.Position.X - pos.X) / size.X, 0.05, 0.95)
+					local relY = math.clamp(1 - (input.Position.Y - pos.Y) / size.Y, 0.05, 0.95)
 
 					draggingHandle.x = relX
 					draggingHandle.y = relY
@@ -17105,7 +17105,7 @@ function Xan:CreateWindow(config)
 					or input.UserInputType == Enum.UserInputType.Touch
 				then
 					if draggingHandle then
-						  handle = draggingHandle == p1 and handle1 or handle2
+						local handle = draggingHandle == p1 and handle1 or handle2
 						Util.Tween(handle, 0.1, { Size = UDim2.new(0, 12, 0, 12) })
 						draggingHandle = nil
 					end
@@ -17140,7 +17140,7 @@ function Xan:CreateWindow(config)
 					updateCurve()
 				end,
 				GetCurveValue = function(_, t)
-					  _, y = bezierPoint(t, 0, 0, p1.x, p1.y, p2.x, p2.y, 1, 1)
+					local _, y = bezierPoint(t, 0, 0, p1.x, p1.y, p2.x, p2.y, 1, 1)
 					return y
 				end,
 			}
@@ -17148,23 +17148,23 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateHitSelector(config)
 			config = config or {}
-			  name = config.Name or "Hit Spread"
-			  segments = config.Segments or { "Head", "Chest", "Arms", "Legs" }
-			  colors = config.Colors
+			local name = config.Name or "Hit Spread"
+			local segments = config.Segments or { "Head", "Chest", "Arms", "Legs" }
+			local colors = config.Colors
 				or {
 					Color3.fromRGB(255, 75, 95),
 					Color3.fromRGB(80, 220, 120),
 					Color3.fromRGB(65, 165, 255),
 					Color3.fromRGB(255, 190, 60),
 				}
-			  defaults = config.Default or {}
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local defaults = config.Default or {}
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  isCompact = layout == "Compact"
+			local isCompact = layout == "Compact"
 
-			  values = {}
+			local values = {}
 			for i, seg in ipairs(segments) do
 				values[seg] = defaults[seg] ~= nil and defaults[seg] or true
 			end
@@ -17173,8 +17173,8 @@ function Xan:CreateWindow(config)
 				Xan:SetFlag(flag, values)
 			end
 
-			  currentHitSelTheme = Xan.CurrentTheme
-			  hitFrame = Util.Create("Frame", {
+			local currentHitSelTheme = Xan.CurrentTheme
+			local hitFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 100 or (isCompact and 68 or 88)),
@@ -17190,7 +17190,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 10 or (isCompact and 6 or 8)),
@@ -17203,7 +17203,7 @@ function Xan:CreateWindow(config)
 				Parent = hitFrame,
 			})
 
-			  barContainer = Util.Create("Frame", {
+			local barContainer = Util.Create("Frame", {
 				Name = "Bar",
 				BackgroundColor3 = Xan.CurrentTheme.Slider,
 				Position = UDim2.new(0, 14, 0, IsMobile and 38 or (isCompact and 26 or 34)),
@@ -17214,13 +17214,13 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
 			})
 
-			  segmentFrames = {}
-			  segmentWidth = 1 / #segments
+			local segmentFrames = {}
+			local segmentWidth = 1 / #segments
 
 			for i, seg in ipairs(segments) do
-				  isEnabled = values[seg]
-				  currentToggle = Xan.CurrentTheme.Toggle
-				  segFrame = Util.Create("Frame", {
+				local isEnabled = values[seg]
+				local currentToggle = Xan.CurrentTheme.Toggle
+				local segFrame = Util.Create("Frame", {
 					Name = seg,
 					BackgroundColor3 = isEnabled and colors[i] or currentToggle,
 					Position = UDim2.new((i - 1) * segmentWidth, 0, 0, 0),
@@ -17230,7 +17230,7 @@ function Xan:CreateWindow(config)
 
 				if i == 1 then
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }).Parent = segFrame
-					  fix = Util.Create("Frame", {
+					local fix = Util.Create("Frame", {
 						BackgroundColor3 = isEnabled and colors[i] or currentToggle,
 						Position = UDim2.new(1, -8, 0, 0),
 						Size = UDim2.new(0, 8, 1, 0),
@@ -17238,7 +17238,7 @@ function Xan:CreateWindow(config)
 					})
 				elseif i == #segments then
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }).Parent = segFrame
-					  fix = Util.Create("Frame", {
+					local fix = Util.Create("Frame", {
 						BackgroundColor3 = isEnabled and colors[i] or currentToggle,
 						Position = UDim2.new(0, 0, 0, 0),
 						Size = UDim2.new(0, 8, 1, 0),
@@ -17249,7 +17249,7 @@ function Xan:CreateWindow(config)
 				segmentFrames[seg] = { frame = segFrame, color = colors[i], index = i }
 			end
 
-			  toggleContainer = Util.Create("Frame", {
+			local toggleContainer = Util.Create("Frame", {
 				Name = "Toggles",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 62 or (isCompact and 44 or 56)),
@@ -17265,8 +17265,8 @@ function Xan:CreateWindow(config)
 			})
 
 			for i, seg in ipairs(segments) do
-				  currentTheme = Xan.CurrentTheme
-				  toggleFrame = Util.Create("Frame", {
+				local currentTheme = Xan.CurrentTheme
+				local toggleFrame = Util.Create("Frame", {
 					Name = seg,
 					BackgroundTransparency = 1,
 					Size = UDim2.new(0, isCompact and 48 or 70, 1, 0),
@@ -17274,7 +17274,7 @@ function Xan:CreateWindow(config)
 					Parent = toggleContainer,
 				})
 
-				  check = Util.Create("Frame", {
+				local check = Util.Create("Frame", {
 					Name = "Check",
 					BackgroundColor3 = values[seg] and colors[i] or Xan.CurrentTheme.Toggle,
 					Position = isCompact and UDim2.new(0, 0, 0.5, -5) or UDim2.new(0, 0, 0.5, -6),
@@ -17284,7 +17284,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 3) }),
 				})
 
-				  toggleLabel = Util.Create("TextLabel", {
+				local toggleLabel = Util.Create("TextLabel", {
 					Name = "Label",
 					BackgroundTransparency = 1,
 					Position = isCompact and UDim2.new(0, 14, 0, 0) or UDim2.new(0, 18, 0, 0),
@@ -17297,7 +17297,7 @@ function Xan:CreateWindow(config)
 					Parent = toggleFrame,
 				})
 
-				  btn = Util.Create("TextButton", {
+				local btn = Util.Create("TextButton", {
 					Name = "Hitbox",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 1, 0),
@@ -17307,11 +17307,11 @@ function Xan:CreateWindow(config)
 
 				btn.MouseButton1Click:Connect(function()
 					values[seg] = not values[seg]
-					  isEnabled = values[seg]
+					local isEnabled = values[seg]
 
 					Util.Tween(check, 0.2, { BackgroundColor3 = isEnabled and colors[i] or Xan.CurrentTheme.Toggle })
 
-					  sf = segmentFrames[seg]
+					local sf = segmentFrames[seg]
 					Util.Tween(sf.frame, 0.2, { BackgroundColor3 = isEnabled and sf.color or Xan.CurrentTheme.Toggle })
 
 					for _, child in ipairs(sf.frame:GetChildren()) do
@@ -17339,7 +17339,7 @@ function Xan:CreateWindow(config)
 				Set = function(_, newValues, skipCallback)
 					for seg, enabled in pairs(newValues) do
 						values[seg] = enabled
-						  sf = segmentFrames[seg]
+						local sf = segmentFrames[seg]
 						if sf then
 							sf.frame.BackgroundColor3 = enabled and sf.color or Xan.CurrentTheme.Toggle
 						end
@@ -17356,25 +17356,25 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateESPStylePicker(config)
 			config = config or {}
-			  name = config.Name or "ESP Box Style"
-			  styles = config.Styles or { "Full", "Cornered" }
-			  default = config.Default or styles[1]
-			  espColorFlag = config.ESPColorFlag
-			  defaultColor = config.DefaultColor or config.Color
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  showRainbow = config.ShowRainbow or config.Rainbow or false
+			local name = config.Name or "ESP Box Style"
+			local styles = config.Styles or { "Full", "Cornered" }
+			local default = config.Default or styles[1]
+			local espColorFlag = config.ESPColorFlag
+			local defaultColor = config.DefaultColor or config.Color
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local showRainbow = config.ShowRainbow or config.Rainbow or false
 
-			  isCompact = layout == "Compact"
-			  selectedStyle = default
-			  espColor = defaultColor or Color3.fromRGB(255, 75, 85)
-			  rainbowEnabled = false
-			  rainbowConnection = nil
-			  rainbowHue = 0
+			local isCompact = layout == "Compact"
+			local selectedStyle = default
+			local espColor = defaultColor or Color3.fromRGB(255, 75, 85)
+			local rainbowEnabled = false
+			local rainbowConnection = nil
+			local rainbowHue = 0
 
 			if espColorFlag and Xan.Flags and Xan.Flags[espColorFlag] then
-				  flagColor = Xan.Flags[espColorFlag]
+				local flagColor = Xan.Flags[espColorFlag]
 				if typeof(flagColor) == "Color3" then
 					espColor = flagColor
 				end
@@ -17384,15 +17384,15 @@ function Xan:CreateWindow(config)
 				Xan:SetFlag(flag, selectedStyle)
 			end
 
-			  previewSize = IsMobile and 60 or (isCompact and 50 or 60)
-			  btnHeight = previewSize + 24
-			  cardHeight = IsMobile and (36 + btnHeight + 14)
+			local previewSize = IsMobile and 60 or (isCompact and 50 or 60)
+			local btnHeight = previewSize + 24
+			local cardHeight = IsMobile and (36 + btnHeight + 14)
 				or (isCompact and (30 + btnHeight + 12) or (36 + btnHeight + 14))
 			if showRainbow then
 				cardHeight = cardHeight + (IsMobile and 36 or 32)
 			end
 
-			  pickerFrame = Util.Create("Frame", {
+			local pickerFrame = Util.Create("Frame", {
 				Name = name .. "_ESPStylePicker",
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, cardHeight),
@@ -17407,7 +17407,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 10 or (isCompact and 8 or 10)),
@@ -17420,7 +17420,7 @@ function Xan:CreateWindow(config)
 				Parent = pickerFrame,
 			})
 
-			  optionsContainer = Util.Create("Frame", {
+			local optionsContainer = Util.Create("Frame", {
 				Name = "Options",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 32 or (isCompact and 28 or 32)),
@@ -17435,15 +17435,15 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  styleButtons = {}
-			  characterIcons = {
+			local styleButtons = {}
+			local characterIcons = {
 				Man1 = "rbxassetid://104622167280151",
 				Man2 = "rbxassetid://114816538692680",
 			}
-			  characterIcon = config.CharacterIcon or config.Icon or characterIcons.Man2
+			local characterIcon = config.CharacterIcon or config.Icon or characterIcons.Man2
 
-			  function drawFullBox(parent, color, size)
-				  box = Util.Create("Frame", {
+			local function drawFullBox(parent, color, size)
+				local box = Util.Create("Frame", {
 					Name = "FullBoxPreview",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 1, 0),
@@ -17499,15 +17499,15 @@ function Xan:CreateWindow(config)
 				return box
 			end
 
-			  function drawCorneredBox(parent, color, size)
-				  box = Util.Create("Frame", {
+			local function drawCorneredBox(parent, color, size)
+				local box = Util.Create("Frame", {
 					Name = "CorneredBoxPreview",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 1, 0),
 					Parent = parent,
 				})
 
-				  cornerLen = 0.25
+				local cornerLen = 0.25
 				Util.Create("Frame", {
 					Name = "TLH",
 					BackgroundColor3 = color,
@@ -17589,7 +17589,7 @@ function Xan:CreateWindow(config)
 				return box
 			end
 
-			  function updatePreviewColors(newColor, isRainbowColor)
+			local function updatePreviewColors(newColor, isRainbowColor)
 				if not isRainbowColor then
 					espColor = newColor
 				end
@@ -17608,18 +17608,18 @@ function Xan:CreateWindow(config)
 				end
 			end
 
-			  darkBg = Color3.fromRGB(35, 35, 42)
-			  selectedBg = Color3.fromRGB(50, 50, 58)
-			  hoverBg = Color3.fromRGB(45, 45, 52)
+			local darkBg = Color3.fromRGB(35, 35, 42)
+			local selectedBg = Color3.fromRGB(50, 50, 58)
+			local hoverBg = Color3.fromRGB(45, 45, 52)
 
-			  function updateSelection(styleName)
+			local function updateSelection(styleName)
 				selectedStyle = styleName
 				for style, data in pairs(styleButtons) do
-					  isSelected = style == styleName
+					local isSelected = style == styleName
 					Util.Tween(data.btn, 0.2, {
 						BackgroundColor3 = isSelected and selectedBg or darkBg,
 					})
-					  stroke = data.btn:FindFirstChildOfClass("UIStroke")
+					local stroke = data.btn:FindFirstChildOfClass("UIStroke")
 					if stroke then
 						Util.Tween(stroke, 0.2, {
 							Color = isSelected and Xan.CurrentTheme.Accent or Xan.CurrentTheme.CardBorder,
@@ -17637,10 +17637,10 @@ function Xan:CreateWindow(config)
 			end
 
 			for i, style in ipairs(styles) do
-				  isSelected = style == selectedStyle
-				  btnWidth = IsMobile and 85 or (isCompact and 70 or 85)
+				local isSelected = style == selectedStyle
+				local btnWidth = IsMobile and 85 or (isCompact and 70 or 85)
 
-				  styleBtn = Util.Create("TextButton", {
+				local styleBtn = Util.Create("TextButton", {
 					Name = style,
 					BackgroundColor3 = isSelected and selectedBg or darkBg,
 					Size = UDim2.new(0, btnWidth, 0, btnHeight),
@@ -17657,7 +17657,7 @@ function Xan:CreateWindow(config)
 					}),
 				})
 
-				  previewContainer = Util.Create("Frame", {
+				local previewContainer = Util.Create("Frame", {
 					Name = "PreviewContainer",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0.5, 0, 0, 5),
@@ -17666,7 +17666,7 @@ function Xan:CreateWindow(config)
 					Parent = styleBtn,
 				})
 
-				  preview
+				local preview
 				if style == "Full" then
 					preview = drawFullBox(previewContainer, espColor, previewSize - 4)
 				elseif style == "Cornered" or style == "Corner" then
@@ -17675,7 +17675,7 @@ function Xan:CreateWindow(config)
 					preview = drawFullBox(previewContainer, espColor, previewSize - 4)
 				end
 
-				  styleLabel = Util.Create("TextLabel", {
+				local styleLabel = Util.Create("TextLabel", {
 					Name = "StyleLabel",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 1, -18),
@@ -17719,7 +17719,7 @@ function Xan:CreateWindow(config)
 
 				task.spawn(function()
 					task.wait(0.1)
-					  flagColor = Xan:GetFlag(espColorFlag)
+					local flagColor = Xan:GetFlag(espColorFlag)
 					if flagColor and typeof(flagColor) == "Color3" then
 						espColor = flagColor
 						updatePreviewColors(flagColor)
@@ -17727,9 +17727,9 @@ function Xan:CreateWindow(config)
 				end)
 			end
 
-			  rainbowToggleFrame, rainbowKnob, rainbowTrack = nil, nil, nil
+			local rainbowToggleFrame, rainbowKnob, rainbowTrack = nil, nil, nil
 
-			  function startRainbow()
+			local function startRainbow()
 				if rainbowConnection then
 					return
 				end
@@ -17740,15 +17740,15 @@ function Xan:CreateWindow(config)
 				end)
 			end
 
-			  function stopRainbow()
+			local function stopRainbow()
 				rainbowEnabled = false
 				if rainbowConnection then
 					rainbowConnection:Disconnect()
 					rainbowConnection = nil
 				end
-				  col = espColor
+				local col = espColor
 				if espColorFlag then
-					  flagCol = Xan:GetFlag(espColorFlag)
+					local flagCol = Xan:GetFlag(espColorFlag)
 					if flagCol and typeof(flagCol) == "Color3" then
 						col = flagCol
 						espColor = flagCol
@@ -17816,26 +17816,26 @@ function Xan:CreateWindow(config)
 					end)
 			end
 
-			  function applyTheme()
+			local function applyTheme()
 				pcall(function()
 					pickerFrame.BackgroundColor3 = Xan.CurrentTheme.Card
-					  stroke = pickerFrame:FindFirstChildOfClass("UIStroke")
+					local stroke = pickerFrame:FindFirstChildOfClass("UIStroke")
 					if stroke then
 						stroke.Color = Xan.CurrentTheme.CardBorder
 					end
 					label.TextColor3 = Xan.CurrentTheme.Text
 
 					for style, data in pairs(styleButtons) do
-						  isSelected = style == selectedStyle
+						local isSelected = style == selectedStyle
 						data.btn.BackgroundColor3 = isSelected and selectedBg or darkBg
-						  btnStroke = data.btn:FindFirstChildOfClass("UIStroke")
+						local btnStroke = data.btn:FindFirstChildOfClass("UIStroke")
 						if btnStroke then
 							btnStroke.Color = isSelected and Xan.CurrentTheme.Accent or Xan.CurrentTheme.CardBorder
 						end
 						data.label.TextColor3 = isSelected and Xan.CurrentTheme.Accent or Xan.CurrentTheme.TextDim
 					end
 					if rainbowToggleFrame then
-						  lbl = rainbowToggleFrame:FindFirstChild("Label")
+						local lbl = rainbowToggleFrame:FindFirstChild("Label")
 						if lbl then
 							lbl.TextColor3 = Xan.CurrentTheme.TextDim
 						end
@@ -17880,9 +17880,9 @@ function Xan:CreateWindow(config)
 						if skipCallback then
 							selectedStyle = styleName
 							for style, data in pairs(styleButtons) do
-								  isSelected = style == styleName
+								local isSelected = style == styleName
 								data.btn.BackgroundColor3 = isSelected and selectedBg or darkBg
-								  stroke = data.btn:FindFirstChildOfClass("UIStroke")
+								local stroke = data.btn:FindFirstChildOfClass("UIStroke")
 								if stroke then
 									stroke.Color = isSelected and Xan.CurrentTheme.Accent or Xan.CurrentTheme.CardBorder
 									stroke.Thickness = isSelected and 2 or 1
@@ -17919,17 +17919,17 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateHitList(config)
 			config = config or {}
-			  name = config.Name or "Hit Parts"
-			  parts = config.Parts
+			local name = config.Name or "Hit Parts"
+			local parts = config.Parts
 				or { "Head", "Neck", "Chest", "Stomach", "Left Arm", "Right Arm", "Left Leg", "Right Leg" }
-			  defaults = config.Default or {}
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local defaults = config.Default or {}
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  isCompact = layout == "Compact"
+			local isCompact = layout == "Compact"
 
-			  values = {}
+			local values = {}
 			for _, part in ipairs(parts) do
 				values[part] = defaults[part] ~= nil and defaults[part] or false
 			end
@@ -17938,13 +17938,13 @@ function Xan:CreateWindow(config)
 				Xan:SetFlag(flag, values)
 			end
 
-			  expanded = false
-			  baseHeight = IsMobile and 52 or (isCompact and 36 or 44)
-			  rowHeight = IsMobile and 36 or (isCompact and 24 or 30)
-			  expandedHeight = baseHeight + (#parts * rowHeight) + 16
+			local expanded = false
+			local baseHeight = IsMobile and 52 or (isCompact and 36 or 44)
+			local rowHeight = IsMobile and 36 or (isCompact and 24 or 30)
+			local expandedHeight = baseHeight + (#parts * rowHeight) + 16
 
-			  currentHitListTheme = Xan.CurrentTheme
-			  listFrame = Util.Create("Frame", {
+			local currentHitListTheme = Xan.CurrentTheme
+			local listFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, baseHeight),
@@ -17961,14 +17961,14 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  header = Util.Create("Frame", {
+			local header = Util.Create("Frame", {
 				Name = "Header",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, baseHeight),
 				Parent = listFrame,
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
@@ -17981,7 +17981,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  countLabel = Util.Create("TextLabel", {
+			local countLabel = Util.Create("TextLabel", {
 				Name = "Count",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.6, 0, 0, 0),
@@ -17994,7 +17994,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  arrow = Util.Create("TextLabel", {
+			local arrow = Util.Create("TextLabel", {
 				Name = "Arrow",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -30, 0, 0),
@@ -18006,7 +18006,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  listContainer = Util.Create("Frame", {
+			local listContainer = Util.Create("Frame", {
 				Name = "List",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, baseHeight),
@@ -18019,8 +18019,8 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  function updateCount()
-				  count = 0
+			local function updateCount()
+				local count = 0
 				for _, v in pairs(values) do
 					if v then
 						count = count + 1
@@ -18029,11 +18029,11 @@ function Xan:CreateWindow(config)
 				countLabel.Text = count .. "/" .. #parts
 			end
 
-			  rowElements = {}
+			local rowElements = {}
 
 			for i, partName in ipairs(parts) do
-				  currentTheme = Xan.CurrentTheme
-				  row = Util.Create("Frame", {
+				local currentTheme = Xan.CurrentTheme
+				local row = Util.Create("Frame", {
 					Name = partName,
 					BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 					Size = UDim2.new(1, 0, 0, rowHeight - 4),
@@ -18042,7 +18042,7 @@ function Xan:CreateWindow(config)
 				}, {
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 				})
-				  check = Util.Create("Frame", {
+				local check = Util.Create("Frame", {
 					Name = "Check",
 					BackgroundColor3 = values[partName] and Xan.CurrentTheme.Accent or Xan.CurrentTheme.Toggle,
 					Position = UDim2.new(0, 8, 0.5, -8),
@@ -18052,7 +18052,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				})
 
-				  checkMark = Util.Create("TextLabel", {
+				local checkMark = Util.Create("TextLabel", {
 					Name = "Mark",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 1, 0),
@@ -18063,7 +18063,7 @@ function Xan:CreateWindow(config)
 					Parent = check,
 				})
 
-				  rowLabel = Util.Create("TextLabel", {
+				local rowLabel = Util.Create("TextLabel", {
 					Name = "Label",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 32, 0, 0),
@@ -18078,7 +18078,7 @@ function Xan:CreateWindow(config)
 
 				rowElements[partName] = { row = row, check = check, checkMark = checkMark, rowLabel = rowLabel }
 
-				  btn = Util.Create("TextButton", {
+				local btn = Util.Create("TextButton", {
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 1, 0),
 					Text = "",
@@ -18087,7 +18087,7 @@ function Xan:CreateWindow(config)
 
 				btn.MouseButton1Click:Connect(function()
 					values[partName] = not values[partName]
-					  isEnabled = values[partName]
+					local isEnabled = values[partName]
 
 					Util.Tween(
 						check,
@@ -18112,10 +18112,10 @@ function Xan:CreateWindow(config)
 				end)
 			end
 
-			  function refreshRowColors()
-				  currentTheme = Xan.CurrentTheme
+			local function refreshRowColors()
+				local currentTheme = Xan.CurrentTheme
 				for partName, elements in pairs(rowElements) do
-					  isEnabled = values[partName]
+					local isEnabled = values[partName]
 					elements.row.BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary
 					elements.check.BackgroundColor3 = isEnabled and Xan.CurrentTheme.Accent or Xan.CurrentTheme.Toggle
 					elements.rowLabel.TextColor3 = isEnabled and Xan.CurrentTheme.Text or Xan.CurrentTheme.TextSecondary
@@ -18124,7 +18124,7 @@ function Xan:CreateWindow(config)
 
 			updateCount()
 
-			  function toggleExpand()
+			local function toggleExpand()
 				expanded = not expanded
 
 				if expanded then
@@ -18143,7 +18143,7 @@ function Xan:CreateWindow(config)
 				end
 			end
 
-			  headerBtn = Util.Create("TextButton", {
+			local headerBtn = Util.Create("TextButton", {
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
 				Text = "",
@@ -18163,8 +18163,8 @@ function Xan:CreateWindow(config)
 					updateCount()
 					for _, row in ipairs(listContainer:GetChildren()) do
 						if row:IsA("Frame") and values[row.Name] ~= nil then
-							  check = row:FindFirstChild("Check")
-							  lbl = row:FindFirstChild("Label")
+							local check = row:FindFirstChild("Check")
+							local lbl = row:FindFirstChild("Label")
 							if check then
 								check.BackgroundColor3 = values[row.Name] and Xan.CurrentTheme.Accent
 									or Xan.CurrentTheme.Toggle
@@ -18188,21 +18188,21 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateSpeedometer(config)
 			config = config or {}
-			  name = config.Name or "Speed"
-			  min = config.Min or 0
-			  max = config.Max or 100
-			  default = config.Default or min
-			  flag = config.Flag
-			  layoutOrder = config.LayoutOrder or 0
-			  autoTrack = config.AutoTrack ~= false
+			local name = config.Name or "Speed"
+			local min = config.Min or 0
+			local max = config.Max or 100
+			local default = config.Default or min
+			local flag = config.Flag
+			local layoutOrder = config.LayoutOrder or 0
+			local autoTrack = config.AutoTrack ~= false
 
-			  currentValue = default
+			local currentValue = default
 			if flag then
 				Xan:SetFlag(flag, currentValue)
 			end
 
-			  currentSpeedTheme = Xan.CurrentTheme
-			  speedFrame = Util.Create("Frame", {
+			local currentSpeedTheme = Xan.CurrentTheme
+			local speedFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 100 or 90),
@@ -18218,7 +18218,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 8),
@@ -18231,7 +18231,7 @@ function Xan:CreateWindow(config)
 				Parent = speedFrame,
 			})
 
-			  valueLabel = Util.Create("TextLabel", {
+			local valueLabel = Util.Create("TextLabel", {
 				Name = "Value",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.5, 0, 0, 8),
@@ -18244,7 +18244,7 @@ function Xan:CreateWindow(config)
 				Parent = speedFrame,
 			})
 
-			  meterBg = Util.Create("Frame", {
+			local meterBg = Util.Create("Frame", {
 				Name = "MeterBg",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 				Position = UDim2.new(0, 14, 0, 38),
@@ -18254,14 +18254,14 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 			})
 
-			  segments = {}
-			  segCount = 20
-			  speedGreen = Color3.fromRGB(80, 200, 120)
-			  speedYellow = Color3.fromRGB(240, 180, 60)
-			  speedRed = Color3.fromRGB(235, 95, 95)
-			  speedOff = Xan.CurrentTheme.Toggle
+			local segments = {}
+			local segCount = 20
+			local speedGreen = Color3.fromRGB(80, 200, 120)
+			local speedYellow = Color3.fromRGB(240, 180, 60)
+			local speedRed = Color3.fromRGB(235, 95, 95)
+			local speedOff = Xan.CurrentTheme.Toggle
 			for i = 1, segCount do
-				  seg = Util.Create("Frame", {
+				local seg = Util.Create("Frame", {
 					Name = "SpeedSeg" .. i,
 					BackgroundColor3 = speedOff,
 					Position = UDim2.new((i - 1) / segCount, 1, 0.15, 0),
@@ -18273,7 +18273,7 @@ function Xan:CreateWindow(config)
 				segments[i] = seg
 			end
 
-			  tickContainer = Util.Create("Frame", {
+			local tickContainer = Util.Create("Frame", {
 				Name = "Ticks",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 54),
@@ -18282,7 +18282,7 @@ function Xan:CreateWindow(config)
 			})
 
 			for i = 0, 4 do
-				  tickVal = min + (max - min) * (i / 4)
+				local tickVal = min + (max - min) * (i / 4)
 				Util.Create("TextLabel", {
 					BackgroundTransparency = 1,
 					Position = UDim2.new(i / 4, 0, 0, 0),
@@ -18296,16 +18296,16 @@ function Xan:CreateWindow(config)
 				})
 			end
 
-			  function updateMeter(val)
+			local function updateMeter(val)
 				currentValue = math.clamp(val, min, max)
 				valueLabel.Text = tostring(math.floor(currentValue))
 
-				  pct = (currentValue - min) / (max - min)
-				  litSegs = math.floor(pct * segCount)
+				local pct = (currentValue - min) / (max - min)
+				local litSegs = math.floor(pct * segCount)
 
 				for i, seg in ipairs(segments) do
-					  segPct = i / segCount
-					  color
+					local segPct = i / segCount
+					local color
 					if i <= litSegs then
 						if segPct < 0.5 then
 							color = speedGreen
@@ -18334,14 +18334,14 @@ function Xan:CreateWindow(config)
 				Util.Tween(speedFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 			end)
 
-			  speedConnection = nil
+			local speedConnection = nil
 			if autoTrack then
 				speedConnection = RunService.Heartbeat:Connect(function()
-					  char =  Player.Character
+					local char = LocalPlayer.Character
 					if char then
-						  humanoid = char:FindFirstChildOfClass("Humanoid")
+						local humanoid = char:FindFirstChildOfClass("Humanoid")
 						if humanoid then
-							  speed = math.floor(humanoid.WalkSpeed)
+							local speed = math.floor(humanoid.WalkSpeed)
 							if speed ~= currentValue then
 								updateMeter(speed)
 							end
@@ -18350,7 +18350,7 @@ function Xan:CreateWindow(config)
 				end)
 			end
 
-			  speedometer = {
+			local speedometer = {
 				Frame = speedFrame,
 				Value = function()
 					return currentValue
@@ -18374,20 +18374,20 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateThemeSelector(config)
 			config = config or {}
-			  name = config.Name or "Theme"
-			  themes = config.Themes or Xan:GetThemeNames()
-			  default = Xan.SavedThemeName or Xan.CurrentTheme.Name or config.Default or "Default"
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Theme"
+			local themes = config.Themes or Xan:GetThemeNames()
+			local default = Xan.SavedThemeName or Xan.CurrentTheme.Name or config.Default or "Default"
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  selected = default
-			  previewSize = IsMobile and 60 or 50
-			  cols = IsMobile and 4 or 5
-			  rows = math.ceil(#themes / cols)
-			  expandedHeight = 44 + (rows * (previewSize + 8)) + 16
-			  expanded = false
+			local selected = default
+			local previewSize = IsMobile and 60 or 50
+			local cols = IsMobile and 4 or 5
+			local rows = math.ceil(#themes / cols)
+			local expandedHeight = 44 + (rows * (previewSize + 8)) + 16
+			local expanded = false
 
-			  themeFrame = Util.Create("Frame", {
+			local themeFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
@@ -18404,14 +18404,14 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  header = Util.Create("Frame", {
+			local header = Util.Create("Frame", {
 				Name = "Header",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
 				Parent = themeFrame,
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
@@ -18424,7 +18424,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  currentThemePreview = Util.Create("Frame", {
+			local currentThemePreview = Util.Create("Frame", {
 				Name = "CurrentPreview",
 				BackgroundColor3 = Xan.Themes[selected] and Xan.Themes[selected].Accent or Xan.CurrentTheme.Accent,
 				Position = UDim2.new(1, -76, 0.5, -12),
@@ -18434,8 +18434,8 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 			})
 
-			  selectedThemeData = Xan.Themes[selected] or Xan.CurrentTheme
-			  selectedLabel = Util.Create("TextLabel", {
+			local selectedThemeData = Xan.Themes[selected] or Xan.CurrentTheme
+			local selectedLabel = Util.Create("TextLabel", {
 				Name = "Selected",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -130, 0, 0),
@@ -18448,7 +18448,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  arrow = Util.Create("TextLabel", {
+			local arrow = Util.Create("TextLabel", {
 				Name = "Arrow",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -30, 0, 0),
@@ -18460,7 +18460,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  gridContainer = Util.Create("Frame", {
+			local gridContainer = Util.Create("Frame", {
 				Name = "Grid",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 56 or 48),
@@ -18474,15 +18474,15 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  themeButtons = {}
+			local themeButtons = {}
 
 			for i, themeName in ipairs(themes) do
-				  t = Xan.Themes[themeName]
+				local t = Xan.Themes[themeName]
 				if not t then
 					continue
 				end
 
-				  themeBtn = Util.Create("TextButton", {
+				local themeBtn = Util.Create("TextButton", {
 					Name = "ThemePreview_" .. themeName,
 					BackgroundColor3 = t.Background,
 					Text = "",
@@ -18493,7 +18493,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
 				})
 
-				  sidebar = Util.Create("Frame", {
+				local sidebar = Util.Create("Frame", {
 					Name = "ThemePreviewSidebar",
 					BackgroundColor3 = t.Sidebar,
 					Position = UDim2.new(0, 4, 0, 4),
@@ -18503,7 +18503,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				})
 
-				  accentDot = Util.Create("Frame", {
+				local accentDot = Util.Create("Frame", {
 					Name = "ThemePreviewDot",
 					BackgroundColor3 = t.Accent,
 					Position = UDim2.new(0.5, -4, 0.3, 0),
@@ -18513,7 +18513,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 				})
 
-				  card1 = Util.Create("Frame", {
+				local card1 = Util.Create("Frame", {
 					Name = "ThemePreviewCard1",
 					BackgroundColor3 = t.Card,
 					Position = UDim2.new(0.35, 4, 0, 4),
@@ -18523,7 +18523,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 3) }),
 				})
 
-				  card2 = Util.Create("Frame", {
+				local card2 = Util.Create("Frame", {
 					Name = "ThemePreviewCard2",
 					BackgroundColor3 = t.Card,
 					Position = UDim2.new(0.35, 4, 0.35, 2),
@@ -18533,7 +18533,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 3) }),
 				})
 
-				  accentLine = Util.Create("Frame", {
+				local accentLine = Util.Create("Frame", {
 					Name = "ThemePreviewAccent",
 					BackgroundColor3 = t.Accent,
 					Position = UDim2.new(0.35, 4, 0.7, 4),
@@ -18543,7 +18543,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(0, 2) }),
 				})
 
-				  themeLbl = Util.Create("TextLabel", {
+				local themeLbl = Util.Create("TextLabel", {
 					Name = "ThemePreviewLabel",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 1, 2),
@@ -18585,7 +18585,7 @@ function Xan:CreateWindow(config)
 				themeButtons[themeName] = themeBtn
 			end
 
-			  function toggleExpand()
+			local function toggleExpand()
 				expanded = not expanded
 				Util.Tween(arrow, 0.25, { Rotation = expanded and 180 or 0 })
 				Util.Tween(themeFrame, 0.3, {
@@ -18599,7 +18599,7 @@ function Xan:CreateWindow(config)
 				end
 			end
 
-			  headerBtn = Util.Create("TextButton", {
+			local headerBtn = Util.Create("TextButton", {
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
 				Text = "",
@@ -18620,7 +18620,7 @@ function Xan:CreateWindow(config)
 					return selected
 				end,
 				Set = function(_, themeName, skipCallback)
-					  t = Xan.Themes[themeName]
+					local t = Xan.Themes[themeName]
 					if t then
 						selected = themeName
 						selectedLabel.Text = themeName
@@ -18652,23 +18652,23 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateWindowStyleSelector(config)
 			config = config or {}
-			  name = config.Name or "Window Buttons"
-			  selected = config.Default or window:GetButtonStyle()
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Window Buttons"
+			local selected = config.Default or window:GetButtonStyle()
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
 			if flag then
 				Xan:SetFlag(flag, selected)
 			end
 
-			  previewSize = IsMobile and 60 or 52
-			  headerHeight = IsMobile and 52 or 44
-			  gridHeight = previewSize + 16
-			  expandedHeight = headerHeight + gridHeight + 8
-			  expanded = false
+			local previewSize = IsMobile and 60 or 52
+			local headerHeight = IsMobile and 52 or 44
+			local gridHeight = previewSize + 16
+			local expandedHeight = headerHeight + gridHeight + 8
+			local expanded = false
 
-			  styleFrame = Util.Create("Frame", {
+			local styleFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, headerHeight),
@@ -18685,14 +18685,14 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  header = Util.Create("Frame", {
+			local header = Util.Create("Frame", {
 				Name = "Header",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, headerHeight),
 				Parent = styleFrame,
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
@@ -18705,7 +18705,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  previewContainer = Util.Create("Frame", {
+			local previewContainer = Util.Create("Frame", {
 				Name = "Preview",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 				Position = UDim2.new(1, -90, 0.5, -12),
@@ -18715,7 +18715,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 			})
 
-			  previewBtn1, previewBtn2
+			local previewBtn1, previewBtn2
 			if selected == "macOS" then
 				previewBtn1 = Util.Create("Frame", {
 					BackgroundColor3 = Color3.fromRGB(255, 189, 46),
@@ -18750,7 +18750,7 @@ function Xan:CreateWindow(config)
 				})
 			end
 
-			  selectedLabel = Util.Create("TextLabel", {
+			local selectedLabel = Util.Create("TextLabel", {
 				Name = "Selected",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -145, 0, 0),
@@ -18763,7 +18763,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  arrow = Util.Create("TextLabel", {
+			local arrow = Util.Create("TextLabel", {
 				Name = "Arrow",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -30, 0, 0),
@@ -18775,7 +18775,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  gridContainer = Util.Create("Frame", {
+			local gridContainer = Util.Create("Frame", {
 				Name = "Grid",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, headerHeight + 4),
@@ -18789,14 +18789,14 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  styles = { "Default", "macOS" }
-			  styleButtons = {}
+			local styles = { "Default", "macOS" }
+			local styleButtons = {}
 
 			for i, styleName in ipairs(styles) do
-				  isMac = styleName == "macOS"
-				  isSelected = styleName == selected
+				local isMac = styleName == "macOS"
+				local isSelected = styleName == selected
 
-				  styleBtn = Util.Create("TextButton", {
+				local styleBtn = Util.Create("TextButton", {
 					Name = "StylePreview_" .. styleName,
 					BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary,
 					Size = UDim2.new(0, IsMobile and 100 or 90, 0, previewSize),
@@ -18813,7 +18813,7 @@ function Xan:CreateWindow(config)
 					}),
 				})
 
-				  btnContainer = Util.Create("Frame", {
+				local btnContainer = Util.Create("Frame", {
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 0, 0, 8),
 					Size = UDim2.new(1, 0, 0, 20),
@@ -18882,7 +18882,7 @@ function Xan:CreateWindow(config)
 						return
 					end
 
-					  oldSelected = selected
+					local oldSelected = selected
 					selected = styleName
 
 					if flag then
@@ -18892,7 +18892,7 @@ function Xan:CreateWindow(config)
 					selectedLabel.Text = selected
 
 					for sn, btn in pairs(styleButtons) do
-						  isNowSelected = sn == selected
+						local isNowSelected = sn == selected
 						btn.Border.Color = isNowSelected and Xan.CurrentTheme.Accent or Xan.CurrentTheme.CardBorder
 						btn.Border.Thickness = isNowSelected and 2 or 1
 						for _, child in ipairs(btn:GetChildren()) do
@@ -18947,7 +18947,7 @@ function Xan:CreateWindow(config)
 				end)
 			end
 
-			  function toggleExpand()
+			local function toggleExpand()
 				expanded = not expanded
 				Util.Tween(arrow, 0.25, { Rotation = expanded and 180 or 0 })
 				Util.Tween(styleFrame, 0.3, {
@@ -18961,7 +18961,7 @@ function Xan:CreateWindow(config)
 				end
 			end
 
-			  headerBtn = Util.Create("TextButton", {
+			local headerBtn = Util.Create("TextButton", {
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
 				Text = "",
@@ -18987,7 +18987,7 @@ function Xan:CreateWindow(config)
 						selectedLabel.Text = styleName
 
 						for sn, btn in pairs(styleButtons) do
-							  isNowSelected = sn == styleName
+							local isNowSelected = sn == styleName
 							btn.Border.Color = isNowSelected and Xan.CurrentTheme.Accent or Xan.CurrentTheme.CardBorder
 							btn.Border.Thickness = isNowSelected and 2 or 1
 						end
@@ -19008,19 +19008,19 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateCrosshair(config)
 			config = config or {}
-			  name = config.Name or "Crosshair"
-			  styles = config.Styles or { "None", "Dot", "Small Cross", "Cross", "Open Cross", "Circle", "Icon" }
-			  defaultStyle = config.DefaultStyle or CrosshairEngine.Settings.Style or "Cross"
-			  defaultColor = config.DefaultColor or CrosshairEngine.Settings.Color or Color3.fromRGB(255, 50, 50)
-			  defaultSize = config.DefaultSize or CrosshairEngine.Settings.Size or 12
-			  defaultThickness = config.DefaultThickness or CrosshairEngine.Settings.Thickness or 2
-			  defaultGap = config.DefaultGap or CrosshairEngine.Settings.Gap or 4
-			  defaultEnabled = config.Enabled or CrosshairEngine.Settings.Enabled or false
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local name = config.Name or "Crosshair"
+			local styles = config.Styles or { "None", "Dot", "Small Cross", "Cross", "Open Cross", "Circle", "Icon" }
+			local defaultStyle = config.DefaultStyle or CrosshairEngine.Settings.Style or "Cross"
+			local defaultColor = config.DefaultColor or CrosshairEngine.Settings.Color or Color3.fromRGB(255, 50, 50)
+			local defaultSize = config.DefaultSize or CrosshairEngine.Settings.Size or 12
+			local defaultThickness = config.DefaultThickness or CrosshairEngine.Settings.Thickness or 2
+			local defaultGap = config.DefaultGap or CrosshairEngine.Settings.Gap or 4
+			local defaultEnabled = config.Enabled or CrosshairEngine.Settings.Enabled or false
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  settings = {
+			local settings = {
 				Style = defaultStyle,
 				Color = defaultColor,
 				Size = defaultSize,
@@ -19034,7 +19034,7 @@ function Xan:CreateWindow(config)
 
 			CrosshairEngine.UpdateSettings(settings)
 
-			  shouldEnable = settings.Enabled or CrosshairEngine.Settings.WasEnabled
+			local shouldEnable = settings.Enabled or CrosshairEngine.Settings.WasEnabled
 			if shouldEnable then
 				settings.Enabled = true
 				CrosshairEngine.Enable()
@@ -19044,9 +19044,9 @@ function Xan:CreateWindow(config)
 				Xan:SetFlag(flag, settings)
 			end
 
-			  expanded = false
-			  currentCrossTheme = Xan.CurrentTheme
-			  crosshairFrame = Util.Create("Frame", {
+			local expanded = false
+			local currentCrossTheme = Xan.CurrentTheme
+			local crosshairFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
@@ -19063,14 +19063,14 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  header = Util.Create("Frame", {
+			local header = Util.Create("Frame", {
 				Name = "Header",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, IsMobile and 52 or 44),
 				Parent = crosshairFrame,
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, 0),
@@ -19083,7 +19083,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  previewContainer = Util.Create("Frame", {
+			local previewContainer = Util.Create("Frame", {
 				Name = "CrosshairPreview",
 				BackgroundColor3 = Color3.fromRGB(8, 8, 12),
 				Position = UDim2.new(1, -100, 0.5, -16),
@@ -19097,9 +19097,9 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  crosshairLines = {}
+			local crosshairLines = {}
 			for i = 1, 4 do
-				  line = Util.Create("Frame", {
+				local line = Util.Create("Frame", {
 					Name = "Line" .. i,
 					BackgroundColor3 = settings.Color,
 					AnchorPoint = Vector2.new(0.5, 0.5),
@@ -19110,7 +19110,7 @@ function Xan:CreateWindow(config)
 				crosshairLines[i] = line
 			end
 
-			  crosshairDot = Util.Create("Frame", {
+			local crosshairDot = Util.Create("Frame", {
 				Name = "Dot",
 				BackgroundColor3 = settings.Color,
 				AnchorPoint = Vector2.new(0.5, 0.5),
@@ -19121,7 +19121,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  crosshairCircle = Util.Create("Frame", {
+			local crosshairCircle = Util.Create("Frame", {
 				Name = "Circle",
 				BackgroundTransparency = 1,
 				AnchorPoint = Vector2.new(0.5, 0.5),
@@ -19137,8 +19137,8 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  toggleSize = IsMobile and 22 or 18
-			  toggleBg = Util.Create("TextButton", {
+			local toggleSize = IsMobile and 22 or 18
+			local toggleBg = Util.Create("TextButton", {
 				Name = "Toggle",
 				BackgroundColor3 = settings.Enabled and Xan.CurrentTheme.Accent or Xan.CurrentTheme.Toggle,
 				Position = UDim2.new(1, -60, 0.5, -toggleSize / 2),
@@ -19151,7 +19151,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  toggleKnob = Util.Create("Frame", {
+			local toggleKnob = Util.Create("Frame", {
 				Name = "Knob",
 				BackgroundColor3 = Color3.new(1, 1, 1),
 				Position = settings.Enabled and UDim2.new(1, -toggleSize + 2, 0.5, 0) or UDim2.new(0, 2, 0.5, 0),
@@ -19163,7 +19163,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  function setToggleState(enabled, animate)
+			local function setToggleState(enabled, animate)
 				settings.Enabled = enabled
 				if enabled then
 					CrosshairEngine.Enable()
@@ -19193,7 +19193,7 @@ function Xan:CreateWindow(config)
 				setToggleState(not settings.Enabled, true)
 			end)
 
-			  arrow = Util.Create("TextLabel", {
+			local arrow = Util.Create("TextLabel", {
 				Name = "Arrow",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -30, 0, 0),
@@ -19206,7 +19206,7 @@ function Xan:CreateWindow(config)
 				Parent = header,
 			})
 
-			  optionsContainer = Util.Create("Frame", {
+			local optionsContainer = Util.Create("Frame", {
 				Name = "CrosshairOptions",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 14, 0, IsMobile and 56 or 48),
@@ -19220,10 +19220,10 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  crosshairImagePreview = nil
-			  assetInputRow = nil
+			local crosshairImagePreview = nil
+			local assetInputRow = nil
 
-			  function updatePreview(skipCallback)
+			local function updatePreview(skipCallback)
 				for _, line in ipairs(crosshairLines) do
 					line.Visible = false
 					line.Size = UDim2.new(0, 0, 0, 0)
@@ -19236,10 +19236,10 @@ function Xan:CreateWindow(config)
 					crosshairImagePreview.Visible = false
 				end
 
-				  style = settings.Style
-				  sz = math.min(settings.Size, 12)
-				  th = math.min(settings.Thickness, 3)
-				  gap = math.min(settings.Gap, 6)
+				local style = settings.Style
+				local sz = math.min(settings.Size, 12)
+				local th = math.min(settings.Thickness, 3)
+				local gap = math.min(settings.Gap, 6)
 
 				for _, line in ipairs(crosshairLines) do
 					line.BackgroundColor3 = settings.Color
@@ -19309,12 +19309,12 @@ function Xan:CreateWindow(config)
 							Parent = previewContainer,
 						})
 					end
-					  imgAsset = settings.ImageAsset
+					local imgAsset = settings.ImageAsset
 					if not imgAsset or imgAsset == "" then
 						imgAsset = "80994595266695"
 						settings.ImageAsset = imgAsset
 					end
-					  assetId = tostring(imgAsset):gsub("rbxassetid://", "")
+					local assetId = tostring(imgAsset):gsub("rbxassetid://", "")
 					crosshairImagePreview.Image = "rbxassetid://" .. assetId
 					crosshairImagePreview.Size = UDim2.new(0, 24, 0, 24)
 					crosshairImagePreview.Visible = true
@@ -19348,7 +19348,7 @@ function Xan:CreateWindow(config)
 				end
 			end
 
-			  styleRow = Util.Create("Frame", {
+			local styleRow = Util.Create("Frame", {
 				Name = "Style",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, 28),
@@ -19368,7 +19368,7 @@ function Xan:CreateWindow(config)
 				Parent = styleRow,
 			})
 
-			  styleDropdown = Util.Create("TextButton", {
+			local styleDropdown = Util.Create("TextButton", {
 				Name = "Dropdown",
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				Position = UDim2.new(0.4, 0, 0, 0),
@@ -19384,7 +19384,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UIStroke", { Color = Xan.CurrentTheme.InputBorder, Thickness = 1 }),
 			})
 
-			  styleIdx = table.find(styles, settings.Style) or 1
+			local styleIdx = table.find(styles, settings.Style) or 1
 			styleDropdown.MouseButton1Click:Connect(function()
 				styleIdx = styleIdx % #styles + 1
 				settings.Style = styles[styleIdx]
@@ -19413,7 +19413,7 @@ function Xan:CreateWindow(config)
 				Parent = assetInputRow,
 			})
 
-			  assetInput = Util.Create("TextBox", {
+			local assetInput = Util.Create("TextBox", {
 				Name = "AssetInput",
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				Position = UDim2.new(0.4, 0, 0, 0),
@@ -19437,7 +19437,7 @@ function Xan:CreateWindow(config)
 				updatePreview()
 			end)
 
-			  colorRow = Util.Create("Frame", {
+			local colorRow = Util.Create("Frame", {
 				Name = "Color",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, 28),
@@ -19458,7 +19458,7 @@ function Xan:CreateWindow(config)
 				Parent = colorRow,
 			})
 
-			  colorPresets = {
+			local colorPresets = {
 				Color3.fromRGB(255, 50, 50),
 				Color3.fromRGB(50, 255, 50),
 				Color3.fromRGB(50, 150, 255),
@@ -19467,7 +19467,7 @@ function Xan:CreateWindow(config)
 				Color3.fromRGB(255, 100, 200),
 			}
 
-			  colorContainer = Util.Create("Frame", {
+			local colorContainer = Util.Create("Frame", {
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.4, 0, 0, 0),
 				Size = UDim2.new(0.6, 0, 1, 0),
@@ -19479,19 +19479,19 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  customColorBtn
-			  customPickerOpen = false
+			local customColorBtn
+			local customPickerOpen = false
 
-			  selectedBorderColor = Color3.new(1, 1, 1)
-			  unselectedBorderColor = Xan.CurrentTheme.CardBorder
+			local selectedBorderColor = Color3.new(1, 1, 1)
+			local unselectedBorderColor = Xan.CurrentTheme.CardBorder
 
-			  function selectColor(color, btn)
+			local function selectColor(color, btn)
 				settings.Color = color
 				for _, child in ipairs(colorContainer:GetChildren()) do
 					if child:IsA("TextButton") then
-						  border = child:FindFirstChild("Border")
+						local border = child:FindFirstChild("Border")
 						if border then
-							  isSelected = child == btn
+							local isSelected = child == btn
 							border.Color = isSelected and selectedBorderColor or unselectedBorderColor
 							border.Thickness = isSelected and 2 or 1
 						end
@@ -19501,7 +19501,7 @@ function Xan:CreateWindow(config)
 			end
 
 			for i, color in ipairs(colorPresets) do
-				  colorBtn = Util.Create("TextButton", {
+				local colorBtn = Util.Create("TextButton", {
 					Name = "CrosshairColor" .. i,
 					BackgroundColor3 = color,
 					Size = UDim2.new(0, 22, 0, 22),
@@ -19543,10 +19543,10 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  customPickerFrame
+			local customPickerFrame
 
-			  originalColorRowHeight = 28
-			  expandedColorRowHeight = 120
+			local originalColorRowHeight = 28
+			local expandedColorRowHeight = 120
 
 			customColorBtn.MouseButton1Click:Connect(function()
 				customPickerOpen = not customPickerOpen
@@ -19567,7 +19567,7 @@ function Xan:CreateWindow(config)
 							Util.Create("UIStroke", { Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 						})
 
-						  hueSlider = Util.Create("Frame", {
+						local hueSlider = Util.Create("Frame", {
 							BackgroundColor3 = Color3.new(1, 1, 1),
 							Position = UDim2.new(0, 10, 0, 10),
 							Size = UDim2.new(1, -20, 0, 20),
@@ -19588,7 +19588,7 @@ function Xan:CreateWindow(config)
 							}),
 						})
 
-						  hueCursor = Util.Create("Frame", {
+						local hueCursor = Util.Create("Frame", {
 							BackgroundColor3 = Color3.new(1, 1, 1),
 							Position = UDim2.new(0, 0, 0.5, -8),
 							Size = UDim2.new(0, 4, 0, 16),
@@ -19598,7 +19598,7 @@ function Xan:CreateWindow(config)
 							Util.Create("UICorner", { CornerRadius = UDim.new(0, 2) }),
 						})
 
-						  previewSwatch = Util.Create("Frame", {
+						local previewSwatch = Util.Create("Frame", {
 							BackgroundColor3 = settings.Color,
 							Position = UDim2.new(0, 10, 0, 40),
 							Size = UDim2.new(0, 40, 0, 30),
@@ -19608,7 +19608,7 @@ function Xan:CreateWindow(config)
 							Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 						})
 
-						  applyBtn = Util.Create("TextButton", {
+						local applyBtn = Util.Create("TextButton", {
 							BackgroundColor3 = Xan.CurrentTheme.Accent,
 							Position = UDim2.new(1, -60, 0, 40),
 							Size = UDim2.new(0, 50, 0, 30),
@@ -19623,8 +19623,8 @@ function Xan:CreateWindow(config)
 							Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 						})
 
-						  currentHue = 0
-						  draggingHue = false
+						local currentHue = 0
+						local draggingHue = false
 
 						hueSlider.InputBegan:Connect(function(input)
 							if
@@ -19632,7 +19632,7 @@ function Xan:CreateWindow(config)
 								or input.UserInputType == Enum.UserInputType.Touch
 							then
 								draggingHue = true
-								  x = math.clamp(
+								local x = math.clamp(
 									(input.Position.X - hueSlider.AbsolutePosition.X) / hueSlider.AbsoluteSize.X,
 									0,
 									1
@@ -19651,7 +19651,7 @@ function Xan:CreateWindow(config)
 									or input.UserInputType == Enum.UserInputType.Touch
 								)
 							then
-								  x = math.clamp(
+								local x = math.clamp(
 									(input.Position.X - hueSlider.AbsolutePosition.X) / hueSlider.AbsoluteSize.X,
 									0,
 									1
@@ -19672,7 +19672,7 @@ function Xan:CreateWindow(config)
 						end)
 
 						applyBtn.MouseButton1Click:Connect(function()
-							  newColor = Color3.fromHSV(currentHue, 1, 1)
+							local newColor = Color3.fromHSV(currentHue, 1, 1)
 							customColorBtn.BackgroundColor3 = newColor
 							customColorBtn.Text = ""
 							selectColor(newColor, customColorBtn)
@@ -19690,7 +19690,7 @@ function Xan:CreateWindow(config)
 				end
 			end)
 
-			  sizeRow = Util.Create("Frame", {
+			local sizeRow = Util.Create("Frame", {
 				Name = "Size",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, 28),
@@ -19710,7 +19710,7 @@ function Xan:CreateWindow(config)
 				Parent = sizeRow,
 			})
 
-			  sizeValueLabel = Util.Create("TextLabel", {
+			local sizeValueLabel = Util.Create("TextLabel", {
 				Name = "Value",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.35, 0, 0, 0),
@@ -19723,7 +19723,7 @@ function Xan:CreateWindow(config)
 				Parent = sizeRow,
 			})
 
-			  sizeTrack = Util.Create("Frame", {
+			local sizeTrack = Util.Create("Frame", {
 				Name = "Track",
 				BackgroundColor3 = Xan.CurrentTheme.Slider,
 				Position = UDim2.new(0.5, 0, 0.5, -3),
@@ -19733,7 +19733,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  sizeFill = Util.Create("Frame", {
+			local sizeFill = Util.Create("Frame", {
 				BackgroundColor3 = Xan.CurrentTheme.SliderFill,
 				Size = UDim2.new((settings.Size - 4) / 26, 0, 1, 0),
 				Parent = sizeTrack,
@@ -19741,7 +19741,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  sizeDragging = false
+			local sizeDragging = false
 			sizeTrack.InputBegan:Connect(function(input)
 				if
 					input.UserInputType == Enum.UserInputType.MouseButton1
@@ -19751,7 +19751,7 @@ function Xan:CreateWindow(config)
 				end
 			end)
 
-			  sizeConn = UserInputService.InputChanged:Connect(function(input)
+			local sizeConn = UserInputService.InputChanged:Connect(function(input)
 				if
 					sizeDragging
 					and (
@@ -19759,7 +19759,7 @@ function Xan:CreateWindow(config)
 						or input.UserInputType == Enum.UserInputType.Touch
 					)
 				then
-					  pct =
+					local pct =
 						math.clamp((input.Position.X - sizeTrack.AbsolutePosition.X) / sizeTrack.AbsoluteSize.X, 0, 1)
 					settings.Size = math.floor(4 + pct * 26)
 					sizeFill.Size = UDim2.new(pct, 0, 1, 0)
@@ -19769,7 +19769,7 @@ function Xan:CreateWindow(config)
 			end)
 			table.insert(Xan.Connections, sizeConn)
 
-			  sizeEndConn = UserInputService.InputEnded:Connect(function(input)
+			local sizeEndConn = UserInputService.InputEnded:Connect(function(input)
 				if
 					input.UserInputType == Enum.UserInputType.MouseButton1
 					or input.UserInputType == Enum.UserInputType.Touch
@@ -19779,7 +19779,7 @@ function Xan:CreateWindow(config)
 			end)
 			table.insert(Xan.Connections, sizeEndConn)
 
-			  thicknessRow = Util.Create("Frame", {
+			local thicknessRow = Util.Create("Frame", {
 				Name = "Thickness",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, 28),
@@ -19799,7 +19799,7 @@ function Xan:CreateWindow(config)
 				Parent = thicknessRow,
 			})
 
-			  thickValueLabel = Util.Create("TextLabel", {
+			local thickValueLabel = Util.Create("TextLabel", {
 				Name = "Value",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.35, 0, 0, 0),
@@ -19812,7 +19812,7 @@ function Xan:CreateWindow(config)
 				Parent = thicknessRow,
 			})
 
-			  thickTrack = Util.Create("Frame", {
+			local thickTrack = Util.Create("Frame", {
 				Name = "Track",
 				BackgroundColor3 = Xan.CurrentTheme.Slider,
 				Position = UDim2.new(0.5, 0, 0.5, -3),
@@ -19822,7 +19822,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  thickFill = Util.Create("Frame", {
+			local thickFill = Util.Create("Frame", {
 				BackgroundColor3 = Xan.CurrentTheme.SliderFill,
 				Size = UDim2.new((settings.Thickness - 1) / 4, 0, 1, 0),
 				Parent = thickTrack,
@@ -19830,7 +19830,7 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 			})
 
-			  thickDragging = false
+			local thickDragging = false
 			thickTrack.InputBegan:Connect(function(input)
 				if
 					input.UserInputType == Enum.UserInputType.MouseButton1
@@ -19840,7 +19840,7 @@ function Xan:CreateWindow(config)
 				end
 			end)
 
-			  thickConn = UserInputService.InputChanged:Connect(function(input)
+			local thickConn = UserInputService.InputChanged:Connect(function(input)
 				if
 					thickDragging
 					and (
@@ -19848,7 +19848,7 @@ function Xan:CreateWindow(config)
 						or input.UserInputType == Enum.UserInputType.Touch
 					)
 				then
-					  pct =
+					local pct =
 						math.clamp((input.Position.X - thickTrack.AbsolutePosition.X) / thickTrack.AbsoluteSize.X, 0, 1)
 					settings.Thickness = math.floor(1 + pct * 4)
 					thickFill.Size = UDim2.new(pct, 0, 1, 0)
@@ -19858,7 +19858,7 @@ function Xan:CreateWindow(config)
 			end)
 			table.insert(Xan.Connections, thickConn)
 
-			  thickEndConn = UserInputService.InputEnded:Connect(function(input)
+			local thickEndConn = UserInputService.InputEnded:Connect(function(input)
 				if
 					input.UserInputType == Enum.UserInputType.MouseButton1
 					or input.UserInputType == Enum.UserInputType.Touch
@@ -19870,10 +19870,10 @@ function Xan:CreateWindow(config)
 
 			updatePreview()
 
-			  function toggleExpand()
+			local function toggleExpand()
 				expanded = not expanded
-				  baseHeight = IsMobile and 52 or 44
-				  expandedHeight = baseHeight + 150
+				local baseHeight = IsMobile and 52 or 44
+				local expandedHeight = baseHeight + 150
 
 				Util.Tween(arrow, 0.25, { Rotation = expanded and 180 or 0 })
 				Util.Tween(crosshairFrame, 0.3, {
@@ -19887,7 +19887,7 @@ function Xan:CreateWindow(config)
 				end
 			end
 
-			  headerBtn = Util.Create("TextButton", {
+			local headerBtn = Util.Create("TextButton", {
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, -70, 1, 0),
 				Text = "",
@@ -19905,9 +19905,9 @@ function Xan:CreateWindow(config)
 				Util.Tween(crosshairFrame, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 			end)
 
-			  function applyCrosshairTheme()
+			local function applyCrosshairTheme()
 				crosshairFrame.BackgroundColor3 = Xan.CurrentTheme.Card
-				  stroke = crosshairFrame:FindFirstChildOfClass("UIStroke")
+				local stroke = crosshairFrame:FindFirstChildOfClass("UIStroke")
 				if stroke then
 					stroke.Color = Xan.CurrentTheme.CardBorder
 				end
@@ -19957,9 +19957,9 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateCharacterPreview(config)
 			config = config or {}
-			  name = config.Name or "Target Preview"
-			  hitboxParts = config.HitboxParts or { "Head", "Neck", "Chest", "Stomach", "Arms", "Legs" }
-			  hitboxColors = config.HitboxColors
+			local name = config.Name or "Target Preview"
+			local hitboxParts = config.HitboxParts or { "Head", "Neck", "Chest", "Stomach", "Arms", "Legs" }
+			local hitboxColors = config.HitboxColors
 				or {
 					Head = Color3.fromRGB(255, 80, 100),
 					Neck = Color3.fromRGB(255, 140, 100),
@@ -19968,12 +19968,12 @@ function Xan:CreateWindow(config)
 					Arms = Color3.fromRGB(180, 100, 255),
 					Legs = Color3.fromRGB(255, 200, 100),
 				}
-			  defaults = config.Default or {}
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local defaults = config.Default or {}
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  values = {}
+			local values = {}
 			for _, part in ipairs(hitboxParts) do
 				values[part] = defaults[part] ~= nil and defaults[part] or (part == "Head" or part == "Chest")
 			end
@@ -19982,20 +19982,20 @@ function Xan:CreateWindow(config)
 				Xan:SetFlag(flag, values)
 			end
 
-			  isCompact = layout == "Compact"
+			local isCompact = layout == "Compact"
 
-			  numParts = #hitboxParts
-			  btnHeight = IsMobile and 34 or (isCompact and 24 or 30)
-			  btnGap = IsMobile and 6 or (isCompact and 3 or 5)
-			  columns = 2
-			  rows = math.ceil(numParts / columns)
-			  gridHeight = rows * btnHeight + (rows - 1) * btnGap
-			  headerHeight = IsMobile and 36 or (isCompact and 28 or 32)
-			  padding = IsMobile and 14 or 12
-			  viewportWidth = IsMobile and 100 or (isCompact and 70 or 90)
-			  totalHeight = headerHeight + gridHeight + padding * 2 + 4
+			local numParts = #hitboxParts
+			local btnHeight = IsMobile and 34 or (isCompact and 24 or 30)
+			local btnGap = IsMobile and 6 or (isCompact and 3 or 5)
+			local columns = 2
+			local rows = math.ceil(numParts / columns)
+			local gridHeight = rows * btnHeight + (rows - 1) * btnGap
+			local headerHeight = IsMobile and 36 or (isCompact and 28 or 32)
+			local padding = IsMobile and 14 or 12
+			local viewportWidth = IsMobile and 100 or (isCompact and 70 or 90)
+			local totalHeight = headerHeight + gridHeight + padding * 2 + 4
 
-			  previewFrame = Util.Create("Frame", {
+			local previewFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, totalHeight),
@@ -20011,7 +20011,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, padding, 0, 0),
@@ -20024,7 +20024,7 @@ function Xan:CreateWindow(config)
 				Parent = previewFrame,
 			})
 
-			  contentFrame = Util.Create("Frame", {
+			local contentFrame = Util.Create("Frame", {
 				Name = "Content",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, padding, 0, headerHeight),
@@ -20033,7 +20033,7 @@ function Xan:CreateWindow(config)
 				Parent = previewFrame,
 			})
 
-			  viewportFrame = Util.Create("ViewportFrame", {
+			local viewportFrame = Util.Create("ViewportFrame", {
 				Name = "Viewport",
 				BackgroundColor3 = Xan.CurrentTheme.Background,
 				Position = UDim2.new(0, 0, 0, 0),
@@ -20043,10 +20043,10 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 			})
 
-			  previewModel = Instance.new("Model")
+			local previewModel = Instance.new("Model")
 			previewModel.Name = "Character"
 
-			  partData = {
+			local partData = {
 				Head = { size = Vector3.new(1.8, 1.8, 1.8), pos = Vector3.new(0, 7.4, 0) },
 				Neck = { size = Vector3.new(0.8, 0.5, 0.8), pos = Vector3.new(0, 6.3, 0) },
 				Chest = { size = Vector3.new(2, 1.5, 1), pos = Vector3.new(0, 5.25, 0) },
@@ -20055,10 +20055,10 @@ function Xan:CreateWindow(config)
 				Legs = { size = Vector3.new(1, 2, 1), pos = Vector3.new(0.5, 2.5, 0), pos2 = Vector3.new(-0.5, 2.5, 0) },
 			}
 
-			  partInstances = {}
+			local partInstances = {}
 
-			  function getDisabledPartColor()
-				  bg = Xan.CurrentTheme.BackgroundTertiary
+			local function getDisabledPartColor()
+				local bg = Xan.CurrentTheme.BackgroundTertiary
 				return Color3.fromRGB(
 					math.floor(bg.R * 255 * 0.6),
 					math.floor(bg.G * 255 * 0.6),
@@ -20067,10 +20067,10 @@ function Xan:CreateWindow(config)
 			end
 
 			for partName, data in pairs(partData) do
-				  color = values[partName] and (hitboxColors[partName] or Xan.CurrentTheme.Accent)
+				local color = values[partName] and (hitboxColors[partName] or Xan.CurrentTheme.Accent)
 					or getDisabledPartColor()
 
-				  part = Instance.new("Part")
+				local part = Instance.new("Part")
 				part.Name = partName
 				part.Size = data.size
 				part.Position = data.pos
@@ -20081,7 +20081,7 @@ function Xan:CreateWindow(config)
 				part.Parent = previewModel
 
 				if partName == "Head" then
-					  mesh = Instance.new("SpecialMesh")
+					local mesh = Instance.new("SpecialMesh")
 					mesh.MeshType = Enum.MeshType.Head
 					mesh.Scale = Vector3.new(1.25, 1.25, 1.25)
 					mesh.Parent = part
@@ -20090,7 +20090,7 @@ function Xan:CreateWindow(config)
 				partInstances[partName] = { part }
 
 				if data.pos2 then
-					  part2 = Instance.new("Part")
+					local part2 = Instance.new("Part")
 					part2.Name = partName .. "2"
 					part2.Size = data.size
 					part2.Position = data.pos2
@@ -20105,11 +20105,11 @@ function Xan:CreateWindow(config)
 
 			previewModel.Parent = viewportFrame
 
-			  camera = Instance.new("Camera")
+			local camera = Instance.new("Camera")
 			camera.CFrame = CFrame.new(Vector3.new(5, 5, 7), Vector3.new(0, 4.5, 0))
 			viewportFrame.CurrentCamera = camera
 
-			  hitboxContainer = Util.Create("Frame", {
+			local hitboxContainer = Util.Create("Frame", {
 				Name = "Hitboxes",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, viewportWidth + (isCompact and 6 or 10), 0, 0),
@@ -20118,9 +20118,9 @@ function Xan:CreateWindow(config)
 				Parent = contentFrame,
 			})
 
-			  function updateParts()
+			local function updateParts()
 				for partName, parts in pairs(partInstances) do
-					  color = values[partName] and (hitboxColors[partName] or Xan.CurrentTheme.Accent)
+					local color = values[partName] and (hitboxColors[partName] or Xan.CurrentTheme.Accent)
 						or getDisabledPartColor()
 					for _, part in ipairs(parts) do
 						part.Color = color
@@ -20133,18 +20133,18 @@ function Xan:CreateWindow(config)
 				callback(values)
 			end
 
-			  hitboxElements = {}
+			local hitboxElements = {}
 
 			for i, partName in ipairs(hitboxParts) do
-				  partColor = hitboxColors[partName] or Xan.CurrentTheme.Accent
-				  isEnabled = values[partName]
+				local partColor = hitboxColors[partName] or Xan.CurrentTheme.Accent
+				local isEnabled = values[partName]
 
-				  col = ((i - 1) % columns)
-				  row = math.floor((i - 1) / columns)
-				  yPos = row * (btnHeight + btnGap)
-				  colGap = IsMobile and 6 or (isCompact and 3 or 5)
+				local col = ((i - 1) % columns)
+				local row = math.floor((i - 1) / columns)
+				local yPos = row * (btnHeight + btnGap)
+				local colGap = IsMobile and 6 or (isCompact and 3 or 5)
 
-				  hitboxBtn = Util.Create("Frame", {
+				local hitboxBtn = Util.Create("Frame", {
 					Name = "Hitbox_" .. partName,
 					BackgroundColor3 = isEnabled and Xan.CurrentTheme.BackgroundTertiary
 						or Xan.CurrentTheme.BackgroundSecondary,
@@ -20153,7 +20153,7 @@ function Xan:CreateWindow(config)
 					Parent = hitboxContainer,
 				})
 
-				  indicator = Util.Create("Frame", {
+				local indicator = Util.Create("Frame", {
 					Name = "Indicator",
 					BackgroundColor3 = partColor,
 					Position = UDim2.new(0, isCompact and 6 or 10, 0.5, 0),
@@ -20165,7 +20165,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 				})
 
-				  hitboxLabel = Util.Create("TextLabel", {
+				local hitboxLabel = Util.Create("TextLabel", {
 					Name = "Label",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, isCompact and 16 or 24, 0, 0),
@@ -20178,7 +20178,7 @@ function Xan:CreateWindow(config)
 					Parent = hitboxBtn,
 				})
 
-				  btn = Util.Create("TextButton", {
+				local btn = Util.Create("TextButton", {
 					Name = "Button",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 1, 0),
@@ -20190,7 +20190,7 @@ function Xan:CreateWindow(config)
 
 				btn.MouseButton1Click:Connect(function()
 					values[partName] = not values[partName]
-					  newEnabled = values[partName]
+					local newEnabled = values[partName]
 
 					indicator.Visible = newEnabled
 					hitboxLabel.TextColor3 = newEnabled and Xan.CurrentTheme.Text or Xan.CurrentTheme.TextDim
@@ -20207,7 +20207,7 @@ function Xan:CreateWindow(config)
 				end)
 
 				btn.MouseLeave:Connect(function()
-					  isOn = values[partName]
+					local isOn = values[partName]
 					Util.Tween(hitboxBtn, 0.1, {
 						BackgroundColor3 = isOn and Xan.CurrentTheme.BackgroundTertiary
 							or Xan.CurrentTheme.BackgroundSecondary,
@@ -20229,7 +20229,7 @@ function Xan:CreateWindow(config)
 					updateParts()
 
 					for partName, els in pairs(hitboxElements) do
-						  isEnabled = values[partName]
+						local isEnabled = values[partName]
 						els.indicator.Visible = isEnabled
 						els.label.TextColor3 = isEnabled and Xan.CurrentTheme.Text or Xan.CurrentTheme.TextDim
 						els.frame.BackgroundColor3 = isEnabled and Xan.CurrentTheme.BackgroundTertiary
@@ -20241,9 +20241,9 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateBodyPicker(config)
 			config = config or {}
-			  name = config.Name or "Body Picker"
-			  hitboxParts = config.Parts or { "Head", "Chest", "LeftArm", "RightArm", "LeftLeg", "RightLeg" }
-			  hitboxColors = config.Colors
+			local name = config.Name or "Body Picker"
+			local hitboxParts = config.Parts or { "Head", "Chest", "LeftArm", "RightArm", "LeftLeg", "RightLeg" }
+			local hitboxColors = config.Colors
 				or {
 					Head = Color3.fromRGB(255, 80, 100),
 					Chest = Color3.fromRGB(100, 255, 120),
@@ -20252,14 +20252,14 @@ function Xan:CreateWindow(config)
 					LeftLeg = Color3.fromRGB(255, 190, 60),
 					RightLeg = Color3.fromRGB(255, 190, 60),
 				}
-			  defaults = config.Default or {}
-			  flag = config.Flag
-			  callback = config.Callback or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local defaults = config.Default or {}
+			local flag = config.Flag
+			local callback = config.Callback or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  isCompact = layout == "Compact"
+			local isCompact = layout == "Compact"
 
-			  values = {}
+			local values = {}
 			for _, part in ipairs(hitboxParts) do
 				values[part] = defaults[part] ~= nil and defaults[part] or false
 			end
@@ -20268,12 +20268,12 @@ function Xan:CreateWindow(config)
 				Xan:SetFlag(flag, values)
 			end
 
-			  pickerHeight = IsMobile and 200 or (isCompact and 175 or 180)
-			  headerHeight = IsMobile and 32 or (isCompact and 28 or 28)
-			  padding = IsMobile and 14 or 12
-			  totalHeight = headerHeight + pickerHeight + padding
+			local pickerHeight = IsMobile and 200 or (isCompact and 175 or 180)
+			local headerHeight = IsMobile and 32 or (isCompact and 28 or 28)
+			local padding = IsMobile and 14 or 12
+			local totalHeight = headerHeight + pickerHeight + padding
 
-			  pickerFrame = Util.Create("Frame", {
+			local pickerFrame = Util.Create("Frame", {
 				Name = name,
 				BackgroundColor3 = Xan.CurrentTheme.Card,
 				Size = UDim2.new(1, 0, 0, totalHeight),
@@ -20289,7 +20289,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, padding, 0, 0),
@@ -20302,12 +20302,12 @@ function Xan:CreateWindow(config)
 				Parent = pickerFrame,
 			})
 
-			  compactBodyWidth = 100
-			  compactLegendWidth = 55
-			  compactGap = 8
-			  compactTotalWidth = compactBodyWidth + compactGap + compactLegendWidth
+			local compactBodyWidth = 100
+			local compactLegendWidth = 55
+			local compactGap = 8
+			local compactTotalWidth = compactBodyWidth + compactGap + compactLegendWidth
 
-			  bodyContainer = Util.Create("Frame", {
+			local bodyContainer = Util.Create("Frame", {
 				Name = "Body",
 				BackgroundTransparency = 1,
 				Position = isCompact and UDim2.new(0.5, -compactTotalWidth / 2, 0, headerHeight)
@@ -20319,31 +20319,31 @@ function Xan:CreateWindow(config)
 				isCompact and Util.Create("UIScale", { Scale = 0.85 }) or nil,
 			})
 
-			  disabledColor = Color3.fromRGB(60, 60, 65)
-			  partInstances = {}
-			  legendItems = {}
+			local disabledColor = Color3.fromRGB(60, 60, 65)
+			local partInstances = {}
+			local legendItems = {}
 
-			  function updateParts()
+			local function updateParts()
 				if flag then
 					Xan:SetFlag(flag, values)
 				end
 				callback(values)
 			end
 
-			  function updateLegend()
+			local function updateLegend()
 				for pName, els in pairs(legendItems) do
-					  isOn = values[pName]
-					  pColor = hitboxColors[pName] or Xan.CurrentTheme.Accent
+					local isOn = values[pName]
+					local pColor = hitboxColors[pName] or Xan.CurrentTheme.Accent
 					els.dot.BackgroundColor3 = isOn and pColor or disabledColor
 					els.label.TextColor3 = isOn and Xan.CurrentTheme.Text or Xan.CurrentTheme.TextDim
 				end
 			end
 
-			  function createBodyPart(partName, pos, size, corners)
-				  isEnabled = values[partName]
-				  partColor = hitboxColors[partName] or Xan.CurrentTheme.Accent
+			local function createBodyPart(partName, pos, size, corners)
+				local isEnabled = values[partName]
+				local partColor = hitboxColors[partName] or Xan.CurrentTheme.Accent
 
-				  part = Util.Create("Frame", {
+				local part = Util.Create("Frame", {
 					Name = "BodyPart_" .. partName,
 					BackgroundColor3 = isEnabled and partColor or disabledColor,
 					Position = pos,
@@ -20355,7 +20355,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = corners }).Parent = part
 				end
 
-				  btn = Util.Create("TextButton", {
+				local btn = Util.Create("TextButton", {
 					Name = "Btn",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 1, 0),
@@ -20365,7 +20365,7 @@ function Xan:CreateWindow(config)
 
 				btn.MouseButton1Click:Connect(function()
 					values[partName] = not values[partName]
-					  newEnabled = values[partName]
+					local newEnabled = values[partName]
 					Util.Tween(part, 0.15, {
 						BackgroundColor3 = newEnabled and partColor or disabledColor,
 					})
@@ -20392,7 +20392,7 @@ function Xan:CreateWindow(config)
 			createBodyPart("LeftLeg", UDim2.new(0.5, -28, 0, 105), UDim2.new(0, 24, 0, 65), UDim.new(0, 4))
 			createBodyPart("RightLeg", UDim2.new(0.5, 4, 0, 105), UDim2.new(0, 24, 0, 65), UDim.new(0, 4))
 
-			  legendContainer = Util.Create("Frame", {
+			local legendContainer = Util.Create("Frame", {
 				Name = "Legend",
 				BackgroundTransparency = 1,
 				Position = isCompact
@@ -20403,17 +20403,17 @@ function Xan:CreateWindow(config)
 				Parent = pickerFrame,
 			})
 
-			  legendLayout = Util.Create("UIListLayout", {
+			local legendLayout = Util.Create("UIListLayout", {
 				Padding = UDim.new(0, isCompact and 3 or 6),
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				Parent = legendContainer,
 			})
 
 			for i, partName in ipairs(hitboxParts) do
-				  partColor = hitboxColors[partName] or Xan.CurrentTheme.Accent
-				  isEnabled = values[partName]
+				local partColor = hitboxColors[partName] or Xan.CurrentTheme.Accent
+				local isEnabled = values[partName]
 
-				  item = Util.Create("Frame", {
+				local item = Util.Create("Frame", {
 					Name = "BodyLegend_" .. partName,
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 0, isCompact and 14 or 16),
@@ -20421,7 +20421,7 @@ function Xan:CreateWindow(config)
 					Parent = legendContainer,
 				})
 
-				  dot = Util.Create("Frame", {
+				local dot = Util.Create("Frame", {
 					Name = "BodyDot_" .. partName,
 					BackgroundColor3 = isEnabled and partColor or disabledColor,
 					Position = UDim2.new(0, 0, 0.5, -5),
@@ -20431,7 +20431,7 @@ function Xan:CreateWindow(config)
 					Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 				})
 
-				  lbl = Util.Create("TextLabel", {
+				local lbl = Util.Create("TextLabel", {
 					Name = "Label",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 16, 0, 0),
@@ -20455,9 +20455,9 @@ function Xan:CreateWindow(config)
 				Set = function(_, newValues, skipCallback)
 					for partName, enabled in pairs(newValues) do
 						values[partName] = enabled
-						  part = partInstances[partName]
+						local part = partInstances[partName]
 						if part then
-							  partColor = hitboxColors[partName] or Xan.CurrentTheme.Accent
+							local partColor = hitboxColors[partName] or Xan.CurrentTheme.Accent
 							part.BackgroundColor3 = enabled and partColor or disabledColor
 						end
 					end
@@ -20471,25 +20471,25 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateGameCard(config)
 			config = config or {}
-			  gameName = config.Name or "Game"
-			  gameImage = config.Image or GameIcons.Frontlines
-			  gameDescription = config.Description or ""
-			  isPopular = config.Popular or false
-			  isNew = config.New or false
-			  isUpdated = config.Updated or false
-			  isMaintenance = config.Maintenance or false
-			  onLoad = config.OnLoad or function() end
-			  gameId = config.GameId
-			  onJoin = config.OnJoin
-			  layoutOrder = config.LayoutOrder or 0
+			local gameName = config.Name or "Game"
+			local gameImage = config.Image or GameIcons.Frontlines
+			local gameDescription = config.Description or ""
+			local isPopular = config.Popular or false
+			local isNew = config.New or false
+			local isUpdated = config.Updated or false
+			local isMaintenance = config.Maintenance or false
+			local onLoad = config.OnLoad or function() end
+			local gameId = config.GameId
+			local onJoin = config.OnJoin
+			local layoutOrder = config.LayoutOrder or 0
 
-			  isCompact = layout == "Compact"
+			local isCompact = layout == "Compact"
 
-			  cardHeight = IsMobile and 130 or (isCompact and 100 or 120)
-			  imgSize = IsMobile and 95 or (isCompact and 76 or 90)
-			  contentX = IsMobile and 120 or (isCompact and 96 or 115)
+			local cardHeight = IsMobile and 130 or (isCompact and 100 or 120)
+			local imgSize = IsMobile and 95 or (isCompact and 76 or 90)
+			local contentX = IsMobile and 120 or (isCompact and 96 or 115)
 
-			  card = Util.Create("Frame", {
+			local card = Util.Create("Frame", {
 				Name = "GameCard_" .. gameName,
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary,
 				Size = UDim2.new(1, 0, 0, cardHeight),
@@ -20505,7 +20505,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  gameImg = Util.Create("ImageLabel", {
+			local gameImg = Util.Create("ImageLabel", {
 				Name = "GameImage",
 				BackgroundColor3 = Xan.CurrentTheme.Background,
 				Position = UDim2.new(0, 12, 0.5, -imgSize / 2),
@@ -20524,7 +20524,7 @@ function Xan:CreateWindow(config)
 				}),
 			})
 
-			  titleRow = Util.Create("Frame", {
+			local titleRow = Util.Create("Frame", {
 				Name = "TitleRow",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, contentX, 0, 12),
@@ -20533,7 +20533,7 @@ function Xan:CreateWindow(config)
 				Parent = card,
 			})
 
-			  titleLabel = Util.Create("TextLabel", {
+			local titleLabel = Util.Create("TextLabel", {
 				Name = "Title",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
@@ -20547,12 +20547,12 @@ function Xan:CreateWindow(config)
 				Parent = titleRow,
 			})
 
-			  function createBadge(text, color, order)
-				  charWidth = isCompact and 4 or 5
-				  padding = isCompact and 9 or 13
-				  badgeWidth = #text * charWidth + padding
+			local function createBadge(text, color, order)
+				local charWidth = isCompact and 4 or 5
+				local padding = isCompact and 9 or 13
+				local badgeWidth = #text * charWidth + padding
 
-				  badge = Util.Create("Frame", {
+				local badge = Util.Create("Frame", {
 					Name = text .. "Badge",
 					BackgroundColor3 = color,
 					Size = UDim2.new(0, badgeWidth, 0, isCompact and 16 or 18),
@@ -20575,8 +20575,8 @@ function Xan:CreateWindow(config)
 				return badge
 			end
 
-			  badges = {}
-			  badgeOrder = 1
+			local badges = {}
+			local badgeOrder = 1
 			if isPopular then
 				badges.popular = createBadge("<b>POPULAR</b>", Color3.fromRGB(255, 165, 0), badgeOrder)
 				badgeOrder = badgeOrder + 1
@@ -20594,15 +20594,15 @@ function Xan:CreateWindow(config)
 			end
 
 			task.defer(function()
-				  titleWidth = titleLabel.AbsoluteSize.X
-				  xOffset = titleWidth + (isCompact and 6 or 8)
+				local titleWidth = titleLabel.AbsoluteSize.X
+				local xOffset = titleWidth + (isCompact and 6 or 8)
 				for _, badge in pairs(badges) do
 					badge.Position = UDim2.new(0, xOffset, 0, isCompact and 3 or 2)
 					xOffset = xOffset + badge.AbsoluteSize.X + (isCompact and 4 or 6)
 				end
 			end)
 
-			  descLabel = Util.Create("TextLabel", {
+			local descLabel = Util.Create("TextLabel", {
 				Name = "Description",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, contentX, 0, isCompact and 30 or 36),
@@ -20619,7 +20619,7 @@ function Xan:CreateWindow(config)
 				Parent = card,
 			})
 
-			  function getCardMutedAccent()
+			local function getCardMutedAccent()
 				return Color3.fromRGB(
 					math.floor(Xan.CurrentTheme.Accent.R * 200),
 					math.floor(Xan.CurrentTheme.Accent.G * 200),
@@ -20627,8 +20627,8 @@ function Xan:CreateWindow(config)
 				)
 			end
 
-			  loadBtnBg = isMaintenance and Xan.CurrentTheme.Error or Xan.CurrentTheme.Accent
-			  loadBtn = Util.Create("TextButton", {
+			local loadBtnBg = isMaintenance and Xan.CurrentTheme.Error or Xan.CurrentTheme.Accent
+			local loadBtn = Util.Create("TextButton", {
 				Name = "LoadButton",
 				BackgroundColor3 = loadBtnBg,
 				Position = UDim2.new(1, -82, 0.5, -16),
@@ -20644,21 +20644,21 @@ function Xan:CreateWindow(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 			})
 
-			  function getMutedAccent()
+			local function getMutedAccent()
 				return Color3.fromRGB(
 					math.floor(Xan.CurrentTheme.Accent.R * 180),
 					math.floor(Xan.CurrentTheme.Accent.G * 180),
 					math.floor(Xan.CurrentTheme.Accent.B * 180)
 				)
 			end
-			  function getMutedAccentHover()
+			local function getMutedAccentHover()
 				return Color3.fromRGB(
 					math.floor(Xan.CurrentTheme.Accent.R * 210),
 					math.floor(Xan.CurrentTheme.Accent.G * 210),
 					math.floor(Xan.CurrentTheme.Accent.B * 210)
 				)
 			end
-			  function getMutedAccentPress()
+			local function getMutedAccentPress()
 				return Color3.fromRGB(
 					math.floor(Xan.CurrentTheme.Accent.R * 150),
 					math.floor(Xan.CurrentTheme.Accent.G * 150),
@@ -20682,7 +20682,7 @@ function Xan:CreateWindow(config)
 				end)
 			end
 
-			  joinLink = nil
+			local joinLink = nil
 			if gameId or onJoin then
 				joinLink = Util.Create("TextButton", {
 					Name = "JoinLink",
@@ -20724,16 +20724,16 @@ function Xan:CreateWindow(config)
 				Util.Tween(card, 0.15, { BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary })
 			end)
 
-			  function applyGameCardTheme()
+			local function applyGameCardTheme()
 				card.BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary
-				  stroke = card:FindFirstChildOfClass("UIStroke")
+				local stroke = card:FindFirstChildOfClass("UIStroke")
 				if stroke then
 					stroke.Color = Xan.CurrentTheme.CardBorder
 				end
 				titleLabel.TextColor3 = Xan.CurrentTheme.Text
 				descLabel.TextColor3 = Xan.CurrentTheme.TextSecondary
 				gameImg.BackgroundColor3 = Xan.CurrentTheme.Background
-				  imgStroke = gameImg:FindFirstChildOfClass("UIStroke")
+				local imgStroke = gameImg:FindFirstChildOfClass("UIStroke")
 				if imgStroke then
 					imgStroke.Color = Xan.CurrentTheme.CardBorder
 				end
@@ -20762,11 +20762,11 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateHubHeader(config)
 			config = config or {}
-			  headerText = config.Title or "Scripts"
-			  subText = config.Subtitle or "Select a game to load"
-			  layoutOrder = config.LayoutOrder or 0
+			local headerText = config.Title or "Scripts"
+			local subText = config.Subtitle or "Select a game to load"
+			local layoutOrder = config.LayoutOrder or 0
 
-			  header = Util.Create("Frame", {
+			local header = Util.Create("Frame", {
 				Name = "HubHeader",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, 50),
@@ -20804,15 +20804,15 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateGameStrip(config)
 			config = config or {}
-			  games = config.Games or {}
-			  iconSize = config.IconSize or 68
-			  spacing = config.Spacing or 10
-			  onSelect = config.OnSelect or function() end
-			  layoutOrder = config.LayoutOrder or 0
+			local games = config.Games or {}
+			local iconSize = config.IconSize or 68
+			local spacing = config.Spacing or 10
+			local onSelect = config.OnSelect or function() end
+			local layoutOrder = config.LayoutOrder or 0
 
-			  stripHeight = iconSize + 48
+			local stripHeight = iconSize + 48
 
-			  container = Util.Create("Frame", {
+			local container = Util.Create("Frame", {
 				Name = "GameStrip",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, stripHeight),
@@ -20821,7 +20821,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  strip = Util.Create("ScrollingFrame", {
+			local strip = Util.Create("ScrollingFrame", {
 				Name = "Strip",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, stripHeight),
@@ -20838,7 +20838,7 @@ function Xan:CreateWindow(config)
 				Parent = strip,
 			})
 
-			  leftArrow = Util.Create("TextButton", {
+			local leftArrow = Util.Create("TextButton", {
 				Name = "LeftArrow",
 				BackgroundColor3 = Xan.CurrentTheme.Background,
 				BackgroundTransparency = 0.2,
@@ -20855,7 +20855,7 @@ function Xan:CreateWindow(config)
 				Parent = container,
 			}, { Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }) })
 
-			  rightArrow = Util.Create("TextButton", {
+			local rightArrow = Util.Create("TextButton", {
 				Name = "RightArrow",
 				BackgroundColor3 = Xan.CurrentTheme.Background,
 				BackgroundTransparency = 0.2,
@@ -20872,9 +20872,9 @@ function Xan:CreateWindow(config)
 				Parent = container,
 			}, { Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }) })
 
-			  function updateArrows()
-				  scrollPos = strip.CanvasPosition.X
-				  maxScroll = strip.AbsoluteCanvasSize.X - strip.AbsoluteSize.X
+			local function updateArrows()
+				local scrollPos = strip.CanvasPosition.X
+				local maxScroll = strip.AbsoluteCanvasSize.X - strip.AbsoluteSize.X
 				leftArrow.Visible = scrollPos > 5
 				rightArrow.Visible = scrollPos < maxScroll - 5
 			end
@@ -20884,13 +20884,13 @@ function Xan:CreateWindow(config)
 			task.delay(0.1, updateArrows)
 
 			leftArrow.MouseButton1Click:Connect(function()
-				  newPos = math.max(0, strip.CanvasPosition.X - (iconSize + spacing) * 2)
+				local newPos = math.max(0, strip.CanvasPosition.X - (iconSize + spacing) * 2)
 				Util.Tween(strip, 0.2, { CanvasPosition = Vector2.new(newPos, 0) })
 			end)
 
 			rightArrow.MouseButton1Click:Connect(function()
-				  maxScroll = strip.AbsoluteCanvasSize.X - strip.AbsoluteSize.X
-				  newPos = math.min(maxScroll, strip.CanvasPosition.X + (iconSize + spacing) * 2)
+				local maxScroll = strip.AbsoluteCanvasSize.X - strip.AbsoluteSize.X
+				local newPos = math.min(maxScroll, strip.CanvasPosition.X + (iconSize + spacing) * 2)
 				Util.Tween(strip, 0.2, { CanvasPosition = Vector2.new(newPos, 0) })
 			end)
 
@@ -20907,8 +20907,8 @@ function Xan:CreateWindow(config)
 				Util.Tween(rightArrow, 0.1, { BackgroundTransparency = 0.2, TextTransparency = 0.2 })
 			end)
 
-			  isHoveringStrip = false
-			  savedScrollPos = nil
+			local isHoveringStrip = false
+			local savedScrollPos = nil
 
 			container.MouseEnter:Connect(function()
 				isHoveringStrip = true
@@ -20920,7 +20920,7 @@ function Xan:CreateWindow(config)
 				savedScrollPos = nil
 			end)
 
-			  function lockParentScroll()
+			local function lockParentScroll()
 				if isHoveringStrip and savedScrollPos then
 					scrollFrame.CanvasPosition = savedScrollPos
 				end
@@ -20936,10 +20936,10 @@ function Xan:CreateWindow(config)
 
 			container.InputChanged:Connect(function(input)
 				if input.UserInputType == Enum.UserInputType.MouseWheel then
-					  scrollAmount = (iconSize + spacing) * 2
-					  maxScroll = math.max(0, strip.AbsoluteCanvasSize.X - strip.AbsoluteSize.X)
-					  delta = input.Position.Z
-					  newPos = strip.CanvasPosition.X - (delta * scrollAmount)
+					local scrollAmount = (iconSize + spacing) * 2
+					local maxScroll = math.max(0, strip.AbsoluteCanvasSize.X - strip.AbsoluteSize.X)
+					local delta = input.Position.Z
+					local newPos = strip.CanvasPosition.X - (delta * scrollAmount)
 					newPos = math.clamp(newPos, 0, maxScroll)
 					strip.CanvasPosition = Vector2.new(newPos, 0)
 					if savedScrollPos then
@@ -20950,10 +20950,10 @@ function Xan:CreateWindow(config)
 				end
 			end)
 
-			  detailPanel = nil
+			local detailPanel = nil
 			container.ClipsDescendants = false
 
-			  function showDetail(game)
+			local function showDetail(game)
 				if detailPanel then
 					detailPanel:Destroy()
 					detailPanel = nil
@@ -21015,8 +21015,8 @@ function Xan:CreateWindow(config)
 				})
 
 				if game.GameId and not game.Maintenance then
-					  gameId = game.GameId
-					  joinLink = Util.Create("TextButton", {
+					local gameId = game.GameId
+					local joinLink = Util.Create("TextButton", {
 						Name = "JoinGame",
 						BackgroundTransparency = 1,
 						Position = UDim2.new(1, -180, 0, 26),
@@ -21043,7 +21043,7 @@ function Xan:CreateWindow(config)
 					end)
 				end
 
-				  loadBtn = Util.Create("TextButton", {
+				local loadBtn = Util.Create("TextButton", {
 					Name = "Load",
 					BackgroundColor3 = game.Maintenance and Xan.CurrentTheme.TextDim or Xan.CurrentTheme.Accent,
 					Position = UDim2.new(1, -100, 0, 18),
@@ -21084,7 +21084,7 @@ function Xan:CreateWindow(config)
 			end
 
 			for i, game in ipairs(games) do
-				  item = Util.Create("Frame", {
+				local item = Util.Create("Frame", {
 					Name = "Game_" .. (game.Name or i),
 					BackgroundTransparency = 1,
 					Size = UDim2.new(0, iconSize, 0, stripHeight),
@@ -21092,7 +21092,7 @@ function Xan:CreateWindow(config)
 					Parent = strip,
 				})
 
-				  imgBtn = Util.Create("ImageButton", {
+				local imgBtn = Util.Create("ImageButton", {
 					Name = "Img",
 					BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary,
 					Position = UDim2.new(0.5, 0, 0, 0),
@@ -21122,10 +21122,10 @@ function Xan:CreateWindow(config)
 				end
 
 				if game.Popular or game.New or game.Updated then
-					  badgeColor = game.Popular and Color3.fromRGB(245, 158, 66)
+					local badgeColor = game.Popular and Color3.fromRGB(245, 158, 66)
 						or game.New and Color3.fromRGB(88, 200, 140)
 						or Color3.fromRGB(100, 150, 255)
-					  badgeText = game.Popular and "★" or game.New and "NEW" or "UPD"
+					local badgeText = game.Popular and "★" or game.New and "NEW" or "UPD"
 					Util.Create("Frame", {
 						Name = "Badge",
 						BackgroundColor3 = badgeColor,
@@ -21176,7 +21176,7 @@ function Xan:CreateWindow(config)
 					})
 				end
 
-				  stroke = imgBtn:FindFirstChild("Stroke")
+				local stroke = imgBtn:FindFirstChild("Stroke")
 				imgBtn.MouseEnter:Connect(function()
 					if stroke then
 						Util.Tween(stroke, 0.1, { Color = Xan.CurrentTheme.Accent, Transparency = 0 })
@@ -21201,18 +21201,18 @@ function Xan:CreateWindow(config)
 
 		function tab:CreateGameGrid(config)
 			config = config or {}
-			  games = config.Games or {}
-			  columns = config.Columns or 4
-			  cardSize = config.CardSize or 80
-			  spacing = config.Spacing or 8
-			  onSelect = config.OnSelect or function() end
-			  layoutOrder = config.LayoutOrder or 0
-			  autoJoin = config.AutoJoin or false
+			local games = config.Games or {}
+			local columns = config.Columns or 4
+			local cardSize = config.CardSize or 80
+			local spacing = config.Spacing or 8
+			local onSelect = config.OnSelect or function() end
+			local layoutOrder = config.LayoutOrder or 0
+			local autoJoin = config.AutoJoin or false
 
-			  rows = math.ceil(#games / columns)
-			  gridHeight = rows * (cardSize + 24 + spacing) + spacing
+			local rows = math.ceil(#games / columns)
+			local gridHeight = rows * (cardSize + 24 + spacing) + spacing
 
-			  container = Util.Create("Frame", {
+			local container = Util.Create("Frame", {
 				Name = "GameGrid",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, gridHeight),
@@ -21220,7 +21220,7 @@ function Xan:CreateWindow(config)
 				Parent = scrollFrame,
 			})
 
-			  grid = Util.Create("Frame", {
+			local grid = Util.Create("Frame", {
 				Name = "Grid",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -21236,25 +21236,25 @@ function Xan:CreateWindow(config)
 				Parent = grid,
 			})
 
-			  function isInGame(gameId)
+			local function isInGame(gameId)
 				if not gameId then
 					return false
 				end
-				  success, result = pcall(function()
+				local success, result = pcall(function()
 					return game.PlaceId == gameId
 				end)
 				return success and result
 			end
 
 			for i, gameData in ipairs(games) do
-				  card = Util.Create("Frame", {
+				local card = Util.Create("Frame", {
 					Name = "Card_" .. (gameData.Name or i),
 					BackgroundTransparency = 1,
 					LayoutOrder = i,
 					Parent = grid,
 				})
 
-				  imgBtn = Util.Create("ImageButton", {
+				local imgBtn = Util.Create("ImageButton", {
 					Name = "Img",
 					BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary,
 					Position = UDim2.new(0.5, 0, 0, 0),
@@ -21272,10 +21272,10 @@ function Xan:CreateWindow(config)
 					),
 				})
 
-				  inThisGameCheck = autoJoin and gameData.GameId and isInGame(gameData.GameId)
-				  hoverText = inThisGameCheck and "Load" or "Join"
+				local inThisGameCheck = autoJoin and gameData.GameId and isInGame(gameData.GameId)
+				local hoverText = inThisGameCheck and "Load" or "Join"
 
-				  hoverOverlay = Util.Create("Frame", {
+				local hoverOverlay = Util.Create("Frame", {
 					Name = "HoverOverlay",
 					BackgroundColor3 = Color3.new(0, 0, 0),
 					BackgroundTransparency = 1,
@@ -21297,7 +21297,7 @@ function Xan:CreateWindow(config)
 					}),
 				})
 
-				  hoverTextLabel = hoverOverlay:FindFirstChild("HoverText")
+				local hoverTextLabel = hoverOverlay:FindFirstChild("HoverText")
 
 				if gameData.Maintenance then
 					Util.Create("Frame", {
@@ -21324,10 +21324,10 @@ function Xan:CreateWindow(config)
 				end
 
 				if gameData.Popular or gameData.New or gameData.Updated then
-					  badgeColor = gameData.Popular and Color3.fromRGB(245, 158, 66)
+					local badgeColor = gameData.Popular and Color3.fromRGB(245, 158, 66)
 						or gameData.New and Color3.fromRGB(88, 200, 140)
 						or Color3.fromRGB(100, 150, 255)
-					  badgeText = gameData.Popular and "★" or gameData.New and "NEW" or "UPD"
+					local badgeText = gameData.Popular and "★" or gameData.New and "NEW" or "UPD"
 					Util.Create("Frame", {
 						Name = "Badge",
 						BackgroundColor3 = badgeColor,
@@ -21349,7 +21349,7 @@ function Xan:CreateWindow(config)
 					})
 				end
 
-				  nameLabel = Util.Create("TextLabel", {
+				local nameLabel = Util.Create("TextLabel", {
 					Name = "Name",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0.5, 0, 0, cardSize + 2),
@@ -21379,7 +21379,7 @@ function Xan:CreateWindow(config)
 					})
 				end
 
-				  stroke = imgBtn:FindFirstChild("Stroke")
+				local stroke = imgBtn:FindFirstChild("Stroke")
 				imgBtn.MouseEnter:Connect(function()
 					if gameData.Maintenance then
 						return
@@ -21431,9 +21431,9 @@ function Xan:CreateWindow(config)
 			return container
 		end
 
-		  function makeAlias(method)
+		local function makeAlias(method)
 			return function(_, nameOrConfig, arg2, arg3)
-				  cfg = {}
+				local cfg = {}
 				if type(nameOrConfig) == "string" then
 					cfg.Name = nameOrConfig
 					if type(arg2) == "function" then
@@ -21459,7 +21459,7 @@ function Xan:CreateWindow(config)
 		end
 
 		tab.AddToggle = function(_, name, arg2, arg3)
-			  cfg = { Name = name }
+			local cfg = { Name = name }
 			if type(arg2) == "string" then
 				cfg.Flag = arg2
 				if type(arg3) == "function" then
@@ -21483,7 +21483,7 @@ function Xan:CreateWindow(config)
 		end
 
 		tab.AddSlider = function(_, name, arg2, arg3, arg4)
-			  cfg = { Name = name }
+			local cfg = { Name = name }
 			if type(arg2) == "string" then
 				cfg.Flag = arg2
 				if type(arg3) == "table" then
@@ -21517,7 +21517,7 @@ function Xan:CreateWindow(config)
 		end
 
 		tab.AddDropdown = function(_, name, arg2, arg3, arg4)
-			  cfg = { Name = name }
+			local cfg = { Name = name }
 			if type(arg2) == "string" then
 				cfg.Flag = arg2
 				if type(arg3) == "table" then
@@ -21543,7 +21543,7 @@ function Xan:CreateWindow(config)
 		end
 
 		tab.AddKeybind = function(_, name, arg2, arg3, arg4)
-			  cfg = { Name = name }
+			local cfg = { Name = name }
 			if type(arg2) == "string" then
 				cfg.Flag = arg2
 				if typeof(arg3) == "EnumItem" then
@@ -21573,7 +21573,7 @@ function Xan:CreateWindow(config)
 		end
 
 		tab.AddInput = function(_, name, arg2, arg3)
-			  cfg = { Name = name }
+			local cfg = { Name = name }
 			if type(arg2) == "string" then
 				cfg.Flag = arg2
 				if type(arg3) == "function" then
@@ -21608,7 +21608,7 @@ function Xan:CreateWindow(config)
 		end
 
 		tab.AddColorPicker = function(_, name, arg2, arg3)
-			  cfg = { Name = name }
+			local cfg = { Name = name }
 			if type(arg2) == "string" then
 				cfg.Flag = arg2
 				if type(arg3) == "function" then
@@ -21683,7 +21683,7 @@ function Xan:CreateWindow(config)
 
 		tab.CreateResetButton = function(_, config)
 			config = config or {}
-			  name = config.Name or "Reset to Defaults"
+			local name = config.Name or "Reset to Defaults"
 			return tab:CreateDangerButton({
 				Name = name,
 				Callback = function()
@@ -21694,13 +21694,13 @@ function Xan:CreateWindow(config)
 		tab.AddResetButton = tab.CreateResetButton
 
 		tab.Toggle = function(_, name, callback)
-			  flag = name:gsub("%s+", "_"):lower()
+			local flag = name:gsub("%s+", "_"):lower()
 			return tab:CreateToggle({ Name = name, Flag = flag, Callback = callback })
 		end
 
 		tab.Slider = function(_, name, callback)
-			  flag = name:gsub("%s+", "_"):lower()
-			  smartConfig = Util.SmartSliderDefaults(name, {})
+			local flag = name:gsub("%s+", "_"):lower()
+			local smartConfig = Util.SmartSliderDefaults(name, {})
 			smartConfig.Name = name
 			smartConfig.Flag = flag
 			smartConfig.Callback = callback
@@ -21708,7 +21708,7 @@ function Xan:CreateWindow(config)
 		end
 
 		tab.Dropdown = function(_, name, options, callback)
-			  flag = name:gsub("%s+", "_"):lower()
+			local flag = name:gsub("%s+", "_"):lower()
 			return tab:CreateDropdown({ Name = name, Flag = flag, Options = options, Callback = callback })
 		end
 
@@ -21722,18 +21722,18 @@ function Xan:CreateWindow(config)
 		end
 
 		tab.Input = function(_, name, callback)
-			  flag = name:gsub("%s+", "_"):lower()
+			local flag = name:gsub("%s+", "_"):lower()
 			return tab:CreateInput({ Name = name, Flag = flag, Callback = callback })
 		end
 
 		tab.Keybind = function(_, name, key, callback)
-			  flag = name:gsub("%s+", "_"):lower()
-			  resolvedKey = Util.GetEnum(key, Enum.KeyCode)
+			local flag = name:gsub("%s+", "_"):lower()
+			local resolvedKey = Util.GetEnum(key, Enum.KeyCode)
 			return tab:CreateKeybind({ Name = name, Flag = flag, Default = resolvedKey, Callback = callback })
 		end
 
 		tab.Color = function(_, name, callback)
-			  flag = name:gsub("%s+", "_"):lower()
+			local flag = name:gsub("%s+", "_"):lower()
 			return tab:CreateColorPicker({ Name = name, Flag = flag, Callback = callback })
 		end
 
@@ -21748,7 +21748,7 @@ function Xan:CreateWindow(config)
 		return tab
 	end
 
-	  toggleConn = UserInputService.InputBegan:Connect(function(input, processed)
+	local toggleConn = UserInputService.InputBegan:Connect(function(input, processed)
 		if processed then
 			return
 		end
@@ -21761,7 +21761,7 @@ function Xan:CreateWindow(config)
 	table.insert(Xan.Connections, toggleConn)
 
 	window.AddTab = function(_, nameOrConfig, icon)
-		  cfg = {}
+		local cfg = {}
 		if type(nameOrConfig) == "string" then
 			cfg.Name = nameOrConfig
 			cfg.Icon = icon or Util.GuessIcon(nameOrConfig)
@@ -21810,7 +21810,7 @@ function Xan:CreateWindow(config)
 
 	table.insert(self.Windows, window)
 
-	  function applyThemeIfNeeded()
+	local function applyThemeIfNeeded()
 		if self.SavedThemeName and self.Themes[self.SavedThemeName] then
 			self:ApplyTheme(self.SavedThemeName)
 		elseif self.CurrentTheme and self.CurrentTheme.Name and self.CurrentTheme.Name ~= "Default" then
@@ -21831,10 +21831,10 @@ function Xan:CreateWindow(config)
 	return window
 end
 
-  NotificationContainers = {}
-  NotificationScreenGui = nil
+local NotificationContainers = {}
+local NotificationScreenGui = nil
 
-  function getOrCreateNotificationGui()
+local function getOrCreateNotificationGui()
 	if NotificationScreenGui and NotificationScreenGui.Parent then
 		return NotificationScreenGui
 	end
@@ -21846,7 +21846,7 @@ end
 	NotificationScreenGui.DisplayOrder = 2147483647
 	NotificationScreenGui.IgnoreGuiInset = true
 
-	  parented = false
+	local parented = false
 	pcall(function()
 		NotificationScreenGui.Parent = CoreGui
 		parented = true
@@ -21854,31 +21854,31 @@ end
 
 	if not parented then
 		pcall(function()
-			NotificationScreenGui.Parent =  Player.PlayerGui
+			NotificationScreenGui.Parent = LocalPlayer.PlayerGui
 			parented = true
 		end)
 	end
 
 	if not parented then
-		NotificationScreenGui.Parent = game:GetService("Players"). Player:FindFirstChildOfClass("PlayerGui")
+		NotificationScreenGui.Parent = game:GetService("Players").LocalPlayer:FindFirstChildOfClass("PlayerGui")
 	end
 
 	return NotificationScreenGui
 end
 
-  function getNotificationContainer(position)
+local function getNotificationContainer(position)
 	position = position or "TopRight"
 
 	if NotificationContainers[position] and NotificationContainers[position].Parent then
 		return NotificationContainers[position]
 	end
 
-	  screenGui = getOrCreateNotificationGui()
+	local screenGui = getOrCreateNotificationGui()
 	if not screenGui then
 		return nil
 	end
 
-	  containerConfig = {
+	local containerConfig = {
 		TopRight = {
 			Position = UDim2.new(1, -12, 0, 12),
 			Size = UDim2.new(0, IsMobile and 280 or 300, 1, -24),
@@ -21916,9 +21916,9 @@ end
 		},
 	}
 
-	  cfg = containerConfig[position] or containerConfig.TopRight
+	local cfg = containerConfig[position] or containerConfig.TopRight
 
-	  container = Instance.new("Frame")
+	local container = Instance.new("Frame")
 	container.Name = "Notifications_" .. position
 	container.BackgroundTransparency = 1
 	container.Position = cfg.Position
@@ -21927,7 +21927,7 @@ end
 	container.Visible = true
 	container.Parent = screenGui
 
-	  layout = Instance.new("UIListLayout")
+	local layout = Instance.new("UIListLayout")
 	layout.Padding = UDim.new(0, 8)
 	layout.SortOrder = Enum.SortOrder.LayoutOrder
 	layout.HorizontalAlignment = cfg.HorizontalAlignment
@@ -21940,31 +21940,31 @@ end
 
 function Xan:Notify(config)
 	config = config or {}
-	  title = config.Title or "Notification"
-	  content = config.Content or ""
-	  duration = config.Duration or 3
-	  notifType = config.Type or "Info"
-	  style = config.Style or "Default"
-	  position = config.Position
+	local title = config.Title or "Notification"
+	local content = config.Content or ""
+	local duration = config.Duration or 3
+	local notifType = config.Type or "Info"
+	local style = config.Style or "Default"
+	local position = config.Position
 		or (style == "Toast" and "BottomCenter" or style == "Banner" and "TopCenter" or "TopRight")
-	  icon = config.Icon
-	  callback = config.Callback
+	local icon = config.Icon
+	local callback = config.Callback
 
-	  typeColors = {
+	local typeColors = {
 		Info = Xan.CurrentTheme.Accent,
 		Success = Xan.CurrentTheme.Success,
 		Warning = Xan.CurrentTheme.Warning,
 		Error = Xan.CurrentTheme.Error,
 	}
-	  accentColor = typeColors[notifType] or Xan.CurrentTheme.Accent
+	local accentColor = typeColors[notifType] or Xan.CurrentTheme.Accent
 
-	  container = getNotificationContainer(position)
+	local container = getNotificationContainer(position)
 	if not container then
 		warn("[XanBar] Could not create notification container")
 		return nil
 	end
 
-	  notif, notifWidth, notifHeight
+	local notif, notifWidth, notifHeight
 
 	if style == "Default" or style == "default" then
 		notifWidth = IsMobile and 280 or 300
@@ -21979,17 +21979,17 @@ function Xan:Notify(config)
 		notif.Visible = true
 		notif.Parent = container
 
-		  corner = Instance.new("UICorner")
+		local corner = Instance.new("UICorner")
 		corner.CornerRadius = UDim.new(0, 8)
 		corner.Parent = notif
 
-		  stroke = Instance.new("UIStroke")
+		local stroke = Instance.new("UIStroke")
 		stroke.Color = Xan.CurrentTheme.CardBorder
 		stroke.Thickness = 1
 		stroke.Transparency = 0.7
 		stroke.Parent = notif
 
-		  contentFrame = Util.Create("Frame", {
+		local contentFrame = Util.Create("Frame", {
 			Name = "Content",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 12, 0, 0),
@@ -21997,7 +21997,7 @@ function Xan:Notify(config)
 			Parent = notif,
 		})
 
-		  iconOffset = 0
+		local iconOffset = 0
 		if icon then
 			iconOffset = IsMobile and 28 or 24
 			Util.Create("ImageLabel", {
@@ -22041,7 +22041,7 @@ function Xan:Notify(config)
 			})
 		end
 
-		  progressBar = Util.Create("Frame", {
+		local progressBar = Util.Create("Frame", {
 			Name = "Progress",
 			BackgroundColor3 = accentColor,
 			BackgroundTransparency = 0.6,
@@ -22084,7 +22084,7 @@ function Xan:Notify(config)
 			}),
 		})
 
-		  accentLine = Util.Create("Frame", {
+		local accentLine = Util.Create("Frame", {
 			Name = "AccentLine",
 			BackgroundColor3 = accentColor,
 			Size = UDim2.new(0, 3, 1, 0),
@@ -22156,7 +22156,7 @@ function Xan:Notify(config)
 			}),
 		})
 
-		  iconOffset = 0
+		local iconOffset = 0
 		if icon then
 			iconOffset = IsMobile and 24 or 20
 			Util.Create("ImageLabel", {
@@ -22171,7 +22171,7 @@ function Xan:Notify(config)
 			})
 		end
 
-		  textContent = content ~= "" and (title .. " - " .. content) or title
+		local textContent = content ~= "" and (title .. " - " .. content) or title
 
 		Util.Create("TextLabel", {
 			Name = "Text",
@@ -22217,9 +22217,9 @@ function Xan:Notify(config)
 
 		notif.BackgroundTransparency = 1
 
-		  textContent = content ~= "" and (title .. ": " .. content) or title
+		local textContent = content ~= "" and (title .. ": " .. content) or title
 
-		  textLabel = Util.Create("TextLabel", {
+		local textLabel = Util.Create("TextLabel", {
 			Name = "Text",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 10, 0, 0),
@@ -22266,7 +22266,7 @@ function Xan:Notify(config)
 			}),
 		})
 
-		  iconOffset = 0
+		local iconOffset = 0
 		if icon then
 			iconOffset = IsMobile and 28 or 24
 			Util.Create("ImageLabel", {
@@ -22309,9 +22309,9 @@ function Xan:Notify(config)
 			end)
 		end)
 	elseif style == "Pill" or style == "pill" then
-		  textContent = content ~= "" and (title .. ": " .. content) or title
-		  textSize = IsMobile and 11 or 10
-		  estimatedWidth = math.min(#textContent * (textSize * 0.6) + 24, IsMobile and 200 or 220)
+		local textContent = content ~= "" and (title .. ": " .. content) or title
+		local textSize = IsMobile and 11 or 10
+		local estimatedWidth = math.min(#textContent * (textSize * 0.6) + 24, IsMobile and 200 or 220)
 
 		notifWidth = estimatedWidth
 		notifHeight = IsMobile and 26 or 22
@@ -22358,7 +22358,7 @@ function Xan:Notify(config)
 		notifWidth = IsMobile and 280 or 300
 		notifHeight = content ~= "" and (IsMobile and 52 or 48) or (IsMobile and 38 or 34)
 
-		  wrapper = Util.Create("Frame", {
+		local wrapper = Util.Create("Frame", {
 			Name = "NotificationWrapper",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(0, notifWidth, 0, notifHeight),
@@ -22382,7 +22382,7 @@ function Xan:Notify(config)
 			}),
 		})
 
-		  accentDot = Util.Create("Frame", {
+		local accentDot = Util.Create("Frame", {
 			Name = "Dot",
 			BackgroundColor3 = accentColor,
 			Position = UDim2.new(0, 10, 0.5, 0),
@@ -22456,8 +22456,8 @@ function Xan:Notify(config)
 			}),
 		})
 
-		  iconSize = IsMobile and 32 or 28
-		  iconOffset = 0
+		local iconSize = IsMobile and 32 or 28
+		local iconOffset = 0
 
 		if icon then
 			iconOffset = iconSize + 16
@@ -22474,7 +22474,7 @@ function Xan:Notify(config)
 			})
 		else
 			iconOffset = iconSize + 12
-			  typeDot = Util.Create("Frame", {
+			local typeDot = Util.Create("Frame", {
 				Name = "TypeDot",
 				BackgroundColor3 = accentColor,
 				Position = UDim2.new(0, IsMobile and 20 or 18, 0.5, 0),
@@ -22487,7 +22487,7 @@ function Xan:Notify(config)
 			})
 		end
 
-		  titleLabel = Util.Create("TextLabel", {
+		local titleLabel = Util.Create("TextLabel", {
 			Name = "Title",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, iconOffset, 0, content ~= "" and (IsMobile and 14 or 12) or 0),
@@ -22501,7 +22501,7 @@ function Xan:Notify(config)
 			Parent = notif,
 		})
 
-		  contentLabel
+		local contentLabel
 		if content ~= "" then
 			contentLabel = Util.Create("TextLabel", {
 				Name = "Content",
@@ -22534,11 +22534,11 @@ function Xan:Notify(config)
 					Util.Tween(contentLabel, 0.3, { TextTransparency = 0.25 })
 				end)
 			end
-			  iconEl = notif:FindFirstChild("Icon")
+			local iconEl = notif:FindFirstChild("Icon")
 			if iconEl then
 				Util.Tween(iconEl, 0.3, { ImageTransparency = 0 })
 			end
-			  dotEl = notif:FindFirstChild("TypeDot")
+			local dotEl = notif:FindFirstChild("TypeDot")
 			if dotEl then
 				Util.Tween(dotEl, 0.3, { BackgroundTransparency = 0 })
 			end
@@ -22550,15 +22550,15 @@ function Xan:Notify(config)
 			if contentLabel then
 				Util.Tween(contentLabel, 0.25, { TextTransparency = 1 })
 			end
-			  iconEl = notif:FindFirstChild("Icon")
+			local iconEl = notif:FindFirstChild("Icon")
 			if iconEl then
 				Util.Tween(iconEl, 0.25, { ImageTransparency = 1 })
 			end
-			  dotEl = notif:FindFirstChild("TypeDot")
+			local dotEl = notif:FindFirstChild("TypeDot")
 			if dotEl then
 				Util.Tween(dotEl, 0.25, { BackgroundTransparency = 1 })
 			end
-			  stroke = notif:FindFirstChildOfClass("UIStroke")
+			local stroke = notif:FindFirstChildOfClass("UIStroke")
 			if stroke then
 				Util.Tween(stroke, 0.25, { Transparency = 1 })
 			end
@@ -22577,7 +22577,7 @@ function Xan:Notify(config)
 			end)
 		end)
 	elseif style == "Corner" or style == "corner" or style == "Rayfield" or style == "rayfield" then
-		  cornerContainer = container.Parent:FindFirstChild("Notifications_BottomRight")
+		local cornerContainer = container.Parent:FindFirstChild("Notifications_BottomRight")
 		if not cornerContainer then
 			cornerContainer = Instance.new("Frame")
 			cornerContainer.Name = "Notifications_BottomRight"
@@ -22587,7 +22587,7 @@ function Xan:Notify(config)
 			cornerContainer.AnchorPoint = Vector2.new(1, 1)
 			cornerContainer.Parent = container.Parent
 
-			  layout = Instance.new("UIListLayout")
+			local layout = Instance.new("UIListLayout")
 			layout.Padding = UDim.new(0, 10)
 			layout.SortOrder = Enum.SortOrder.LayoutOrder
 			layout.HorizontalAlignment = Enum.HorizontalAlignment.Right
@@ -22596,8 +22596,8 @@ function Xan:Notify(config)
 		end
 
 		notifWidth = IsMobile and 300 or 360
-		  hasIcon = icon ~= nil
-		  iconSize = IsMobile and 36 or 32
+		local hasIcon = icon ~= nil
+		local iconSize = IsMobile and 36 or 32
 		notifHeight = content ~= "" and (IsMobile and 70 or 65) or (IsMobile and 50 or 45)
 		if hasIcon then
 			notifHeight = math.max(notifHeight, iconSize + 26)
@@ -22621,7 +22621,7 @@ function Xan:Notify(config)
 			}),
 		})
 
-		  shadow = Util.Create("ImageLabel", {
+		local shadow = Util.Create("ImageLabel", {
 			Name = "Shadow",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.5, 0, 0.5, 4),
@@ -22636,7 +22636,7 @@ function Xan:Notify(config)
 			Parent = notif,
 		})
 
-		  contentStartX = 18
+		local contentStartX = 18
 		if hasIcon then
 			contentStartX = iconSize + 28
 			Util.Create("ImageLabel", {
@@ -22651,7 +22651,7 @@ function Xan:Notify(config)
 			})
 		end
 
-		  titleLabel = Util.Create("TextLabel", {
+		local titleLabel = Util.Create("TextLabel", {
 			Name = "Title",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, contentStartX, 0, content ~= "" and (IsMobile and 12 or 10) or 0),
@@ -22665,7 +22665,7 @@ function Xan:Notify(config)
 			Parent = notif,
 		})
 
-		  contentLabel
+		local contentLabel
 		if content ~= "" then
 			contentLabel = Util.Create("TextLabel", {
 				Name = "Content",
@@ -22689,11 +22689,11 @@ function Xan:Notify(config)
 		if contentLabel then
 			contentLabel.TextTransparency = 1
 		end
-		  iconEl = notif:FindFirstChild("Icon")
+		local iconEl = notif:FindFirstChild("Icon")
 		if iconEl then
 			iconEl.ImageTransparency = 1
 		end
-		  stroke = notif:FindFirstChildOfClass("UIStroke")
+		local stroke = notif:FindFirstChildOfClass("UIStroke")
 		if stroke then
 			stroke.Transparency = 1
 		end
@@ -22758,7 +22758,7 @@ function Xan:Notify(config)
 	end
 
 	if callback and notif then
-		  btn = Util.Create("TextButton", {
+		local btn = Util.Create("TextButton", {
 			Name = "Interact",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -22779,17 +22779,17 @@ end
 
 function Xan:CreateLoadingScreen(config)
 	config = config or {}
-	  title = config.Title or "Loading"
-	  subtitle = config.Subtitle or ""
-	  duration = config.Duration or 2
-	  theme = config.Theme or self.CurrentTheme
-	  fullscreen = config.Fullscreen or false
-	  onComplete = config.OnComplete or function() end
-	  logoImage = config.Logo or Logos.XanBar
-	  isTwoToneLogo = logoImage == Logos.XanBar or logoImage == Logos.XanBarBody
-	  twoTone = config.TwoTone ~= false and isTwoToneLogo
+	local title = config.Title or "Loading"
+	local subtitle = config.Subtitle or ""
+	local duration = config.Duration or 2
+	local theme = config.Theme or self.CurrentTheme
+	local fullscreen = config.Fullscreen or false
+	local onComplete = config.OnComplete or function() end
+	local logoImage = config.Logo or Logos.XanBar
+	local isTwoToneLogo = logoImage == Logos.XanBar or logoImage == Logos.XanBarBody
+	local twoTone = config.TwoTone ~= false and isTwoToneLogo
 
-	  screenGui = Util.Create("ScreenGui", {
+	local screenGui = Util.Create("ScreenGui", {
 		Name = Xan.GhostMode and Util.GenerateRandomString(14) or "XanBar_Loading",
 		ResetOnSpawn = false,
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
@@ -22801,18 +22801,18 @@ function Xan:CreateLoadingScreen(config)
 		screenGui.Parent = CoreGui
 	end)
 	if not screenGui.Parent then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
 	if fullscreen then
-		  background = Util.Create("Frame", {
+		local background = Util.Create("Frame", {
 			Name = "Background",
 			BackgroundColor3 = Color3.fromRGB(8, 8, 12),
 			Size = UDim2.new(1, 0, 1, 0),
 			Parent = screenGui,
 		})
 
-		  centerContainer = Util.Create("Frame", {
+		local centerContainer = Util.Create("Frame", {
 			Name = "Center",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -22821,7 +22821,7 @@ function Xan:CreateLoadingScreen(config)
 			Parent = background,
 		})
 
-		  logoContainer = Util.Create("Frame", {
+		local logoContainer = Util.Create("Frame", {
 			Name = "LogoContainer",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.5, 0, 0, 0),
@@ -22831,7 +22831,7 @@ function Xan:CreateLoadingScreen(config)
 			Parent = centerContainer,
 		})
 
-		  logo = Util.Create("ImageLabel", {
+		local logo = Util.Create("ImageLabel", {
 			Name = "Logo",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -22854,7 +22854,7 @@ function Xan:CreateLoadingScreen(config)
 			})
 		end
 
-		  titleLabel = Util.Create("TextLabel", {
+		local titleLabel = Util.Create("TextLabel", {
 			Name = "Title",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.5, 0, 0, 75),
@@ -22867,7 +22867,7 @@ function Xan:CreateLoadingScreen(config)
 			Parent = centerContainer,
 		})
 
-		  subtitleLabel = Util.Create("TextLabel", {
+		local subtitleLabel = Util.Create("TextLabel", {
 			Name = "Subtitle",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.5, 0, 0, 100),
@@ -22901,7 +22901,7 @@ function Xan:CreateLoadingScreen(config)
 			end)
 		end)
 	else
-		  loadCard = Util.Create("Frame", {
+		local loadCard = Util.Create("Frame", {
 			Name = "LoadCard",
 			BackgroundColor3 = Xan.CurrentTheme.Card,
 			Position = UDim2.new(0.5, 0, 1, 20),
@@ -22919,7 +22919,7 @@ function Xan:CreateLoadingScreen(config)
 
 		Components.Shadow(loadCard, theme, 10, 6)
 
-		  accentBar = Util.Create("Frame", {
+		local accentBar = Util.Create("Frame", {
 			Name = "Accent",
 			BackgroundColor3 = Xan.CurrentTheme.Accent,
 			Size = UDim2.new(0, 4, 1, 0),
@@ -22937,7 +22937,7 @@ function Xan:CreateLoadingScreen(config)
 			Parent = accentBar,
 		})
 
-		  logoContainer = Util.Create("Frame", {
+		local logoContainer = Util.Create("Frame", {
 			Name = "LogoContainer",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 18, 0.5, 0),
@@ -22946,7 +22946,7 @@ function Xan:CreateLoadingScreen(config)
 			Parent = loadCard,
 		})
 
-		  logo = Util.Create("ImageLabel", {
+		local logo = Util.Create("ImageLabel", {
 			Name = "Logo",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -22970,7 +22970,7 @@ function Xan:CreateLoadingScreen(config)
 			})
 		end
 
-		  titleLabel = Util.Create("TextLabel", {
+		local titleLabel = Util.Create("TextLabel", {
 			Name = "Title",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 54, 0, 10),
@@ -22983,7 +22983,7 @@ function Xan:CreateLoadingScreen(config)
 			Parent = loadCard,
 		})
 
-		  subtitleLabel = Util.Create("TextLabel", {
+		local subtitleLabel = Util.Create("TextLabel", {
 			Name = "Subtitle",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 54, 0, 30),
@@ -23019,14 +23019,14 @@ end
 
 function Xan:CreateBottomNotification(config)
 	config = config or {}
-	  title = config.Title or "Notification"
-	  subtitle = config.Subtitle or ""
-	  duration = config.Duration or 2
-	  theme = config.Theme or self.CurrentTheme
-	  logo = config.Logo or Logos.XanBar
-	  onComplete = config.OnComplete or function() end
+	local title = config.Title or "Notification"
+	local subtitle = config.Subtitle or ""
+	local duration = config.Duration or 2
+	local theme = config.Theme or self.CurrentTheme
+	local logo = config.Logo or Logos.XanBar
+	local onComplete = config.OnComplete or function() end
 
-	  screenGui = Util.Create("ScreenGui", {
+	local screenGui = Util.Create("ScreenGui", {
 		Name = Xan.GhostMode and Util.GenerateRandomString(18) or "XanBar_BottomNotification",
 		ResetOnSpawn = false,
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
@@ -23038,10 +23038,10 @@ function Xan:CreateBottomNotification(config)
 		screenGui.Parent = CoreGui
 	end)
 	if not screenGui.Parent then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  loadCard = Util.Create("Frame", {
+	local loadCard = Util.Create("Frame", {
 		Name = "LoadCard",
 		BackgroundColor3 = Xan.CurrentTheme.Card,
 		Position = UDim2.new(0.5, 0, 1, 20),
@@ -23059,7 +23059,7 @@ function Xan:CreateBottomNotification(config)
 
 	Components.Shadow(loadCard, theme, 10, 6)
 
-	  accentBar = Util.Create("Frame", {
+	local accentBar = Util.Create("Frame", {
 		Name = "Accent",
 		BackgroundColor3 = Xan.CurrentTheme.Accent,
 		Size = UDim2.new(0, 4, 1, 0),
@@ -23077,7 +23077,7 @@ function Xan:CreateBottomNotification(config)
 		Parent = accentBar,
 	})
 
-	  logoContainer = Util.Create("Frame", {
+	local logoContainer = Util.Create("Frame", {
 		Name = "LogoContainer",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 18, 0.5, 0),
@@ -23086,7 +23086,7 @@ function Xan:CreateBottomNotification(config)
 		Parent = loadCard,
 	})
 
-	  logoImg = Util.Create("ImageLabel", {
+	local logoImg = Util.Create("ImageLabel", {
 		Name = "Logo",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -23095,7 +23095,7 @@ function Xan:CreateBottomNotification(config)
 		Parent = logoContainer,
 	})
 
-	  titleLabel = Util.Create("TextLabel", {
+	local titleLabel = Util.Create("TextLabel", {
 		Name = "Title",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 54, 0, 10),
@@ -23108,7 +23108,7 @@ function Xan:CreateBottomNotification(config)
 		Parent = loadCard,
 	})
 
-	  subtitleLabel = Util.Create("TextLabel", {
+	local subtitleLabel = Util.Create("TextLabel", {
 		Name = "Subtitle",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 54, 0, 30),
@@ -23127,7 +23127,7 @@ function Xan:CreateBottomNotification(config)
 
 	RenderManager.AddSpinner(logoContainer, 120)
 
-	  notification = {
+	local notification = {
 		ScreenGui = screenGui,
 		SetTitle = function(text)
 			titleLabel.Text = text
@@ -23158,14 +23158,14 @@ end
 
 function Xan:CreateSplashScreen(config)
 	config = config or {}
-	  title = config.Title or ""
-	  subtitle = config.Subtitle or ""
-	  duration = config.Duration or 3
-	  theme = config.Theme or self.CurrentTheme
-	  logo = config.Logo or Logos.XanBar
-	  onComplete = config.OnComplete or function() end
+	local title = config.Title or ""
+	local subtitle = config.Subtitle or ""
+	local duration = config.Duration or 3
+	local theme = config.Theme or self.CurrentTheme
+	local logo = config.Logo or Logos.XanBar
+	local onComplete = config.OnComplete or function() end
 
-	  screenGui = Util.Create("ScreenGui", {
+	local screenGui = Util.Create("ScreenGui", {
 		Name = Xan.GhostMode and Util.GenerateRandomString(12) or "XanBar_Splash",
 		ResetOnSpawn = false,
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
@@ -23177,10 +23177,10 @@ function Xan:CreateSplashScreen(config)
 		screenGui.Parent = CoreGui
 	end)
 	if not screenGui.Parent then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  modal = Util.Create("Frame", {
+	local modal = Util.Create("Frame", {
 		Name = "Modal",
 		BackgroundColor3 = Xan.CurrentTheme.Background,
 		Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -23199,7 +23199,7 @@ function Xan:CreateSplashScreen(config)
 
 	modal.BackgroundTransparency = 1
 
-	  logoContainer = Util.Create("Frame", {
+	local logoContainer = Util.Create("Frame", {
 		Name = "LogoContainer",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.5, 0, 0, 40),
@@ -23209,10 +23209,10 @@ function Xan:CreateSplashScreen(config)
 		Parent = modal,
 	})
 
-	  isTwoToneLogo = logo == Logos.XanBar or logo == Logos.XanBarBody
-	  twoTone = config.TwoTone ~= false and isTwoToneLogo
+	local isTwoToneLogo = logo == Logos.XanBar or logo == Logos.XanBarBody
+	local twoTone = config.TwoTone ~= false and isTwoToneLogo
 
-	  logoImg = Util.Create("ImageLabel", {
+	local logoImg = Util.Create("ImageLabel", {
 		Name = "Logo",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -23224,7 +23224,7 @@ function Xan:CreateSplashScreen(config)
 		Parent = logoContainer,
 	})
 
-	  logoAccent = nil
+	local logoAccent = nil
 	if twoTone then
 		logoAccent = Util.Create("ImageLabel", {
 			Name = "LogoAccent",
@@ -23239,7 +23239,7 @@ function Xan:CreateSplashScreen(config)
 		})
 	end
 
-	  titleLabel = Util.Create("TextLabel", {
+	local titleLabel = Util.Create("TextLabel", {
 		Name = "Title",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.5, 0, 0, 120),
@@ -23254,7 +23254,7 @@ function Xan:CreateSplashScreen(config)
 		Parent = modal,
 	})
 
-	  subtitleLabel = Util.Create("TextLabel", {
+	local subtitleLabel = Util.Create("TextLabel", {
 		Name = "Subtitle",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.5, 0, 0, 150),
@@ -23288,7 +23288,7 @@ function Xan:CreateSplashScreen(config)
 
 	RenderManager.AddSpinner(logoContainer, 90)
 
-	  loading = {
+	local loading = {
 		ScreenGui = screenGui,
 		SetSubtitle = function(text)
 			subtitleLabel.Text = text
@@ -23322,7 +23322,7 @@ end
 
 function Xan:CreateSideloader(config)
 	config = config or {}
-	  steps = config.Steps
+	local steps = config.Steps
 		or {
 			"Initializing library...",
 			"Loading modules...",
@@ -23331,12 +23331,12 @@ function Xan:CreateSideloader(config)
 			"Preparing interface...",
 			"Done!",
 		}
-	  stepDelay = config.StepDelay or 0.4
-	  theme = config.Theme or self.CurrentTheme
-	  onComplete = config.OnComplete or function() end
-	  onStep = config.OnStep or function() end
+	local stepDelay = config.StepDelay or 0.4
+	local theme = config.Theme or self.CurrentTheme
+	local onComplete = config.OnComplete or function() end
+	local onStep = config.OnStep or function() end
 
-	  screenGui = Util.Create("ScreenGui", {
+	local screenGui = Util.Create("ScreenGui", {
 		Name = Xan.GhostMode and Util.GenerateRandomString(15) or "XanBar_Sideloader",
 		ResetOnSpawn = false,
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
@@ -23348,10 +23348,10 @@ function Xan:CreateSideloader(config)
 		screenGui.Parent = CoreGui
 	end)
 	if not screenGui.Parent then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  overlay = Util.Create("Frame", {
+	local overlay = Util.Create("Frame", {
 		Name = "Overlay",
 		BackgroundColor3 = Color3.fromRGB(0, 0, 0),
 		BackgroundTransparency = 1,
@@ -23361,7 +23361,7 @@ function Xan:CreateSideloader(config)
 
 	Util.Tween(overlay, 0.3, { BackgroundTransparency = 0.4 })
 
-	  logContainer = Util.Create("Frame", {
+	local logContainer = Util.Create("Frame", {
 		Name = "LogContainer",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 20, 0, 20),
@@ -23370,24 +23370,24 @@ function Xan:CreateSideloader(config)
 		Parent = overlay,
 	})
 
-	  logLayout = Util.Create("UIListLayout", {
+	local logLayout = Util.Create("UIListLayout", {
 		SortOrder = Enum.SortOrder.LayoutOrder,
 		Padding = UDim.new(0, 4),
 		Parent = logContainer,
 	})
 
-	  logLines = {}
-	  currentStep = 0
-	  isComplete = false
+	local logLines = {}
+	local currentStep = 0
+	local isComplete = false
 
-	  function addLogLine(text, isSuccess)
+	local function addLogLine(text, isSuccess)
 		currentStep = currentStep + 1
-		  lineOrder = currentStep
+		local lineOrder = currentStep
 
-		  prefix = isSuccess and "[✓]" or "[*]"
-		  prefixColor = isSuccess and Color3.fromRGB(80, 200, 120) or Xan.CurrentTheme.Accent
+		local prefix = isSuccess and "[✓]" or "[*]"
+		local prefixColor = isSuccess and Color3.fromRGB(80, 200, 120) or Xan.CurrentTheme.Accent
 
-		  lineFrame = Util.Create("Frame", {
+		local lineFrame = Util.Create("Frame", {
 			Name = "Line" .. lineOrder,
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 0, 18),
@@ -23396,7 +23396,7 @@ function Xan:CreateSideloader(config)
 			Parent = logContainer,
 		})
 
-		  prefixLabel = Util.Create("TextLabel", {
+		local prefixLabel = Util.Create("TextLabel", {
 			Name = "Prefix",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(0, 30, 1, 0),
@@ -23409,7 +23409,7 @@ function Xan:CreateSideloader(config)
 			Parent = lineFrame,
 		})
 
-		  textLabel = Util.Create("TextLabel", {
+		local textLabel = Util.Create("TextLabel", {
 			Name = "Text",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 30, 0, 0),
@@ -23430,7 +23430,7 @@ function Xan:CreateSideloader(config)
 		table.insert(logLines, lineFrame)
 
 		if #logLines > 15 then
-			  oldLine = table.remove(logLines, 1)
+			local oldLine = table.remove(logLines, 1)
 			Util.Tween(oldLine, 0.2, { Position = UDim2.new(-1, 0, 0, 0) })
 			task.delay(0.25, function()
 				oldLine:Destroy()
@@ -23440,13 +23440,13 @@ function Xan:CreateSideloader(config)
 		return lineFrame
 	end
 
-	  function runSteps()
+	local function runSteps()
 		for i, step in ipairs(steps) do
 			if isComplete then
 				break
 			end
 
-			  isLast = i == #steps
+			local isLast = i == #steps
 			addLogLine(step, isLast)
 			onStep(i, step)
 
@@ -23469,7 +23469,7 @@ function Xan:CreateSideloader(config)
 		end)
 	end
 
-	  sideloader = {
+	local sideloader = {
 		ScreenGui = screenGui,
 		AddStep = function(text, isSuccess)
 			return addLogLine(text, isSuccess or false)
@@ -23494,15 +23494,15 @@ end
 
 function Xan:CreateLoginScreen(config)
 	config = config or {}
-	  title = config.Title or "Welcome!"
-	  subtitle = config.Subtitle or "Sign in to continue"
-	  theme = config.Theme or self.CurrentTheme
-	  onLogin = config.OnLogin or function() end
-	  onSignup = config.OnSignup or function() end
-	  showSignup = config.ShowSignup ~= false
-	  showForgotPassword = config.ShowForgotPassword ~= false
+	local title = config.Title or "Welcome!"
+	local subtitle = config.Subtitle or "Sign in to continue"
+	local theme = config.Theme or self.CurrentTheme
+	local onLogin = config.OnLogin or function() end
+	local onSignup = config.OnSignup or function() end
+	local showSignup = config.ShowSignup ~= false
+	local showForgotPassword = config.ShowForgotPassword ~= false
 
-	  screenGui = Util.Create("ScreenGui", {
+	local screenGui = Util.Create("ScreenGui", {
 		Name = Xan.GhostMode and Util.GenerateRandomString(12) or "XanBar_Login",
 		ResetOnSpawn = false,
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
@@ -23514,10 +23514,10 @@ function Xan:CreateLoginScreen(config)
 		screenGui.Parent = CoreGui
 	end)
 	if not screenGui.Parent then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  mainFrame = Util.Create("Frame", {
+	local mainFrame = Util.Create("Frame", {
 		Name = "Main",
 		BackgroundColor3 = Xan.CurrentTheme.Background,
 		Size = UDim2.new(0, IsMobile and 340 or 500, 0, IsMobile and 400 or 360),
@@ -23532,7 +23532,7 @@ function Xan:CreateLoginScreen(config)
 	Components.Shadow(mainFrame, theme, 16, 12)
 	
 	
-	  leftPanelContainer = Util.Create("Frame", {
+	local leftPanelContainer = Util.Create("Frame", {
 		Name = "LeftPanelContainer",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, IsMobile and 0 or 180, 1, 0),
@@ -23540,18 +23540,18 @@ function Xan:CreateLoginScreen(config)
 		Parent = mainFrame,
 	})
 
-	  leftPanel = Instance.new("CanvasGroup")
+	local leftPanel = Instance.new("CanvasGroup")
 	leftPanel.Name = "LeftPanel"
 	leftPanel.BackgroundColor3 = Color3.fromRGB(25, 30, 40)
 	leftPanel.Size = UDim2.new(1, 0, 1, 0)
 	leftPanel.GroupTransparency = 0
 	leftPanel.Parent = leftPanelContainer
 
-	  leftCorner = Instance.new("UICorner")
+	local leftCorner = Instance.new("UICorner")
 	leftCorner.CornerRadius = UDim.new(0, 16)
 	leftCorner.Parent = leftPanel
 
-	  bgBase = Util.Create("Frame", {
+	local bgBase = Util.Create("Frame", {
 		Name = "BgBase",
 		BackgroundColor3 = Color3.fromRGB(38, 45, 62),
 		Size = UDim2.new(1, -3, 1, 0),
@@ -23559,7 +23559,7 @@ function Xan:CreateLoginScreen(config)
 		Parent = leftPanel,
 	})
 
-	  radialDark = Util.Create("Frame", {
+	local radialDark = Util.Create("Frame", {
 		Name = "RadialDark",
 		BackgroundColor3 = Color3.fromRGB(10, 12, 18),
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -23579,15 +23579,15 @@ function Xan:CreateLoginScreen(config)
 		}),
 	})
 
-	  gameIconsList = {}
+	local gameIconsList = {}
 	for _, icon in pairs(GameIcons) do
 		table.insert(gameIconsList, icon)
 	end
 
-	  floatingIcons = {}
-	  usedIcons = {}
+	local floatingIcons = {}
+	local usedIcons = {}
 
-	  iconConfigs = {
+	local iconConfigs = {
 		{ x = 0.04, y = 0.06, size = 38, opacity = 0.55, rotation = 12, floating = false },
 		{ x = 0.38, y = 0.08, size = 28, opacity = 0.45, rotation = -5, floating = true },
 		{ x = 0.72, y = 0.05, size = 32, opacity = 0.5, rotation = 6, floating = false },
@@ -23607,13 +23607,13 @@ function Xan:CreateLoginScreen(config)
 	}
 
 	for i, cfg in ipairs(iconConfigs) do
-		  iconIndex
+		local iconIndex
 		repeat
 			iconIndex = math.random(1, #gameIconsList)
 		until not usedIcons[iconIndex]
 		usedIcons[iconIndex] = true
 
-		  iconFrame = Util.Create("Frame", {
+		local iconFrame = Util.Create("Frame", {
 			Name = "GameIcon" .. i,
 			BackgroundTransparency = 1,
 			AnchorPoint = Vector2.new(0.5, 0.5),
@@ -23624,7 +23624,7 @@ function Xan:CreateLoginScreen(config)
 			Parent = leftPanel,
 		})
 
-		  iconImage = Util.Create("ImageLabel", {
+		local iconImage = Util.Create("ImageLabel", {
 			Name = "Icon",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -23653,7 +23653,7 @@ function Xan:CreateLoginScreen(config)
 		end
 	end
 
-	  textureOverlay = Util.Create("Frame", {
+	local textureOverlay = Util.Create("Frame", {
 		Name = "TextureOverlay",
 		BackgroundColor3 = Color3.fromRGB(12, 14, 20),
 		BackgroundTransparency = 0.7,
@@ -23671,7 +23671,7 @@ function Xan:CreateLoginScreen(config)
 		}),
 	})
 
-	  brandContainer = Util.Create("Frame", {
+	local brandContainer = Util.Create("Frame", {
 		Name = "Brand",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -23681,7 +23681,7 @@ function Xan:CreateLoginScreen(config)
 		Parent = leftPanel,
 	})
 
-	  logoImage = Util.Create("ImageLabel", {
+	local logoImage = Util.Create("ImageLabel", {
 		Name = "Logo",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -23693,16 +23693,16 @@ function Xan:CreateLoginScreen(config)
 		Parent = brandContainer,
 	})
 
-	  waveTime = 0
-	  waveTaskId = "waveAnim_" .. tostring(mainFrame)
+	local waveTime = 0
+	local waveTaskId = "waveAnim_" .. tostring(mainFrame)
 
 	RenderManager.AddTask(waveTaskId, function(dt)
 		waveTime = waveTime + dt * 0.4
 
 		for i, iconData in ipairs(floatingIcons) do
-			  smoothT = waveTime + iconData.phase
-			  newX = iconData.baseX + math.sin(smoothT) * iconData.amplitude
-			  newY = iconData.baseY + math.sin(smoothT * 0.8 + 1.5) * iconData.amplitude * 0.6
+			local smoothT = waveTime + iconData.phase
+			local newX = iconData.baseX + math.sin(smoothT) * iconData.amplitude
+			local newY = iconData.baseY + math.sin(smoothT * 0.8 + 1.5) * iconData.amplitude * 0.6
 
 			iconData.currentX = iconData.currentX + (newX - iconData.currentX) * math.min(dt * 3, 1)
 			iconData.currentY = iconData.currentY + (newY - iconData.currentY) * math.min(dt * 3, 1)
@@ -23711,7 +23711,7 @@ function Xan:CreateLoginScreen(config)
 		end
 	end, { frameSkip = 2 })
 
-	  rightPanel = Util.Create("Frame", {
+	local rightPanel = Util.Create("Frame", {
 		Name = "RightPanel",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, IsMobile and 0 or 180, 0, 0),
@@ -23719,7 +23719,7 @@ function Xan:CreateLoginScreen(config)
 		Parent = mainFrame,
 	})
 
-	  closeBtn = Util.Create("TextButton", {
+	local closeBtn = Util.Create("TextButton", {
 		Name = "Close",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(1, -40, 0, 12),
@@ -23738,7 +23738,7 @@ function Xan:CreateLoginScreen(config)
 		Util.Tween(closeBtn, 0.15, { TextColor3 = Xan.CurrentTheme.TextDim })
 	end)
 
-	  formContainer = Util.Create("Frame", {
+	local formContainer = Util.Create("Frame", {
 		Name = "Form",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -23747,7 +23747,7 @@ function Xan:CreateLoginScreen(config)
 		Parent = rightPanel,
 	})
 
-	  titleLabel = Util.Create("TextLabel", {
+	local titleLabel = Util.Create("TextLabel", {
 		Name = "Title",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, 32),
@@ -23759,7 +23759,7 @@ function Xan:CreateLoginScreen(config)
 		Parent = formContainer,
 	})
 
-	  subtitleLabel = Util.Create("TextLabel", {
+	local subtitleLabel = Util.Create("TextLabel", {
 		Name = "Subtitle",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 32),
@@ -23772,7 +23772,7 @@ function Xan:CreateLoginScreen(config)
 		Parent = formContainer,
 	})
 
-	  usernameLabel = Util.Create("TextLabel", {
+	local usernameLabel = Util.Create("TextLabel", {
 		Name = "UsernameLabel",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 65),
@@ -23785,7 +23785,7 @@ function Xan:CreateLoginScreen(config)
 		Parent = formContainer,
 	})
 
-	  usernameContainer = Util.Create("Frame", {
+	local usernameContainer = Util.Create("Frame", {
 		Name = "UsernameContainer",
 		BackgroundColor3 = Xan.CurrentTheme.Input,
 		Position = UDim2.new(0, 0, 0, 85),
@@ -23800,7 +23800,7 @@ function Xan:CreateLoginScreen(config)
 		}),
 	})
 
-	  usernameInput = Util.Create("TextBox", {
+	local usernameInput = Util.Create("TextBox", {
 		Name = "Username",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12, 0, 0),
@@ -23816,7 +23816,7 @@ function Xan:CreateLoginScreen(config)
 		Parent = usernameContainer,
 	})
 
-	  passwordLabel = Util.Create("TextLabel", {
+	local passwordLabel = Util.Create("TextLabel", {
 		Name = "PasswordLabel",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 132),
@@ -23829,7 +23829,7 @@ function Xan:CreateLoginScreen(config)
 		Parent = formContainer,
 	})
 
-	  passwordContainer = Util.Create("Frame", {
+	local passwordContainer = Util.Create("Frame", {
 		Name = "PasswordContainer",
 		BackgroundColor3 = Xan.CurrentTheme.Input,
 		Position = UDim2.new(0, 0, 0, 152),
@@ -23844,7 +23844,7 @@ function Xan:CreateLoginScreen(config)
 		}),
 	})
 
-	  passwordInput = Util.Create("TextBox", {
+	local passwordInput = Util.Create("TextBox", {
 		Name = "Password",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 12, 0, 0),
@@ -23860,7 +23860,7 @@ function Xan:CreateLoginScreen(config)
 		Parent = passwordContainer,
 	})
 
-	  passwordVisible = false
+	local passwordVisible = false
 
 	passwordInput.TextTransparency = 1
 	passwordInput.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -23871,7 +23871,7 @@ function Xan:CreateLoginScreen(config)
 		end
 	end)
 
-	  passwordOverlay = Util.Create("TextLabel", {
+	local passwordOverlay = Util.Create("TextLabel", {
 		Name = "PasswordOverlay",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 0),
@@ -23885,7 +23885,7 @@ function Xan:CreateLoginScreen(config)
 		Parent = passwordInput,
 	})
 
-	  togglePasswordBtn = Util.Create("ImageButton", {
+	local togglePasswordBtn = Util.Create("ImageButton", {
 		Name = "TogglePassword",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(1, -38, 0.5, 0),
@@ -23897,8 +23897,8 @@ function Xan:CreateLoginScreen(config)
 		Parent = passwordContainer,
 	})
 
-	  function updatePasswordDisplay()
-		  text = passwordInput.Text
+	local function updatePasswordDisplay()
+		local text = passwordInput.Text
 
 		if #text == 0 then
 			passwordOverlay.Text = "Enter password..."
@@ -23949,11 +23949,11 @@ function Xan:CreateLoginScreen(config)
 		Util.Tween(passwordContainer.Border, 0.2, { Color = Xan.CurrentTheme.InputBorder })
 	end)
 
-	  forgotOverlay = nil
-	  isTransitioning = false
-	  onForgotPassword = config.OnForgotPassword or function() end
+	local forgotOverlay = nil
+	local isTransitioning = false
+	local onForgotPassword = config.OnForgotPassword or function() end
 
-	  function showForgotPasswordScreen()
+	local function showForgotPasswordScreen()
 		if forgotOverlay or isTransitioning then
 			return
 		end
@@ -23992,7 +23992,7 @@ function Xan:CreateLoginScreen(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 16) }),
 			})
 
-			  forgotClose = Util.Create("TextButton", {
+			local forgotClose = Util.Create("TextButton", {
 				Name = "Back",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 12),
@@ -24007,7 +24007,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = forgotOverlay,
 			})
 
-			  forgotForm = Util.Create("Frame", {
+			local forgotForm = Util.Create("Frame", {
 				Name = "Form",
 				BackgroundTransparency = 1,
 				AnchorPoint = Vector2.new(0.5, 0.5),
@@ -24017,7 +24017,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = forgotOverlay,
 			})
 
-			  forgotTitle = Util.Create("TextLabel", {
+			local forgotTitle = Util.Create("TextLabel", {
 				Name = "Title",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, 28),
@@ -24031,7 +24031,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = forgotForm,
 			})
 
-			  forgotSubtitle = Util.Create("TextLabel", {
+			local forgotSubtitle = Util.Create("TextLabel", {
 				Name = "Subtitle",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 28),
@@ -24046,7 +24046,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = forgotForm,
 			})
 
-			  emailLabel = Util.Create("TextLabel", {
+			local emailLabel = Util.Create("TextLabel", {
 				Name = "EmailLabel",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 60),
@@ -24061,7 +24061,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = forgotForm,
 			})
 
-			  emailContainer = Util.Create("Frame", {
+			local emailContainer = Util.Create("Frame", {
 				Name = "EmailContainer",
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				BackgroundTransparency = 1,
@@ -24079,7 +24079,7 @@ function Xan:CreateLoginScreen(config)
 				}),
 			})
 
-			  emailInput = Util.Create("TextBox", {
+			local emailInput = Util.Create("TextBox", {
 				Name = "Email",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 0),
@@ -24097,7 +24097,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = emailContainer,
 			})
 
-			  requestBtn = Util.Create("TextButton", {
+			local requestBtn = Util.Create("TextButton", {
 				Name = "Request",
 				BackgroundColor3 = Xan.CurrentTheme.Accent,
 				BackgroundTransparency = 1,
@@ -24147,7 +24147,7 @@ function Xan:CreateLoginScreen(config)
 				Util.Tween(requestBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Accent })
 			end)
 
-			  function closeForgot()
+			local function closeForgot()
 				if isTransitioning then
 					return
 				end
@@ -24176,7 +24176,7 @@ function Xan:CreateLoginScreen(config)
 					Util.Tween(formContainer, 0.25, { Position = UDim2.new(0.5, 0, 0.5, 0) })
 					for _, child in ipairs(formContainer:GetDescendants()) do
 						if child:IsA("TextButton") then
-							  shouldHaveBg = child.Name == "Login"
+							local shouldHaveBg = child.Name == "Login"
 								or child.Name == "SignUp"
 								or child.Name == "Submit"
 							Util.Tween(
@@ -24197,7 +24197,7 @@ function Xan:CreateLoginScreen(config)
 						elseif child:IsA("UIStroke") and child.Name == "Border" then
 							Util.Tween(child, 0.25, { Transparency = 0 })
 						elseif child:IsA("ImageLabel") or child:IsA("ImageButton") then
-							  keepTransparent = child.Name == "TogglePassword" or child.Name == "Icon"
+							local keepTransparent = child.Name == "TogglePassword" or child.Name == "Icon"
 							Util.Tween(
 								child,
 								0.25,
@@ -24224,7 +24224,7 @@ function Xan:CreateLoginScreen(config)
 					Util.Tween(requestBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Accent })
 				end)
 
-				  email = emailInput.Text
+				local email = emailInput.Text
 				if email and #email > 0 then
 					onForgotPassword(email)
 				end
@@ -24239,9 +24239,9 @@ function Xan:CreateLoginScreen(config)
 		end)
 	end
 
-	  signupOverlay = nil
+	local signupOverlay = nil
 
-	  function showSignupScreen()
+	local function showSignupScreen()
 		if signupOverlay or isTransitioning then
 			return
 		end
@@ -24280,7 +24280,7 @@ function Xan:CreateLoginScreen(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 16) }),
 			})
 
-			  signupClose = Util.Create("TextButton", {
+			local signupClose = Util.Create("TextButton", {
 				Name = "Back",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 12),
@@ -24295,7 +24295,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupOverlay,
 			})
 
-			  signupForm = Util.Create("Frame", {
+			local signupForm = Util.Create("Frame", {
 				Name = "Form",
 				BackgroundTransparency = 1,
 				AnchorPoint = Vector2.new(0.5, 0.5),
@@ -24305,7 +24305,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupOverlay,
 			})
 
-			  signupTitle = Util.Create("TextLabel", {
+			local signupTitle = Util.Create("TextLabel", {
 				Name = "Title",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, 28),
@@ -24319,7 +24319,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupForm,
 			})
 
-			  signupSubtitle = Util.Create("TextLabel", {
+			local signupSubtitle = Util.Create("TextLabel", {
 				Name = "Subtitle",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 28),
@@ -24334,7 +24334,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupForm,
 			})
 
-			  signupUsernameLabel = Util.Create("TextLabel", {
+			local signupUsernameLabel = Util.Create("TextLabel", {
 				Name = "UsernameLabel",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 55),
@@ -24349,7 +24349,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupForm,
 			})
 
-			  signupUsernameContainer = Util.Create("Frame", {
+			local signupUsernameContainer = Util.Create("Frame", {
 				Name = "UsernameContainer",
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				BackgroundTransparency = 1,
@@ -24367,7 +24367,7 @@ function Xan:CreateLoginScreen(config)
 				}),
 			})
 
-			  signupUsernameInput = Util.Create("TextBox", {
+			local signupUsernameInput = Util.Create("TextBox", {
 				Name = "Username",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 0),
@@ -24385,7 +24385,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupUsernameContainer,
 			})
 
-			  signupEmailLabel = Util.Create("TextLabel", {
+			local signupEmailLabel = Util.Create("TextLabel", {
 				Name = "EmailLabel",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 115),
@@ -24400,7 +24400,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupForm,
 			})
 
-			  signupEmailContainer = Util.Create("Frame", {
+			local signupEmailContainer = Util.Create("Frame", {
 				Name = "EmailContainer",
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				BackgroundTransparency = 1,
@@ -24418,7 +24418,7 @@ function Xan:CreateLoginScreen(config)
 				}),
 			})
 
-			  signupEmailInput = Util.Create("TextBox", {
+			local signupEmailInput = Util.Create("TextBox", {
 				Name = "Email",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 0),
@@ -24436,7 +24436,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupEmailContainer,
 			})
 
-			  signupPasswordLabel = Util.Create("TextLabel", {
+			local signupPasswordLabel = Util.Create("TextLabel", {
 				Name = "PasswordLabel",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 175),
@@ -24451,7 +24451,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupForm,
 			})
 
-			  signupPasswordContainer = Util.Create("Frame", {
+			local signupPasswordContainer = Util.Create("Frame", {
 				Name = "PasswordContainer",
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				BackgroundTransparency = 1,
@@ -24469,7 +24469,7 @@ function Xan:CreateLoginScreen(config)
 				}),
 			})
 
-			  signupPasswordInput = Util.Create("TextBox", {
+			local signupPasswordInput = Util.Create("TextBox", {
 				Name = "Password",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 0),
@@ -24487,7 +24487,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupPasswordContainer,
 			})
 
-			  signupPasswordOverlay = Util.Create("TextLabel", {
+			local signupPasswordOverlay = Util.Create("TextLabel", {
 				Name = "PasswordOverlay",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
@@ -24502,7 +24502,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupPasswordInput,
 			})
 
-			  signupConfirmLabel = Util.Create("TextLabel", {
+			local signupConfirmLabel = Util.Create("TextLabel", {
 				Name = "ConfirmLabel",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 235),
@@ -24517,7 +24517,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupForm,
 			})
 
-			  signupConfirmContainer = Util.Create("Frame", {
+			local signupConfirmContainer = Util.Create("Frame", {
 				Name = "ConfirmContainer",
 				BackgroundColor3 = Xan.CurrentTheme.Input,
 				BackgroundTransparency = 1,
@@ -24535,7 +24535,7 @@ function Xan:CreateLoginScreen(config)
 				}),
 			})
 
-			  signupConfirmInput = Util.Create("TextBox", {
+			local signupConfirmInput = Util.Create("TextBox", {
 				Name = "Confirm",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 12, 0, 0),
@@ -24553,7 +24553,7 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupConfirmContainer,
 			})
 
-			  signupConfirmOverlay = Util.Create("TextLabel", {
+			local signupConfirmOverlay = Util.Create("TextLabel", {
 				Name = "ConfirmOverlay",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 0, 0, 0),
@@ -24568,8 +24568,8 @@ function Xan:CreateLoginScreen(config)
 				Parent = signupConfirmInput,
 			})
 
-			  function updateSignupPasswordDisplay()
-				  text = signupPasswordInput.Text
+			local function updateSignupPasswordDisplay()
+				local text = signupPasswordInput.Text
 				if #text == 0 then
 					signupPasswordOverlay.Text = "Create a password..."
 					signupPasswordOverlay.TextColor3 = Color3.fromRGB(100, 100, 110)
@@ -24580,8 +24580,8 @@ function Xan:CreateLoginScreen(config)
 				signupPasswordInput.TextTransparency = 1
 			end
 
-			  function updateSignupConfirmDisplay()
-				  text = signupConfirmInput.Text
+			local function updateSignupConfirmDisplay()
+				local text = signupConfirmInput.Text
 				if #text == 0 then
 					signupConfirmOverlay.Text = "Confirm your password..."
 					signupConfirmOverlay.TextColor3 = Color3.fromRGB(100, 100, 110)
@@ -24595,7 +24595,7 @@ function Xan:CreateLoginScreen(config)
 			signupPasswordInput:GetPropertyChangedSignal("Text"):Connect(updateSignupPasswordDisplay)
 			signupConfirmInput:GetPropertyChangedSignal("Text"):Connect(updateSignupConfirmDisplay)
 
-			  signupSubmitBtn = Util.Create("TextButton", {
+			local signupSubmitBtn = Util.Create("TextButton", {
 				Name = "Submit",
 				BackgroundColor3 = Xan.CurrentTheme.Accent,
 				BackgroundTransparency = 1,
@@ -24678,7 +24678,7 @@ function Xan:CreateLoginScreen(config)
 				Util.Tween(signupSubmitBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Accent })
 			end)
 
-			  function closeSignup()
+			local function closeSignup()
 				if isTransitioning then
 					return
 				end
@@ -24719,7 +24719,7 @@ function Xan:CreateLoginScreen(config)
 					Util.Tween(formContainer, 0.25, { Position = UDim2.new(0.5, 0, 0.5, 0) })
 					for _, child in ipairs(formContainer:GetDescendants()) do
 						if child:IsA("TextButton") then
-							  shouldHaveBg = child.Name == "Login"
+							local shouldHaveBg = child.Name == "Login"
 								or child.Name == "SignUp"
 								or child.Name == "Submit"
 							Util.Tween(
@@ -24740,7 +24740,7 @@ function Xan:CreateLoginScreen(config)
 						elseif child:IsA("UIStroke") and child.Name == "Border" then
 							Util.Tween(child, 0.25, { Transparency = 0 })
 						elseif child:IsA("ImageLabel") or child:IsA("ImageButton") then
-							  keepTransparent = child.Name == "TogglePassword" or child.Name == "Icon"
+							local keepTransparent = child.Name == "TogglePassword" or child.Name == "Icon"
 							Util.Tween(
 								child,
 								0.25,
@@ -24767,10 +24767,10 @@ function Xan:CreateLoginScreen(config)
 					Util.Tween(signupSubmitBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Accent })
 				end)
 
-				  username = signupUsernameInput.Text
-				  email = signupEmailInput.Text
-				  password = signupPasswordInput.Text
-				  confirm = signupConfirmInput.Text
+				local username = signupUsernameInput.Text
+				local email = signupEmailInput.Text
+				local password = signupPasswordInput.Text
+				local confirm = signupConfirmInput.Text
 
 				if password ~= confirm then
 					Util.Tween(signupConfirmContainer.Border, 0.2, { Color = Xan.CurrentTheme.Error })
@@ -24783,7 +24783,7 @@ function Xan:CreateLoginScreen(config)
 				end
 
 				if username and #username > 0 and email and #email > 0 and password and #password > 0 then
-					  result = onSignup(username, email, password)
+					local result = onSignup(username, email, password)
 					if result then
 						closeSignup()
 					end
@@ -24800,7 +24800,7 @@ function Xan:CreateLoginScreen(config)
 	end
 
 	if showForgotPassword then
-		  forgotBtn = Util.Create("TextButton", {
+		local forgotBtn = Util.Create("TextButton", {
 			Name = "Forgot",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 0, 0, 195),
@@ -24823,7 +24823,7 @@ function Xan:CreateLoginScreen(config)
 		forgotBtn.MouseButton1Click:Connect(showForgotPasswordScreen)
 	end
 
-	  loginBtn = Util.Create("TextButton", {
+	local loginBtn = Util.Create("TextButton", {
 		Name = "Login",
 		BackgroundColor3 = Xan.CurrentTheme.Accent,
 		Position = UDim2.new(0, 0, 0, 218),
@@ -24846,7 +24846,7 @@ function Xan:CreateLoginScreen(config)
 	end)
 
 	if showSignup then
-		  signupContainer = Util.Create("Frame", {
+		local signupContainer = Util.Create("Frame", {
 			Name = "SignupRow",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 0, 0, 268),
@@ -24866,7 +24866,7 @@ function Xan:CreateLoginScreen(config)
 			Parent = signupContainer,
 		})
 
-		  signupBtn = Util.Create("TextButton", {
+		local signupBtn = Util.Create("TextButton", {
 			Name = "Signup",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.6, 5, 0, 0),
@@ -24897,14 +24897,14 @@ function Xan:CreateLoginScreen(config)
 		BackgroundTransparency = 0,
 	}, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
 
-	  login = {
+	local login = {
 		Gui = screenGui,
 		Frame = mainFrame,
 		UsernameInput = usernameInput,
 		PasswordInput = passwordInput,
 	}
 
-	  function closeLogin()
+	local function closeLogin()
 		RenderManager.RemoveTask(waveTaskId)
 		Util.Tween(mainFrame, 0.3, {
 			Size = UDim2.new(0, 0, 0, 0),
@@ -24923,7 +24923,7 @@ function Xan:CreateLoginScreen(config)
 			Util.Tween(loginBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Accent })
 		end)
 
-		  result = onLogin(usernameInput.Text, passwordInput.Text)
+		local result = onLogin(usernameInput.Text, passwordInput.Text)
 		if result then
 			closeLogin()
 		end
@@ -24933,7 +24933,7 @@ function Xan:CreateLoginScreen(config)
 		closeLogin()
 	end
 
-	  notificationContainer = Util.Create("Frame", {
+	local notificationContainer = Util.Create("Frame", {
 		Name = "NotificationContainer",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -24943,7 +24943,7 @@ function Xan:CreateLoginScreen(config)
 		Parent = rightPanel,
 	})
 
-	  notificationFrame = Util.Create("Frame", {
+	local notificationFrame = Util.Create("Frame", {
 		Name = "Notification",
 		BackgroundColor3 = Xan.CurrentTheme.Error,
 		BackgroundTransparency = 1,
@@ -24956,7 +24956,7 @@ function Xan:CreateLoginScreen(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 	})
 
-	  notificationText = Util.Create("TextLabel", {
+	local notificationText = Util.Create("TextLabel", {
 		Name = "Text",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, -16, 1, 0),
@@ -24971,9 +24971,9 @@ function Xan:CreateLoginScreen(config)
 		Parent = notificationFrame,
 	})
 
-	  function showNotification(message, notifType, duration)
+	local function showNotification(message, notifType, duration)
 		duration = duration or 3
-		  colors = {
+		local colors = {
 			error = Xan.CurrentTheme.Error,
 			success = Color3.fromRGB(80, 180, 100),
 			warning = Color3.fromRGB(220, 160, 50),
@@ -25028,13 +25028,13 @@ end
 
 function Xan:CreateMobileToggle(config)
 	config = config or {}
-	  targetWindow = config.Window
-	  position = config.Position or UDim2.new(0.5, 0, 0, 40)
-	  size = config.Size or (IsMobile and 56 or 50)
-	  icon = config.Icon or Logos.XanBar
-	  visible = config.Visible ~= false
+	local targetWindow = config.Window
+	local position = config.Position or UDim2.new(0.5, 0, 0, 40)
+	local size = config.Size or (IsMobile and 56 or 50)
+	local icon = config.Icon or Logos.XanBar
+	local visible = config.Visible ~= false
 
-	  screenGui = Instance.new("ScreenGui")
+	local screenGui = Instance.new("ScreenGui")
 	screenGui.Name = Xan.GhostMode and Util.GenerateRandomString(16)
 		or ("XanBar_MobileToggle_" .. math.random(10000, 99999))
 	screenGui.ResetOnSpawn = false
@@ -25042,16 +25042,16 @@ function Xan:CreateMobileToggle(config)
 	screenGui.DisplayOrder = 200
 	screenGui.Enabled = visible
 
-	  success = pcall(function()
+	local success = pcall(function()
 		screenGui.Parent = CoreGui
 	end)
 	if not success then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  isTwoTone = icon == Logos.XanBar or icon == Logos.XanBarBody
+	local isTwoTone = icon == Logos.XanBar or icon == Logos.XanBarBody
 
-	  btn = Util.Create("TextButton", {
+	local btn = Util.Create("TextButton", {
 		Name = "ToggleButton",
 		BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary,
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -25094,11 +25094,11 @@ function Xan:CreateMobileToggle(config)
 		})
 	end
 
-	  isDragging = false
-	  dragStart = nil
-	  startPos = nil
-	  hasDragged = false
-	  dragThreshold = 10
+	local isDragging = false
+	local dragStart = nil
+	local startPos = nil
+	local hasDragged = false
+	local dragThreshold = 10
 
 	btn.InputBegan:Connect(function(input)
 		if
@@ -25120,16 +25120,16 @@ function Xan:CreateMobileToggle(config)
 				or input.UserInputType == Enum.UserInputType.Touch
 			)
 		then
-			  delta = input.Position - dragStart
+			local delta = input.Position - dragStart
 			if delta.Magnitude > dragThreshold then
 				hasDragged = true
-				  camera = workspace.CurrentCamera
-				  screenSize = camera and camera.ViewportSize or Vector2.new(1920, 1080)
-				  halfSize = size / 2
-				  padding = 10
+				local camera = workspace.CurrentCamera
+				local screenSize = camera and camera.ViewportSize or Vector2.new(1920, 1080)
+				local halfSize = size / 2
+				local padding = 10
 
-				  newX = startPos.X.Offset + delta.X
-				  newY = startPos.Y.Offset + delta.Y
+				local newX = startPos.X.Offset + delta.X
+				local newY = startPos.Y.Offset + delta.Y
 
 				newX = math.clamp(
 					newX,
@@ -25160,13 +25160,13 @@ function Xan:CreateMobileToggle(config)
 			isDragging = false
 
 			if hasDragged then
-				  camera = workspace.CurrentCamera
-				  screenSize = camera and camera.ViewportSize or Vector2.new(1920, 1080)
-				  halfSize = size / 2
-				  padding = 10
+				local camera = workspace.CurrentCamera
+				local screenSize = camera and camera.ViewportSize or Vector2.new(1920, 1080)
+				local halfSize = size / 2
+				local padding = 10
 
-				  absX = btn.AbsolutePosition.X + halfSize
-				  absY = btn.AbsolutePosition.Y + halfSize
+				local absX = btn.AbsolutePosition.X + halfSize
+				local absY = btn.AbsolutePosition.Y + halfSize
 
 				absX = math.clamp(absX, halfSize + padding, screenSize.X - halfSize - padding)
 				absY = math.clamp(absY, halfSize + padding, screenSize.Y - halfSize - padding)
@@ -25185,7 +25185,7 @@ function Xan:CreateMobileToggle(config)
 		Util.Tween(btn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary })
 	end)
 
-	  mobileToggle = {
+	local mobileToggle = {
 		Button = btn,
 		ScreenGui = screenGui,
 	}
@@ -25216,7 +25216,7 @@ function Xan:CreateMobileToggle(config)
 	return mobileToggle
 end
 
-  ConfigurationManager = {
+local ConfigurationManager = {
 	SaveFolder = "XanBar",
 	CurrentConfig = nil,
 }
@@ -25260,7 +25260,7 @@ end
 function Xan:SaveConfiguration(configName)
 	configName = configName or "default"
 
-	  data = {
+	local data = {
 		Flags = {},
 		Version = self.Version,
 		Timestamp = os.time(),
@@ -25290,7 +25290,7 @@ function Xan:SaveConfiguration(configName)
 		end
 	end
 
-	  success, encoded = pcall(function()
+	local success, encoded = pcall(function()
 		return HttpService:JSONEncode(data)
 	end)
 
@@ -25305,8 +25305,8 @@ function Xan:SaveConfiguration(configName)
 	end
 
 	if writefile then
-		  folderPath = ConfigurationManager.SaveFolder
-		  filePath = folderPath .. "/" .. configName .. ".json"
+		local folderPath = ConfigurationManager.SaveFolder
+		local filePath = folderPath .. "/" .. configName .. ".json"
 
 		pcall(function()
 			if not isfolder(folderPath) then
@@ -25347,10 +25347,10 @@ function Xan:LoadConfiguration(configName)
 		return false
 	end
 
-	  folderPath = ConfigurationManager.SaveFolder
-	  filePath = folderPath .. "/" .. configName .. ".json"
+	local folderPath = ConfigurationManager.SaveFolder
+	local filePath = folderPath .. "/" .. configName .. ".json"
 
-	  success, content = pcall(function()
+	local success, content = pcall(function()
 		return readfile(filePath)
 	end)
 
@@ -25364,7 +25364,7 @@ function Xan:LoadConfiguration(configName)
 		return false
 	end
 
-	  decodeSuccess, data = pcall(function()
+	local decodeSuccess, data = pcall(function()
 		return HttpService:JSONDecode(content)
 	end)
 
@@ -25405,19 +25405,19 @@ function Xan:LoadConfiguration(configName)
 end
 
 function Xan:ListConfigurations()
-	  configs = {}
+	local configs = {}
 
 	if not listfiles then
 		return configs
 	end
 
-	  folderPath = ConfigurationManager.SaveFolder
+	local folderPath = ConfigurationManager.SaveFolder
 
 	pcall(function()
 		if isfolder(folderPath) then
 			for _, file in ipairs(listfiles(folderPath)) do
 				if file:match("%.json$") then
-					  name = file:match("([^/\\]+)%.json$")
+					local name = file:match("([^/\\]+)%.json$")
 					if name then
 						table.insert(configs, name)
 					end
@@ -25434,10 +25434,10 @@ function Xan:DeleteConfiguration(configName)
 		return false
 	end
 
-	  folderPath = ConfigurationManager.SaveFolder
-	  filePath = folderPath .. "/" .. configName .. ".json"
+	local folderPath = ConfigurationManager.SaveFolder
+	local filePath = folderPath .. "/" .. configName .. ".json"
 
-	  success = pcall(function()
+	local success = pcall(function()
 		delfile(filePath)
 	end)
 
@@ -25605,7 +25605,7 @@ function Xan:IsColorSimilar(c1, c2, tolerance)
 end
 
 function Xan:GetThemeNames()
-	  names = {}
+	local names = {}
 	for name, _ in pairs(self.Themes) do
 		table.insert(names, name)
 	end
@@ -25615,9 +25615,9 @@ end
 
 function Xan:CreateCustomTheme(name, baseTheme, overrides)
 	baseTheme = baseTheme or "Default"
-	  base = self.Themes[baseTheme] or self.Themes.Default
+	local base = self.Themes[baseTheme] or self.Themes.Default
 
-	  newTheme = Util.DeepCopy(base)
+	local newTheme = Util.DeepCopy(base)
 	newTheme.Name = name
 
 	if overrides then
@@ -25631,16 +25631,16 @@ function Xan:CreateCustomTheme(name, baseTheme, overrides)
 end
 
 function Xan:ApplyTheme(themeName)
-	  newTheme = self.Themes[themeName]
+	local newTheme = self.Themes[themeName]
 	if not newTheme then
 		return
 	end
 
-	  oldTheme = self.CurrentTheme
+	local oldTheme = self.CurrentTheme
 	self.CurrentTheme = newTheme
 
 	newTheme.Dropdown = newTheme.Dropdown or newTheme.Input or newTheme.BackgroundTertiary or Color3.fromRGB(25, 25, 32)
-	  base = newTheme.Dropdown
+	local base = newTheme.Dropdown
 	newTheme.DropdownHover = newTheme.DropdownHover
 		or Color3.fromRGB(
 			math.min(255, math.floor(base.R * 255) + 10),
@@ -25648,14 +25648,14 @@ function Xan:ApplyTheme(themeName)
 			math.min(255, math.floor(base.B * 255) + 13)
 		)
 
-	  function colorsMatch(c1, c2, tolerance)
+	local function colorsMatch(c1, c2, tolerance)
 		tolerance = tolerance or 0.05
 		return math.abs(c1.R - c2.R) < tolerance
 			and math.abs(c1.G - c2.G) < tolerance
 			and math.abs(c1.B - c2.B) < tolerance
 	end
 
-	  function isOldAccent(color)
+	local function isOldAccent(color)
 		for _, themeData in pairs(self.Themes) do
 			if
 				colorsMatch(color, themeData.Accent, 0.12)
@@ -25670,7 +25670,7 @@ function Xan:ApplyTheme(themeName)
 		return false
 	end
 
-	  function isOldSliderFill(color)
+	local function isOldSliderFill(color)
 		for _, themeData in pairs(self.Themes) do
 			if colorsMatch(color, themeData.SliderFill, 0.12) then
 				return true
@@ -25679,7 +25679,7 @@ function Xan:ApplyTheme(themeName)
 		return false
 	end
 
-	  function isOldToggleEnabled(color)
+	local function isOldToggleEnabled(color)
 		for _, themeData in pairs(self.Themes) do
 			if colorsMatch(color, themeData.ToggleEnabled, 0.12) then
 				return true
@@ -25688,7 +25688,7 @@ function Xan:ApplyTheme(themeName)
 		return false
 	end
 
-	  function isOldToggle(color)
+	local function isOldToggle(color)
 		for _, themeData in pairs(self.Themes) do
 			if colorsMatch(color, themeData.Toggle, 0.05) then
 				return true
@@ -25697,7 +25697,7 @@ function Xan:ApplyTheme(themeName)
 		return false
 	end
 
-	  function isOldDropdown(color)
+	local function isOldDropdown(color)
 		if not color then
 			return false
 		end
@@ -25709,16 +25709,16 @@ function Xan:ApplyTheme(themeName)
 				return true
 			end
 		end
-		  isDarkEnough = color.R < 0.20 and color.G < 0.20 and color.B < 0.25
+		local isDarkEnough = color.R < 0.20 and color.G < 0.20 and color.B < 0.25
 		if isDarkEnough then
 			return true
 		end
 		return false
 	end
 
-	  function isOldError(color)
-		  dangerHover = Color3.fromRGB(255, 100, 100)
-		  dangerClick = Color3.fromRGB(180, 50, 50)
+	local function isOldError(color)
+		local dangerHover = Color3.fromRGB(255, 100, 100)
+		local dangerClick = Color3.fromRGB(180, 50, 50)
 		if colorsMatch(color, dangerHover, 0.12) or colorsMatch(color, dangerClick, 0.12) then
 			return true
 		end
@@ -25726,12 +25726,12 @@ function Xan:ApplyTheme(themeName)
 			if colorsMatch(color, themeData.Error, 0.20) then
 				return true
 			end
-			  errorHover = Color3.fromRGB(
+			local errorHover = Color3.fromRGB(
 				math.min(255, math.floor(themeData.Error.R * 255) + 30),
 				math.min(255, math.floor(themeData.Error.G * 255) + 30),
 				math.min(255, math.floor(themeData.Error.B * 255) + 30)
 			)
-			  errorPress = Color3.fromRGB(
+			local errorPress = Color3.fromRGB(
 				math.max(0, math.floor(themeData.Error.R * 255) - 40),
 				math.max(0, math.floor(themeData.Error.G * 255) - 40),
 				math.max(0, math.floor(themeData.Error.B * 255) - 40)
@@ -25743,7 +25743,7 @@ function Xan:ApplyTheme(themeName)
 		return false
 	end
 
-	  function isOldBackgroundTertiary(color)
+	local function isOldBackgroundTertiary(color)
 		for _, themeData in pairs(self.Themes) do
 			if colorsMatch(color, themeData.BackgroundTertiary, 0.12) then
 				return true
@@ -25752,7 +25752,7 @@ function Xan:ApplyTheme(themeName)
 		return false
 	end
 
-	  function isOldCardHover(color)
+	local function isOldCardHover(color)
 		for _, themeData in pairs(self.Themes) do
 			if colorsMatch(color, themeData.CardHover, 0.10) then
 				return true
@@ -25761,7 +25761,7 @@ function Xan:ApplyTheme(themeName)
 		return false
 	end
 
-	  function isOldCard(color)
+	local function isOldCard(color)
 		if isOldCardHover(color) then
 			return false
 		end
@@ -25773,7 +25773,7 @@ function Xan:ApplyTheme(themeName)
 		return false
 	end
 
-	  function isOldBackgroundSecondary(color)
+	local function isOldBackgroundSecondary(color)
 		for _, themeData in pairs(self.Themes) do
 			if colorsMatch(color, themeData.BackgroundSecondary, 0.12) then
 				return true
@@ -25782,7 +25782,7 @@ function Xan:ApplyTheme(themeName)
 		return false
 	end
 
-	  function isOldInput(color)
+	local function isOldInput(color)
 		for _, themeData in pairs(self.Themes) do
 			if colorsMatch(color, themeData.Input, 0.12) then
 				return true
@@ -25791,9 +25791,9 @@ function Xan:ApplyTheme(themeName)
 		return false
 	end
 
-	  function isMutedAccent(color)
+	local function isMutedAccent(color)
 		for _, themeData in pairs(self.Themes) do
-			  mutedColor = Color3.fromRGB(
+			local mutedColor = Color3.fromRGB(
 				math.floor(themeData.Accent.R * 180),
 				math.floor(themeData.Accent.G * 180),
 				math.floor(themeData.Accent.B * 180)
@@ -25801,7 +25801,7 @@ function Xan:ApplyTheme(themeName)
 			if colorsMatch(color, mutedColor, 0.15) then
 				return true
 			end
-			  mutedHover = Color3.fromRGB(
+			local mutedHover = Color3.fromRGB(
 				math.floor(themeData.Accent.R * 210),
 				math.floor(themeData.Accent.G * 210),
 				math.floor(themeData.Accent.B * 210)
@@ -25809,7 +25809,7 @@ function Xan:ApplyTheme(themeName)
 			if colorsMatch(color, mutedHover, 0.15) then
 				return true
 			end
-			  mutedPress = Color3.fromRGB(
+			local mutedPress = Color3.fromRGB(
 				math.floor(themeData.Accent.R * 150),
 				math.floor(themeData.Accent.G * 150),
 				math.floor(themeData.Accent.B * 150)
@@ -25821,32 +25821,32 @@ function Xan:ApplyTheme(themeName)
 		return false
 	end
 
-	  function updateElement(element, parentIsActiveTab, insideThemePreview, insideHitboxPreview)
+	local function updateElement(element, parentIsActiveTab, insideThemePreview, insideHitboxPreview)
 		if not element then
 			return
 		end
 
-		  name = element.Name
-		  class = element.ClassName
+		local name = element.Name
+		local class = element.ClassName
 
 		if class == "Model" or class == "Part" or class == "MeshPart" or class == "WorldModel" or class == "Camera" then
 			return
 		end
 
-		  isUserControlled = pcall(function()
+		local isUserControlled = pcall(function()
 			return element:GetAttribute("UserControlled")
 		end) and element:GetAttribute("UserControlled")
 		if isUserControlled then
 			return
 		end
 
-		  parent = element.Parent
-		  parentName = parent and parent.Name or ""
-		  grandparent = parent and parent.Parent
-		  grandparentName = grandparent and grandparent.Name or ""
+		local parent = element.Parent
+		local parentName = parent and parent.Name or ""
+		local grandparent = parent and parent.Parent
+		local grandparentName = grandparent and grandparent.Name or ""
 
-		  isInsideCuteButton = parent and parent:FindFirstChild("AnimeGirl") ~= nil
-		  isInsideLuffyButton = parent and parent:FindFirstChild("Luffy") ~= nil
+		local isInsideCuteButton = parent and parent:FindFirstChild("AnimeGirl") ~= nil
+		local isInsideLuffyButton = parent and parent:FindFirstChild("Luffy") ~= nil
 		if not isInsideCuteButton and grandparent then
 			isInsideCuteButton = grandparent:FindFirstChild("AnimeGirl") ~= nil
 		end
@@ -25880,10 +25880,10 @@ function Xan:ApplyTheme(themeName)
 		end
 
 		if name == "PartLabel" and class == "TextLabel" then
-			  parentFrame = element.Parent
+			local parentFrame = element.Parent
 			if parentFrame then
-				  indicator = parentFrame:FindFirstChild("Indicator")
-				  isEnabled = indicator and indicator.Visible
+				local indicator = parentFrame:FindFirstChild("Indicator")
+				local isEnabled = indicator and indicator.Visible
 				element.TextColor3 = isEnabled and newTheme.Text or newTheme.TextDim
 			end
 			return
@@ -25891,16 +25891,16 @@ function Xan:ApplyTheme(themeName)
 
 		if name:find("HitboxRow") or name:find("Hitbox_") then
 			if class == "Frame" and element.BackgroundTransparency < 0.5 then
-				  indicator = element:FindFirstChild("Indicator")
-				  isEnabled = indicator and indicator.Visible
+				local indicator = element:FindFirstChild("Indicator")
+				local isEnabled = indicator and indicator.Visible
 				element.BackgroundColor3 = isEnabled and newTheme.BackgroundTertiary or newTheme.BackgroundSecondary
 
-				  lbl = element:FindFirstChild("PartLabel") or element:FindFirstChild("Label")
+				local lbl = element:FindFirstChild("PartLabel") or element:FindFirstChild("Label")
 				if lbl then
 					lbl.TextColor3 = isEnabled and newTheme.Text or newTheme.TextDim
 				end
 
-				  stroke = element:FindFirstChildWhichIsA("UIStroke")
+				local stroke = element:FindFirstChildWhichIsA("UIStroke")
 				if stroke then
 					stroke.Color = newTheme.CardBorder
 				end
@@ -25920,7 +25920,7 @@ function Xan:ApplyTheme(themeName)
 
 		if name == "Viewport" and class == "ViewportFrame" then
 			element.BackgroundColor3 = newTheme.Background
-			  vpStroke = element:FindFirstChild("ViewportStroke")
+			local vpStroke = element:FindFirstChild("ViewportStroke")
 			if vpStroke then
 				vpStroke.Color = newTheme.CardBorder
 			end
@@ -25938,7 +25938,7 @@ function Xan:ApplyTheme(themeName)
 			return
 		end
 
-		  parentName = element.Parent and element.Parent.Name or ""
+		local parentName = element.Parent and element.Parent.Name or ""
 		if parentName == "Bar" or parentName == "Toggles" then
 			if name == "Head" or name == "Chest" or name == "Arms" or name == "Legs" or name == "Check" then
 				return
@@ -25946,9 +25946,9 @@ function Xan:ApplyTheme(themeName)
 		end
 
 		if name == "Preview" then
-			  parentName = element.Parent and element.Parent.Name or ""
-			  grandParent = element.Parent and element.Parent.Parent
-			  grandParentName = grandParent and grandParent.Name or ""
+			local parentName = element.Parent and element.Parent.Name or ""
+			local grandParent = element.Parent and element.Parent.Parent
+			local grandParentName = grandParent and grandParent.Name or ""
 			if parentName:match("Color") or parentName:match("Picker") or parentName == "Header" then
 				if
 					grandParent
@@ -26021,11 +26021,11 @@ function Xan:ApplyTheme(themeName)
 			elseif name:find("SearchResult_") then
 				Util.Tween(element, 0.3, { BackgroundColor3 = newTheme.Card })
 			elseif name == "TypeBadge" then
-				  typeBadgeText = element:FindFirstChild("Text")
-				  badgeColor = newTheme.Accent
-				  isButtonType = false
+				local typeBadgeText = element:FindFirstChild("Text")
+				local badgeColor = newTheme.Accent
+				local isButtonType = false
 				if typeBadgeText then
-					  txt = typeBadgeText.Text
+					local txt = typeBadgeText.Text
 					if txt == "Toggle" then
 						badgeColor = newTheme.ToggleEnabled
 					elseif txt == "Slider" then
@@ -26078,11 +26078,11 @@ function Xan:ApplyTheme(themeName)
 					end
 				end
 			elseif name == "ToggleBg" or name == "ToggleTrack" then
-				  knob = element:FindFirstChild("Knob")
-				  isEnabledByPos = knob and knob.Position.X.Scale > 0.5
-				  isEnabledByColor = isOldToggleEnabled(element.BackgroundColor3)
+				local knob = element:FindFirstChild("Knob")
+				local isEnabledByPos = knob and knob.Position.X.Scale > 0.5
+				local isEnabledByColor = isOldToggleEnabled(element.BackgroundColor3)
 					or isOldAccent(element.BackgroundColor3)
-				  isEnabled = isEnabledByPos or isEnabledByColor
+				local isEnabled = isEnabledByPos or isEnabledByColor
 				element.BackgroundColor3 = isEnabled and newTheme.ToggleEnabled or newTheme.Toggle
 			elseif name == "GraphContainer" or name == "Graph" then
 				Util.Tween(element, 0.3, { BackgroundColor3 = newTheme.BackgroundTertiary })
@@ -26092,44 +26092,44 @@ function Xan:ApplyTheme(themeName)
 			elseif name:match("^SpeedSeg%d+$") then
 			elseif name:match("^BodyPart_") or name:match("^BodyDot_") or name:match("^BodyLegend_") then
 			elseif name:match("^Line%d+$") or name:match("^Dot%d+$") or name == "Dot" then
-				  parentName = element.Parent and element.Parent.Name or ""
+				local parentName = element.Parent and element.Parent.Name or ""
 				if parentName ~= "CrosshairPreview" and not parentName:match("Crosshair") then
 					element.BackgroundColor3 = newTheme.Accent
 				end
 			elseif name == "Check" then
-				  bg = element.BackgroundColor3
-				  isEnabled = isOldAccent(bg) or isOldToggleEnabled(bg)
+				local bg = element.BackgroundColor3
+				local isEnabled = isOldAccent(bg) or isOldToggleEnabled(bg)
 				element.BackgroundColor3 = isEnabled and newTheme.Accent or newTheme.Toggle
 			elseif name == "Options" or name == "MobileGameDropdown" then
 			elseif element:FindFirstChild("Header") and element:FindFirstChild("Options") then
 				element.BackgroundColor3 = newTheme.Card
-				  stroke = element:FindFirstChildWhichIsA("UIStroke")
+				local stroke = element:FindFirstChildWhichIsA("UIStroke")
 				if stroke then
 					stroke.Color = newTheme.CardBorder
 				end
 			elseif element.BackgroundTransparency < 0.5 then
-				  bg = element.BackgroundColor3
-				  hasToggleBg = element:FindFirstChild("ToggleBg") or element:FindFirstChild("ToggleTrack")
-				  hasUIStroke = element:FindFirstChildWhichIsA("UIStroke")
-				  isToggleContainer = hasToggleBg
+				local bg = element.BackgroundColor3
+				local hasToggleBg = element:FindFirstChild("ToggleBg") or element:FindFirstChild("ToggleTrack")
+				local hasUIStroke = element:FindFirstChildWhichIsA("UIStroke")
+				local isToggleContainer = hasToggleBg
 					or (hasUIStroke and element:FindFirstChild("Label") and element:FindFirstChild("Hitbox"))
 
 				if isToggleContainer then
 					element.BackgroundColor3 = newTheme.Card
 				elseif isMutedAccent(bg) then
-					  mutedAccent = Color3.fromRGB(
+					local mutedAccent = Color3.fromRGB(
 						math.floor(newTheme.Accent.R * 180),
 						math.floor(newTheme.Accent.G * 180),
 						math.floor(newTheme.Accent.B * 180)
 					)
 					element.BackgroundColor3 = mutedAccent
-					  stroke = element:FindFirstChild("Stroke")
+					local stroke = element:FindFirstChild("Stroke")
 					if stroke then
 						stroke.Color = newTheme.Accent
 					end
 				elseif isOldAccent(bg) then
-					  dangerRed = Color3.fromRGB(220, 60, 60)
-					  isDangerFrame = colorsMatch(bg, dangerRed, 0.1)
+					local dangerRed = Color3.fromRGB(220, 60, 60)
+					local isDangerFrame = colorsMatch(bg, dangerRed, 0.1)
 					if not isDangerFrame then
 						element.BackgroundColor3 = newTheme.Accent
 					end
@@ -26148,7 +26148,7 @@ function Xan:ApplyTheme(themeName)
 				elseif isOldInput(bg) then
 					element.BackgroundColor3 = newTheme.Input
 				else
-					  isDark = bg.R < 0.25 and bg.G < 0.25 and bg.B < 0.25
+					local isDark = bg.R < 0.25 and bg.G < 0.25 and bg.B < 0.25
 					if isDark and name ~= "Hitboxes" and name ~= "Blips" and name ~= "Preview" then
 						if isOldDropdown(bg) then
 							element.BackgroundColor3 = newTheme.Dropdown or newTheme.Input or Color3.fromRGB(25, 25, 32)
@@ -26159,9 +26159,9 @@ function Xan:ApplyTheme(themeName)
 				end
 			end
 		elseif class == "TextLabel" then
-			  parent = element.Parent
-			  parentName = parent and parent.Name or ""
-			  isBadgeText = parentName == "POPULAR"
+			local parent = element.Parent
+			local parentName = parent and parent.Name or ""
+			local isBadgeText = parentName == "POPULAR"
 				or parentName == "NEW"
 				or parentName == "UPDATED"
 				or parentName == "MAINTENANCE"
@@ -26173,8 +26173,8 @@ function Xan:ApplyTheme(themeName)
 			if name == "Title" then
 				Util.Tween(element, 0.3, { TextColor3 = newTheme.Text })
 			elseif name == "Subtitle" then
-				  parent = element.Parent
-				  isSearchResultSubtitle = parent
+				local parent = element.Parent
+				local isSearchResultSubtitle = parent
 					and parent.Name == "Header"
 					and parent.Parent
 					and parent.Parent.Name:find("SearchResult_")
@@ -26186,9 +26186,9 @@ function Xan:ApplyTheme(themeName)
 			elseif name == "premium" or name == "MinimizedTitle" then
 				Util.Tween(element, 0.3, { TextColor3 = newTheme.Accent })
 			elseif name == "Text" and element.Parent and element.Parent.Name == "TypeBadge" then
-				  txt = element.Text
-				  badgeColor = newTheme.Accent
-				  isButtonText = txt == "button"
+				local txt = element.Text
+				local badgeColor = newTheme.Accent
+				local isButtonText = txt == "button"
 				if txt == "Toggle" then
 					badgeColor = newTheme.ToggleEnabled
 				elseif txt == "Slider" then
@@ -26204,10 +26204,10 @@ function Xan:ApplyTheme(themeName)
 			elseif name == "Value" or name == "Selected" or name == "Count" then
 				Util.Tween(element, 0.3, { TextColor3 = newTheme.Accent })
 			elseif name == "Label" then
-				  parent = element.Parent
-				  isTabButton = parent and parent:FindFirstChild("Icon")
+				local parent = element.Parent
+				local isTabButton = parent and parent:FindFirstChild("Icon")
 				if isTabButton then
-					  isActiveTab = parent.BackgroundTransparency < 0.5
+					local isActiveTab = parent.BackgroundTransparency < 0.5
 					Util.Tween(element, 0.3, { TextColor3 = isActiveTab and newTheme.Text or newTheme.TextDim })
 				else
 					Util.Tween(element, 0.3, { TextColor3 = newTheme.Text })
@@ -26225,21 +26225,21 @@ function Xan:ApplyTheme(themeName)
 			elseif name == "Text" and element.Parent and element.Parent.Name == "NoResults" then
 				Util.Tween(element, 0.3, { TextColor3 = newTheme.TextDim })
 			else
-				  textColor = element.TextColor3
+				local textColor = element.TextColor3
 
-				  dangerRed = Color3.fromRGB(220, 60, 60)
-				  isDangerText = colorsMatch(textColor, dangerRed, 0.15)
+				local dangerRed = Color3.fromRGB(220, 60, 60)
+				local isDangerText = colorsMatch(textColor, dangerRed, 0.15)
 
-				  isPinkish = textColor.R > 0.3
+				local isPinkish = textColor.R > 0.3
 					and textColor.R < 0.5
 					and textColor.G < 0.3
 					and textColor.B > 0.2
 					and textColor.B < 0.4
-				  isDarkPink = textColor.R < 0.5
+				local isDarkPink = textColor.R < 0.5
 					and textColor.G < 0.3
 					and textColor.B < 0.4
 					and textColor.R > textColor.G
-				  isCuteText = isPinkish or isDarkPink
+				local isCuteText = isPinkish or isDarkPink
 
 				if isDangerText or isCuteText then
 				elseif isOldAccent(textColor) then
@@ -26251,54 +26251,54 @@ function Xan:ApplyTheme(themeName)
 				end
 			end
 		elseif class == "TextButton" then
-			  bg = element.BackgroundColor3
-			  parentName = element.Parent and element.Parent.Name or ""
-			  btnName = element.Name
+			local bg = element.BackgroundColor3
+			local parentName = element.Parent and element.Parent.Name or ""
+			local btnName = element.Name
 
-			  isMobileToggleBtn = btnName == "ToggleButton"
-			  isMobileActionBtn = parentName:match("^ActionBtn_") and btnName == "Button"
+			local isMobileToggleBtn = btnName == "ToggleButton"
+			local isMobileActionBtn = parentName:match("^ActionBtn_") and btnName == "Button"
 
-			  isPillButton = false
-			  corner = element:FindFirstChildWhichIsA("UICorner")
+			local isPillButton = false
+			local corner = element:FindFirstChildWhichIsA("UICorner")
 			if corner and corner.CornerRadius.Scale >= 0.5 then
 				isPillButton = true
 			end
 
-			  isPrimaryBtn = btnName == "Button"
+			local isPrimaryBtn = btnName == "Button"
 				and element.TextColor3.R > 0.9
 				and element.TextColor3.G > 0.9
 				and element.TextColor3.B > 0.9
 				and isOldAccent(bg)
 				and not isPillButton
-			  isAimButton = btnName == "AimButton"
-			  isTriggerButton = btnName == "TriggerButton"
-			  isFloatingButton = btnName == "FloatingButton"
-			  repositionGray = Color3.fromRGB(45, 45, 50)
-			  isRepositionSaveButton = btnName == "SaveButton" and colorsMatch(bg, repositionGray, 0.08)
-			  triggerOrange = Color3.fromRGB(255, 180, 80)
+			local isAimButton = btnName == "AimButton"
+			local isTriggerButton = btnName == "TriggerButton"
+			local isFloatingButton = btnName == "FloatingButton"
+			local repositionGray = Color3.fromRGB(45, 45, 50)
+			local isRepositionSaveButton = btnName == "SaveButton" and colorsMatch(bg, repositionGray, 0.08)
+			local triggerOrange = Color3.fromRGB(255, 180, 80)
 
-			  isWhiteText = element.TextColor3.R > 0.9 and element.TextColor3.G > 0.9 and element.TextColor3.B > 0.9
-			  hasRedHue = bg.R > 0.6 and bg.R > bg.G and bg.R > bg.B and bg.G < 0.5 and bg.B < 0.5
-			  isDangerBtn = isWhiteText
+			local isWhiteText = element.TextColor3.R > 0.9 and element.TextColor3.G > 0.9 and element.TextColor3.B > 0.9
+			local hasRedHue = bg.R > 0.6 and bg.R > bg.G and bg.R > bg.B and bg.G < 0.5 and bg.B < 0.5
+			local isDangerBtn = isWhiteText
 				and (isOldError(bg) or hasRedHue)
 				and not isPillButton
 				and not isOldAccent(bg)
-			  hasNeutralBg = isOldBackgroundTertiary(bg) or isOldCard(bg) or isOldCardHover(bg)
-			  isRegularBtn = btnName == "Button" and hasNeutralBg and not isDangerBtn and not isPrimaryBtn
+			local hasNeutralBg = isOldBackgroundTertiary(bg) or isOldCard(bg) or isOldCardHover(bg)
+			local isRegularBtn = btnName == "Button" and hasNeutralBg and not isDangerBtn and not isPrimaryBtn
 
-			  isGlassButton = element:FindFirstChild("GlassBorder") ~= nil
+			local isGlassButton = element:FindFirstChild("GlassBorder") ~= nil
 				or element:FindFirstChild("Shimmer") ~= nil
 			if isGlassButton and isOldAccent(bg) then
 				element.BackgroundColor3 = newTheme.Accent
-				  glassBorder = element:FindFirstChild("GlassBorder")
+				local glassBorder = element:FindFirstChild("GlassBorder")
 				if glassBorder then
 					glassBorder.Color = newTheme.Accent
 				end
 			end
 
-			  isLoadButton = btnName == "LoadButton" or (parentName:find("GameCard") and element.Text == "Load")
+			local isLoadButton = btnName == "LoadButton" or (parentName:find("GameCard") and element.Text == "Load")
 			if isLoadButton then
-				  isMaintenance = element.Text == "Offline" or isOldError(bg)
+				local isMaintenance = element.Text == "Offline" or isOldError(bg)
 				if isMaintenance then
 					element.BackgroundColor3 = newTheme.Error
 				else
@@ -26322,7 +26322,7 @@ function Xan:ApplyTheme(themeName)
 					else
 						element.BackgroundColor3 = newTheme.Card
 					end
-					  stroke = element:FindFirstChildWhichIsA("UIStroke")
+					local stroke = element:FindFirstChildWhichIsA("UIStroke")
 					if stroke then
 						stroke.Color = newTheme.CardBorder
 					end
@@ -26333,23 +26333,23 @@ function Xan:ApplyTheme(themeName)
 				elseif isTriggerButton then
 					return
 				elseif isFloatingButton then
-					  isOn = isOldAccent(bg)
+					local isOn = isOldAccent(bg)
 					element.BackgroundColor3 = isOn and newTheme.Accent or newTheme.BackgroundSecondary
-					  stroke = element:FindFirstChild("Stroke")
+					local stroke = element:FindFirstChild("Stroke")
 					if stroke then
 						stroke.Color = isOn and newTheme.Accent or newTheme.CardBorder
 					end
 				elseif isMobileActionBtn then
-					  hasAccentBg = isOldAccent(bg)
+					local hasAccentBg = isOldAccent(bg)
 					if hasAccentBg then
 						element.BackgroundColor3 = newTheme.Accent
-						  stroke = element:FindFirstChild("Stroke")
+						local stroke = element:FindFirstChild("Stroke")
 						if stroke then
 							stroke.Color = newTheme.Accent
 						end
 					else
 						element.BackgroundColor3 = newTheme.BackgroundSecondary
-						  stroke = element:FindFirstChild("Stroke")
+						local stroke = element:FindFirstChild("Stroke")
 						if stroke then
 							stroke.Color = newTheme.CardBorder
 						end
@@ -26357,7 +26357,7 @@ function Xan:ApplyTheme(themeName)
 				elseif isPillButton and isOldAccent(bg) then
 					element.BackgroundColor3 = newTheme.Accent
 					element.TextColor3 = Util.GetContrastText(newTheme.Accent)
-					  border = element:FindFirstChild("Border")
+					local border = element:FindFirstChild("Border")
 					if border and border:IsA("UIStroke") then
 						border.Color = newTheme.Accent
 					end
@@ -26370,17 +26370,17 @@ function Xan:ApplyTheme(themeName)
 					or parentName == "optionsContainer"
 					or parentName == "ProductDropdown"
 				then
-					  hasAccentBg = isOldAccent(bg) or isOldToggleEnabled(bg)
-					  hasDropdownBg = isOldDropdown(bg)
-					  isDropdownHoverColor = false
+					local hasAccentBg = isOldAccent(bg) or isOldToggleEnabled(bg)
+					local hasDropdownBg = isOldDropdown(bg)
+					local isDropdownHoverColor = false
 					for _, themeData in pairs(self.Themes) do
 						if themeData.DropdownHover and colorsMatch(bg, themeData.DropdownHover, 0.15) then
 							isDropdownHoverColor = true
 							break
 						end
 					end
-					  dropdownColor = newTheme.Dropdown or newTheme.Input or Color3.fromRGB(25, 25, 32)
-					  dropdownHoverColor = newTheme.DropdownHover
+					local dropdownColor = newTheme.Dropdown or newTheme.Input or Color3.fromRGB(25, 25, 32)
+					local dropdownHoverColor = newTheme.DropdownHover
 						or newTheme.CardHover
 						or Color3.fromRGB(35, 35, 45)
 					if hasAccentBg then
@@ -26400,12 +26400,12 @@ function Xan:ApplyTheme(themeName)
 				elseif isOldInput(bg) then
 					element.BackgroundColor3 = newTheme.Input
 					element.TextColor3 = newTheme.Text
-					  stroke = element:FindFirstChildWhichIsA("UIStroke")
+					local stroke = element:FindFirstChildWhichIsA("UIStroke")
 					if stroke then
 						stroke.Color = newTheme.InputBorder
 					end
 				elseif btnName == "LoadBtn" or isMutedAccent(bg) then
-					  mutedAccent = Color3.fromRGB(
+					local mutedAccent = Color3.fromRGB(
 						math.floor(newTheme.Accent.R * 180),
 						math.floor(newTheme.Accent.G * 180),
 						math.floor(newTheme.Accent.B * 180)
@@ -26413,20 +26413,20 @@ function Xan:ApplyTheme(themeName)
 					element.BackgroundColor3 = mutedAccent
 				elseif isOldAccent(bg) or isOldToggleEnabled(bg) then
 					element.BackgroundColor3 = newTheme.Accent
-					  border = element:FindFirstChild("Border")
+					local border = element:FindFirstChild("Border")
 					if border and border:IsA("UIStroke") then
 						border.Color = newTheme.Accent
 					end
 				elseif isOldDropdown(bg) then
-					  isDropdownHoverColor = false
+					local isDropdownHoverColor = false
 					for _, themeData in pairs(self.Themes) do
 						if themeData.DropdownHover and colorsMatch(bg, themeData.DropdownHover, 0.15) then
 							isDropdownHoverColor = true
 							break
 						end
 					end
-					  dropdownColor = newTheme.Dropdown or newTheme.Input or Color3.fromRGB(25, 25, 32)
-					  dropdownHoverColor = newTheme.DropdownHover
+					local dropdownColor = newTheme.Dropdown or newTheme.Input or Color3.fromRGB(25, 25, 32)
+					local dropdownHoverColor = newTheme.DropdownHover
 						or newTheme.CardHover
 						or Color3.fromRGB(35, 35, 45)
 					element.BackgroundColor3 = isDropdownHoverColor and dropdownHoverColor or dropdownColor
@@ -26441,7 +26441,7 @@ function Xan:ApplyTheme(themeName)
 				elseif isOldCard(bg) then
 					element.BackgroundColor3 = newTheme.Card
 				else
-					  isDark = bg.R < 0.25 and bg.G < 0.25 and bg.B < 0.25
+					local isDark = bg.R < 0.25 and bg.G < 0.25 and bg.B < 0.25
 					if isDark then
 						if isOldDropdown(bg) then
 							element.BackgroundColor3 = newTheme.Dropdown or newTheme.Input or Color3.fromRGB(25, 25, 32)
@@ -26454,17 +26454,17 @@ function Xan:ApplyTheme(themeName)
 			end
 
 			if element.Text ~= "" then
-				  textColor = element.TextColor3
-				  isWhite = textColor.R > 0.9 and textColor.G > 0.9 and textColor.B > 0.9
+				local textColor = element.TextColor3
+				local isWhite = textColor.R > 0.9 and textColor.G > 0.9 and textColor.B > 0.9
 
-				  isPinkish = textColor.R > 0.6 and textColor.G < 0.5 and textColor.B > 0.3 and textColor.B < 0.8
-				  isDarkPink = textColor.R < 0.5
+				local isPinkish = textColor.R > 0.6 and textColor.G < 0.5 and textColor.B > 0.3 and textColor.B < 0.8
+				local isDarkPink = textColor.R < 0.5
 					and textColor.G < 0.3
 					and textColor.B < 0.4
 					and textColor.R > textColor.G
-				  isBrownish = textColor.R > 0.35 and textColor.R < 0.6 and textColor.G < 0.3 and textColor.B < 0.35
-				  isOrange = textColor.R > 0.8 and textColor.G > 0.4 and textColor.G < 0.8 and textColor.B < 0.4
-				  isCustomColoredText = isPinkish or isDarkPink or isBrownish or isOrange
+				local isBrownish = textColor.R > 0.35 and textColor.R < 0.6 and textColor.G < 0.3 and textColor.B < 0.35
+				local isOrange = textColor.R > 0.8 and textColor.G > 0.4 and textColor.G < 0.8 and textColor.B < 0.4
+				local isCustomColoredText = isPinkish or isDarkPink or isBrownish or isOrange
 
 				if not isWhite and not isCustomColoredText then
 					if isOldAccent(textColor) then
@@ -26482,8 +26482,8 @@ function Xan:ApplyTheme(themeName)
 				PlaceholderColor3 = newTheme.TextDim,
 			})
 		elseif class == "ImageLabel" or class == "ImageButton" then
-			  parent = element.Parent
-			  parentName = parent and parent.Name or ""
+			local parent = element.Parent
+			local parentName = parent and parent.Name or ""
 
 			if name == "Avatar" then
 				Util.Tween(element, 0.3, { BackgroundColor3 = newTheme.BackgroundSecondary })
@@ -26507,47 +26507,47 @@ function Xan:ApplyTheme(themeName)
 			end
 
 			if name == "Logo" then
-				  isTwoToneLogo = element.Image == Logos.XanBarBody
+				local isTwoToneLogo = element.Image == Logos.XanBarBody
 				if not isTwoToneLogo then
-					  isDefaultTheme = newTheme.Name == "Default"
+					local isDefaultTheme = newTheme.Name == "Default"
 					element.ImageColor3 = isDefaultTheme and Color3.new(1, 1, 1) or newTheme.Accent
 				end
 			elseif name == "LogoAccent" or name == "MinimizedLogoAccent" or name == "IconAccent" then
 				Util.Tween(element, 0.3, { ImageColor3 = newTheme.Accent })
 			elseif name == "Icon" then
-				  isMobileToggleIcon = parentName == "ToggleButton"
-				  isMobileActionIcon = parent
+				local isMobileToggleIcon = parentName == "ToggleButton"
+				local isMobileActionIcon = parent
 					and parent:IsA("TextButton")
 					and parent.Parent
 					and parent.Parent.Name:match("^ActionBtn_")
-				  isAimIcon = parentName == "AimButton"
-				  isTriggerIcon = parentName == "TriggerButton"
-				  isFloatingIcon = parentName == "FloatingButton"
+				local isAimIcon = parentName == "AimButton"
+				local isTriggerIcon = parentName == "TriggerButton"
+				local isFloatingIcon = parentName == "FloatingButton"
 
 				if isMobileToggleIcon then
 					element.ImageColor3 = Color3.new(1, 1, 1)
 				elseif isMobileActionIcon then
-					  btn = parent
-					  hasAccentBg = isOldAccent(btn.BackgroundColor3)
+					local btn = parent
+					local hasAccentBg = isOldAccent(btn.BackgroundColor3)
 					element.ImageColor3 = hasAccentBg and Color3.new(1, 1, 1) or newTheme.TextSecondary
 				elseif isAimIcon then
-					  btn = parent
-					  hasAccentBg = isOldAccent(btn.BackgroundColor3)
+					local btn = parent
+					local hasAccentBg = isOldAccent(btn.BackgroundColor3)
 					element.ImageColor3 = hasAccentBg and Color3.new(1, 1, 1) or newTheme.TextSecondary
 				elseif isTriggerIcon then
 					element.ImageColor3 = Color3.fromRGB(255, 180, 80)
 				elseif isFloatingIcon then
-					  btn = parent
-					  hasAccentBg = isOldAccent(btn.BackgroundColor3)
+					local btn = parent
+					local hasAccentBg = isOldAccent(btn.BackgroundColor3)
 					element.ImageColor3 = hasAccentBg and Color3.new(1, 1, 1) or newTheme.TextSecondary
 				elseif parentName == "NoResults" then
 					Util.Tween(element, 0.3, { ImageColor3 = newTheme.TextDim })
 				else
-					  dangerRed = Color3.fromRGB(220, 60, 60)
-					  isDangerIcon = colorsMatch(element.ImageColor3, dangerRed, 0.15)
+					local dangerRed = Color3.fromRGB(220, 60, 60)
+					local isDangerIcon = colorsMatch(element.ImageColor3, dangerRed, 0.15)
 					if isDangerIcon then
 					else
-						  isTabButton = parent
+						local isTabButton = parent
 							and parent:IsA("TextButton")
 							and (
 								(parent.Parent and parent.Parent.Name == "Tabs")
@@ -26555,7 +26555,7 @@ function Xan:ApplyTheme(themeName)
 								or (parent.Parent and parent.Parent.Name:find("TabContainer"))
 								or (parent:FindFirstChild("Label") ~= nil)
 							)
-						  isActiveTab = parent and parent:IsA("TextButton") and parent.BackgroundTransparency < 0.5
+						local isActiveTab = parent and parent:IsA("TextButton") and parent.BackgroundTransparency < 0.5
 
 						if isTabButton then
 							if isActiveTab then
@@ -26564,7 +26564,7 @@ function Xan:ApplyTheme(themeName)
 								Util.Tween(element, 0.3, { ImageColor3 = newTheme.TextDim })
 							end
 						else
-							  wasAccent = isOldAccent(element.ImageColor3)
+							local wasAccent = isOldAccent(element.ImageColor3)
 							if wasAccent then
 								Util.Tween(element, 0.3, { ImageColor3 = newTheme.Accent })
 							else
@@ -26594,16 +26594,16 @@ function Xan:ApplyTheme(themeName)
 				or name == "IconClose"
 				or name == "IconMinimize"
 			then
-				  wasAccent = isOldAccent(element.ImageColor3)
+				local wasAccent = isOldAccent(element.ImageColor3)
 				if wasAccent then
 					Util.Tween(element, 0.3, { ImageColor3 = newTheme.Accent })
 				else
 					Util.Tween(element, 0.3, { ImageColor3 = newTheme.TextDim })
 				end
 			else
-				  imgColor = element.ImageColor3
-				  dangerRed = Color3.fromRGB(220, 60, 60)
-				  isDangerIcon = colorsMatch(imgColor, dangerRed, 0.15)
+				local imgColor = element.ImageColor3
+				local dangerRed = Color3.fromRGB(220, 60, 60)
+				local isDangerIcon = colorsMatch(imgColor, dangerRed, 0.15)
 				if not isDangerIcon and isOldAccent(imgColor) then
 					Util.Tween(element, 0.3, { ImageColor3 = newTheme.Accent })
 				end
@@ -26632,16 +26632,16 @@ function Xan:ApplyTheme(themeName)
 				})
 			end
 		elseif class == "UIStroke" then
-			  parent = element.Parent
-			  parentName = parent and parent.Name or ""
-			  parentClass = parent and parent.ClassName or ""
+			local parent = element.Parent
+			local parentName = parent and parent.Name or ""
+			local parentClass = parent and parent.ClassName or ""
 
-			  dangerRed = Color3.fromRGB(220, 60, 60)
-			  isDangerStroke = colorsMatch(element.Color, dangerRed, 0.15)
-			  parentBg = parent and parent.BackgroundColor3
-			  isDangerParent = parentBg and colorsMatch(parentBg, dangerRed, 0.15)
+			local dangerRed = Color3.fromRGB(220, 60, 60)
+			local isDangerStroke = colorsMatch(element.Color, dangerRed, 0.15)
+			local parentBg = parent and parent.BackgroundColor3
+			local isDangerParent = parentBg and colorsMatch(parentBg, dangerRed, 0.15)
 
-			  isCardStroke = (parentBg and isOldCard(parentBg))
+			local isCardStroke = (parentBg and isOldCard(parentBg))
 				or (parent and parent:FindFirstChild("Header") ~= nil)
 
 			if isDangerStroke or isDangerParent then
@@ -26684,13 +26684,13 @@ function Xan:ApplyTheme(themeName)
 					ColorSequenceKeypoint.new(1, newTheme.Accent),
 				})
 			elseif name == "Gradient" then
-				  parentName = element.Parent and element.Parent.Name or ""
+				local parentName = element.Parent and element.Parent.Name or ""
 				if parentName == "Button" then
 					element.Color = ColorSequence.new({
 						ColorSequenceKeypoint.new(0, newTheme.AccentDark),
 						ColorSequenceKeypoint.new(1, newTheme.Accent),
 					})
-					  textLabel = element.Parent:FindFirstChild("Text")
+					local textLabel = element.Parent:FindFirstChild("Text")
 					if textLabel then
 						textLabel.TextColor3 = Util.GetContrastText(newTheme.Accent)
 					end
@@ -26698,54 +26698,54 @@ function Xan:ApplyTheme(themeName)
 			end
 		end
 
-		  checkActive = class == "TextButton" and element.BackgroundTransparency < 0.5
+		local checkActive = class == "TextButton" and element.BackgroundTransparency < 0.5
 
 		for _, child in ipairs(element:GetChildren()) do
 			updateElement(child, checkActive or parentIsActiveTab, insideThemePreview, insideHitboxPreview)
 		end
 	end
 
-	  function directUpdateGui(gui)
+	local function directUpdateGui(gui)
 		for _, desc in ipairs(gui:GetDescendants()) do
 			if desc:IsA("Frame") then
-				  dName = desc.Name
+				local dName = desc.Name
 				if dName == "Fill" then
 					desc.BackgroundColor3 = newTheme.SliderFill
 				elseif dName == "Track" or dName == "SliderTrack" then
 					desc.BackgroundColor3 = newTheme.Slider
 				elseif dName == "Knob" then
 					desc.BackgroundColor3 = newTheme.ToggleKnob
-					  stroke = desc:FindFirstChildWhichIsA("UIStroke")
+					local stroke = desc:FindFirstChildWhichIsA("UIStroke")
 					if stroke then
 						stroke.Color = newTheme.SliderFill
 					end
 				elseif dName == "ToggleBg" or dName == "ToggleTrack" then
-					  knob = desc:FindFirstChild("Knob")
-					  isEnabled = knob and knob.Position.X.Scale > 0.5
+					local knob = desc:FindFirstChild("Knob")
+					local isEnabled = knob and knob.Position.X.Scale > 0.5
 					desc.BackgroundColor3 = isEnabled and newTheme.ToggleEnabled or newTheme.Toggle
 				elseif dName:find("Hitbox_") and desc.BackgroundTransparency < 0.5 then
-					  indicator = desc:FindFirstChild("Indicator")
-					  isEnabled = indicator and indicator.Visible
+					local indicator = desc:FindFirstChild("Indicator")
+					local isEnabled = indicator and indicator.Visible
 					desc.BackgroundColor3 = isEnabled and newTheme.BackgroundTertiary or newTheme.BackgroundSecondary
-					  lbl = desc:FindFirstChild("Label")
+					local lbl = desc:FindFirstChild("Label")
 					if lbl then
 						lbl.TextColor3 = isEnabled and newTheme.Text or newTheme.TextDim
 					end
-					  stroke = desc:FindFirstChildWhichIsA("UIStroke")
+					local stroke = desc:FindFirstChildWhichIsA("UIStroke")
 					if stroke then
 						stroke.Color = newTheme.CardBorder
 					end
 				elseif dName:find("StylePreview_") and desc.BackgroundTransparency < 0.5 then
 					desc.BackgroundColor3 = newTheme.BackgroundTertiary
-					  stroke = desc:FindFirstChildWhichIsA("UIStroke")
+					local stroke = desc:FindFirstChildWhichIsA("UIStroke")
 					if stroke then
 						stroke.Color = newTheme.CardBorder
 					end
 				elseif dName == "MeterBg" then
 					desc.BackgroundColor3 = newTheme.BackgroundTertiary
 				elseif dName == "Preview" and desc.Parent and desc.Parent.Name == "Header" then
-					  grandParent = desc.Parent and desc.Parent.Parent
-					  isColorPicker = grandParent
+					local grandParent = desc.Parent and desc.Parent.Parent
+					local isColorPicker = grandParent
 						and (grandParent:FindFirstChild("Picker") or grandParent.Name:match("Color"))
 					if not isColorPicker then
 						desc.BackgroundColor3 = newTheme.BackgroundTertiary
@@ -26754,19 +26754,19 @@ function Xan:ApplyTheme(themeName)
 					desc.BackgroundColor3 = newTheme.Background
 				end
 			elseif desc:IsA("TextButton") then
-				  dName = desc.Name
-				  parent = desc.Parent
-				  parentName = parent and parent.Name or ""
+				local dName = desc.Name
+				local parent = desc.Parent
+				local parentName = parent and parent.Name or ""
 				if dName == "Button" and parentName:find("IMGUI") then
 					desc.BackgroundColor3 = newTheme.Card
 					desc.TextColor3 = newTheme.Text
-					  stroke = desc:FindFirstChildWhichIsA("UIStroke")
+					local stroke = desc:FindFirstChildWhichIsA("UIStroke")
 					if stroke then
 						stroke.Color = newTheme.CardBorder
 					end
 				end
 			elseif desc:IsA("TextLabel") then
-				  dName = desc.Name
+				local dName = desc.Name
 				if dName == "Value" or dName == "Selected" or dName == "Count" then
 					desc.TextColor3 = newTheme.Accent
 				elseif dName == "Section" or dName:find("Section") then
@@ -26798,8 +26798,8 @@ function Xan:ApplyTheme(themeName)
 		end
 	end
 
-	if  Player:FindFirstChild("PlayerGui") then
-		for _, gui in ipairs( Player.PlayerGui:GetChildren()) do
+	if LocalPlayer:FindFirstChild("PlayerGui") then
+		for _, gui in ipairs(LocalPlayer.PlayerGui:GetChildren()) do
 			if gui.Name:find("XanBar_") and gui:IsA("ScreenGui") then
 				updateElement(gui, false, false, false)
 				directUpdateGui(gui)
@@ -26808,16 +26808,16 @@ function Xan:ApplyTheme(themeName)
 	end
 
 	for _, window in ipairs(self.Windows) do
-		  gui = window.Gui or window.ScreenGui
+		local gui = window.Gui or window.ScreenGui
 		if gui then
-			  sidebar = gui:FindFirstChild("Main") and gui.Main:FindFirstChild("Sidebar")
+			local sidebar = gui:FindFirstChild("Main") and gui.Main:FindFirstChild("Sidebar")
 			if sidebar then
-				  tabList = sidebar:FindFirstChild("TabList")
+				local tabList = sidebar:FindFirstChild("TabList")
 				if tabList then
 					for _, tabBtn in ipairs(tabList:GetChildren()) do
 						if tabBtn:IsA("TextButton") then
-							  icon = tabBtn:FindFirstChild("Icon")
-							  isActive = tabBtn.BackgroundTransparency < 0.5
+							local icon = tabBtn:FindFirstChild("Icon")
+							local isActive = tabBtn.BackgroundTransparency < 0.5
 							if icon then
 								if icon:IsA("ImageLabel") then
 									Util.Tween(
@@ -26833,7 +26833,7 @@ function Xan:ApplyTheme(themeName)
 									)
 								end
 							end
-							  label = tabBtn:FindFirstChild("Label")
+							local label = tabBtn:FindFirstChild("Label")
 							if label then
 								Util.Tween(label, 0.3, { TextColor3 = isActive and newTheme.Text or newTheme.TextDim })
 							end
@@ -26842,17 +26842,17 @@ function Xan:ApplyTheme(themeName)
 				end
 			end
 
-			  mainFrame = gui:FindFirstChild("Main")
+			local mainFrame = gui:FindFirstChild("Main")
 			if mainFrame then
-				  topTabContainer = mainFrame:FindFirstChild("TopTabContainer")
+				local topTabContainer = mainFrame:FindFirstChild("TopTabContainer")
 					or mainFrame:FindFirstChild("TabsContainer")
 				if topTabContainer then
 					for _, tabBtn in ipairs(topTabContainer:GetChildren()) do
 						if tabBtn:IsA("TextButton") then
-							  icon = tabBtn:FindFirstChild("Icon")
-							  label = tabBtn:FindFirstChild("Label")
-							  stroke = tabBtn:FindFirstChildOfClass("UIStroke")
-							  isActive = tabBtn.BackgroundTransparency < 0.2
+							local icon = tabBtn:FindFirstChild("Icon")
+							local label = tabBtn:FindFirstChild("Label")
+							local stroke = tabBtn:FindFirstChildOfClass("UIStroke")
+							local isActive = tabBtn.BackgroundTransparency < 0.2
 
 							if isActive then
 								Util.Tween(tabBtn, 0.3, { BackgroundColor3 = newTheme.Accent })
@@ -26896,32 +26896,32 @@ function Xan:ApplyTheme(themeName)
 
 			for _, desc in ipairs(gui:GetDescendants()) do
 				if desc:IsA("TextButton") and desc.Name == "LoadButton" then
-					  isMaintenance = desc.Text == "Offline"
-					  mutedAccent = Color3.fromRGB(
+					local isMaintenance = desc.Text == "Offline"
+					local mutedAccent = Color3.fromRGB(
 						math.floor(newTheme.Accent.R * 180),
 						math.floor(newTheme.Accent.G * 180),
 						math.floor(newTheme.Accent.B * 180)
 					)
 					desc.BackgroundColor3 = isMaintenance and newTheme.Error or mutedAccent
 				elseif desc:IsA("Frame") then
-					  dName = desc.Name
+					local dName = desc.Name
 					if dName == "Fill" then
 						desc.BackgroundColor3 = newTheme.SliderFill
 					elseif dName == "Track" or dName == "SliderTrack" then
 						desc.BackgroundColor3 = newTheme.Slider
 					elseif dName == "Knob" then
 						desc.BackgroundColor3 = newTheme.ToggleKnob
-						  stroke = desc:FindFirstChildWhichIsA("UIStroke")
+						local stroke = desc:FindFirstChildWhichIsA("UIStroke")
 						if stroke then
 							stroke.Color = newTheme.SliderFill
 						end
 					elseif dName == "ToggleBg" or dName == "ToggleTrack" then
-						  knob = desc:FindFirstChild("Knob")
-						  isEnabled = knob and knob.Position.X.Scale > 0.5
+						local knob = desc:FindFirstChild("Knob")
+						local isEnabled = knob and knob.Position.X.Scale > 0.5
 						desc.BackgroundColor3 = isEnabled and newTheme.ToggleEnabled or newTheme.Toggle
 					end
 				elseif desc:IsA("TextLabel") then
-					  dName = desc.Name
+					local dName = desc.Name
 					if dName == "Value" or dName == "Selected" or dName == "Count" then
 						desc.TextColor3 = newTheme.Accent
 					elseif dName == "Section" or dName:find("Section") then
@@ -26930,10 +26930,10 @@ function Xan:ApplyTheme(themeName)
 				end
 			end
 
-			  mainFrame = gui:FindFirstChild("Main")
+			local mainFrame = gui:FindFirstChild("Main")
 			if mainFrame then
-				  bgImage = mainFrame:FindFirstChild("BackgroundImage")
-				  bgOverlay = mainFrame:FindFirstChild("BackgroundOverlay")
+				local bgImage = mainFrame:FindFirstChild("BackgroundImage")
+				local bgOverlay = mainFrame:FindFirstChild("BackgroundOverlay")
 
 				if newTheme.BackgroundImage and newTheme.BackgroundImage ~= "" then
 					if not bgImage then
@@ -26985,29 +26985,29 @@ function Xan:ApplyTheme(themeName)
 	end
 
 	if ActiveBindsGui then
-		  container = ActiveBindsGui:FindFirstChild("Container")
+		local container = ActiveBindsGui:FindFirstChild("Container")
 		if container then
 			Util.Tween(container, 0.3, { BackgroundColor3 = newTheme.Background })
-			  border = container:FindFirstChildOfClass("UIStroke")
+			local border = container:FindFirstChildOfClass("UIStroke")
 			if border then
 				Util.Tween(border, 0.3, { Color = newTheme.CardBorder })
 			end
-			  header = container:FindFirstChild("Header")
+			local header = container:FindFirstChild("Header")
 			if header then
-				  title = header:FindFirstChild("Title")
+				local title = header:FindFirstChild("Title")
 				if title then
 					Util.Tween(title, 0.3, { TextColor3 = newTheme.TextDim })
 				end
 			end
-			  list = container:FindFirstChild("List")
+			local list = container:FindFirstChild("List")
 			if list then
 				list.ScrollBarImageColor3 = newTheme.TextDim
 				for _, entry in ipairs(list:GetChildren()) do
 					if entry:IsA("Frame") then
 						entry.BackgroundColor3 = newTheme.Card
-						  label = entry:FindFirstChild("Label")
-						  state = entry:FindFirstChild("State")
-						  closeBtn = entry:FindFirstChild("Close")
+						local label = entry:FindFirstChild("Label")
+						local state = entry:FindFirstChild("State")
+						local closeBtn = entry:FindFirstChild("Close")
 						if label then
 							Util.Tween(label, 0.3, { TextColor3 = newTheme.Text })
 						end
@@ -27024,8 +27024,8 @@ function Xan:ApplyTheme(themeName)
 		end
 	end
 
-	  dropdownColor = newTheme.Dropdown or newTheme.Input or Color3.fromRGB(25, 25, 32)
-	  dropdownHoverColor = newTheme.DropdownHover
+	local dropdownColor = newTheme.Dropdown or newTheme.Input or Color3.fromRGB(25, 25, 32)
+	local dropdownHoverColor = newTheme.DropdownHover
 		or Color3.fromRGB(
 			math.min(255, math.floor(dropdownColor.R * 255) + 10),
 			math.min(255, math.floor(dropdownColor.G * 255) + 10),
@@ -27033,11 +27033,11 @@ function Xan:ApplyTheme(themeName)
 		)
 
 	for _, window in ipairs(self.Windows) do
-		  gui = window.Gui or window.ScreenGui
+		local gui = window.Gui or window.ScreenGui
 		if gui then
 			for _, desc in ipairs(gui:GetDescendants()) do
 				if desc:IsA("TextButton") and desc.Parent and desc.Parent.Name == "Options" then
-					  isSelectedOption = self:IsColorSimilar(desc.BackgroundColor3, newTheme.Accent, 0.15)
+					local isSelectedOption = self:IsColorSimilar(desc.BackgroundColor3, newTheme.Accent, 0.15)
 						or self:IsColorSimilar(
 							desc.BackgroundColor3,
 							oldTheme and oldTheme.Accent or newTheme.Accent,
@@ -27060,7 +27060,7 @@ function Xan:ApplyTheme(themeName)
 		if gui.Name:find("XanBar_") and gui:IsA("ScreenGui") then
 			for _, desc in ipairs(gui:GetDescendants()) do
 				if desc:IsA("TextButton") and desc.Parent and desc.Parent.Name == "Options" then
-					  isSelectedOption = self:IsColorSimilar(desc.BackgroundColor3, newTheme.Accent, 0.15)
+					local isSelectedOption = self:IsColorSimilar(desc.BackgroundColor3, newTheme.Accent, 0.15)
 						or self:IsColorSimilar(
 							desc.BackgroundColor3,
 							oldTheme and oldTheme.Accent or newTheme.Accent,
@@ -27111,7 +27111,7 @@ function Xan:CreateBindListUI()
 		return
 	end
 
-	  guiName = self.GhostMode and Util.GenerateRandomString(12) or "XanBar_ActiveBinds"
+	local guiName = self.GhostMode and Util.GenerateRandomString(12) or "XanBar_ActiveBinds"
 
 	ActiveBindsGui = Instance.new("ScreenGui")
 	ActiveBindsGui.Name = guiName
@@ -27123,21 +27123,21 @@ function Xan:CreateBindListUI()
 		ActiveBindsGui.Parent = CoreGui
 	end)
 	if not ActiveBindsGui.Parent then
-		ActiveBindsGui.Parent =  Player:WaitForChild("PlayerGui")
+		ActiveBindsGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  theme = Xan.CurrentTheme or Xan.Themes.Default
+	local theme = Xan.CurrentTheme or Xan.Themes.Default
 
-	  containerWidth = IsMobile and 200 or 165
-	  containerHeight = IsMobile and 180 or 150
-	  headerHeight = IsMobile and 36 or 24
-	  listPadding = IsMobile and 10 or 8
-	  entryPadding = IsMobile and 6 or 3
-	  maxWidth = IsMobile and 240 or 200
-	  maxHeight = IsMobile and 200 or 300
-	  minHeight = IsMobile and 80 or 60
+	local containerWidth = IsMobile and 200 or 165
+	local containerHeight = IsMobile and 180 or 150
+	local headerHeight = IsMobile and 36 or 24
+	local listPadding = IsMobile and 10 or 8
+	local entryPadding = IsMobile and 6 or 3
+	local maxWidth = IsMobile and 240 or 200
+	local maxHeight = IsMobile and 200 or 300
+	local minHeight = IsMobile and 80 or 60
 
-	  container = Util.Create("Frame", {
+	local container = Util.Create("Frame", {
 		Name = "Container",
 		BackgroundColor3 = theme.Background,
 		BackgroundTransparency = 0.1,
@@ -27154,7 +27154,7 @@ function Xan:CreateBindListUI()
 		),
 	})
 
-	  header = Util.Create("Frame", {
+	local header = Util.Create("Frame", {
 		Name = "Header",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, headerHeight),
@@ -27174,7 +27174,7 @@ function Xan:CreateBindListUI()
 		Parent = header,
 	})
 
-	  scrollBarPadding = IsMobile and 6 or 4
+	local scrollBarPadding = IsMobile and 6 or 4
 
 	ActiveBindsFrame = Util.Create("ScrollingFrame", {
 		Name = "List",
@@ -27203,9 +27203,9 @@ function Xan:CreateBindListUI()
 		}),
 	})
 
-	  isDragging = false
-	  dragStart = nil
-	  startPos = nil
+	local isDragging = false
+	local dragStart = nil
+	local startPos = nil
 
 	header.InputBegan:Connect(function(input)
 		if
@@ -27235,7 +27235,7 @@ function Xan:CreateBindListUI()
 				or input.UserInputType == Enum.UserInputType.Touch
 			)
 		then
-			  delta = input.Position - dragStart
+			local delta = input.Position - dragStart
 			container.Position =
 				UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 		end
@@ -27269,15 +27269,15 @@ function Xan:RefreshBindList()
 		end
 	end
 
-	  count = 0
-	  entryHeight = IsMobile and 36 or 20
-	  entryPadding = IsMobile and 6 or 3
+	local count = 0
+	local entryHeight = IsMobile and 36 or 20
+	local entryPadding = IsMobile and 6 or 3
 
 	for name, state in pairs(self.ActiveBinds) do
 		count = count + 1
-		  theme = Xan.CurrentTheme or Xan.Themes.Default
+		local theme = Xan.CurrentTheme or Xan.Themes.Default
 
-		  entry = Util.Create("Frame", {
+		local entry = Util.Create("Frame", {
 			Name = name,
 			BackgroundColor3 = theme.Card,
 			BackgroundTransparency = 1,
@@ -27288,11 +27288,11 @@ function Xan:RefreshBindList()
 			Util.Create("UICorner", { CornerRadius = UDim.new(0, IsMobile and 6 or 4) }),
 		})
 
-		  closeBtnSize = IsMobile and 28 or 18
-		  labelPadding = IsMobile and 8 or 4
-		  rightGap = IsMobile and 12 or 6
+		local closeBtnSize = IsMobile and 28 or 18
+		local labelPadding = IsMobile and 8 or 4
+		local rightGap = IsMobile and 12 or 6
 
-		  label = Util.Create("TextLabel", {
+		local label = Util.Create("TextLabel", {
 			Name = "Label",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, labelPadding, 0, 0),
@@ -27307,7 +27307,7 @@ function Xan:RefreshBindList()
 		})
 
 		if IsMobile then
-			  closeBtn = Util.Create("TextButton", {
+			local closeBtn = Util.Create("TextButton", {
 				Name = "Close",
 				BackgroundColor3 = Color3.fromRGB(180, 55, 55),
 				BackgroundTransparency = 0.8,
@@ -27328,7 +27328,7 @@ function Xan:RefreshBindList()
 				closeBtn.BackgroundTransparency = 0.5
 				closeBtn.TextColor3 = Color3.fromRGB(255, 100, 100)
 				task.delay(0.15, function()
-					  setter = self.ToggleSetters[name]
+					local setter = self.ToggleSetters[name]
 					if setter then
 						setter(false)
 					else
@@ -27353,7 +27353,7 @@ function Xan:RefreshBindList()
 				end
 			end)
 		else
-			  stateLabel = Util.Create("TextLabel", {
+			local stateLabel = Util.Create("TextLabel", {
 				Name = "State",
 				BackgroundTransparency = 1,
 				AnchorPoint = Vector2.new(1, 0.5),
@@ -27368,7 +27368,7 @@ function Xan:RefreshBindList()
 				Parent = entry,
 			})
 
-			  closeBtn = Util.Create("TextButton", {
+			local closeBtn = Util.Create("TextButton", {
 				Name = "Close",
 				BackgroundColor3 = Color3.fromRGB(180, 55, 55),
 				BackgroundTransparency = 1,
@@ -27386,11 +27386,11 @@ function Xan:RefreshBindList()
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 			})
 
-			  isHovering = false
-			  hoverCheckId = 0
+			local isHovering = false
+			local hoverCheckId = 0
 
-			  function getHoverBgColor()
-				  t = Xan.CurrentTheme or Xan.Themes.Default
+			local function getHoverBgColor()
+				local t = Xan.CurrentTheme or Xan.Themes.Default
 				return Color3.fromRGB(
 					math.min(255, math.floor(t.Card.R * 255) + 30),
 					math.min(255, math.floor(t.Card.G * 255) + 30),
@@ -27398,7 +27398,7 @@ function Xan:RefreshBindList()
 				)
 			end
 
-			  function showHoverState()
+			local function showHoverState()
 				isHovering = true
 				entry.BackgroundColor3 = getHoverBgColor()
 				Util.Tween(entry, 0.1, { BackgroundTransparency = 0.65 })
@@ -27408,9 +27408,9 @@ function Xan:RefreshBindList()
 				Util.Tween(closeBtn, 0.1, { TextTransparency = 0, BackgroundTransparency = 0.85 })
 			end
 
-			  function hideHoverState()
+			local function hideHoverState()
 				hoverCheckId = hoverCheckId + 1
-				  currentId = hoverCheckId
+				local currentId = hoverCheckId
 
 				task.delay(0.06, function()
 					if currentId ~= hoverCheckId then
@@ -27461,7 +27461,7 @@ function Xan:RefreshBindList()
 			end)
 
 			closeBtn.MouseButton1Click:Connect(function()
-				  setter = self.ToggleSetters[name]
+				local setter = self.ToggleSetters[name]
 
 				if setter then
 					setter(false)
@@ -27472,13 +27472,13 @@ function Xan:RefreshBindList()
 		end
 	end
 
-	  headerHeight = IsMobile and 36 or 32
-	  contentHeight = count * (entryHeight + entryPadding)
-	  maxHeight = IsMobile and 200 or 300
-	  totalHeight = math.clamp(headerHeight + contentHeight, IsMobile and 80 or 60, maxHeight)
-	  containerWidth = IsMobile and 200 or 165
+	local headerHeight = IsMobile and 36 or 32
+	local contentHeight = count * (entryHeight + entryPadding)
+	local maxHeight = IsMobile and 200 or 300
+	local totalHeight = math.clamp(headerHeight + contentHeight, IsMobile and 80 or 60, maxHeight)
+	local containerWidth = IsMobile and 200 or 165
 
-	  container = ActiveBindsGui:FindFirstChild("Container")
+	local container = ActiveBindsGui:FindFirstChild("Container")
 	if container then
 		Util.Tween(container, 0.2, { Size = UDim2.new(0, containerWidth, 0, totalHeight) })
 	end
@@ -27593,8 +27593,8 @@ function Xan:UnloadAll()
 		end
 	end
 
-	if  Player:FindFirstChild("PlayerGui") then
-		for _, gui in ipairs( Player.PlayerGui:GetChildren()) do
+	if LocalPlayer:FindFirstChild("PlayerGui") then
+		for _, gui in ipairs(LocalPlayer.PlayerGui:GetChildren()) do
 			if
 				gui.Name:find("XanBar")
 				or gui.Name:find("Xan_")
@@ -27629,7 +27629,7 @@ function Xan:OnFlagChanged(flag, callback)
 
 	return {
 		Disconnect = function()
-			  callbacks = self._FlagCallbacks[flag]
+			local callbacks = self._FlagCallbacks[flag]
 			if callbacks then
 				for i, cb in ipairs(callbacks) do
 					if cb == callback then
@@ -27643,10 +27643,10 @@ function Xan:OnFlagChanged(flag, callback)
 end
 
 function Xan:SetFlag(flag, value)
-	  oldValue = self.Flags[flag]
+	local oldValue = self.Flags[flag]
 	self.Flags[flag] = value
 
-	  hasChanged = true
+	local hasChanged = true
 	if oldValue ~= nil then
 		if typeof(oldValue) == "Color3" and typeof(value) == "Color3" then
 			hasChanged = math.abs(oldValue.R - value.R) > 0.001
@@ -27672,13 +27672,13 @@ end
 
 function Xan:CreateFOVCircle(config)
 	config = config or {}
-	  theme = config.Theme or self.CurrentTheme
-	  color = config.Color or Xan.CurrentTheme.Accent
-	  thickness = config.Thickness or 1
-	  visible = config.Visible ~= false
-	  followMouse = config.FollowMouse ~= false
+	local theme = config.Theme or self.CurrentTheme
+	local color = config.Color or Xan.CurrentTheme.Accent
+	local thickness = config.Thickness or 1
+	local visible = config.Visible ~= false
+	local followMouse = config.FollowMouse ~= false
 
-	  screenGui
+	local screenGui
 	for _, gui in ipairs(CoreGui:GetChildren()) do
 		if gui.Name:find("XanBar_") then
 			screenGui = gui
@@ -27698,18 +27698,18 @@ function Xan:CreateFOVCircle(config)
 			screenGui.Parent = CoreGui
 		end)
 		if not screenGui.Parent then
-			screenGui.Parent =  Player:WaitForChild("PlayerGui")
+			screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 		end
 	end
 
-	  fov = {
+	local fov = {
 		Radius = config.Radius or 180,
 		Visible = visible,
 		Color = color,
 		Thickness = thickness,
 	}
 
-	  fovFrame = Util.Create("Frame", {
+	local fovFrame = Util.Create("Frame", {
 		Name = "FOVCircle",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -27760,7 +27760,7 @@ function Xan:CreateFOVCircle(config)
 		fov:SetVisible(not fov.Visible)
 	end
 
-	  fovTaskId = followMouse and ("fovCircle_" .. tostring(fovFrame)) or nil
+	local fovTaskId = followMouse and ("fovCircle_" .. tostring(fovFrame)) or nil
 
 	function fov:Destroy()
 		if fovTaskId then
@@ -27772,7 +27772,7 @@ function Xan:CreateFOVCircle(config)
 	end
 
 	if followMouse then
-		  GuiService = game:GetService("GuiService")
+		local GuiService = game:GetService("GuiService")
 
 		RenderManager.AddTask(fovTaskId, function()
 			if not fov.Visible then
@@ -27782,7 +27782,7 @@ function Xan:CreateFOVCircle(config)
 				return
 			end
 
-			  mousePos = UserInputService:GetMouseLocation()
+			local mousePos = UserInputService:GetMouseLocation()
 
 			fovFrame.Position = UDim2.new(0, mousePos.X, 0, mousePos.Y + guiInset.Y)
 		end)
@@ -27793,14 +27793,14 @@ end
 
 function Xan:CreateWatermark(config)
 	config = config or {}
-	  text = config.Text or ""
-	  position = config.Position or UDim2.new(0, 10, 0, 10)
-	  theme = config.Theme or self.CurrentTheme
-	  showFPS = config.ShowFPS ~= false
-	  showPing = config.ShowPing ~= false
-	  visible = config.Visible ~= false
+	local text = config.Text or ""
+	local position = config.Position or UDim2.new(0, 10, 0, 10)
+	local theme = config.Theme or self.CurrentTheme
+	local showFPS = config.ShowFPS ~= false
+	local showPing = config.ShowPing ~= false
+	local visible = config.Visible ~= false
 
-	  screenGui = Instance.new("ScreenGui")
+	local screenGui = Instance.new("ScreenGui")
 	screenGui.Name = Xan.GhostMode and Util.GenerateRandomString(16)
 		or ("XanBar_Watermark_" .. math.random(10000, 99999))
 	screenGui.ResetOnSpawn = false
@@ -27809,14 +27809,14 @@ function Xan:CreateWatermark(config)
 	screenGui.IgnoreGuiInset = true
 	screenGui.Enabled = visible
 
-	  success = pcall(function()
+	local success = pcall(function()
 		screenGui.Parent = CoreGui
 	end)
 	if not success then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  watermarkFrame = Util.Create("Frame", {
+	local watermarkFrame = Util.Create("Frame", {
 		Name = "Watermark",
 		BackgroundColor3 = Xan.CurrentTheme.Background,
 		BackgroundTransparency = 0.15,
@@ -27845,9 +27845,9 @@ function Xan:CreateWatermark(config)
 		}),
 	})
 
-	  isDragging = false
-	  dragStart = nil
-	  startPos = nil
+	local isDragging = false
+	local dragStart = nil
+	local startPos = nil
 
 	watermarkFrame.InputBegan:Connect(function(input)
 		if
@@ -27874,13 +27874,13 @@ function Xan:CreateWatermark(config)
 				or input.UserInputType == Enum.UserInputType.Touch
 			)
 		then
-			  delta = input.Position - dragStart
+			local delta = input.Position - dragStart
 			watermarkFrame.Position =
 				UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 		end
 	end)
 
-	  titleLabel = Util.Create("TextLabel", {
+	local titleLabel = Util.Create("TextLabel", {
 		Name = "Title",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, 0, 0, 16),
@@ -27893,7 +27893,7 @@ function Xan:CreateWatermark(config)
 		Parent = watermarkFrame,
 	})
 
-	  fpsLabel, pingLabel
+	local fpsLabel, pingLabel
 
 	if showFPS then
 		Util.Create("Frame", {
@@ -27941,14 +27941,14 @@ function Xan:CreateWatermark(config)
 		})
 	end
 
-	  lastUpdate = 0
-	  frameCount = 0
-	  currentFPS = 0
-	  watermarkId = "watermark_" .. tostring(watermarkFrame)
+	local lastUpdate = 0
+	local frameCount = 0
+	local currentFPS = 0
+	local watermarkId = "watermark_" .. tostring(watermarkFrame)
 
 	RenderManager.AddTask(watermarkId, function()
 		frameCount = frameCount + 1
-		  now = os.clock()
+		local now = os.clock()
 
 		if now - lastUpdate >= 0.5 then
 			currentFPS = math.floor(frameCount / (now - lastUpdate))
@@ -27968,9 +27968,9 @@ function Xan:CreateWatermark(config)
 			end
 
 			if pingLabel then
-				  ping = 0
+				local ping = 0
 				pcall(function()
-					ping = math.floor( Player:GetNetworkPing() * 1000)
+					ping = math.floor(LocalPlayer:GetNetworkPing() * 1000)
 				end)
 				pingLabel.Text = ping .. " ms"
 
@@ -27985,7 +27985,7 @@ function Xan:CreateWatermark(config)
 		end
 	end)
 
-	  watermark = {
+	local watermark = {
 		Frame = watermarkFrame,
 		ScreenGui = screenGui,
 		Visible = visible,
@@ -28027,15 +28027,15 @@ end
 
 function Xan:CreateMobileButtons(config)
 	config = config or {}
-	  theme = config.Theme or self.CurrentTheme
-	  buttons = config.Buttons or {}
-	  position = config.Position or UDim2.new(1, -70, 0.5, 0)
-	  buttonSize = config.ButtonSize or (IsMobile and 56 or 48)
-	  spacing = config.Spacing or 8
-	  expandDirection = config.ExpandDirection or "up"
-	  showLabels = config.ShowLabels ~= false
-	  mobileOnly = config.MobileOnly ~= false
-	  visible = config.Visible ~= false
+	local theme = config.Theme or self.CurrentTheme
+	local buttons = config.Buttons or {}
+	local position = config.Position or UDim2.new(1, -70, 0.5, 0)
+	local buttonSize = config.ButtonSize or (IsMobile and 56 or 48)
+	local spacing = config.Spacing or 8
+	local expandDirection = config.ExpandDirection or "up"
+	local showLabels = config.ShowLabels ~= false
+	local mobileOnly = config.MobileOnly ~= false
+	local visible = config.Visible ~= false
 
 	if mobileOnly and not IsMobile then
 		return {
@@ -28057,7 +28057,7 @@ function Xan:CreateMobileButtons(config)
 		}
 	end
 
-	  screenGui = Instance.new("ScreenGui")
+	local screenGui = Instance.new("ScreenGui")
 	screenGui.Name = Xan.GhostMode and Util.GenerateRandomString(18)
 		or ("XanBar_MobileButtons_" .. math.random(10000, 99999))
 	screenGui.ResetOnSpawn = false
@@ -28065,14 +28065,14 @@ function Xan:CreateMobileButtons(config)
 	screenGui.DisplayOrder = 150
 	screenGui.Enabled = visible
 
-	  success, err = pcall(function()
+	local success, err = pcall(function()
 		screenGui.Parent = CoreGui
 	end)
 	if not success then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  mainFrame = Util.Create("Frame", {
+	local mainFrame = Util.Create("Frame", {
 		Name = "MobileButtons",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(1, 0.5),
@@ -28082,12 +28082,12 @@ function Xan:CreateMobileButtons(config)
 		Parent = screenGui,
 	})
 
-	  isDragging = false
-	  dragStart = nil
-	  startPos = nil
+	local isDragging = false
+	local dragStart = nil
+	local startPos = nil
 
-	  function makeDraggable(frame)
-		  dragInput = nil
+	local function makeDraggable(frame)
+		local dragInput = nil
 
 		frame.InputBegan:Connect(function(input)
 			if
@@ -28123,8 +28123,8 @@ function Xan:CreateMobileButtons(config)
 					or input.UserInputType == Enum.UserInputType.Touch
 				)
 			then
-				  delta = input.Position - dragStart
-				  newPos = UDim2.new(
+				local delta = input.Position - dragStart
+				local newPos = UDim2.new(
 					startPos.X.Scale,
 					startPos.X.Offset + delta.X,
 					startPos.Y.Scale,
@@ -28135,8 +28135,8 @@ function Xan:CreateMobileButtons(config)
 		end)
 	end
 
-	  currentMenuTheme = Xan.CurrentTheme
-	  toggleBtn = Util.Create("TextButton", {
+	local currentMenuTheme = Xan.CurrentTheme
+	local toggleBtn = Util.Create("TextButton", {
 		Name = "ToggleButton",
 		BackgroundColor3 = Xan.CurrentTheme.Accent,
 		AnchorPoint = Vector2.new(1, 0),
@@ -28162,19 +28162,19 @@ function Xan:CreateMobileButtons(config)
 
 	makeDraggable(toggleBtn)
 
-	  isExpanded = false
-	  actionBtns = {}
+	local isExpanded = false
+	local actionBtns = {}
 
 	for i, btnConfig in ipairs(buttons) do
-		  yOffset = i * (buttonSize + spacing)
+		local yOffset = i * (buttonSize + spacing)
 		if expandDirection == "down" then
 			yOffset = -yOffset
 		end
 
-		  state = btnConfig.Default or false
-		  currentActionTheme = Xan.CurrentTheme
+		local state = btnConfig.Default or false
+		local currentActionTheme = Xan.CurrentTheme
 
-		  btnFrame = Util.Create("Frame", {
+		local btnFrame = Util.Create("Frame", {
 			Name = "ActionBtn_" .. (btnConfig.Name or i),
 			BackgroundTransparency = 1,
 			AnchorPoint = Vector2.new(1, 0),
@@ -28185,10 +28185,10 @@ function Xan:CreateMobileButtons(config)
 			Parent = mainFrame,
 		})
 
-		  hasText = btnConfig.Text and btnConfig.Text ~= ""
-		  hasIcon = btnConfig.Icon and not hasText
+		local hasText = btnConfig.Text and btnConfig.Text ~= ""
+		local hasIcon = btnConfig.Icon and not hasText
 
-		  actionBtn = Util.Create("TextButton", {
+		local actionBtn = Util.Create("TextButton", {
 			Name = "Button",
 			BackgroundColor3 = state and Xan.CurrentTheme.Accent or Xan.CurrentTheme.BackgroundSecondary,
 			AnchorPoint = Vector2.new(1, 0),
@@ -28225,7 +28225,7 @@ function Xan:CreateMobileButtons(config)
 		end
 
 		if showLabels then
-			  label = Util.Create("TextLabel", {
+			local label = Util.Create("TextLabel", {
 				Name = "Label",
 				BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary,
 				AnchorPoint = Vector2.new(1, 0.5),
@@ -28244,17 +28244,17 @@ function Xan:CreateMobileButtons(config)
 			label.TextXAlignment = Enum.TextXAlignment.Right
 		end
 
-		  targetY = yOffset
+		local targetY = yOffset
 
-		  function updateBtnVisual()
-			  currentTheme = Xan.CurrentTheme
+		local function updateBtnVisual()
+			local currentTheme = Xan.CurrentTheme
 			actionBtn.BackgroundColor3 = state and Xan.CurrentTheme.Accent or Xan.CurrentTheme.BackgroundSecondary
-			  stroke = actionBtn:FindFirstChild("Stroke")
+			local stroke = actionBtn:FindFirstChild("Stroke")
 			if stroke then
 				stroke.Color = state and Xan.CurrentTheme.Accent or Xan.CurrentTheme.CardBorder
 			end
 			actionBtn.TextColor3 = state and Color3.new(1, 1, 1) or Xan.CurrentTheme.TextSecondary
-			  iconObj = actionBtn:FindFirstChild("Icon")
+			local iconObj = actionBtn:FindFirstChild("Icon")
 			if iconObj then
 				iconObj.ImageColor3 = state and Color3.new(1, 1, 1) or Xan.CurrentTheme.TextSecondary
 			end
@@ -28271,14 +28271,14 @@ function Xan:CreateMobileButtons(config)
 		end)
 
 		actionBtn.MouseEnter:Connect(function()
-			  currentTheme = Xan.CurrentTheme
+			local currentTheme = Xan.CurrentTheme
 			if not state then
 				Util.Tween(actionBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary })
 			end
 		end)
 
 		actionBtn.MouseLeave:Connect(function()
-			  currentTheme = Xan.CurrentTheme
+			local currentTheme = Xan.CurrentTheme
 			if not state then
 				Util.Tween(actionBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary })
 			end
@@ -28298,10 +28298,10 @@ function Xan:CreateMobileButtons(config)
 		})
 	end
 
-	  function toggleExpand()
+	local function toggleExpand()
 		isExpanded = not isExpanded
 
-		  icon = toggleBtn:FindFirstChild("Icon")
+		local icon = toggleBtn:FindFirstChild("Icon")
 		if icon then
 			Util.Tween(icon, { Rotation = isExpanded and 45 or 0 }, 0.2)
 		end
@@ -28324,7 +28324,7 @@ function Xan:CreateMobileButtons(config)
 
 	toggleBtn.MouseButton1Click:Connect(toggleExpand)
 
-	  mobileButtons = {
+	local mobileButtons = {
 		Frame = mainFrame,
 		ScreenGui = screenGui,
 		Buttons = actionBtns,
@@ -28382,17 +28382,17 @@ end
 
 function Xan:CreateFloatingButton(config)
 	config = config or {}
-	  theme = config.Theme or self.CurrentTheme
-	  position = config.Position or UDim2.new(1, -70, 1, -70)
-	  size = config.Size or (IsMobile and 60 or 50)
-	  icon = config.Icon or Icons.Menu
-	  label = config.Label
-	  draggable = config.Draggable ~= false
-	  callback = config.Callback
-	  toggle = config.Toggle or false
-	  defaultState = config.Default or false
-	  mobileOnly = config.MobileOnly or false
-	  visible = config.Visible ~= false
+	local theme = config.Theme or self.CurrentTheme
+	local position = config.Position or UDim2.new(1, -70, 1, -70)
+	local size = config.Size or (IsMobile and 60 or 50)
+	local icon = config.Icon or Icons.Menu
+	local label = config.Label
+	local draggable = config.Draggable ~= false
+	local callback = config.Callback
+	local toggle = config.Toggle or false
+	local defaultState = config.Default or false
+	local mobileOnly = config.MobileOnly or false
+	local visible = config.Visible ~= false
 
 	if mobileOnly and not IsMobile then
 		return {
@@ -28410,7 +28410,7 @@ function Xan:CreateFloatingButton(config)
 		}
 	end
 
-	  screenGui = Instance.new("ScreenGui")
+	local screenGui = Instance.new("ScreenGui")
 	screenGui.Name = Xan.GhostMode and Util.GenerateRandomString(16)
 		or ("XanBar_FloatingBtn_" .. math.random(10000, 99999))
 	screenGui.ResetOnSpawn = false
@@ -28418,19 +28418,19 @@ function Xan:CreateFloatingButton(config)
 	screenGui.DisplayOrder = 150
 	screenGui.Enabled = visible
 
-	  success = pcall(function()
+	local success = pcall(function()
 		screenGui.Parent = CoreGui
 	end)
 	if not success then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  state = defaultState
-	  currentFloatTheme = Xan.CurrentTheme
+	local state = defaultState
+	local currentFloatTheme = Xan.CurrentTheme
 
-	  isTwoToneLogo = icon == Logos.XanBar or icon == Logos.XanBarBody
+	local isTwoToneLogo = icon == Logos.XanBar or icon == Logos.XanBarBody
 
-	  btn = Util.Create("TextButton", {
+	local btn = Util.Create("TextButton", {
 		Name = "FloatingButton",
 		BackgroundColor3 = state and Xan.CurrentTheme.Accent or Xan.CurrentTheme.BackgroundSecondary,
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -28459,7 +28459,7 @@ function Xan:CreateFloatingButton(config)
 		}),
 	})
 
-	  floatingIconAccent = nil
+	local floatingIconAccent = nil
 	if isTwoToneLogo then
 		floatingIconAccent = Util.Create("ImageLabel", {
 			Name = "IconAccent",
@@ -28475,7 +28475,7 @@ function Xan:CreateFloatingButton(config)
 	end
 
 	if label then
-		  labelFrame = Util.Create("TextLabel", {
+		local labelFrame = Util.Create("TextLabel", {
 			Name = "Label",
 			BackgroundColor3 = Xan.CurrentTheme.Background,
 			AnchorPoint = Vector2.new(1, 0.5),
@@ -28498,20 +28498,20 @@ function Xan:CreateFloatingButton(config)
 		})
 	end
 
-	  function updateVisual()
-		  currentTheme = Xan.CurrentTheme
+	local function updateVisual()
+		local currentTheme = Xan.CurrentTheme
 		btn.BackgroundColor3 = state and Xan.CurrentTheme.Accent or Xan.CurrentTheme.BackgroundSecondary
-		  stroke = btn:FindFirstChild("Stroke")
+		local stroke = btn:FindFirstChild("Stroke")
 		if stroke then
 			stroke.Color = state and Xan.CurrentTheme.Accent or Xan.CurrentTheme.CardBorder
 		end
 	end
 
-	  isDragging = false
-	  dragStart = nil
-	  startPos = nil
-	  hasDragged = false
-	  dragThreshold = 12
+	local isDragging = false
+	local dragStart = nil
+	local startPos = nil
+	local hasDragged = false
+	local dragThreshold = 12
 
 	btn.InputBegan:Connect(function(input)
 		if
@@ -28533,7 +28533,7 @@ function Xan:CreateFloatingButton(config)
 				or input.UserInputType == Enum.UserInputType.Touch
 			)
 		then
-			  delta = input.Position - dragStart
+			local delta = input.Position - dragStart
 			if delta.Magnitude > dragThreshold then
 				hasDragged = true
 				if draggable then
@@ -28567,28 +28567,28 @@ function Xan:CreateFloatingButton(config)
 	end)
 
 	btn.MouseEnter:Connect(function()
-		  currentTheme = Xan.CurrentTheme
+		local currentTheme = Xan.CurrentTheme
 		if not state then
 			Util.Tween(btn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.BackgroundTertiary })
 		end
-		  labelFrame = btn:FindFirstChild("Label")
+		local labelFrame = btn:FindFirstChild("Label")
 		if labelFrame then
 			labelFrame.Visible = true
 		end
 	end)
 
 	btn.MouseLeave:Connect(function()
-		  currentTheme = Xan.CurrentTheme
+		local currentTheme = Xan.CurrentTheme
 		if not state then
 			Util.Tween(btn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.BackgroundSecondary })
 		end
-		  labelFrame = btn:FindFirstChild("Label")
+		local labelFrame = btn:FindFirstChild("Label")
 		if labelFrame then
 			labelFrame.Visible = false
 		end
 	end)
 
-	  floatingBtn = {
+	local floatingBtn = {
 		Button = btn,
 		ScreenGui = screenGui,
 		State = function()
@@ -28602,7 +28602,7 @@ function Xan:CreateFloatingButton(config)
 	end
 
 	function floatingBtn:SetIcon(newIcon)
-		  icon = btn:FindFirstChild("Icon")
+		local icon = btn:FindFirstChild("Icon")
 		if icon then
 			icon.Image = newIcon
 		end
@@ -28636,19 +28636,19 @@ end
 
 function Xan:CreateMobileAimButton(config)
 	config = config or {}
-	  size = config.Size or 56
-	  icon = config.Icon or "rbxassetid://116269996952949"
-	  callback = config.Callback
-	  defaultState = config.Default or false
-	  mobileOnly = config.MobileOnly ~= false
-	  holdMode = config.HoldMode ~= false
+	local size = config.Size or 56
+	local icon = config.Icon or "rbxassetid://116269996952949"
+	local callback = config.Callback
+	local defaultState = config.Default or false
+	local mobileOnly = config.MobileOnly ~= false
+	local holdMode = config.HoldMode ~= false
 
-	  offBg = Color3.fromRGB(0, 0, 0)
-	  offBgTransparency = 0.45
-	  onBg = Color3.fromRGB(255, 255, 255)
-	  onBgTransparency = 0.15
-	  iconColor = Color3.new(1, 1, 1)
-	  iconColorOn = Color3.fromRGB(30, 30, 30)
+	local offBg = Color3.fromRGB(0, 0, 0)
+	local offBgTransparency = 0.45
+	local onBg = Color3.fromRGB(255, 255, 255)
+	local onBgTransparency = 0.15
+	local iconColor = Color3.new(1, 1, 1)
+	local iconColorOn = Color3.fromRGB(30, 30, 30)
 
 	if mobileOnly and not IsMobile then
 		return {
@@ -28674,7 +28674,7 @@ function Xan:CreateMobileAimButton(config)
 		}
 	end
 
-	  screenGui = Instance.new("ScreenGui")
+	local screenGui = Instance.new("ScreenGui")
 	screenGui.Name = Xan.GhostMode and Util.GenerateRandomString(18)
 		or ("XanBar_MobileAimBtn_" .. math.random(10000, 99999))
 	screenGui.ResetOnSpawn = false
@@ -28682,17 +28682,17 @@ function Xan:CreateMobileAimButton(config)
 	screenGui.DisplayOrder = 160
 	screenGui.IgnoreGuiInset = true
 
-	  success = pcall(function()
+	local success = pcall(function()
 		screenGui.Parent = CoreGui
 	end)
 	if not success then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  state = defaultState
-	  repositionMode = false
+	local state = defaultState
+	local repositionMode = false
 
-	  btn = Util.Create("TextButton", {
+	local btn = Util.Create("TextButton", {
 		Name = "AimButton",
 		BackgroundColor3 = state and onBg or offBg,
 		BackgroundTransparency = state and onBgTransparency or offBgTransparency,
@@ -28717,7 +28717,7 @@ function Xan:CreateMobileAimButton(config)
 		}),
 	})
 
-	  repositionIndicator = Util.Create("Frame", {
+	local repositionIndicator = Util.Create("Frame", {
 		Name = "RepositionIndicator",
 		BackgroundColor3 = Color3.fromRGB(255, 180, 80),
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -28730,14 +28730,14 @@ function Xan:CreateMobileAimButton(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  isDragging = false
-	  dragStart = nil
-	  startPos = nil
+	local isDragging = false
+	local dragStart = nil
+	local startPos = nil
 
-	  function updateVisual()
+	local function updateVisual()
 		btn.BackgroundColor3 = state and onBg or offBg
 		btn.BackgroundTransparency = state and onBgTransparency or offBgTransparency
-		  iconObj = btn:FindFirstChild("Icon")
+		local iconObj = btn:FindFirstChild("Icon")
 		if iconObj then
 			iconObj.ImageColor3 = state and iconColorOn or iconColor
 		end
@@ -28785,7 +28785,7 @@ function Xan:CreateMobileAimButton(config)
 				or input.UserInputType == Enum.UserInputType.Touch
 			)
 		then
-			  delta = input.Position - dragStart
+			local delta = input.Position - dragStart
 			if delta.Magnitude > 5 then
 				btn.Position = UDim2.new(
 					startPos.X.Scale,
@@ -28807,7 +28807,7 @@ function Xan:CreateMobileAimButton(config)
 		end
 	end)
 
-	  aimButton = {
+	local aimButton = {
 		Button = btn,
 		ScreenGui = screenGui,
 		State = function()
@@ -28865,19 +28865,19 @@ end
 
 function Xan:CreateMobileTriggerButton(config)
 	config = config or {}
-	  size = config.Size or 56
-	  icon = config.Icon or "rbxassetid://85810197006748"
-	  callback = config.Callback
-	  defaultState = config.Default or false
-	  mobileOnly = config.MobileOnly ~= false
-	  holdMode = config.HoldMode ~= false
+	local size = config.Size or 56
+	local icon = config.Icon or "rbxassetid://85810197006748"
+	local callback = config.Callback
+	local defaultState = config.Default or false
+	local mobileOnly = config.MobileOnly ~= false
+	local holdMode = config.HoldMode ~= false
 
-	  offBg = Color3.fromRGB(0, 0, 0)
-	  offBgTransparency = 0.45
-	  onBg = Color3.fromRGB(255, 255, 255)
-	  onBgTransparency = 0.15
-	  iconColor = Color3.new(1, 1, 1)
-	  iconColorOn = Color3.fromRGB(30, 30, 30)
+	local offBg = Color3.fromRGB(0, 0, 0)
+	local offBgTransparency = 0.45
+	local onBg = Color3.fromRGB(255, 255, 255)
+	local onBgTransparency = 0.15
+	local iconColor = Color3.new(1, 1, 1)
+	local iconColorOn = Color3.fromRGB(30, 30, 30)
 
 	if mobileOnly and not IsMobile then
 		return {
@@ -28903,7 +28903,7 @@ function Xan:CreateMobileTriggerButton(config)
 		}
 	end
 
-	  screenGui = Instance.new("ScreenGui")
+	local screenGui = Instance.new("ScreenGui")
 	screenGui.Name = Xan.GhostMode and Util.GenerateRandomString(20)
 		or ("XanBar_MobileTriggerBtn_" .. math.random(10000, 99999))
 	screenGui.ResetOnSpawn = false
@@ -28911,17 +28911,17 @@ function Xan:CreateMobileTriggerButton(config)
 	screenGui.DisplayOrder = 160
 	screenGui.IgnoreGuiInset = true
 
-	  success = pcall(function()
+	local success = pcall(function()
 		screenGui.Parent = CoreGui
 	end)
 	if not success then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  state = defaultState
-	  repositionMode = false
+	local state = defaultState
+	local repositionMode = false
 
-	  btn = Util.Create("TextButton", {
+	local btn = Util.Create("TextButton", {
 		Name = "TriggerButton",
 		BackgroundColor3 = state and onBg or offBg,
 		BackgroundTransparency = state and onBgTransparency or offBgTransparency,
@@ -28946,7 +28946,7 @@ function Xan:CreateMobileTriggerButton(config)
 		}),
 	})
 
-	  repositionIndicator = Util.Create("Frame", {
+	local repositionIndicator = Util.Create("Frame", {
 		Name = "RepositionIndicator",
 		BackgroundColor3 = Color3.fromRGB(255, 180, 80),
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -28959,14 +28959,14 @@ function Xan:CreateMobileTriggerButton(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  isDragging = false
-	  dragStart = nil
-	  startPos = nil
+	local isDragging = false
+	local dragStart = nil
+	local startPos = nil
 
-	  function updateVisual()
+	local function updateVisual()
 		btn.BackgroundColor3 = state and onBg or offBg
 		btn.BackgroundTransparency = state and onBgTransparency or offBgTransparency
-		  iconObj = btn:FindFirstChild("Icon")
+		local iconObj = btn:FindFirstChild("Icon")
 		if iconObj then
 			iconObj.ImageColor3 = state and iconColorOn or iconColor
 		end
@@ -29014,7 +29014,7 @@ function Xan:CreateMobileTriggerButton(config)
 				or input.UserInputType == Enum.UserInputType.Touch
 			)
 		then
-			  delta = input.Position - dragStart
+			local delta = input.Position - dragStart
 			if delta.Magnitude > 5 then
 				btn.Position = UDim2.new(
 					startPos.X.Scale,
@@ -29036,7 +29036,7 @@ function Xan:CreateMobileTriggerButton(config)
 		end
 	end)
 
-	  triggerButton = {
+	local triggerButton = {
 		Button = btn,
 		ScreenGui = screenGui,
 		State = function()
@@ -29097,10 +29097,10 @@ Xan.RepositioningButtons = {}
 
 function Xan:ShowRepositionOverlay(config)
 	config = config or {}
-	  theme = config.Theme or self.CurrentTheme
+	local theme = config.Theme or self.CurrentTheme
 
-	  onSave = config.OnSave
-	  targetWindow = config.Window
+	local onSave = config.OnSave
+	local targetWindow = config.Window
 
 	if not IsMobile then
 		return {
@@ -29117,21 +29117,21 @@ function Xan:ShowRepositionOverlay(config)
 		targetWindow:Hide()
 	end
 
-	  screenGui = Instance.new("ScreenGui")
+	local screenGui = Instance.new("ScreenGui")
 	screenGui.Name = Xan.GhostMode and Util.GenerateRandomString(18) or "XanBar_RepositionOverlay"
 	screenGui.ResetOnSpawn = false
 	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	screenGui.DisplayOrder = 200
 	screenGui.IgnoreGuiInset = true
 
-	  success = pcall(function()
+	local success = pcall(function()
 		screenGui.Parent = CoreGui
 	end)
 	if not success then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  overlay = Util.Create("Frame", {
+	local overlay = Util.Create("Frame", {
 		Name = "Overlay",
 		BackgroundColor3 = Color3.new(0, 0, 0),
 		BackgroundTransparency = 0.6,
@@ -29140,7 +29140,7 @@ function Xan:ShowRepositionOverlay(config)
 		Parent = screenGui,
 	})
 
-	  contentFrame = Util.Create("Frame", {
+	local contentFrame = Util.Create("Frame", {
 		Name = "Content",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -29150,7 +29150,7 @@ function Xan:ShowRepositionOverlay(config)
 		Parent = screenGui,
 	})
 
-	  instructionText = Util.Create("TextLabel", {
+	local instructionText = Util.Create("TextLabel", {
 		Name = "Instruction",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 0, 50),
@@ -29164,7 +29164,7 @@ function Xan:ShowRepositionOverlay(config)
 		Parent = contentFrame,
 	})
 
-	  subText = Util.Create("TextLabel", {
+	local subText = Util.Create("TextLabel", {
 		Name = "SubText",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 45),
@@ -29178,7 +29178,7 @@ function Xan:ShowRepositionOverlay(config)
 		Parent = contentFrame,
 	})
 
-	  saveBtn = Util.Create("TextButton", {
+	local saveBtn = Util.Create("TextButton", {
 		Name = "SaveButton",
 		BackgroundColor3 = Xan.CurrentTheme.Card,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -29208,12 +29208,12 @@ function Xan:ShowRepositionOverlay(config)
 		Util.Tween(saveBtn, 0.15, { BackgroundColor3 = Xan.CurrentTheme.Card })
 	end)
 
-	  repositionOverlay = {
+	local repositionOverlay = {
 		ScreenGui = screenGui,
 		Window = targetWindow,
 	}
 
-	  function doSave()
+	local function doSave()
 		for _, btnData in pairs(self.RepositioningButtons) do
 			if btnData.button and btnData.button.DisableRepositioning then
 				btnData.button:DisableRepositioning()
@@ -29268,7 +29268,7 @@ function Xan:RegisterButtonForRepositioning(name, button, onSaveCallback)
 end
 
 function Xan:UnregisterButtonFromRepositioning(name)
-	  btnData = self.RepositioningButtons[name]
+	local btnData = self.RepositioningButtons[name]
 	if btnData then
 		if btnData.button and btnData.button.DisableRepositioning then
 			btnData.button:DisableRepositioning()
@@ -29291,10 +29291,10 @@ Xan.Hub = Xan.New
 Xan.GUI = Xan.New
 Xan.Menu = Xan.New
 
-  _originalSetTheme = Xan.SetTheme
-  _originalApplyTheme = Xan.ApplyTheme
-  _originalGetThemeNames = Xan.GetThemeNames
-  _originalCreateCustomTheme = Xan.CreateCustomTheme
+local _originalSetTheme = Xan.SetTheme
+local _originalApplyTheme = Xan.ApplyTheme
+local _originalGetThemeNames = Xan.GetThemeNames
+local _originalCreateCustomTheme = Xan.CreateCustomTheme
 
 Xan.Theme = function(name)
 	return _originalSetTheme(Xan, name)
@@ -29371,11 +29371,11 @@ Xan.DecodeTheme = function(code)
 	return Util.DecodeTheme(code)
 end
 Xan.ImportThemeCode = function(code)
-	  theme = Util.DecodeTheme(code)
+	local theme = Util.DecodeTheme(code)
 	if theme then
-		  name = theme.Name or "Imported"
+		local name = theme.Name or "Imported"
 		if Xan.Themes[name] then
-			  counter = 1
+			local counter = 1
 			while Xan.Themes[name .. " " .. counter] do
 				counter = counter + 1
 			end
@@ -29734,7 +29734,7 @@ Xan.Emoji = {
 	Key = "🔑",
 	Shield = "🛡️",
 }
-  EmojiIcons = {
+local EmojiIcons = {
 	Trophy = "🏆",
 	Medal = "🏅",
 	Gold = "🥇",
@@ -29986,7 +29986,7 @@ Xan.TwoToneLogo = {
 
 Xan.CreateTwoToneLogo = function(parent, size, position, theme)
 	theme = theme or Xan.CurrentTheme
-	  container = Util.Create("Frame", {
+	local container = Util.Create("Frame", {
 		Name = "TwoToneLogoContainer",
 		BackgroundTransparency = 1,
 		Position = position or UDim2.new(0, 0, 0, 0),
@@ -29994,7 +29994,7 @@ Xan.CreateTwoToneLogo = function(parent, size, position, theme)
 		Parent = parent,
 	})
 
-	  body = Util.Create("ImageLabel", {
+	local body = Util.Create("ImageLabel", {
 		Name = "Logo",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -30005,7 +30005,7 @@ Xan.CreateTwoToneLogo = function(parent, size, position, theme)
 		Parent = container,
 	})
 
-	  accent = Util.Create("ImageLabel", {
+	local accent = Util.Create("ImageLabel", {
 		Name = "LogoAccent",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -30063,7 +30063,7 @@ Xan.SetTheme = function(themeName)
 end
 
 Xan.ListThemes = function()
-	  themes = {}
+	local themes = {}
 	for name, _ in pairs(Xan.Themes) do
 		table.insert(themes, name)
 	end
@@ -30108,7 +30108,7 @@ Xan.CreateThemeFromCurrent = function(themeName)
 		return nil
 	end
 
-	  newTheme = Util.DeepCopy(Xan.CurrentTheme)
+	local newTheme = Util.DeepCopy(Xan.CurrentTheme)
 	newTheme.Name = themeName
 	Xan.Themes[themeName] = newTheme
 
@@ -30127,7 +30127,7 @@ Xan.ToggleStatsWidget = function(enabled)
 	end
 
 	if enabled and not Xan._StatsWidget then
-		  screenGui = Instance.new("ScreenGui")
+		local screenGui = Instance.new("ScreenGui")
 		screenGui.Name = "XanBar_StatsWidget"
 		screenGui.ResetOnSpawn = false
 		screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -30135,10 +30135,10 @@ Xan.ToggleStatsWidget = function(enabled)
 			screenGui.Parent = CoreGui
 		end)
 		if not screenGui.Parent then
-			screenGui.Parent = Players. Player:WaitForChild("PlayerGui")
+			screenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
 		end
 
-		  frame = Util.Create("Frame", {
+		local frame = Util.Create("Frame", {
 			Name = "Stats",
 			BackgroundColor3 = Xan.CurrentTheme.Background,
 			BackgroundTransparency = 0.2,
@@ -30156,7 +30156,7 @@ Xan.ToggleStatsWidget = function(enabled)
 			}),
 		})
 
-		  fpsLabel = Util.Create("TextLabel", {
+		local fpsLabel = Util.Create("TextLabel", {
 			Name = "FPS",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 0.5, 0),
@@ -30168,7 +30168,7 @@ Xan.ToggleStatsWidget = function(enabled)
 			Parent = frame,
 		})
 
-		  pingLabel = Util.Create("TextLabel", {
+		local pingLabel = Util.Create("TextLabel", {
 			Name = "Ping",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 0, 0.5, 0),
@@ -30181,25 +30181,25 @@ Xan.ToggleStatsWidget = function(enabled)
 			Parent = frame,
 		})
 
-		  lastTick = tick()
-		  frameCount = 0
+		local lastTick = tick()
+		local frameCount = 0
 
-		  connection = RunService.RenderStepped:Connect(function()
+		local connection = RunService.RenderStepped:Connect(function()
 			frameCount = frameCount + 1
-			  now = tick()
+			local now = tick()
 			if now - lastTick >= 0.5 then
-				  fps = math.floor(frameCount / (now - lastTick))
+				local fps = math.floor(frameCount / (now - lastTick))
 				fpsLabel.Text = "FPS: " .. fps
 
-				  color = fps >= 55 and Xan.CurrentTheme.Accent
+				local color = fps >= 55 and Xan.CurrentTheme.Accent
 					or (fps >= 30 and Color3.fromRGB(255, 180, 60) or Color3.fromRGB(255, 80, 80))
 				fpsLabel.TextColor3 = color
 
 				frameCount = 0
 				lastTick = now
 
-				  stats = game:GetService("Stats")
-				  ping = math.floor(stats.Network.ServerStatsItem["Data Ping"]:GetValue())
+				local stats = game:GetService("Stats")
+				local ping = math.floor(stats.Network.ServerStatsItem["Data Ping"]:GetValue())
 				pingLabel.Text = "Ping: " .. ping .. "ms"
 			end
 		end)
@@ -30227,7 +30227,7 @@ Xan.ShowLoading = function(text, config)
 	config = config or {}
 	text = text or "Loading..."
 
-	  screenGui = Instance.new("ScreenGui")
+	local screenGui = Instance.new("ScreenGui")
 	screenGui.Name = "XanBar_QuickLoading"
 	screenGui.ResetOnSpawn = false
 	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -30235,10 +30235,10 @@ Xan.ShowLoading = function(text, config)
 		screenGui.Parent = CoreGui
 	end)
 	if not screenGui.Parent then
-		screenGui.Parent = Players. Player:WaitForChild("PlayerGui")
+		screenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  frame = Util.Create("Frame", {
+	local frame = Util.Create("Frame", {
 		Name = "LoadingFrame",
 		BackgroundColor3 = Xan.CurrentTheme.Background,
 		BackgroundTransparency = 0.1,
@@ -30251,7 +30251,7 @@ Xan.ShowLoading = function(text, config)
 		Util.Create("UIStroke", { Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 	})
 
-	  label = Util.Create("TextLabel", {
+	local label = Util.Create("TextLabel", {
 		Name = "Text",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 15),
@@ -30264,7 +30264,7 @@ Xan.ShowLoading = function(text, config)
 		Parent = frame,
 	})
 
-	  dotsLabel = Util.Create("TextLabel", {
+	local dotsLabel = Util.Create("TextLabel", {
 		Name = "Dots",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 0, 0, 40),
@@ -30276,10 +30276,10 @@ Xan.ShowLoading = function(text, config)
 		Parent = frame,
 	})
 
-	  dotIndex = 1
-	  dotPatterns = { "●  ○  ○", "○  ●  ○", "○  ○  ●" }
+	local dotIndex = 1
+	local dotPatterns = { "●  ○  ○", "○  ●  ○", "○  ○  ●" }
 
-	  animating = true
+	local animating = true
 	task.spawn(function()
 		while animating do
 			dotsLabel.Text = dotPatterns[dotIndex]
@@ -30288,7 +30288,7 @@ Xan.ShowLoading = function(text, config)
 		end
 	end)
 
-	  function done(finalText)
+	local function done(finalText)
 		animating = false
 
 		if finalText then
@@ -30307,7 +30307,7 @@ Xan.ShowLoading = function(text, config)
 		end)
 	end
 
-	  function updateText(newText)
+	local function updateText(newText)
 		label.Text = newText
 	end
 
@@ -30328,7 +30328,7 @@ end
 
 Xan.Assert = function(condition, message, componentName)
 	if not condition then
-		  fullMsg = "[Xan]"
+		local fullMsg = "[Xan]"
 			.. (componentName and " " .. componentName .. ":" or "")
 			.. " "
 			.. (message or "Assertion failed")
@@ -30343,7 +30343,7 @@ Xan.Assert = function(condition, message, componentName)
 end
 
 Xan.Try = function(func, fallback)
-	  success, result = pcall(func)
+	local success, result = pcall(func)
 	if success then
 		return result
 	else
@@ -30357,10 +30357,10 @@ Xan.Try = function(func, fallback)
 	end
 end
 
-  _originalNotify = Xan.Notify
+local _originalNotify = Xan.Notify
 
 Xan.Notify = function(self_or_cfg, cfg)
-	  config
+	local config
 	if type(self_or_cfg) == "table" and self_or_cfg == Xan then
 		config = cfg or {}
 	elseif type(self_or_cfg) == "string" then
@@ -30487,23 +30487,23 @@ Xan._CustomMobileButtons = {}
 
 Xan.CustomButton = function(cfg)
 	cfg = cfg or {}
-	  name = cfg.Name or "Custom"
+	local name = cfg.Name or "Custom"
 
-	  icon = cfg.Icon or Icons.Game
-	  position = cfg.Position or UDim2.new(1, -70, 1, -140)
-	  size = cfg.Size or (IsMobile and 56 or 48)
-	  callback = cfg.Callback or cfg.OnClick or cfg.OnPress
-	  holdMode = cfg.HoldMode or cfg.Hold or false
-	  toggle = cfg.Toggle or false
-	  defaultState = cfg.Default or false
-	  visible = cfg.Visible ~= false
-	  mobileOnly = cfg.MobileOnly ~= false
-	  draggable = cfg.Draggable ~= false
-	  color = cfg.Color or cfg.AccentColor
-	  flag = cfg.Flag
+	local icon = cfg.Icon or Icons.Game
+	local position = cfg.Position or UDim2.new(1, -70, 1, -140)
+	local size = cfg.Size or (IsMobile and 56 or 48)
+	local callback = cfg.Callback or cfg.OnClick or cfg.OnPress
+	local holdMode = cfg.HoldMode or cfg.Hold or false
+	local toggle = cfg.Toggle or false
+	local defaultState = cfg.Default or false
+	local visible = cfg.Visible ~= false
+	local mobileOnly = cfg.MobileOnly ~= false
+	local draggable = cfg.Draggable ~= false
+	local color = cfg.Color or cfg.AccentColor
+	local flag = cfg.Flag
 
 	if mobileOnly and not IsMobile then
-		  dummy = {
+		local dummy = {
 			Name = name,
 			Button = nil,
 			State = function()
@@ -30523,7 +30523,7 @@ Xan.CustomButton = function(cfg)
 		return dummy
 	end
 
-	  screenGui = Util.Create("ScreenGui", {
+	local screenGui = Util.Create("ScreenGui", {
 		Name = Xan.GhostMode and Util.GenerateRandomString(12) or "XanBar_CustomBtn_" .. name,
 		ResetOnSpawn = false,
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
@@ -30533,17 +30533,17 @@ Xan.CustomButton = function(cfg)
 		screenGui.Parent = CoreGui
 	end)
 	if not screenGui.Parent then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  state = defaultState
-	  isPressed = false
-	  currentCallback = callback
+	local state = defaultState
+	local isPressed = false
+	local currentCallback = callback
 
-	  btnColor = color or Xan.CurrentTheme.BackgroundSecondary
-	  btnActiveColor = color or Xan.CurrentTheme.Accent
+	local btnColor = color or Xan.CurrentTheme.BackgroundSecondary
+	local btnActiveColor = color or Xan.CurrentTheme.Accent
 
-	  btn = Util.Create("TextButton", {
+	local btn = Util.Create("TextButton", {
 		Name = "CustomButton_" .. name,
 		BackgroundColor3 = state and btnActiveColor or btnColor,
 		BackgroundTransparency = state and 0 or 0.3,
@@ -30575,15 +30575,15 @@ Xan.CustomButton = function(cfg)
 		}),
 	})
 
-	  iconLabel = btn:FindFirstChild("Icon")
-	  stroke = btn:FindFirstChild("Stroke")
+	local iconLabel = btn:FindFirstChild("Icon")
+	local stroke = btn:FindFirstChild("Stroke")
 
-	  function updateVisual()
-		  targetBg = state and btnActiveColor or btnColor
-		  targetTrans = state and 0 or 0.3
-		  targetIconColor = state and Color3.new(1, 1, 1) or Xan.CurrentTheme.TextSecondary
+	local function updateVisual()
+		local targetBg = state and btnActiveColor or btnColor
+		local targetTrans = state and 0 or 0.3
+		local targetIconColor = state and Color3.new(1, 1, 1) or Xan.CurrentTheme.TextSecondary
 
-		  targetStrokeColor = state and btnActiveColor or Xan.CurrentTheme.CardBorder
+		local targetStrokeColor = state and btnActiveColor or Xan.CurrentTheme.CardBorder
 
 		Util.Tween(btn, 0.15, { BackgroundColor3 = targetBg, BackgroundTransparency = targetTrans })
 		Util.Tween(iconLabel, 0.15, { ImageColor3 = targetIconColor })
@@ -30591,11 +30591,11 @@ Xan.CustomButton = function(cfg)
 	end
 
 	if draggable then
-		  isDragging = false
-		  dragStart = nil
-		  startPos = nil
-		  dragThreshold = 8
-		  hasMoved = false
+		local isDragging = false
+		local dragStart = nil
+		local startPos = nil
+		local dragThreshold = 8
+		local hasMoved = false
 
 		btn.InputBegan:Connect(function(input)
 			if
@@ -30617,7 +30617,7 @@ Xan.CustomButton = function(cfg)
 					or input.UserInputType == Enum.UserInputType.Touch
 				)
 			then
-				  delta = input.Position - dragStart
+				local delta = input.Position - dragStart
 				if delta.Magnitude > dragThreshold then
 					hasMoved = true
 					btn.Position = UDim2.new(
@@ -30722,7 +30722,7 @@ Xan.CustomButton = function(cfg)
 		end
 	end)
 
-	  customBtn = {
+	local customBtn = {
 		Name = name,
 		Button = btn,
 		ScreenGui = screenGui,
@@ -30803,7 +30803,7 @@ Xan.GetMobileButton = function(name)
 end
 
 Xan.CreateMobileButtonToggle = function(tab, buttonName, toggleName, defaultVisible)
-	  btn = Xan._CustomMobileButtons[buttonName]
+	local btn = Xan._CustomMobileButtons[buttonName]
 	if not btn then
 		return nil
 	end
@@ -30831,21 +30831,21 @@ Xan.ButtonToggle = Xan.CreateMobileButtonToggle
 
 Xan.QuickMobileSetup = function(cfg)
 	cfg = cfg or {}
-	  buttons = cfg.Buttons or {}
-	  tab = cfg.Tab
-	  window = cfg.Window
+	local buttons = cfg.Buttons or {}
+	local tab = cfg.Tab
+	local window = cfg.Window
 
-	  createdButtons = {}
-	  yOffset = 0
+	local createdButtons = {}
+	local yOffset = 0
 
 	for i, btnCfg in ipairs(buttons) do
-		  btnName = btnCfg.Name or ("Button" .. i)
-		  pos = btnCfg.Position or UDim2.new(1, -70, 1, -70 - yOffset)
+		local btnName = btnCfg.Name or ("Button" .. i)
+		local pos = btnCfg.Position or UDim2.new(1, -70, 1, -70 - yOffset)
 
 		btnCfg.Position = pos
 		btnCfg.Name = btnName
 
-		  btn = Xan.CustomButton(btnCfg)
+		local btn = Xan.CustomButton(btnCfg)
 		createdButtons[btnName] = btn
 
 		yOffset = yOffset + 70
@@ -30855,10 +30855,10 @@ Xan.QuickMobileSetup = function(cfg)
 		tab:AddSection("Mobile Buttons")
 
 		for _, btnCfg in ipairs(buttons) do
-			  btnName = btnCfg.Name
-			  btn = createdButtons[btnName]
+			local btnName = btnCfg.Name
+			local btn = createdButtons[btnName]
 			if btn then
-				  showByDefault = btnCfg.Visible ~= false
+				local showByDefault = btnCfg.Visible ~= false
 				tab:AddToggle("Show " .. btnName, { Default = showByDefault }, function(v)
 					if v then
 						btn:Show()
@@ -30900,8 +30900,8 @@ Xan.DeleteConfig = function(name)
 end
 Xan.RemoveConfig = Xan.DeleteConfig
 
-  _originalGetFlag = Xan.GetFlag
-  _originalSetFlag = Xan.SetFlag
+local _originalGetFlag = Xan.GetFlag
+local _originalSetFlag = Xan.SetFlag
 
 Xan.Flag = function(name)
 	return _originalGetFlag(Xan, name)
@@ -30999,11 +30999,11 @@ Xan.TriggerBtn = Xan.TriggerButton
 Xan.MobileTrigger = Xan.TriggerButton
 
 function Xan.Quick(title, tabName, tabIcon, layout)
-	  win = Xan.New({
+	local win = Xan.New({
 		Title = title or "My Hub",
 		Layout = layout or "Auto",
 	})
-	  tab = win:AddTab(tabName or "Main", tabIcon or Util.GuessIcon(tabName or "Main"))
+	local tab = win:AddTab(tabName or "Main", tabIcon or Util.GuessIcon(tabName or "Main"))
 	return win, tab
 end
 
@@ -31016,25 +31016,25 @@ function Xan.QuickMobile(title, buttons)
 end
 
 function Xan.QuickTraditional(title, tabName, tabIcon)
-	  win = Xan.New({
+	local win = Xan.New({
 		Title = title or "My Hub",
 		Layout = "Traditional",
 	})
-	  tab = win:AddTab(tabName or "Main", tabIcon or Util.GuessIcon(tabName or "Main"))
+	local tab = win:AddTab(tabName or "Main", tabIcon or Util.GuessIcon(tabName or "Main"))
 	return win, tab
 end
 
 function Xan.QuickCompact(title, tabName, tabIcon)
-	  win = Xan.New({
+	local win = Xan.New({
 		Title = title or "My Hub",
 		Layout = "Compact",
 	})
-	  tab = win:AddTab(tabName or "Main", tabIcon or Util.GuessIcon(tabName or "Main"))
+	local tab = win:AddTab(tabName or "Main", tabIcon or Util.GuessIcon(tabName or "Main"))
 	return win, tab
 end
 
 function Xan.EZ(title)
-	  win = Xan.New({ Title = title or "Script" })
+	local win = Xan.New({ Title = title or "Script" })
 	return {
 		Win = win,
 		Tab = function(name)
@@ -31044,24 +31044,24 @@ function Xan.EZ(title)
 end
 
 function Xan.Combat(title)
-	  win, tab = Xan.Quick(title or "Combat Hub", "Combat")
+	local win, tab = Xan.Quick(title or "Combat Hub", "Combat")
 	return win, tab
 end
 
 function Xan.ESP(title)
-	  win, tab = Xan.Quick(title or "ESP Hub", "ESP")
+	local win, tab = Xan.Quick(title or "ESP Hub", "ESP")
 	return win, tab
 end
 
 function Xan.Hub(title)
-	  win = Xan.New({ Title = title or "Hub" })
+	local win = Xan.New({ Title = title or "Hub" })
 	return win
 end
 
 Xan.Make = Xan.New
 
 function Xan.Demo()
-	  win, main = Xan.Quick("Xan Demo", "Showcase", "home")
+	local win, main = Xan.Quick("Xan Demo", "Showcase", "home")
 
 	main:AddSection("Core Elements")
 	main:AddLabel("Welcome to Xan UI Library")
@@ -31079,7 +31079,7 @@ function Xan.Demo()
 	main:AddPrimaryButton("Primary", function() end)
 	main:AddDangerButton("Danger", function() end)
 
-	  visuals = win:AddTab("Visuals", "eye")
+	local visuals = win:AddTab("Visuals", "eye")
 	visuals:AddSection("Visualizers")
 	visuals:AddThemeSelector("Theme")
 	visuals:AddCrosshair("Crosshair Preview", { Enabled = true })
@@ -31104,7 +31104,7 @@ function Xan.Build(schema)
 		schema = { Title = schema }
 	end
 
-	  win = Xan.New({
+	local win = Xan.New({
 		Title = schema.Title or "My Hub",
 		Subtitle = schema.Subtitle,
 		Theme = schema.Theme,
@@ -31117,15 +31117,15 @@ function Xan.Build(schema)
 		ProfilePage = schema.ProfilePage,
 	})
 
-	  tabs = {}
+	local tabs = {}
 
 	for _, tabDef in ipairs(schema.Tabs or {}) do
-		  tab = win:AddTab(tabDef.Name or "Tab", tabDef.Icon)
+		local tab = win:AddTab(tabDef.Name or "Tab", tabDef.Icon)
 		tabs[tabDef.Name or "Tab"] = tab
 
 		for _, elem in ipairs(tabDef.Elements or {}) do
-			  t = elem.Type or elem[1]
-			  name = elem.Name or elem[2]
+			local t = elem.Type or elem[1]
+			local name = elem.Name or elem[2]
 
 			if t == "Section" then
 				tab:AddSection(name)
@@ -31234,9 +31234,9 @@ function Xan.Validate(value, expectedType, fieldName, componentName)
 		return true
 	end
 
-	  actualType = type(value)
+	local actualType = type(value)
 	if actualType ~= expectedType then
-		  msg =
+		local msg =
 			string.format("[Xan] %s: '%s' expected %s, got %s", componentName, fieldName, expectedType, actualType)
 		if Xan.Debug then
 			warn(msg)
@@ -31249,24 +31249,24 @@ end
 
 function Xan.ValidateConfig(config, schema, componentName)
 	componentName = componentName or "Component"
-	  errors = {}
+	local errors = {}
 
 	for field, rules in pairs(schema) do
-		  value = config[field]
+		local value = config[field]
 
 		if rules.required and value == nil then
 			table.insert(errors, string.format("'%s' is required", field))
 		end
 
 		if value ~= nil and rules.type then
-			  actualType = type(value)
+			local actualType = type(value)
 			if actualType ~= rules.type then
 				table.insert(errors, string.format("'%s' expected %s, got %s", field, rules.type, actualType))
 			end
 		end
 
 		if value ~= nil and rules.oneOf then
-			  valid = false
+			local valid = false
 			for _, allowed in ipairs(rules.oneOf) do
 				if value == allowed then
 					valid = true
@@ -31290,7 +31290,7 @@ end
 
 function Xan.CheckDuplicateFlag(flag, componentName)
 	if flag and Xan.Flags and Xan.Flags[flag] ~= nil then
-		  msg =
+		local msg =
 			string.format("[Xan] %s: Duplicate flag '%s' - will be overwritten", componentName or "Component", flag)
 		if Xan.Debug then
 			warn(msg)
@@ -31306,9 +31306,9 @@ function Xan.SafeCallback(callback, ...)
 		return nil
 	end
 
-	  success, result = pcall(callback, ...)
+	local success, result = pcall(callback, ...)
 	if not success then
-		  msg = "[Xan] Callback error: " .. tostring(result)
+		local msg = "[Xan] Callback error: " .. tostring(result)
 		Xan.Console:Log(msg, "Error")
 		if Xan.Debug then
 			warn(msg)
@@ -31325,9 +31325,9 @@ function Xan.Profile(operationName, func)
 		return
 	end
 
-	  startTime = tick()
-	  result = func()
-	  duration = tick() - startTime
+	local startTime = tick()
+	local result = func()
+	local duration = tick() - startTime
 
 	Xan._Profiling[operationName] = Xan._Profiling[operationName] or {}
 	table.insert(Xan._Profiling[operationName], duration)
@@ -31340,14 +31340,14 @@ function Xan.Profile(operationName, func)
 end
 
 function Xan.GetProfileStats(operationName)
-	  times = Xan._Profiling[operationName]
+	local times = Xan._Profiling[operationName]
 	if not times or #times == 0 then
 		return nil
 	end
 
-	  total = 0
-	  min = times[1]
-	  max = times[1]
+	local total = 0
+	local min = times[1]
+	local max = times[1]
 
 	for _, t in ipairs(times) do
 		total = total + t
@@ -31379,7 +31379,7 @@ end
 Xan.Plugins = {}
 Xan.PluginStore = "https://xan.bar/plugins/"
 
-  function initializePlugin(result)
+local function initializePlugin(result)
 	if type(result) == "function" then
 		return result(Xan)
 	end
@@ -31391,13 +31391,13 @@ function Xan.LoadPlugin(pluginName)
 		return Xan.Plugins[pluginName]
 	end
 
-	  url = Xan.PluginStore .. pluginName .. ".lua"
-	  success, result = pcall(function()
+	local url = Xan.PluginStore .. pluginName .. ".lua"
+	local success, result = pcall(function()
 		return loadstring(game:HttpGet(url))()
 	end)
 
 	if success and result then
-		  plugin = initializePlugin(result)
+		local plugin = initializePlugin(result)
 		if plugin then
 			Xan.Plugins[pluginName] = plugin
 			if Xan.Console and Xan.Console.Log then
@@ -31414,14 +31414,14 @@ function Xan.LoadPlugin(pluginName)
 end
 
 function Xan.LoadPluginFromURL(url)
-	  success, result = pcall(function()
+	local success, result = pcall(function()
 		return loadstring(game:HttpGet(url))()
 	end)
 
 	if success and result then
-		  plugin = initializePlugin(result)
+		local plugin = initializePlugin(result)
 		if plugin then
-			  name = plugin.Name or url:match("([^/]+)%.lua$") or "UnnamedPlugin"
+			local name = plugin.Name or url:match("([^/]+)%.lua$") or "UnnamedPlugin"
 			Xan.Plugins[name] = plugin
 			if Xan.Console and Xan.Console.Log then
 				Xan.Console:Log("Plugin '" .. name .. "' loaded from URL", "Info")
@@ -31433,14 +31433,14 @@ function Xan.LoadPluginFromURL(url)
 end
 
 function Xan.LoadPluginFromString(code, name)
-	  success, result = pcall(function()
+	local success, result = pcall(function()
 		return loadstring(code)()
 	end)
 
 	if success and result then
-		  plugin = initializePlugin(result)
+		local plugin = initializePlugin(result)
 		if plugin then
-			  pluginName = name or plugin.Name or "UnnamedPlugin"
+			local pluginName = name or plugin.Name or "UnnamedPlugin"
 			Xan.Plugins[pluginName] = plugin
 			if Xan.Console and Xan.Console.Log then
 				Xan.Console:Log("Plugin '" .. pluginName .. "' loaded from string", "Info")
@@ -31463,7 +31463,7 @@ function Xan.GetPlugin(name)
 end
 
 function Xan.ListPlugins()
-	  list = {}
+	local list = {}
 	for name, _ in pairs(Xan.Plugins) do
 		table.insert(list, name)
 	end
@@ -31471,7 +31471,7 @@ function Xan.ListPlugins()
 end
 
 function Xan.UnloadPlugin(name)
-	  plugin = Xan.Plugins[name]
+	local plugin = Xan.Plugins[name]
 	if plugin then
 		pcall(function()
 			if type(plugin) == "table" then
@@ -31545,7 +31545,7 @@ Xan.Helpers = {
 function Xan:CreateOnboarding(config)
 	config = config or {}
 
-	  layouts = config.Layouts
+	local layouts = config.Layouts
 		or {
 			Default = {
 				Name = "Default",
@@ -31567,16 +31567,16 @@ function Xan:CreateOnboarding(config)
 			},
 		}
 
-	  musicPlayerUrl = config.MusicPlayerUrl or "https://xan.bar/plugins/music_player.lua"
-	  apiDocsUrl = config.ApiDocsUrl or "https://xan.bar/api/"
-	  musicPreviewImage = config.MusicPreviewImage or "rbxassetid://124241950259371"
-	  onComplete = config.OnComplete or function() end
-	  onLaunch = config.OnLaunch or function() end
+	local musicPlayerUrl = config.MusicPlayerUrl or "https://xan.bar/plugins/music_player.lua"
+	local apiDocsUrl = config.ApiDocsUrl or "https://xan.bar/api/"
+	local musicPreviewImage = config.MusicPreviewImage or "rbxassetid://124241950259371"
+	local onComplete = config.OnComplete or function() end
+	local onLaunch = config.OnLaunch or function() end
 
-	  selectedLayout = "Default"
-	  musicPlayerEnabled = config.MusicPlayerDefault ~= false
+	local selectedLayout = "Default"
+	local musicPlayerEnabled = config.MusicPlayerDefault ~= false
 
-	  screenGui = Util.Create("ScreenGui", {
+	local screenGui = Util.Create("ScreenGui", {
 		Name = Xan.GhostMode and Util.GenerateRandomString(12) or "XanBar_Onboarding",
 		ResetOnSpawn = false,
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
@@ -31588,14 +31588,14 @@ function Xan:CreateOnboarding(config)
 		screenGui.Parent = CoreGui
 	end)
 	if not screenGui.Parent then
-		screenGui.Parent =  Player:WaitForChild("PlayerGui")
+		screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 	end
 
-	  theme = Xan.CurrentTheme
-	  containerWidth = IsMobile and 340 or 480
-	  containerHeight = IsMobile and 380 or 460
+	local theme = Xan.CurrentTheme
+	local containerWidth = IsMobile and 340 or 480
+	local containerHeight = IsMobile and 380 or 460
 
-	  overlay = Util.Create("Frame", {
+	local overlay = Util.Create("Frame", {
 		Name = "Overlay",
 		BackgroundColor3 = theme.Background,
 		BackgroundTransparency = 1,
@@ -31604,7 +31604,7 @@ function Xan:CreateOnboarding(config)
 		Parent = screenGui,
 	})
 
-	  container = Util.Create("Frame", {
+	local container = Util.Create("Frame", {
 		Name = "Container",
 		BackgroundColor3 = theme.Card,
 		BackgroundTransparency = 1,
@@ -31623,7 +31623,7 @@ function Xan:CreateOnboarding(config)
 		}),
 	})
 
-	  glow = Util.Create("ImageLabel", {
+	local glow = Util.Create("ImageLabel", {
 		Name = "Glow",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -31638,7 +31638,7 @@ function Xan:CreateOnboarding(config)
 		Parent = overlay,
 	})
 
-	  contentContainer = Util.Create("Frame", {
+	local contentContainer = Util.Create("Frame", {
 		Name = "Content",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -31647,7 +31647,7 @@ function Xan:CreateOnboarding(config)
 		Parent = container,
 	})
 
-	  cancelBtn = Util.Create("TextButton", {
+	local cancelBtn = Util.Create("TextButton", {
 		Name = "Cancel",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(1, 0),
@@ -31659,7 +31659,7 @@ function Xan:CreateOnboarding(config)
 		Parent = container,
 	})
 
-	  cancelIcon = Util.Create("ImageLabel", {
+	local cancelIcon = Util.Create("ImageLabel", {
 		Name = "Icon",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(0, 16, 0, 16),
@@ -31678,12 +31678,12 @@ function Xan:CreateOnboarding(config)
 		Util.Tween(cancelIcon, 0.15, { ImageColor3 = Color3.fromRGB(100, 100, 110) })
 	end)
 
-	  currentStep = 0
-	  totalSteps = 5
-	  pages = {}
+	local currentStep = 0
+	local totalSteps = 5
+	local pages = {}
 
-	  function createPage(name)
-		  page = Util.Create("Frame", {
+	local function createPage(name)
+		local page = Util.Create("Frame", {
 			Name = name,
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -31695,11 +31695,11 @@ function Xan:CreateOnboarding(config)
 		return page
 	end
 
-	  function createButton(parent, text, isPrimary, yPos)
-		  btnHeight = IsMobile and 48 or 44
-		  btnWidth = IsMobile and 0.85 or 0.6
+	local function createButton(parent, text, isPrimary, yPos)
+		local btnHeight = IsMobile and 48 or 44
+		local btnWidth = IsMobile and 0.85 or 0.6
 
-		  btn = Util.Create("TextButton", {
+		local btn = Util.Create("TextButton", {
 			Name = text,
 			BackgroundColor3 = isPrimary and Xan.CurrentTheme.Accent or Xan.CurrentTheme.Card,
 			AnchorPoint = Vector2.new(0.5, 0),
@@ -31735,8 +31735,8 @@ function Xan:CreateOnboarding(config)
 		return btn
 	end
 
-	  function createProgressDots(parent, yPos)
-		  dotsContainer = Util.Create("Frame", {
+	local function createProgressDots(parent, yPos)
+		local dotsContainer = Util.Create("Frame", {
 			Name = "ProgressDots",
 			BackgroundTransparency = 1,
 			AnchorPoint = Vector2.new(0.5, 0),
@@ -31752,9 +31752,9 @@ function Xan:CreateOnboarding(config)
 			}),
 		})
 
-		  dots = {}
+		local dots = {}
 		for i = 1, totalSteps do
-			  dot = Util.Create("Frame", {
+			local dot = Util.Create("Frame", {
 				Name = "Dot" .. i,
 				BackgroundColor3 = Xan.CurrentTheme.TextDim,
 				Size = UDim2.new(0, 8, 0, 8),
@@ -31769,15 +31769,15 @@ function Xan:CreateOnboarding(config)
 		return dots
 	end
 
-	  progressDots = nil
+	local progressDots = nil
 
-	  function updateProgress(step)
+	local function updateProgress(step)
 		if not progressDots then
 			return
 		end
 		for i, dot in ipairs(progressDots) do
-			  isActive = i <= step
-			  isCurrent = i == step
+			local isActive = i <= step
+			local isCurrent = i == step
 			task.delay((i - 1) * 0.08, function()
 				Util.Tween(dot, 0.7, {
 					BackgroundColor3 = isActive and Xan.CurrentTheme.Accent or Xan.CurrentTheme.TextDim,
@@ -31787,11 +31787,11 @@ function Xan:CreateOnboarding(config)
 		end
 	end
 
-	  originalValues = {}
+	local originalValues = {}
 
-	  function storeOriginalValues(page)
+	local function storeOriginalValues(page)
 		for _, child in ipairs(page:GetDescendants()) do
-			  key = child:GetFullName()
+			local key = child:GetFullName()
 			originalValues[key] = {}
 			if child:IsA("TextLabel") or child:IsA("TextButton") then
 				originalValues[key].TextTransparency = child.TextTransparency
@@ -31807,8 +31807,8 @@ function Xan:CreateOnboarding(config)
 		end
 	end
 
-	  function transitionTo(step)
-		  oldStep = currentStep
+	local function transitionTo(step)
+		local oldStep = currentStep
 		currentStep = step
 		updateProgress(step)
 
@@ -31817,13 +31817,13 @@ function Xan:CreateOnboarding(config)
 		end
 
 		if pages[step] then
-			  newPage = pages[step]
+			local newPage = pages[step]
 			newPage.Position = UDim2.new(0, 0, 0, 0)
 			newPage.Visible = true
 
 			for _, child in ipairs(newPage:GetDescendants()) do
-				  key = child:GetFullName()
-				  orig = originalValues[key]
+				local key = child:GetFullName()
+				local orig = originalValues[key]
 				if child:IsA("TextLabel") or child:IsA("TextButton") then
 					child.TextTransparency = 1
 					if orig and orig.BackgroundTransparency < 1 then
@@ -31842,8 +31842,8 @@ function Xan:CreateOnboarding(config)
 
 			task.delay(0.3, function()
 				for _, child in ipairs(newPage:GetDescendants()) do
-					  key = child:GetFullName()
-					  orig = originalValues[key] or {}
+					local key = child:GetFullName()
+					local orig = originalValues[key] or {}
 					if child:IsA("TextLabel") then
 						Util.Tween(
 							child,
@@ -31885,9 +31885,9 @@ function Xan:CreateOnboarding(config)
 		end
 	end
 
-	  page1 = createPage("Welcome")
+	local page1 = createPage("Welcome")
 
-	  iconsList = {
+	local iconsList = {
 		Icons.Aimbot,
 		Icons.ESP,
 		Icons.Radar,
@@ -31905,7 +31905,7 @@ function Xan:CreateOnboarding(config)
 		Icons.Hubs,
 	}
 
-	  iconConfigs = {
+	local iconConfigs = {
 		{ x = 0.08, y = 0.12, size = 28, opacity = 0.12, rotation = 15 },
 		{ x = 0.92, y = 0.08, size = 24, opacity = 0.10, rotation = -8 },
 		{ x = 0.05, y = 0.45, size = 22, opacity = 0.08, rotation = -12 },
@@ -31916,9 +31916,9 @@ function Xan:CreateOnboarding(config)
 		{ x = 0.94, y = 0.85, size = 20, opacity = 0.08, rotation = -5 },
 	}
 
-	  floatingIcons = {}
+	local floatingIcons = {}
 	for i, cfg in ipairs(iconConfigs) do
-		  iconFrame = Util.Create("Frame", {
+		local iconFrame = Util.Create("Frame", {
 			Name = "FloatIcon" .. i,
 			BackgroundTransparency = 1,
 			AnchorPoint = Vector2.new(0.5, 0.5),
@@ -31949,11 +31949,11 @@ function Xan:CreateOnboarding(config)
 	end
 
 	task.spawn(function()
-		  elapsed = 0
+		local elapsed = 0
 		while page1 and page1.Parent do
 			elapsed = elapsed + 0.03
 			for _, data in ipairs(floatingIcons) do
-				  newY = data.baseY + math.sin(elapsed * data.speed + data.phase) * 0.015
+				local newY = data.baseY + math.sin(elapsed * data.speed + data.phase) * 0.015
 				data.frame.Position = UDim2.new(data.frame.Position.X.Scale, 0, newY, 0)
 			end
 			task.wait(0.03)
@@ -31979,7 +31979,7 @@ function Xan:CreateOnboarding(config)
 		}),
 	})
 
-	  logoContainer = Util.Create("Frame", {
+	local logoContainer = Util.Create("Frame", {
 		Name = "LogoContainer",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -31989,7 +31989,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page1,
 	})
 
-	  logoBody = Util.Create("ImageLabel", {
+	local logoBody = Util.Create("ImageLabel", {
 		Name = "LogoBody",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -32001,7 +32001,7 @@ function Xan:CreateOnboarding(config)
 		Parent = logoContainer,
 	})
 
-	  logoAccent = Util.Create("ImageLabel", {
+	local logoAccent = Util.Create("ImageLabel", {
 		Name = "LogoAccent",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -32013,7 +32013,7 @@ function Xan:CreateOnboarding(config)
 		Parent = logoContainer,
 	})
 
-	  welcomeTitle = Util.Create("TextLabel", {
+	local welcomeTitle = Util.Create("TextLabel", {
 		Name = "Title",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32028,7 +32028,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page1,
 	})
 
-	  welcomeSubtitle = Util.Create("TextLabel", {
+	local welcomeSubtitle = Util.Create("TextLabel", {
 		Name = "Subtitle",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32044,7 +32044,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page1,
 	})
 
-	  continueBtn1 = Util.Create("TextButton", {
+	local continueBtn1 = Util.Create("TextButton", {
 		Name = "Continue",
 		BackgroundColor3 = Xan.CurrentTheme.Card,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32077,9 +32077,9 @@ function Xan:CreateOnboarding(config)
 		Util.Tween(continueBtn1:FindFirstChildOfClass("UIStroke"), 0.15, { Color = Xan.CurrentTheme.CardBorder })
 	end)
 
-	  page2 = createPage("About")
+	local page2 = createPage("About")
 
-	  mockupImage = Util.Create("ImageLabel", {
+	local mockupImage = Util.Create("ImageLabel", {
 		Name = "Mockup",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32092,7 +32092,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page2,
 	})
 
-	  aboutTitleContainer = Util.Create("Frame", {
+	local aboutTitleContainer = Util.Create("Frame", {
 		Name = "TitleContainer",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32103,7 +32103,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page2,
 	})
 
-	  aboutTitlePrefix = Util.Create("TextLabel", {
+	local aboutTitlePrefix = Util.Create("TextLabel", {
 		Name = "Prefix",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(1, 0.5),
@@ -32118,10 +32118,10 @@ function Xan:CreateOnboarding(config)
 		Parent = aboutTitleContainer,
 	})
 
-	  cycleWords = { "library.", "script.", "music player.", "script hub.", "cheat menu.", "game tool." }
-	  currentWordIndex = 1
+	local cycleWords = { "library.", "script.", "music player.", "script hub.", "cheat menu.", "game tool." }
+	local currentWordIndex = 1
 
-	  aboutTitleWord = Util.Create("TextLabel", {
+	local aboutTitleWord = Util.Create("TextLabel", {
 		Name = "Word",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0, 0.5),
@@ -32136,7 +32136,7 @@ function Xan:CreateOnboarding(config)
 		Parent = aboutTitleContainer,
 	})
 
-	  wordCycleActive = true
+	local wordCycleActive = true
 	task.spawn(function()
 		task.wait(1.5)
 		while wordCycleActive and page2 and page2.Parent do
@@ -32150,7 +32150,7 @@ function Xan:CreateOnboarding(config)
 		end
 	end)
 
-	  aboutDesc = Util.Create("TextLabel", {
+	local aboutDesc = Util.Create("TextLabel", {
 		Name = "Description",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32166,7 +32166,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page2,
 	})
 
-	  featureList = Util.Create("Frame", {
+	local featureList = Util.Create("Frame", {
 		Name = "Features",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32181,7 +32181,7 @@ function Xan:CreateOnboarding(config)
 		}),
 	})
 
-	  features = config.Features
+	local features = config.Features
 		or {
 			"Easy-to-use APIs",
 			"Full mobile & desktop support",
@@ -32201,7 +32201,7 @@ function Xan:CreateOnboarding(config)
 		})
 	end
 
-	  continueBtn2 = Util.Create("TextButton", {
+	local continueBtn2 = Util.Create("TextButton", {
 		Name = "Continue",
 		BackgroundColor3 = Xan.CurrentTheme.Card,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32231,9 +32231,9 @@ function Xan:CreateOnboarding(config)
 		Util.Tween(continueBtn2:FindFirstChildOfClass("UIStroke"), 0.15, { Color = Xan.CurrentTheme.CardBorder })
 	end)
 
-	  page3 = createPage("Layout")
+	local page3 = createPage("Layout")
 
-	  backBtn3 = Util.Create("TextButton", {
+	local backBtn3 = Util.Create("TextButton", {
 		Name = "Back",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 15, 0, 15),
@@ -32258,7 +32258,7 @@ function Xan:CreateOnboarding(config)
 		transitionTo(2)
 	end)
 
-	  layoutTitle = Util.Create("TextLabel", {
+	local layoutTitle = Util.Create("TextLabel", {
 		Name = "Title",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32272,7 +32272,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page3,
 	})
 
-	  layoutSubtitle = Util.Create("TextLabel", {
+	local layoutSubtitle = Util.Create("TextLabel", {
 		Name = "Subtitle",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32286,7 +32286,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page3,
 	})
 
-	  layoutGrid = Util.Create("Frame", {
+	local layoutGrid = Util.Create("Frame", {
 		Name = "LayoutGrid",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32301,12 +32301,12 @@ function Xan:CreateOnboarding(config)
 		}),
 	})
 
-	  layoutCards = {}
+	local layoutCards = {}
 
-	  function createLayoutCard(layoutKey, layoutData, isFirst)
-		  cardHeight = IsMobile and 70 or 75
+	local function createLayoutCard(layoutKey, layoutData, isFirst)
+		local cardHeight = IsMobile and 70 or 75
 
-		  card = Util.Create("Frame", {
+		local card = Util.Create("Frame", {
 			Name = layoutKey,
 			BackgroundColor3 = isFirst and Color3.fromRGB(30, 25, 28) or Xan.CurrentTheme.Card,
 			Size = UDim2.new(1, 0, 0, cardHeight),
@@ -32321,7 +32321,7 @@ function Xan:CreateOnboarding(config)
 			}),
 		})
 
-		  preview = Util.Create("Frame", {
+		local preview = Util.Create("Frame", {
 			Name = "Preview",
 			BackgroundColor3 = Color3.fromRGB(25, 25, 30),
 			Position = UDim2.new(0, 12, 0.5, 0),
@@ -32334,7 +32334,7 @@ function Xan:CreateOnboarding(config)
 			Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 		})
 
-		  previewIcon = Util.Create("ImageLabel", {
+		local previewIcon = Util.Create("ImageLabel", {
 			Name = "Icon",
 			BackgroundTransparency = 1,
 			AnchorPoint = Vector2.new(0.5, 0.5),
@@ -32347,7 +32347,7 @@ function Xan:CreateOnboarding(config)
 		})
 
 		if isFirst then
-			  badge = Util.Create("Frame", {
+			local badge = Util.Create("Frame", {
 				Name = "Badge",
 				BackgroundColor3 = Xan.CurrentTheme.Accent,
 				Position = UDim2.new(1, -5, 0, 5),
@@ -32359,7 +32359,7 @@ function Xan:CreateOnboarding(config)
 				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 			})
 
-			  badgeText = Util.Create("TextLabel", {
+			local badgeText = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -32372,7 +32372,7 @@ function Xan:CreateOnboarding(config)
 			})
 		end
 
-		  nameLabel = Util.Create("TextLabel", {
+		local nameLabel = Util.Create("TextLabel", {
 			Name = "Name",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, IsMobile and 72 or 85, 0, 12),
@@ -32386,7 +32386,7 @@ function Xan:CreateOnboarding(config)
 			Parent = card,
 		})
 
-		  descLabel = Util.Create("TextLabel", {
+		local descLabel = Util.Create("TextLabel", {
 			Name = "Desc",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, IsMobile and 72 or 85, 0, 32),
@@ -32402,7 +32402,7 @@ function Xan:CreateOnboarding(config)
 			Parent = card,
 		})
 
-		  checkmark = Util.Create("TextLabel", {
+		local checkmark = Util.Create("TextLabel", {
 			Name = "Check",
 			BackgroundTransparency = 1,
 			AnchorPoint = Vector2.new(1, 0.5),
@@ -32416,7 +32416,7 @@ function Xan:CreateOnboarding(config)
 			Parent = card,
 		})
 
-		  btn = Util.Create("TextButton", {
+		local btn = Util.Create("TextButton", {
 			Name = "Button",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -32446,7 +32446,7 @@ function Xan:CreateOnboarding(config)
 
 		btn.MouseButton1Click:Connect(function()
 			for key, data in pairs(layoutCards) do
-				  isSelected = key == layoutKey
+				local isSelected = key == layoutKey
 				Util.Tween(
 					data.card,
 					0.25,
@@ -32469,7 +32469,7 @@ function Xan:CreateOnboarding(config)
 		return card
 	end
 
-	  layoutOrder = { "Default", "Traditional", "Compact" }
+	local layoutOrder = { "Default", "Traditional", "Compact" }
 	for i, key in ipairs(layoutOrder) do
 		if layouts[key] then
 			createLayoutCard(key, layouts[key], i == 1)
@@ -32480,7 +32480,7 @@ function Xan:CreateOnboarding(config)
 		progressDots = createProgressDots(page3, 350)
 	end
 
-	  continueBtn3 = Util.Create("TextButton", {
+	local continueBtn3 = Util.Create("TextButton", {
 		Name = "Continue",
 		BackgroundColor3 = Xan.CurrentTheme.Card,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32511,9 +32511,9 @@ function Xan:CreateOnboarding(config)
 		Util.Tween(continueBtn3:FindFirstChildOfClass("UIStroke"), 0.15, { Color = Xan.CurrentTheme.CardBorder })
 	end)
 
-	  page4 = createPage("MusicPlayer")
+	local page4 = createPage("MusicPlayer")
 
-	  backBtn4 = Util.Create("TextButton", {
+	local backBtn4 = Util.Create("TextButton", {
 		Name = "Back",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 15, 0, 15),
@@ -32538,7 +32538,7 @@ function Xan:CreateOnboarding(config)
 		transitionTo(3)
 	end)
 
-	  musicTitle = Util.Create("TextLabel", {
+	local musicTitle = Util.Create("TextLabel", {
 		Name = "Title",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 25, 0, 55),
@@ -32552,13 +32552,13 @@ function Xan:CreateOnboarding(config)
 		Parent = page4,
 	})
 
-	  musicDesc = Util.Create("TextLabel", {
+	local musicDesc = Util.Create("TextLabel", {
 		Name = "Description",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 25, 0, 85),
 		Size = UDim2.new(0.55, -10, 0, 95),
 		Font = Enum.Font.Roboto,
-		Text = "Play your   files or stream on the first-ever Automated Song API with album art, 2,000+ songs and counting, instant playback with caching, and unlimited streaming.\n\nLoad it with the demo?",
+		Text = "Play your local files or stream on the first-ever Automated Song API with album art, 2,000+ songs and counting, instant playback with caching, and unlimited streaming.\n\nLoad it with the demo?",
 		TextColor3 = Xan.CurrentTheme.TextSecondary,
 		TextSize = IsMobile and 12 or 13,
 		TextWrapped = true,
@@ -32568,7 +32568,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page4,
 	})
 
-	  apiLink = Util.Create("TextButton", {
+	local apiLink = Util.Create("TextButton", {
 		Name = "APILink",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 25, 0, 185),
@@ -32592,7 +32592,7 @@ function Xan:CreateOnboarding(config)
 		if setclipboard then
 			setclipboard(apiDocsUrl)
 
-			  tooltip = Util.Create("Frame", {
+			local tooltip = Util.Create("Frame", {
 				Name = "Tooltip",
 				BackgroundColor3 = Color3.fromRGB(45, 45, 52),
 				Position = UDim2.new(0, 25, 0, 160),
@@ -32609,7 +32609,7 @@ function Xan:CreateOnboarding(config)
 				}),
 			})
 
-			  tooltipText = Util.Create("TextLabel", {
+			local tooltipText = Util.Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -32636,7 +32636,7 @@ function Xan:CreateOnboarding(config)
 		end
 	end)
 
-	  toggleContainer = Util.Create("Frame", {
+	local toggleContainer = Util.Create("Frame", {
 		Name = "ToggleContainer",
 		BackgroundColor3 = Xan.CurrentTheme.Card,
 		Position = UDim2.new(0, 25, 0, IsMobile and 215 or 220),
@@ -32648,7 +32648,7 @@ function Xan:CreateOnboarding(config)
 		Util.Create("UIStroke", { Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 	})
 
-	  toggleLabel = Util.Create("TextLabel", {
+	local toggleLabel = Util.Create("TextLabel", {
 		Name = "Label",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 15, 0, 0),
@@ -32663,7 +32663,7 @@ function Xan:CreateOnboarding(config)
 		Parent = toggleContainer,
 	})
 
-	  toggleFrame = Util.Create("Frame", {
+	local toggleFrame = Util.Create("Frame", {
 		Name = "Toggle",
 		BackgroundColor3 = Xan.CurrentTheme.Accent,
 		AnchorPoint = Vector2.new(1, 0.5),
@@ -32675,7 +32675,7 @@ function Xan:CreateOnboarding(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  toggleKnob = Util.Create("Frame", {
+	local toggleKnob = Util.Create("Frame", {
 		Name = "Knob",
 		BackgroundColor3 = Color3.new(1, 1, 1),
 		AnchorPoint = Vector2.new(0, 0.5),
@@ -32687,7 +32687,7 @@ function Xan:CreateOnboarding(config)
 		Util.Create("UICorner", { CornerRadius = UDim.new(1, 0) }),
 	})
 
-	  toggleBtn = Util.Create("TextButton", {
+	local toggleBtn = Util.Create("TextButton", {
 		Name = "Button",
 		BackgroundTransparency = 1,
 		Size = UDim2.new(1, 0, 1, 0),
@@ -32698,13 +32698,13 @@ function Xan:CreateOnboarding(config)
 
 	toggleBtn.MouseButton1Click:Connect(function()
 		musicPlayerEnabled = not musicPlayerEnabled
-		  targetPos = musicPlayerEnabled and UDim2.new(0, 25, 0.5, 0) or UDim2.new(0, 3, 0.5, 0)
-		  targetColor = musicPlayerEnabled and Xan.CurrentTheme.Accent or Color3.fromRGB(50, 50, 58)
+		local targetPos = musicPlayerEnabled and UDim2.new(0, 25, 0.5, 0) or UDim2.new(0, 3, 0.5, 0)
+		local targetColor = musicPlayerEnabled and Xan.CurrentTheme.Accent or Color3.fromRGB(50, 50, 58)
 		Util.Tween(toggleKnob, 0.25, { Position = targetPos }, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
 		Util.Tween(toggleFrame, 0.2, { BackgroundColor3 = targetColor })
 	end)
 
-	  musicPreviewContainer = Util.Create("Frame", {
+	local musicPreviewContainer = Util.Create("Frame", {
 		Name = "PreviewContainer",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(1, 0),
@@ -32715,7 +32715,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page4,
 	})
 
-	  musicPreviewImg = Util.Create("ImageLabel", {
+	local musicPreviewImg = Util.Create("ImageLabel", {
 		Name = "Preview",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32727,12 +32727,12 @@ function Xan:CreateOnboarding(config)
 		Parent = musicPreviewContainer,
 	})
 
-	  dots4 = createProgressDots(page4, IsMobile and 288 or 350)
+	local dots4 = createProgressDots(page4, IsMobile and 288 or 350)
 	for i, dot in ipairs(dots4) do
 		dot.BackgroundColor3 = i <= 4 and Xan.CurrentTheme.Accent or Xan.CurrentTheme.TextDim
 	end
 
-	  continueBtn4 = Util.Create("TextButton", {
+	local continueBtn4 = Util.Create("TextButton", {
 		Name = "Continue",
 		BackgroundColor3 = Color3.fromRGB(35, 35, 40),
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32762,9 +32762,9 @@ function Xan:CreateOnboarding(config)
 		Util.Tween(continueBtn4:FindFirstChildOfClass("UIStroke"), 0.15, { Color = Color3.fromRGB(55, 55, 62) })
 	end)
 
-	  page5 = createPage("Confirmation")
+	local page5 = createPage("Confirmation")
 
-	  backBtn5 = Util.Create("TextButton", {
+	local backBtn5 = Util.Create("TextButton", {
 		Name = "Back",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 15, 0, 15),
@@ -32789,7 +32789,7 @@ function Xan:CreateOnboarding(config)
 		transitionTo(4)
 	end)
 
-	  confirmIcon = Util.Create("ImageLabel", {
+	local confirmIcon = Util.Create("ImageLabel", {
 		Name = "Icon",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32801,7 +32801,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page5,
 	})
 
-	  confirmTitle = Util.Create("TextLabel", {
+	local confirmTitle = Util.Create("TextLabel", {
 		Name = "Title",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32815,7 +32815,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page5,
 	})
 
-	  confirmDesc = Util.Create("TextLabel", {
+	local confirmDesc = Util.Create("TextLabel", {
 		Name = "Description",
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32830,7 +32830,7 @@ function Xan:CreateOnboarding(config)
 		Parent = page5,
 	})
 
-	  summaryContainer = Util.Create("Frame", {
+	local summaryContainer = Util.Create("Frame", {
 		Name = "Summary",
 		BackgroundColor3 = Color3.fromRGB(20, 20, 25),
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32843,7 +32843,7 @@ function Xan:CreateOnboarding(config)
 		Util.Create("UIStroke", { Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 	})
 
-	  summaryLayout = Util.Create("TextLabel", {
+	local summaryLayout = Util.Create("TextLabel", {
 		Name = "Layout",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 15, 0, 12),
@@ -32857,7 +32857,7 @@ function Xan:CreateOnboarding(config)
 		Parent = summaryContainer,
 	})
 
-	  summaryMusic = Util.Create("TextLabel", {
+	local summaryMusic = Util.Create("TextLabel", {
 		Name = "Music",
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 15, 0, 38),
@@ -32871,16 +32871,16 @@ function Xan:CreateOnboarding(config)
 		Parent = summaryContainer,
 	})
 
-	  dots5 = createProgressDots(page5, IsMobile and 280 or 345)
+	local dots5 = createProgressDots(page5, IsMobile and 280 or 345)
 	for i, dot in ipairs(dots5) do
 		dot.BackgroundColor3 = Xan.CurrentTheme.Accent
 	end
 
-	  launchBtnClicked = false
-	  launchBtnHeight = IsMobile and 50 or 46
-	  launchBtnWidth = IsMobile and 0.75 or 0.55
+	local launchBtnClicked = false
+	local launchBtnHeight = IsMobile and 50 or 46
+	local launchBtnWidth = IsMobile and 0.75 or 0.55
 
-	  launchBtn = Util.Create("TextButton", {
+	local launchBtn = Util.Create("TextButton", {
 		Name = "LaunchDemo",
 		BackgroundColor3 = Color3.fromRGB(45, 45, 52),
 		AnchorPoint = Vector2.new(0.5, 0),
@@ -32904,7 +32904,7 @@ function Xan:CreateOnboarding(config)
 	launchBtn.MouseEnter:Connect(function()
 		if not launchBtnClicked then
 			Util.Tween(launchBtn, 0.25, { BackgroundColor3 = Color3.fromRGB(55, 55, 65) }, Enum.EasingStyle.Quart)
-			  stroke = launchBtn:FindFirstChildOfClass("UIStroke")
+			local stroke = launchBtn:FindFirstChildOfClass("UIStroke")
 			if stroke then
 				Util.Tween(stroke, 0.25, { Color = Color3.fromRGB(80, 80, 92) }, Enum.EasingStyle.Quart)
 			end
@@ -32913,19 +32913,19 @@ function Xan:CreateOnboarding(config)
 	launchBtn.MouseLeave:Connect(function()
 		if not launchBtnClicked then
 			Util.Tween(launchBtn, 0.25, { BackgroundColor3 = Color3.fromRGB(45, 45, 52) }, Enum.EasingStyle.Quart)
-			  stroke = launchBtn:FindFirstChildOfClass("UIStroke")
+			local stroke = launchBtn:FindFirstChildOfClass("UIStroke")
 			if stroke then
 				Util.Tween(stroke, 0.25, { Color = Color3.fromRGB(65, 65, 75) }, Enum.EasingStyle.Quart)
 			end
 		end
 	end)
 
-	  function updateSummary()
+	local function updateSummary()
 		summaryLayout.Text = "Layout: " .. selectedLayout
 		summaryMusic.Text = "Music Player: " .. (musicPlayerEnabled and "Enabled" or "Disabled")
 	end
 
-	  function closeOnboarding()
+	local function closeOnboarding()
 		Util.Tween(cancelIcon, 0.2, { ImageTransparency = 1 })
 
 		for _, page in ipairs(pages) do
@@ -32961,10 +32961,10 @@ function Xan:CreateOnboarding(config)
 		end)
 	end
 
-	  currentLayoutGui = nil
+	local currentLayoutGui = nil
 
-	  function createLayoutSwitcher()
-		  switcherGui = Util.Create("ScreenGui", {
+	local function createLayoutSwitcher()
+		local switcherGui = Util.Create("ScreenGui", {
 			Name = Xan.GhostMode and Util.GenerateRandomString(12) or "LayoutSwitcher",
 			ResetOnSpawn = false,
 			ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
@@ -32976,20 +32976,20 @@ function Xan:CreateOnboarding(config)
 			switcherGui.Parent = CoreGui
 		end)
 		if not switcherGui.Parent then
-			switcherGui.Parent =  Player:WaitForChild("PlayerGui")
+			switcherGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 		end
 
-		  isExpanded = false
-		  autoHideTimer = nil
-		  AUTO_HIDE_DELAY = 4
-		  musicPlayerLoaded = musicPlayerEnabled
-		  isSwitching = false
-		  SWITCH_COOLDOWN = 1.5
+		local isExpanded = false
+		local autoHideTimer = nil
+		local AUTO_HIDE_DELAY = 4
+		local musicPlayerLoaded = musicPlayerEnabled
+		local isSwitching = false
+		local SWITCH_COOLDOWN = 1.5
 
-		  collapsedSize = IsMobile and UDim2.new(0, 44, 0, 44) or UDim2.new(0, 85, 0, 34)
-		  expandedSize = IsMobile and UDim2.new(0, 170, 0, 48) or UDim2.new(0, 165, 0, 48)
+		local collapsedSize = IsMobile and UDim2.new(0, 44, 0, 44) or UDim2.new(0, 85, 0, 34)
+		local expandedSize = IsMobile and UDim2.new(0, 170, 0, 48) or UDim2.new(0, 165, 0, 48)
 
-		  switcherContainer = Util.Create("Frame", {
+		local switcherContainer = Util.Create("Frame", {
 			Name = "Container",
 			BackgroundColor3 = Color3.fromRGB(18, 18, 22),
 			Position = IsMobile and UDim2.new(0.5, 0, 1, -58) or UDim2.new(1, -20, 1, -52),
@@ -33002,7 +33002,7 @@ function Xan:CreateOnboarding(config)
 			Util.Create("UIStroke", { Color = Color3.fromRGB(38, 38, 45), Thickness = 1 }),
 		})
 
-		  toggleBtn = Util.Create("TextButton", {
+		local toggleBtn = Util.Create("TextButton", {
 			Name = "Toggle",
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
@@ -33011,7 +33011,7 @@ function Xan:CreateOnboarding(config)
 			Parent = switcherContainer,
 		})
 
-		  arrowIcon = Util.Create("TextLabel", {
+		local arrowIcon = Util.Create("TextLabel", {
 			Name = "Arrow",
 			BackgroundTransparency = 1,
 			Position = IsMobile and UDim2.new(0.5, 0, 0.5, 0) or UDim2.new(0, 10, 0.5, 0),
@@ -33025,7 +33025,7 @@ function Xan:CreateOnboarding(config)
 			Parent = toggleBtn,
 		})
 
-		  demosLabel = nil
+		local demosLabel = nil
 		if not IsMobile then
 			demosLabel = Util.Create("TextLabel", {
 				Name = "DemosLabel",
@@ -33043,7 +33043,7 @@ function Xan:CreateOnboarding(config)
 			})
 		end
 
-		  layoutList = Util.Create("Frame", {
+		local layoutList = Util.Create("Frame", {
 			Name = "List",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0, 5, 0, 5),
@@ -33060,9 +33060,9 @@ function Xan:CreateOnboarding(config)
 			}),
 		})
 
-		  toggleSwitcher
+		local toggleSwitcher
 
-		  tooltip = Util.Create("TextLabel", {
+		local tooltip = Util.Create("TextLabel", {
 			Name = "Tooltip",
 			BackgroundColor3 = Xan.CurrentTheme.Background,
 			AnchorPoint = Vector2.new(0.5, 1),
@@ -33080,7 +33080,7 @@ function Xan:CreateOnboarding(config)
 			Util.Create("UIStroke", { Color = Xan.CurrentTheme.CardBorder, Thickness = 1 }),
 		})
 
-		  function startAutoHideTimer()
+		local function startAutoHideTimer()
 			if autoHideTimer then
 				pcall(function()
 					task.cancel(autoHideTimer)
@@ -33145,7 +33145,7 @@ function Xan:CreateOnboarding(config)
 		end)
 
 		for key, layoutData in pairs(layouts) do
-			  btn = Util.Create("ImageButton", {
+			local btn = Util.Create("ImageButton", {
 				Name = key,
 				BackgroundColor3 = key == selectedLayout and Xan.CurrentTheme.Accent or Color3.fromRGB(28, 28, 34),
 				Size = UDim2.new(0, IsMobile and 50 or 48, 0, IsMobile and 36 or 36),
@@ -33174,8 +33174,8 @@ function Xan:CreateOnboarding(config)
 				if isExpanded then
 					tooltip.Text = key
 					tooltip.Visible = true
-					  btnPos = btn.AbsolutePosition
-					  containerPos = switcherContainer.AbsolutePosition
+					local btnPos = btn.AbsolutePosition
+					local containerPos = switcherContainer.AbsolutePosition
 					tooltip.Position = UDim2.new(0, btnPos.X - containerPos.X + btn.AbsoluteSize.X / 2, 0, -5)
 				end
 			end)
@@ -33206,8 +33206,8 @@ function Xan:CreateOnboarding(config)
 						end
 					end
 
-					if  Player:FindFirstChild("PlayerGui") then
-						for _, gui in ipairs( Player.PlayerGui:GetChildren()) do
+					if LocalPlayer:FindFirstChild("PlayerGui") then
+						for _, gui in ipairs(LocalPlayer.PlayerGui:GetChildren()) do
 							if
 								(gui.Name:find("XanBar") or gui.Name:find("Xan"))
 								and gui ~= switcherGui
@@ -33223,7 +33223,7 @@ function Xan:CreateOnboarding(config)
 					for _, otherBtn in ipairs(layoutList:GetChildren()) do
 						if otherBtn:IsA("ImageButton") then
 							otherBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
-							  stroke = otherBtn:FindFirstChildOfClass("UIStroke")
+							local stroke = otherBtn:FindFirstChildOfClass("UIStroke")
 							if stroke then
 								stroke.Color = Color3.fromRGB(45, 45, 52)
 								stroke.Thickness = 1
@@ -33232,7 +33232,7 @@ function Xan:CreateOnboarding(config)
 					end
 
 					btn.BackgroundColor3 = Xan.CurrentTheme.Accent
-					  stroke = btn:FindFirstChildOfClass("UIStroke")
+					local stroke = btn:FindFirstChildOfClass("UIStroke")
 					if stroke then
 						stroke.Color = Xan.CurrentTheme.Accent
 						stroke.Thickness = 2
@@ -33241,7 +33241,7 @@ function Xan:CreateOnboarding(config)
 					selectedLayout = key
 
 					task.delay(0.2, function()
-						  layoutData = layouts[selectedLayout]
+						local layoutData = layouts[selectedLayout]
 						if layoutData and layoutData.Script then
 							pcall(function()
 								loadstring(game:HttpGet(layoutData.Script))()
@@ -33249,7 +33249,7 @@ function Xan:CreateOnboarding(config)
 						end
 
 						if musicPlayerLoaded then
-							  musicExists = false
+							local musicExists = false
 							for _, gui in ipairs(CoreGui:GetChildren()) do
 								if gui.Name == "XanMusic" then
 									musicExists = true
@@ -33257,8 +33257,8 @@ function Xan:CreateOnboarding(config)
 								end
 							end
 
-							if not musicExists and  Player:FindFirstChild("PlayerGui") then
-								for _, gui in ipairs( Player.PlayerGui:GetChildren()) do
+							if not musicExists and LocalPlayer:FindFirstChild("PlayerGui") then
+								for _, gui in ipairs(LocalPlayer.PlayerGui:GetChildren()) do
 									if gui.Name == "XanMusic" then
 										musicExists = true
 										break
@@ -33286,13 +33286,13 @@ function Xan:CreateOnboarding(config)
 		return switcherGui
 	end
 
-	  function launchScript()
+	local function launchScript()
 		closeOnboarding()
 
 		task.delay(0.4, function()
-			  layoutData = layouts[selectedLayout]
+			local layoutData = layouts[selectedLayout]
 			if layoutData and layoutData.Script then
-				  success1, err1 = pcall(function()
+				local success1, err1 = pcall(function()
 					loadstring(game:HttpGet(layoutData.Script))()
 				end)
 				if not success1 then
@@ -33302,7 +33302,7 @@ function Xan:CreateOnboarding(config)
 
 			if musicPlayerEnabled then
 				task.delay(1, function()
-					  success2, err2 = pcall(function()
+					local success2, err2 = pcall(function()
 						loadstring(game:HttpGet(musicPlayerUrl))()
 					end)
 					if not success2 then
@@ -33359,7 +33359,7 @@ function Xan:CreateOnboarding(config)
 				TextColor3 = Color3.fromRGB(140, 140, 150),
 			}, Enum.EasingStyle.Quart)
 
-			  btnStroke = launchBtn:FindFirstChildOfClass("UIStroke")
+			local btnStroke = launchBtn:FindFirstChildOfClass("UIStroke")
 			if btnStroke then
 				Util.Tween(btnStroke, 0.3, { Color = Color3.fromRGB(50, 50, 58) }, Enum.EasingStyle.Quart)
 			end
