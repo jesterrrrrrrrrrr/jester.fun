@@ -21924,11 +21924,11 @@ local function getNotificationContainer(position)
 	container.Parent = screenGui
 
 	local layout = Instance.new("UIListLayout")
-	ui.layout.Padding = UDim.new(0, 8)
-	ui.layout.SortOrder = Enum.SortOrder.LayoutOrder
-	ui.layout.HorizontalAlignment = cfg.HorizontalAlignment
-	ui.layout.VerticalAlignment = cfg.VerticalAlignment
-	ui.layout.Parent = container
+	layout.Padding = UDim.new(0, 8)
+	layout.SortOrder = Enum.SortOrder.LayoutOrder
+	layout.HorizontalAlignment = cfg.HorizontalAlignment
+	layout.VerticalAlignment = cfg.VerticalAlignment
+	layout.Parent = container
 
 	NotificationContainers[position] = container
 	return container
@@ -21969,7 +21969,7 @@ function Xan:Notify(config)
 		notif = Instance.new("Frame")
 		notif.Name = "Notification"
 		notif.BackgroundColor3 = Xan.CurrentTheme.Background
-		notif.BackgroundTransparency = 0.15
+		notif.BackgroundTransparency = 0
 		notif.Size = UDim2.new(0, notifWidth, 0, 0)
 		notif.ClipsDescendants = true
 		notif.Visible = true
@@ -23049,7 +23049,7 @@ function Xan:CreateBottomNotification(config)
 		Util.Create("UIStroke", {
 			Color = Xan.CurrentTheme.CardBorder,
 			Thickness = 1,
-			Transparency = 0.5,
+			Transparency = 0,
 		}),
 	})
 
