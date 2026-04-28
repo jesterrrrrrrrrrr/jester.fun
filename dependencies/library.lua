@@ -6541,7 +6541,7 @@ self.CurrentTheme = theme
 					Util.Tween(
 						closeBtn,
 						0.15,
-						{ BackgroundColor3 = Xan.CurrentTheme.Error, TextColor3 = Color3.new(1, 1, 1) }
+						{ BackgroundColor3 = Xan.CurrentTheme.TextDim, TextColor3 = Color3.new(1, 1, 1) }
 					)
 				end)
 				closeBtn.MouseLeave:Connect(function()
@@ -7886,7 +7886,7 @@ self.CurrentTheme = theme
 	end)
 
 	searchCloseSearchBtn.MouseEnter:Connect(function()
-		Util.Tween(searchCloseSearchBtn, 0.15, { ImageColor3 = Xan.CurrentTheme.AccentLight })
+		Util.Tween(searchCloseSearchBtn, 0.15, { ImageColor3 = Xan.CurrentTheme.TextDim })
 	end)
 	searchCloseSearchBtn.MouseLeave:Connect(function()
 		Util.Tween(searchCloseSearchBtn, 0.15, { ImageColor3 = Xan.CurrentTheme.Accent })
@@ -12464,7 +12464,7 @@ self.CurrentTheme = theme
 
 	if searchBtn then
 		searchBtn.MouseEnter:Connect(function()
-			Util.Tween(searchBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.Accent, ImageTransparency = 0 })
+			Util.Tween(searchBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.TextSecondary, ImageTransparency = 0 })
 		end)
 		searchBtn.MouseLeave:Connect(function()
 			Util.Tween(searchBtn, 0.2, { ImageColor3 = Xan.CurrentTheme.TextDim, ImageTransparency = 0.3 })
@@ -15724,13 +15724,13 @@ self.CurrentTheme = theme
 				for i, option in ipairs(options) do
 					local isSelected = multi and selected[option] or selected == option
 					local selectedTextColor = Util.GetContrastText(Xan.CurrentTheme.Accent)
-					local dropdownColor = Xan.CurrentTheme.Dropdown
+					local dropdownColor = Xan.CurrentTheme.Card
 						or Xan.CurrentTheme.Input
 						or Color3.fromRGB(25, 25, 32)
 
 					local optionBtn = Util.Create("TextButton", {
 						Name = option,
-						BackgroundColor3 = isSelected and Xan.CurrentTheme.Accent or dropdownColor,
+						BackgroundColor3 = isSelected and Xan.CurrentTheme.CardHover or dropdownColor,
 						Size = UDim2.new(1, 0, 0, optionHeight),
 						Font = Enum.Font.Roboto,
 						Text = option,
@@ -15745,8 +15745,7 @@ self.CurrentTheme = theme
 
 					optionBtn.MouseEnter:Connect(function()
 						if not isSelected then
-							local hoverColor = Xan.CurrentTheme.DropdownHover
-								or Xan.CurrentTheme.CardHover
+							local hoverColor = Xan.CurrentTheme.Card
 								or Color3.fromRGB(35, 35, 45)
 							Util.Tween(optionBtn, 0.15, { BackgroundColor3 = hoverColor })
 						end
@@ -15774,7 +15773,7 @@ self.CurrentTheme = theme
 							selected[option] = not selected[option]
 							local isNowSelected = selected[option]
 							Util.Tween(optionBtn, 0.2, {
-								BackgroundColor3 = isNowSelected and Xan.CurrentTheme.Accent or dropdownColor,
+								BackgroundColor3 = isNowSelected and Xan.CurrentTheme.CardHover,
 								TextColor3 = isNowSelected and contrastText or Xan.CurrentTheme.Text,
 							})
 						else
@@ -15789,7 +15788,7 @@ self.CurrentTheme = theme
 							Util.Tween(
 								optionBtn,
 								0.2,
-								{ BackgroundColor3 = Xan.CurrentTheme.Accent, TextColor3 = contrastText }
+								{ BackgroundColor3 = Xan.CurrentTheme.CardHover, TextColor3 = contrastText }
 							)
 						end
 
