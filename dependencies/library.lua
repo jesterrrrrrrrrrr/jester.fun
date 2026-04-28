@@ -3281,7 +3281,7 @@ function WindowBuilders.CreateMainFrame(screenGui, size, position, theme)
 		ClipsDescendants = true,
 		Parent = screenGui,
 	}, {
-		Util.Create("UICorner", { CornerRadius = UDim.new(0, 12) }),
+		Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
 		Util.Create("UIStroke", {
 			Color = theme.CardBorder,
 			Thickness = 1,
@@ -13047,7 +13047,7 @@ self.CurrentTheme = theme
 				AutoButtonColor = false,
 				Parent = btnFrame,
 			}, {
-				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
+				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				Util.Create("UIStroke", {
 					Name = "Stroke",
 					Color = Xan.CurrentTheme.CardBorder,
@@ -13140,7 +13140,7 @@ self.CurrentTheme = theme
 				AutoButtonColor = false,
 				Parent = btnFrame,
 			}, {
-				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
+				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 			})
 
 			btn.MouseEnter:Connect(function()
@@ -13198,7 +13198,7 @@ self.CurrentTheme = theme
 				LayoutOrder = layoutOrder,
 				Parent = scrollFrame,
 			}, {
-				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
+				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				Util.Create("UIStroke", {
 					Name = "Stroke",
 					Color = Xan.CurrentTheme.Accent,
@@ -13286,7 +13286,7 @@ self.CurrentTheme = theme
 				LayoutOrder = layoutOrder,
 				Parent = scrollFrame,
 			}, {
-				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
+				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				Util.Create("UIStroke", {
 					Name = "Stroke",
 					Color = dangerRed,
@@ -13460,7 +13460,7 @@ self.CurrentTheme = theme
 				AutoButtonColor = false,
 				Parent = btnFrame,
 			}, {
-				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
+				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				Util.Create("UIStroke", {
 					Name = "Stroke",
 					Color = Xan.CurrentTheme.CardBorder,
@@ -14398,7 +14398,7 @@ self.CurrentTheme = theme
 				LayoutOrder = layoutOrder,
 				Parent = scrollFrame,
 			}, {
-				Util.Create("UICorner", { CornerRadius = UDim.new(0, 10) }),
+				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				Util.Create("UIStroke", {
 					Name = "Stroke",
 					Color = Xan.CurrentTheme.Error,
@@ -15136,7 +15136,7 @@ self.CurrentTheme = theme
 				LayoutOrder = layoutOrder,
 				Parent = scrollFrame,
 			}, {
-				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
+				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				Util.Create("UIStroke", {
 					Name = "Stroke",
 					Color = Xan.CurrentTheme.CardBorder,
@@ -15291,7 +15291,7 @@ self.CurrentTheme = theme
 				LayoutOrder = layoutOrder,
 				Parent = scrollFrame,
 			}, {
-				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
+				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				Util.Create("UIStroke", {
 					Name = "Stroke",
 					Color = Xan.CurrentTheme.CardBorder,
@@ -15619,7 +15619,7 @@ self.CurrentTheme = theme
 				LayoutOrder = layoutOrder,
 				Parent = scrollFrame,
 			}, {
-				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
+				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				Util.Create(
 					"UIStroke",
 					{ Name = "Stroke", Color = Xan.CurrentTheme.CardBorder, Thickness = 1, Transparency = 0 }
@@ -15740,7 +15740,7 @@ self.CurrentTheme = theme
 						LayoutOrder = i,
 						Parent = optionsList,
 					}, {
-						Util.Create("UICorner", { CornerRadius = UDim.new(0, 6) }),
+						Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 					})
 
 					optionBtn.MouseEnter:Connect(function()
@@ -15928,7 +15928,7 @@ self.CurrentTheme = theme
 				LayoutOrder = layoutOrder,
 				Parent = scrollFrame,
 			}, {
-				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
+				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				Util.Create("UIStroke", {
 					Name = "Stroke",
 					Color = Xan.CurrentTheme.CardBorder,
@@ -16188,7 +16188,7 @@ self.CurrentTheme = theme
 				LayoutOrder = layoutOrder,
 				Parent = scrollFrame,
 			}, {
-				Util.Create("UICorner", { CornerRadius = UDim.new(0, 8) }),
+				Util.Create("UICorner", { CornerRadius = UDim.new(0, 4) }),
 				Util.Create("UIStroke", {
 					Name = "Stroke",
 					Color = Xan.CurrentTheme.CardBorder,
