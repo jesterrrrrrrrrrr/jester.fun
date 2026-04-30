@@ -11378,14 +11378,14 @@ self.CurrentTheme = theme
 					BackgroundTransparency = 1,
 				})
 				if t.Button:FindFirstChild("Label") then
-					Util.Tween(t.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.TextSecondary, TextTransparency = 0.2 })
+					Util.Tween(t.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.TextDim, TextTransparency = 0.2 })
 				end
 				local iconEl = t.Button:FindFirstChild("Icon")
 				if iconEl then
 					if iconEl:IsA("ImageLabel") or iconEl:IsA("ImageButton") then
-						Util.Tween(iconEl, 0.2, { ImageColor3 = Xan.CurrentTheme.TextSecondary, ImageTransparency = 0.2 })
+						Util.Tween(iconEl, 0.2, { ImageColor3 = Xan.CurrentTheme.TextDim, ImageTransparency = 0.2 })
 					elseif iconEl:IsA("TextLabel") then
-						Util.Tween(iconEl, 0.2, { TextColor3 = Xan.CurrentTheme.TextSecondary, TextTransparency = 0.2 })
+						Util.Tween(iconEl, 0.2, { TextColor3 = Xan.CurrentTheme.TextDim, TextTransparency = 0.2 })
 					end
 				end
 			else
@@ -11398,14 +11398,14 @@ self.CurrentTheme = theme
 					Util.Tween(stroke, 0.2, { Color = Xan.CurrentTheme.CardBorder, Transparency = 0.3 })
 				end
 				if t.Button:FindFirstChild("Label") then
-					Util.Tween(t.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.TextSecondary, TextTransparency = 0 })
+					Util.Tween(t.Button.Label, 0.2, { TextColor3 = Xan.CurrentTheme.TextDim, TextTransparency = 0 })
 				end
 				local iconEl = t.Button:FindFirstChild("Icon")
 				if iconEl then
 					if iconEl:IsA("ImageLabel") then
-						Util.Tween(iconEl, 0.2, { ImageColor3 = Xan.CurrentTheme.TextSecondary, ImageTransparency = 0 })
+						Util.Tween(iconEl, 0.2, { ImageColor3 = Xan.CurrentTheme.TextDim, ImageTransparency = 0 })
 					else
-						Util.Tween(iconEl, 0.2, { TextColor3 = Xan.CurrentTheme.TextSecondary, TextTransparency = 0 })
+						Util.Tween(iconEl, 0.2, { TextColor3 = Xan.CurrentTheme.TextDim, TextTransparency = 0 })
 					end
 				end
 			end
